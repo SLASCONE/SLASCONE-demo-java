@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-12">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files/httpcore-4.4.10.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files/httpclient-4.5.6.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files (2)/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files (4)/jackson-core-2.10.0.pr3.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files (4)/jackson-annotations-2.10.0.pr3.jar"/>
+	<classpathentry kind="lib" path="D:/Users/fwi/Downloads/jar_files (4)/jackson-databind-2.10.0.pr3.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
