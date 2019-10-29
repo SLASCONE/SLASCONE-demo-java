@@ -29,8 +29,8 @@ import Model.WarningInfo;
 public class SampleProxy {
 	
 	private String ApiBaseUrl = "https://api.slascone.com";
-    private String ProvisioningKey = "NfEpJ2DFfgdz5gHb+y6VtxnqhDnGvgBEqfKFU8E/lqGDgt1I18v8Lhdl37vr+8Vo2LHAgu3VSkUgznKa2F6BcmTkWvR8d8jzlbT9bSzEjzoG6aOhelZhkNtv6q3V8XNR";
-    private String IsvId = "06d61aa1-2e6e-4bed-a6d1-ddb6beee4d78";
+    private String ProvisioningKey = "";
+    private String IsvId = "";
     private HttpClient client; 
 	
     public SampleProxy() {
