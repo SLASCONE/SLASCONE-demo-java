@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -24,6 +25,7 @@ import Model.ActivateInfo;
 import Model.AnalyticalHeartbeat;
 import Model.LicenseInfo;
 import Model.ProvisioningInfo;
+import Model.UsageHeartbeatDto;
 import Model.WarningInfo;
 
 public class SampleProxy {
@@ -141,7 +143,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="analyticalHeartbeat">Is the object which contains all analytical Heartbeat Information.</param>
     /// <returns>"Successfully created analytical heartbeat." or a WarningInfoDto</returns>
-    public ProvisioningInfo AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
+    public String AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder()
     			.setPath(this.ApiBaseUrl + "/api/ProductAnalytics/isv/"+ this.IsvId + "/analyticalHeartbeat").build();
@@ -157,24 +159,55 @@ public class SampleProxy {
     	ObjectMapper mapper = new ObjectMapper();
 		
         // If generating a analytical heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created analytical heartbeat.".
-    	if(response.getStatusLine().getStatusCode() == 200) {
-    		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
-    		ProvisioningInfo provInfo = new ProvisioningInfo();
-    		provInfo.setLicenseInfo(licInfo);
-    		
-    		return provInfo;
+    	if(response.getStatusLine().getStatusCode() == 200) {  		
+    		HttpEntity entity = response.getEntity();
+    		return EntityUtils.toString(entity, "UTF-8");
     	}
     	
         // If generating a analytical heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
     		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		ProvisioningInfo provInfo = new ProvisioningInfo();
-    		provInfo.setWarningInfo(warnInfo);
-    		return provInfo;
+    		return warnInfo.getErrorMessage();
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
     }
+    
+    /// <summary>
+    /// Creates a usage heartbeat
+    /// </summary>
+    /// <param name="usageHeartbeat">Is the object which contains all usage Heartbeat Information.</param>
+    /// <returns>"Successfully created usage heartbeat." or a WarningInfoDto</returns>
+    public String AddUsageHeartbeat(UsageHeartbeatDto usageHeartbeat) throws Exception {
+    	
+    	URI uri = new URIBuilder()
+    			.setPath(this.ApiBaseUrl + "/api/ProductAnalytics/isv/"+ this.IsvId + "/usageHeartbeat").build();
+    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(usageHeartbeat);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);     	
+    	ObjectMapper mapper = new ObjectMapper();
+		
+        // If generating a usage heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created usage heartbeat.".
+    	if(response.getStatusLine().getStatusCode() == 200) {  	
+    		HttpEntity entity = response.getEntity();
+    		return EntityUtils.toString(entity, "UTF-8");
+    	}
+    	
+        // If generating a usage heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
+    	if(response.getStatusLine().getStatusCode() == 409) {
+    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		return warnInfo.getErrorMessage();
+    	}
+    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }
+    
 	
     /// <summary>
     /// Unassign a activated license.
