@@ -1,5 +1,8 @@
 package Proxy;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -269,8 +272,18 @@ public class SampleProxy {
     /// Get a unique device id
     /// </summary>
     /// <returns>UUID via string</returns>
-    public String GetUniqueDeviceId() {
-    	
-    	return UUID.randomUUID().toString();
+    public String GetUniqueDeviceId() throws IOException {
+    	String command = "wmic csproduct get UUID";
+        StringBuffer output = new StringBuffer();
+
+        Process SerNumProcess = Runtime.getRuntime().exec(command);
+        BufferedReader sNumReader = new BufferedReader(new InputStreamReader(SerNumProcess.getInputStream()));
+
+        String line = "";
+        while ((line = sNumReader.readLine()) != null) {
+            output.append(line + "\n");
+        }
+        String MachineID=output.toString().substring(output.indexOf("\n"), output.length()).trim();;
+        return MachineID;
     }
 }
