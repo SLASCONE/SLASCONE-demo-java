@@ -6,15 +6,11 @@ public class AnalyticalHeartbeat {
 	private String uniqueDeviceId = null;
 
 	private List<AnalyticalFieldValue> analyticalHeartbeatInfo = null;
-
-	private String deviceLicenseKey = null;
 	
-	public AnalyticalHeartbeat(String uniqueDeviceId, List<AnalyticalFieldValue> analyticalHeartbeatInfo,
-			String deviceLicenseKey) {
+	public AnalyticalHeartbeat(String uniqueDeviceId, List<AnalyticalFieldValue> analyticalHeartbeatInfo) {
 		super();
 		this.uniqueDeviceId = uniqueDeviceId;
 		this.analyticalHeartbeatInfo = analyticalHeartbeatInfo;
-		this.deviceLicenseKey = deviceLicenseKey;
 	}
 	
 	public AnalyticalHeartbeat() {
@@ -35,13 +31,5 @@ public class AnalyticalHeartbeat {
 
 	public void setAnalyticalHeartbeatInfo(List<AnalyticalFieldValue> analyticalHeartbeatInfo) {
 		this.analyticalHeartbeatInfo = analyticalHeartbeatInfo;
-	}
-
-	public String getDeviceLicenseKey() {
-		return deviceLicenseKey;
-	}
-
-	public void setDeviceLicenseKey(String deviceLicenseKey) {
-		this.deviceLicenseKey = deviceLicenseKey;
 	}
 }
