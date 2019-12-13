@@ -6,19 +6,15 @@ public class UsageHeartbeatDto {
 	public String UniqueDeviceId = null;
 	
     public List<UsageFeatureValueDto> UsageHeartbeat = null;
-    
-    public String DeviceLicenseKey = null;
 
     public UsageHeartbeatDto() {
     	super();
     }
     
-	public UsageHeartbeatDto(String uniqueDeviceId, List<UsageFeatureValueDto> usageHeartbeat,
-			String deviceLicenseKey) {
+	public UsageHeartbeatDto(String uniqueDeviceId, List<UsageFeatureValueDto> usageHeartbeat) {
 		super();
 		UniqueDeviceId = uniqueDeviceId;
 		UsageHeartbeat = usageHeartbeat;
-		DeviceLicenseKey = deviceLicenseKey;
 	}
 
 	public String getUniqueDeviceId() {
@@ -35,13 +31,5 @@ public class UsageHeartbeatDto {
 
 	public void setUsageHeartbeat(List<UsageFeatureValueDto> usageHeartbeat) {
 		UsageHeartbeat = usageHeartbeat;
-	}
-
-	public String getDeviceLicenseKey() {
-		return DeviceLicenseKey;
-	}
-
-	public void setDeviceLicenseKey(String deviceLicenseKey) {
-		DeviceLicenseKey = deviceLicenseKey;
 	}
 }
