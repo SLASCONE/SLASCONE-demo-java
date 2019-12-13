@@ -43,7 +43,6 @@ public class Program {
         // ToDo
         var analyticalHb = new AnalyticalHeartbeat();
         analyticalHb.setAnalyticalHeartbeatInfo(null);
-        analyticalHb.setDeviceLicenseKey(null);;
         analyticalHb.setUniqueDeviceId(null);;
 
         var analyticalHeartbeatResult = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
@@ -64,7 +63,6 @@ public class Program {
      	usageFeatureValueList.add(usageFeatureValue2);
      		
      	var usageHeartbeatDto = new UsageHeartbeatDto();
-     	usageHeartbeatDto.setDeviceLicenseKey("");
      	usageHeartbeatDto.setUniqueDeviceId("");
      	usageHeartbeatDto.setUsageHeartbeat(usageFeatureValueList);
 
