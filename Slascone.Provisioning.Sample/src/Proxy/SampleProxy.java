@@ -220,7 +220,7 @@ public class SampleProxy {
     public String Unassign(String deviceLicenseKey) throws Exception {
     	
      	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/Provisioning/" + this.IsvId + "/devicelicensekey/" + deviceLicenseKey + "/unassign").build();
+    			.setPath(this.ApiBaseUrl + "/api/Provisioning/isv/" + this.IsvId + "/devicelicensekey/" + deviceLicenseKey + "/unassign").build();
     	   	    
      	StringEntity requestEntity = new StringEntity(
     			"",
