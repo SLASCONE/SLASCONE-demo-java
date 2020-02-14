@@ -1,65 +1,68 @@
 package Model;
 
 public class ActivateInfo {
-	private String productId = null;
+	private String product_id = null;
 	
-	private String deviceLicenseKey = null;
+	private String license_key = null;
 	
-	private String uniqueDeviceId = null;
+	private String client_id = null;
 	
-	private String deviceName = null;
+	private String client_name = null;
 	
-	private String deviceDescription = null;
-
-	public ActivateInfo(String productId, String deviceLicenseKey, String uniqueDeviceId, String deviceName,
-			String deviceDescription) {
+	private String client_description = null;
+	
+	public ActivateInfo() {
 		super();
-		this.productId = productId;
-		this.deviceLicenseKey = deviceLicenseKey;
-		this.uniqueDeviceId = uniqueDeviceId;
-		this.deviceName = deviceName;
-		this.deviceDescription = deviceDescription;
 	}
 
-	public String getProductId() {
-		return productId;
+	public ActivateInfo(String product_id, String license_key, String client_id, String client_name,
+			String client_description) {
+		super();
+		this.product_id = product_id;
+		this.license_key = license_key;
+		this.client_id = client_id;
+		this.client_name = client_name;
+		this.client_description = client_description;
 	}
 
-	public void setProductId(String productId) {
-		this.productId = productId;
+	public String getProduct_id() {
+		return product_id;
 	}
 
-	public String getDeviceLicenseKey() {
-		return deviceLicenseKey;
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
 	}
 
-	public void setDeviceLicenseKey(String deviceLicenseKey) {
-		this.deviceLicenseKey = deviceLicenseKey;
+	public String getLicense_key() {
+		return license_key;
 	}
 
-	public String getUniqueDeviceId() {
-		return uniqueDeviceId;
+	public void setLicense_key(String license_key) {
+		this.license_key = license_key;
 	}
 
-	public void setUniqueDeviceId(String uniqueDeviceId) {
-		this.uniqueDeviceId = uniqueDeviceId;
+	public String getClient_id() {
+		return client_id;
 	}
 
-	public String getDeviceName() {
-		return deviceName;
+	public void setClient_id(String client_id) {
+		this.client_id = client_id;
 	}
 
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
+	public String getClient_name() {
+		return client_name;
 	}
 
-	public String getDeviceDescription() {
-		return deviceDescription;
+	public void setClient_name(String client_name) {
+		this.client_name = client_name;
 	}
 
-	public void setDeviceDescription(String deviceDescription) {
-		this.deviceDescription = deviceDescription;
+	public String getClient_description() {
+		return client_description;
 	}
-	
+
+	public void setClient_description(String client_description) {
+		this.client_description = client_description;
+	}
 	
 }

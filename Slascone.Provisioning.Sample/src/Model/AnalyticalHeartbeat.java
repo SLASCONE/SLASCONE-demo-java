@@ -3,33 +3,44 @@ package Model;
 import java.util.List;
 
 public class AnalyticalHeartbeat {
-	private String uniqueDeviceId = null;
+	private String client_id = null;
 
-	private List<AnalyticalFieldValue> analyticalHeartbeatInfo = null;
+	private List<AnalyticalFieldValue> analytical_heartbeat = null;
 	
-	public AnalyticalHeartbeat(String uniqueDeviceId, List<AnalyticalFieldValue> analyticalHeartbeatInfo) {
-		super();
-		this.uniqueDeviceId = uniqueDeviceId;
-		this.analyticalHeartbeatInfo = analyticalHeartbeatInfo;
-	}
+	private String token_key = null;
 	
 	public AnalyticalHeartbeat() {
 		super();
 	}
-	
-	public String getUniqueDeviceId() {
-		return uniqueDeviceId;
+
+	public AnalyticalHeartbeat(String client_id, List<AnalyticalFieldValue> analytical_heartbeat, String token_key) {
+		super();
+		this.client_id = client_id;
+		this.analytical_heartbeat = analytical_heartbeat;
+		this.token_key = token_key;
 	}
 
-	public void setUniqueDeviceId(String uniqueDeviceId) {
-		this.uniqueDeviceId = uniqueDeviceId;
+	public String getClient_id() {
+		return client_id;
 	}
 
-	public List<AnalyticalFieldValue> getAnalyticalHeartbeatInfo() {
-		return analyticalHeartbeatInfo;
+	public void setClient_id(String client_id) {
+		this.client_id = client_id;
 	}
 
-	public void setAnalyticalHeartbeatInfo(List<AnalyticalFieldValue> analyticalHeartbeatInfo) {
-		this.analyticalHeartbeatInfo = analyticalHeartbeatInfo;
+	public List<AnalyticalFieldValue> getAnalytical_heartbeat() {
+		return analytical_heartbeat;
+	}
+
+	public void setAnalytical_heartbeat(List<AnalyticalFieldValue> analytical_heartbeat) {
+		this.analytical_heartbeat = analytical_heartbeat;
+	}
+
+	public String getToken_key() {
+		return token_key;
+	}
+
+	public void setToken_key(String token_key) {
+		this.token_key = token_key;
 	}
 }

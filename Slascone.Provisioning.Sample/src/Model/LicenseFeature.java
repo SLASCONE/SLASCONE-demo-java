@@ -7,17 +7,14 @@ public class LicenseFeature {
 	
 	public String name = null;
 	
-	public String description = null;
+	public LicenseFeature() {
+		super();
+	}
 
-	public LicenseFeature(UUID id, String name, String description) {
+	public LicenseFeature(UUID id, String name) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
-	}
-	
-	public LicenseFeature() {
-		super();
 	}
 
 	public UUID getId() {
@@ -35,14 +32,4 @@ public class LicenseFeature {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	
 }

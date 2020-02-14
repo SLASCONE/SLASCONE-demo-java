@@ -3,33 +3,47 @@ package Model;
 import java.util.List;
 
 public class UsageHeartbeatDto {
-	public String UniqueDeviceId = null;
+	public String client_id = null;
 	
-    public List<UsageFeatureValueDto> UsageHeartbeat = null;
+    public List<UsageFeatureValueDto> usage_heartbeat = null;
 
-    public UsageHeartbeatDto() {
+    public String token_key = null;
+    
+    public UsageHeartbeatDto()
+    {
     	super();
     }
     
-	public UsageHeartbeatDto(String uniqueDeviceId, List<UsageFeatureValueDto> usageHeartbeat) {
+	public UsageHeartbeatDto(String client_id, List<UsageFeatureValueDto> usage_heartbeat, String token_key) {
 		super();
-		UniqueDeviceId = uniqueDeviceId;
-		UsageHeartbeat = usageHeartbeat;
+		this.client_id = client_id;
+		this.usage_heartbeat = usage_heartbeat;
+		this.token_key = token_key;
 	}
 
-	public String getUniqueDeviceId() {
-		return UniqueDeviceId;
+	public String getClient_id() {
+		return client_id;
 	}
 
-	public void setUniqueDeviceId(String uniqueDeviceId) {
-		UniqueDeviceId = uniqueDeviceId;
+	public void setClient_id(String client_id) {
+		this.client_id = client_id;
 	}
 
-	public List<UsageFeatureValueDto> getUsageHeartbeat() {
-		return UsageHeartbeat;
+	public List<UsageFeatureValueDto> getUsage_heartbeat() {
+		return usage_heartbeat;
 	}
 
-	public void setUsageHeartbeat(List<UsageFeatureValueDto> usageHeartbeat) {
-		UsageHeartbeat = usageHeartbeat;
+	public void setUsage_heartbeat(List<UsageFeatureValueDto> usage_heartbeat) {
+		this.usage_heartbeat = usage_heartbeat;
 	}
+
+	public String getToken_key() {
+		return token_key;
+	}
+
+	public void setToken_key(String token_key) {
+		this.token_key = token_key;
+	}
+    
+    
 }

@@ -7,15 +7,12 @@ public class LicenseLimitation {
 	
 	public String name = null;
 	
-	public String description = null;
-	
 	public int value = 0;
-
-	public LicenseLimitation(UUID id, String name, String description, int value) {
+	
+	public LicenseLimitation(UUID id, String name, int value) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
 		this.value = value;
 	}
 	
@@ -37,14 +34,6 @@ public class LicenseLimitation {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public int getValue() {

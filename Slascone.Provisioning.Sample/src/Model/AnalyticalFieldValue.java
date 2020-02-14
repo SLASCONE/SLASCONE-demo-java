@@ -2,33 +2,33 @@ package Model;
 import java.util.UUID;
 
 public class AnalyticalFieldValue {
-	private UUID analyitcalFieldId = null;
+	private UUID analytical_field_id = null;
 
-	private String analyticalValue = null;
-
-	public AnalyticalFieldValue(UUID analyitcalFieldId, String analyticalValue) {
-		super();
-		this.analyitcalFieldId = analyitcalFieldId;
-		this.analyticalValue = analyticalValue;
-	}
+	private String value = null;
 	
 	public AnalyticalFieldValue() {
 		super();
 	}
 
-	public UUID getAnalyitcalFieldId() {
-		return analyitcalFieldId;
+	public AnalyticalFieldValue(UUID analytical_field_id, String value) {
+		super();
+		this.analytical_field_id = analytical_field_id;
+		this.value = value;
 	}
 
-	public void setAnalyitcalFieldId(UUID analyitcalFieldId) {
-		this.analyitcalFieldId = analyitcalFieldId;
+	public UUID getAnalytical_field_id() {
+		return analytical_field_id;
 	}
 
-	public String getAnalyticalValue() {
-		return analyticalValue;
+	public void setAnalytical_field_id(UUID analytical_field_id) {
+		this.analytical_field_id = analytical_field_id;
 	}
 
-	public void setAnalyticalValue(String analyticalValue) {
-		this.analyticalValue = analyticalValue;
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

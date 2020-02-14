@@ -25,10 +25,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import Model.ActivateInfo;
+import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
 import Model.LicenseInfo;
 import Model.ProvisioningInfo;
+import Model.UnassignDto;
 import Model.UsageHeartbeatDto;
+import Model.ValidateLicenseDto;
 import Model.WarningInfo;
 
 public class SampleProxy {
@@ -53,16 +56,11 @@ public class SampleProxy {
     /// <summary>
     /// Activates a License
     /// </summary>
-    /// <param name="productId">Specifies the product which the license is aligned.</param>
-    /// <param name="deviceLicenseKey">Can be a DeviceLicenseKey, LicenseKey or LegacyLicenseKey.</param>
-    /// <param name="uniqueDeviceId">Is the id which identifies the device.</param>
-    /// <param name="deviceName">Is the name of a device.</param>
-    /// <param name="deviceDescription">Is a description for a device.</param>
     /// <returns>ProvisioningInfo where LicenseInfoDto or WarningInfoDto is set.</returns>
     public ProvisioningInfo Activate(ActivateInfo activateDto) throws Exception {
         
-    	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/Provisioning/" + this.IsvId + "/devicelicense/activate").build();
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/activations").build();
     	
     	Gson gson = new Gson();
     	String jsonActivateBody = gson.toJson(activateDto);
@@ -100,22 +98,18 @@ public class SampleProxy {
     /// <summary>
     /// Creates a heartbeat
     /// </summary>
-    /// <param name="productId">Specifies the product which the license is aligned.</param>
-    /// <param name="deviceLicenseKey">Can be a DeviceLicenseKey, LicenseKey or LegacyLicenseKey.</param>
-    /// <param name="softwareVersion">Is the software version which the license is currently assigned.</param>
-    /// <param name="operatingSystem">Is the operating system on which the license is currently assigned.</param>
-    /// <param name="uniqueDeviceId">Is the id which identifies the device.</param>
     /// <returns>ProvisioningInfo where LicenseInfoDto or WarningInfoDto is set.</returns>
-    public ProvisioningInfo AddHeartbeat(String productId, String deviceLicenseKey, String softwareVersion,
-    		String operatingSystem, String uniqueDeviceId) throws Exception {
+    public ProvisioningInfo AddHeartbeat(AddHeartbeatDto heartbeatDto) throws Exception {
     	
-    	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/Provisioning/isv/" + this.IsvId + "/productId/" + productId + "/softwareversion/" + softwareVersion + "/os/" + operatingSystem + "/deviceId/" + uniqueDeviceId).build();
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/heartbeats").build();
     	   	    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(heartbeatDto);
     	StringEntity requestEntity = new StringEntity(
-    			"",
+    			jsonActivateBody,
     		    ContentType.APPLICATION_JSON);
-    	
+    	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request); 
     	  	
@@ -148,8 +142,8 @@ public class SampleProxy {
     /// <returns>"Successfully created analytical heartbeat." or a WarningInfoDto</returns>
     public String AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
     	
-    	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/ProductAnalytics/isv/"+ this.IsvId + "/analyticalHeartbeat").build();
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/analytical_heartbeats").build();
     	
     	Gson gson = new Gson();
     	String jsonActivateBody = gson.toJson(analyticalHeartbeat);
@@ -170,7 +164,7 @@ public class SampleProxy {
         // If generating a analytical heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
     		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.getErrorMessage();
+    		return warnInfo.message;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -183,8 +177,8 @@ public class SampleProxy {
     /// <returns>"Successfully created usage heartbeat." or a WarningInfoDto</returns>
     public String AddUsageHeartbeat(UsageHeartbeatDto usageHeartbeat) throws Exception {
     	
-    	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/ProductAnalytics/isv/"+ this.IsvId + "/usageHeartbeat").build();
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/usage_heartbeats").build();
     	
     	Gson gson = new Gson();
     	String jsonActivateBody = gson.toJson(usageHeartbeat);
@@ -205,7 +199,7 @@ public class SampleProxy {
         // If generating a usage heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
     		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.getErrorMessage();
+    		return warnInfo.message;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -217,17 +211,19 @@ public class SampleProxy {
     /// </summary>
     /// <param name="deviceLicenseKey">Is the key of the license assignment which you want to unassign.</param>
     /// <returns>"Successfully deactivated License." or a WarningInfoDto</returns>
-    public String Unassign(String deviceLicenseKey) throws Exception {
+    public String Unassign(UnassignDto unassignDto) throws Exception {
     	
-     	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/Provisioning/isv/" + this.IsvId + "/devicelicensekey/" + deviceLicenseKey + "/unassign").build();
+     	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/unassign").build();
     	   	    
-     	StringEntity requestEntity = new StringEntity(
-    			"",
+     	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(unassignDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
     		    ContentType.APPLICATION_JSON);
-     	
-    	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
-    	HttpResponse response = this.client.execute(request); 
+		    	    	
+    	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);  
     	String responseBody = EntityUtils.toString(response.getEntity());
 		
     	ObjectMapper mapper = new ObjectMapper();
@@ -240,7 +236,7 @@ public class SampleProxy {
     	// If unassign was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
     		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.ErrorMessage;
+    		return warnInfo.message;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -251,13 +247,19 @@ public class SampleProxy {
     /// </summary>
     /// <param name="deviceLicenseKey">Is the key of the license assignment where you want to get the depending license information.</param>
     /// <returns>LicenseInfo</returns>
-    public LicenseInfo GetLicenseInfo(String deviceLicenseKey) throws Exception {
+    public LicenseInfo GetLicenseInfo(ValidateLicenseDto validateLicenseDto) throws Exception {
     	
-    	URI uri = new URIBuilder()
-    			.setPath(this.ApiBaseUrl + "/api/Provisioning/isv/" + this.IsvId + "/devicelicensekey/" + deviceLicenseKey).build();
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/validate").build();
     	   	    	
-    	HttpUriRequest request = RequestBuilder.get().setUri(uri).build();
-    	HttpResponse response = this.client.execute(request); 
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(validateLicenseDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);  
     	ObjectMapper mapper = new ObjectMapper();
     	
     	if(response.getStatusLine().getStatusCode() == 200) {

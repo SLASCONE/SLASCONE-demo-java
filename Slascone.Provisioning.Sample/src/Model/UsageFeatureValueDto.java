@@ -3,33 +3,47 @@ package Model;
 import java.util.UUID;
 
 public class UsageFeatureValueDto {
-	public UUID UsageFeatureId = null;
+	public UUID usage_feature_id = null;
 	
-    public String Value = null;
-
-    public UsageFeatureValueDto() {
-		super();
-	}
+	public UUID usage_module_id = null;
+	
+    public String value = null;
     
-	public UsageFeatureValueDto(UUID usageFeatureId, String value) {
+    public UsageFeatureValueDto() {
+    	super();
+    }
+
+	public UsageFeatureValueDto(UUID usage_feature_id, UUID usage_module_id, String value) {
 		super();
-		UsageFeatureId = usageFeatureId;
-		Value = value;
+		this.usage_feature_id = usage_feature_id;
+		this.usage_module_id = usage_module_id;
+		this.value = value;
 	}
 
-	public UUID getUsageFeatureId() {
-		return UsageFeatureId;
+	public UUID getUsage_feature_id() {
+		return usage_feature_id;
 	}
 
-	public void setUsageFeatureId(UUID usageFeatureId) {
-		UsageFeatureId = usageFeatureId;
+	public void setUsage_feature_id(UUID usage_feature_id) {
+		this.usage_feature_id = usage_feature_id;
+	}
+
+	public UUID getUsage_module_id() {
+		return usage_module_id;
+	}
+
+	public void setUsage_module_id(UUID usage_module_id) {
+		this.usage_module_id = usage_module_id;
 	}
 
 	public String getValue() {
-		return Value;
+		return value;
 	}
 
 	public void setValue(String value) {
-		Value = value;
-	} 
+		this.value = value;
+	}
+    
+    
+
 }

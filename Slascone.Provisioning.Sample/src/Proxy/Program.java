@@ -3,7 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import Model.ActivateInfo;
+import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
 import Proxy.SampleProxy;
@@ -20,7 +22,7 @@ public class Program {
 
         if (activatedLicense.LicenseInfo == null)
         {
-        	System.out.println(activatedLicense.WarningInfo.ErrorMessage);
+        	System.out.println(activatedLicense.WarningInfo.message);
         }
         else
         {
@@ -28,12 +30,20 @@ public class Program {
         }
 
         // ToDo
-        var heartbeatResult = slasconeProxy.AddHeartbeat("", "",
-            "", "", "");
+        var heartBeatDto = new AddHeartbeatDto();
+        heartBeatDto.setClient_id(null);
+        heartBeatDto.setGroup_id(null);
+        heartBeatDto.setHeartbeat_type_id(null);
+        heartBeatDto.setOperating_system(null);
+        heartBeatDto.setProduct_id(null);
+        heartBeatDto.setSoftware_version(null);
+        heartBeatDto.setToken_key(null);
+        
+        var heartbeatResult = slasconeProxy.AddHeartbeat(heartBeatDto);
 
         if (heartbeatResult.LicenseInfo == null)
         {
-        	System.out.println(heartbeatResult.WarningInfo.ErrorMessage);
+        	System.out.println(heartbeatResult.WarningInfo.message);
         }
         else
         {
@@ -42,8 +52,8 @@ public class Program {
 
         // ToDo
         var analyticalHb = new AnalyticalHeartbeat();
-        analyticalHb.setAnalyticalHeartbeatInfo(null);
-        analyticalHb.setUniqueDeviceId(null);;
+        analyticalHb.setAnalytical_heartbeat(null);
+        analyticalHb.setClient_id(null);;
 
         var analyticalHeartbeatResult = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
 
@@ -51,20 +61,23 @@ public class Program {
         
         // ToDo
      	var usageFeatureValue1 = new UsageFeatureValueDto();
-    	usageFeatureValue1.setUsageFeatureId(UUID.fromString(""));
+    	usageFeatureValue1.setUsage_feature_id(UUID.fromString(""));
+    	usageFeatureValue1.setUsage_module_id(null);
      	usageFeatureValue1.setValue("");
      		
      	var usageFeatureValue2 = new UsageFeatureValueDto();
-     	usageFeatureValue2.setUsageFeatureId(UUID.fromString(""));
-     	usageFeatureValue2.setValue("");
+     	usageFeatureValue2.setUsage_feature_id(UUID.fromString(""));
+    	usageFeatureValue2.setUsage_module_id(null);
+    	usageFeatureValue2.setValue("");
      	
      	List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList();
      	usageFeatureValueList.add(usageFeatureValue1);
      	usageFeatureValueList.add(usageFeatureValue2);
      		
      	var usageHeartbeatDto = new UsageHeartbeatDto();
-     	usageHeartbeatDto.setUniqueDeviceId("");
-     	usageHeartbeatDto.setUsageHeartbeat(usageFeatureValueList);
+     	usageHeartbeatDto.setClient_id("");
+     	usageHeartbeatDto.setUsage_heartbeat(usageFeatureValueList);
+     	usageHeartbeatDto.setToken_key(null);
 
      	var usageHeartbeatResult = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
      	
@@ -73,7 +86,10 @@ public class Program {
         if (activatedLicense.LicenseInfo != null)
         {
             // ToDo
-            var unassignResult = slasconeProxy.Unassign("");
+        	var unassignDto = new UnassignDto();
+        	unassignDto.setToken_key(null);
+        	
+            var unassignResult = slasconeProxy.Unassign(unassignDto);
 
             System.out.println(unassignResult);
         }

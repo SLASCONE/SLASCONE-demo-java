@@ -7,15 +7,12 @@ public class LicenseVariable {
 	
 	public String name = null;
 	
-	public String description = null;
-	
 	public String value = null;
 
-	public LicenseVariable(UUID id, String name, String description, String value) {
+	public LicenseVariable(UUID id, String name, String value) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.description = description;
 		this.value = value;
 	}
 	
@@ -37,14 +34,6 @@ public class LicenseVariable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getValue() {

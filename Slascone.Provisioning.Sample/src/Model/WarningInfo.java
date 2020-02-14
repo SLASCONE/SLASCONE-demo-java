@@ -3,16 +3,16 @@ package Model;
 public class WarningInfo {
 	public int Id;
 	
-	public String ErrorMessage;
-
-	public WarningInfo(int id, String errorMessage) {
-		super();
-		this.Id = id;
-		this.ErrorMessage = errorMessage;
-	}
+	public String message = null;
 	
 	public WarningInfo() {
-		
+		super();
+	}
+
+	public WarningInfo(int id, String message) {
+		super();
+		Id = id;
+		this.message = message;
 	}
 
 	public int getId() {
@@ -20,14 +20,14 @@ public class WarningInfo {
 	}
 
 	public void setId(int id) {
-		this.Id = id;
+		Id = id;
 	}
 
-	public String getErrorMessage() {
-		return ErrorMessage;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setErrorMessage(String errorMessage) {
-		this.ErrorMessage = errorMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

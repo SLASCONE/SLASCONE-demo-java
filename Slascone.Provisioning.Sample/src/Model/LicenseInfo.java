@@ -6,33 +6,33 @@ import java.util.UUID;
 
 public class LicenseInfo {		
 	
-	public String licenseKey = null;	
+	public String license_key = null;	
 	
-	public UUID deviceLicenseKey = null;	
+	public UUID token_key = null;	
 	
-    public String uniqueDeviceId = null;    
+    public String client_id = null;    
     
-    public Boolean isLicenseValid = null;
+    public Boolean is_license_valid = null;
     
-	public Boolean isSoftwareVersionValid = null;
+	public Boolean is_software_version_valid = null;
 	
-    public Date expirationDateUtc = null;
+    public Date expiration_date_utc = null;
     
-    public SoftwareReleaseLimitation softwareReleaseLimitation = null;
+    public SoftwareReleaseLimitation software_release_limitation = null;
     
-    public int heartBeatPeriod = 0;
+    public int heartbeat_period = 0;
     
-    public int freeRide = 0;
+    public int freeride = 0;
     
-    public String productName = null;
+    public String product_name = null;
     
-    public String templateName = null;
+    public String template_name = null;
     
-    public String licenseName = null;
+    public String license_name = null;
     
-    public String deviceDescription = null;
+    public String client_description = null;
     
-    public Boolean enforceSoftwareVersionUpgrade = null;
+    public Boolean enforce_software_version_upgrade = null;
     
     public Customer customer = null;
     
@@ -41,147 +41,148 @@ public class LicenseInfo {
     public List<LicenseLimitation> limitations = null;
     
     public List<LicenseVariable> variables = null;
+    
+    public LicenseInfo() {
+    	super();
+    }
 
-	public LicenseInfo(String licenseKey, UUID deviceLicenseKey, String uniqueDeviceId, Boolean isLicenseValid,
-			Boolean isSoftwareVersionValid, Date expirationDateUtc, SoftwareReleaseLimitation softwareReleaseLimitation,
-			int heartBeatPeriod, int freeRide, String productName, String templateName, String licenseName,
-			String deviceDescription, Boolean enforceSoftwareVersionUpgrade, Customer customer,
-			List<LicenseFeature> features, List<LicenseLimitation> limitations, List<LicenseVariable> variables) {
+	public LicenseInfo(String license_key, UUID token_key, String client_id, Boolean is_license_valid,
+			Boolean is_software_version_valid, Date expiration_date_utc,
+			SoftwareReleaseLimitation software_release_limitation, int heartbeat_period, int freeride,
+			String product_name, String template_name, String license_name, String client_description,
+			Boolean enforce_software_version_upgrade, Customer customer, List<LicenseFeature> features,
+			List<LicenseLimitation> limitations, List<LicenseVariable> variables) {
 		super();
-		this.licenseKey = licenseKey;
-		this.deviceLicenseKey = deviceLicenseKey;
-		this.uniqueDeviceId = uniqueDeviceId;
-		this.isLicenseValid = isLicenseValid;
-		this.isSoftwareVersionValid = isSoftwareVersionValid;
-		this.expirationDateUtc = expirationDateUtc;
-		this.softwareReleaseLimitation = softwareReleaseLimitation;
-		this.heartBeatPeriod = heartBeatPeriod;
-		this.freeRide = freeRide;
-		this.productName = productName;
-		this.templateName = templateName;
-		this.licenseName = licenseName;
-		this.deviceDescription = deviceDescription;
-		this.enforceSoftwareVersionUpgrade = enforceSoftwareVersionUpgrade;
+		this.license_key = license_key;
+		this.token_key = token_key;
+		this.client_id = client_id;
+		this.is_license_valid = is_license_valid;
+		this.is_software_version_valid = is_software_version_valid;
+		this.expiration_date_utc = expiration_date_utc;
+		this.software_release_limitation = software_release_limitation;
+		this.heartbeat_period = heartbeat_period;
+		this.freeride = freeride;
+		this.product_name = product_name;
+		this.template_name = template_name;
+		this.license_name = license_name;
+		this.client_description = client_description;
+		this.enforce_software_version_upgrade = enforce_software_version_upgrade;
 		this.customer = customer;
 		this.features = features;
 		this.limitations = limitations;
 		this.variables = variables;
 	}
 
-	public LicenseInfo() {
-		super();
+	public String getLicense_key() {
+		return license_key;
 	}
 
-	public String getLicenseKey() {
-		return licenseKey;
+	public void setLicense_key(String license_key) {
+		this.license_key = license_key;
 	}
 
-	public void setLicenseKey(String licenseKey) {
-		this.licenseKey = licenseKey;
+	public UUID getToken_key() {
+		return token_key;
 	}
 
-	public UUID getDeviceLicenseKey() {
-		return deviceLicenseKey;
+	public void setToken_key(UUID token_key) {
+		this.token_key = token_key;
 	}
 
-	public void setDeviceLicenseKey(UUID deviceLicenseKey) {
-		this.deviceLicenseKey = deviceLicenseKey;
+	public String getClient_id() {
+		return client_id;
 	}
 
-	public String getUniqueDeviceId() {
-		return uniqueDeviceId;
+	public void setClient_id(String client_id) {
+		this.client_id = client_id;
 	}
 
-	public void setUniqueDeviceId(String uniqueDeviceId) {
-		this.uniqueDeviceId = uniqueDeviceId;
+	public Boolean getIs_license_valid() {
+		return is_license_valid;
 	}
 
-	public Boolean getIsLicenseValid() {
-		return isLicenseValid;
+	public void setIs_license_valid(Boolean is_license_valid) {
+		this.is_license_valid = is_license_valid;
 	}
 
-	public void setIsLicenseValid(Boolean isLicenseValid) {
-		this.isLicenseValid = isLicenseValid;
+	public Boolean getIs_software_version_valid() {
+		return is_software_version_valid;
 	}
 
-	public Boolean getIsSoftwareVersionValid() {
-		return isSoftwareVersionValid;
+	public void setIs_software_version_valid(Boolean is_software_version_valid) {
+		this.is_software_version_valid = is_software_version_valid;
 	}
 
-	public void setIsSoftwareVersionValid(Boolean isSoftwareVersionValid) {
-		this.isSoftwareVersionValid = isSoftwareVersionValid;
+	public Date getExpiration_date_utc() {
+		return expiration_date_utc;
 	}
 
-	public Date getExpirationDateUtc() {
-		return expirationDateUtc;
+	public void setExpiration_date_utc(Date expiration_date_utc) {
+		this.expiration_date_utc = expiration_date_utc;
 	}
 
-	public void setExpirationDateUtc(Date expirationDateUtc) {
-		this.expirationDateUtc = expirationDateUtc;
+	public SoftwareReleaseLimitation getSoftware_release_limitation() {
+		return software_release_limitation;
 	}
 
-	public SoftwareReleaseLimitation getSoftwareReleaseLimitation() {
-		return softwareReleaseLimitation;
+	public void setSoftware_release_limitation(SoftwareReleaseLimitation software_release_limitation) {
+		this.software_release_limitation = software_release_limitation;
 	}
 
-	public void setSoftwareReleaseLimitation(SoftwareReleaseLimitation softwareReleaseLimitation) {
-		this.softwareReleaseLimitation = softwareReleaseLimitation;
+	public int getHeartbeat_period() {
+		return heartbeat_period;
 	}
 
-	public int getHeartBeatPeriod() {
-		return heartBeatPeriod;
+	public void setHeartbeat_period(int heartbeat_period) {
+		this.heartbeat_period = heartbeat_period;
 	}
 
-	public void setHeartBeatPeriod(int heartBeatPeriod) {
-		this.heartBeatPeriod = heartBeatPeriod;
+	public int getFreeride() {
+		return freeride;
 	}
 
-	public int getFreeRide() {
-		return freeRide;
+	public void setFreeride(int freeride) {
+		this.freeride = freeride;
 	}
 
-	public void setFreeRide(int freeRide) {
-		this.freeRide = freeRide;
+	public String getProduct_name() {
+		return product_name;
 	}
 
-	public String getProductName() {
-		return productName;
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public String getTemplate_name() {
+		return template_name;
 	}
 
-	public String getTemplateName() {
-		return templateName;
+	public void setTemplate_name(String template_name) {
+		this.template_name = template_name;
 	}
 
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
+	public String getLicense_name() {
+		return license_name;
 	}
 
-	public String getLicenseName() {
-		return licenseName;
+	public void setLicense_name(String license_name) {
+		this.license_name = license_name;
 	}
 
-	public void setLicenseName(String licenseName) {
-		this.licenseName = licenseName;
+	public String getClient_description() {
+		return client_description;
 	}
 
-	public String getDeviceDescription() {
-		return deviceDescription;
+	public void setClient_description(String client_description) {
+		this.client_description = client_description;
 	}
 
-	public void setDeviceDescription(String deviceDescription) {
-		this.deviceDescription = deviceDescription;
+	public Boolean getEnforce_software_version_upgrade() {
+		return enforce_software_version_upgrade;
 	}
 
-	public Boolean getEnforceSoftwareVersionUpgrade() {
-		return enforceSoftwareVersionUpgrade;
-	}
-
-	public void setEnforceSoftwareVersionUpgrade(Boolean enforceSoftwareVersionUpgrade) {
-		this.enforceSoftwareVersionUpgrade = enforceSoftwareVersionUpgrade;
+	public void setEnforce_software_version_upgrade(Boolean enforce_software_version_upgrade) {
+		this.enforce_software_version_upgrade = enforce_software_version_upgrade;
 	}
 
 	public Customer getCustomer() {
@@ -215,4 +216,7 @@ public class LicenseInfo {
 	public void setVariables(List<LicenseVariable> variables) {
 		this.variables = variables;
 	}
+    
+    
+    
 }
