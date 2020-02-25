@@ -1,7 +1,7 @@
 package Model;
 
 public class WarningInfo {
-	public int Id;
+	public int id;
 	
 	public String message = null;
 	
@@ -11,16 +11,16 @@ public class WarningInfo {
 
 	public WarningInfo(int id, String message) {
 		super();
-		Id = id;
+		this.id = id;
 		this.message = message;
 	}
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public String getMessage() {
