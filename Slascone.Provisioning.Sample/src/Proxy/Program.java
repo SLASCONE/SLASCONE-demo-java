@@ -17,8 +17,8 @@ public class Program {
 		var slasconeProxy = new SampleProxy();
 		
         // ToDo
-        var activatedLicense = slasconeProxy.Activate(new ActivateInfo("", "",
-            "", "", ""));
+        var activatedLicense = slasconeProxy.Activate(new ActivateInfo("49b47576-0317-42d6-9f5a-59f4c810d92a", "8850672b-ad4c-42dd-8861-24c8d82be093",
+            "test", "test", "test"));
 
         if (activatedLicense.LicenseInfo == null)
         {
