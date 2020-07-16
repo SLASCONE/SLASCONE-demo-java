@@ -42,7 +42,7 @@ import Model.WarningInfo;
 
 public class SampleProxy {
 	
-	private String ApiBaseUrl = "https://localhost:44333";
+    private String ApiBaseUrl = "https://api.slascone.com";
     private String ProvisioningKey = "NfEpJ2DFfgdDcNMgL2FMlKR7/+fUhT8vtqqj0yj90FOirQ/yQwZmSnO8UOeH0w2l2ddo6U87dr5ZKZB9D1GT8F8A9wtYS0KQZQg7tmIT4x+NrkwzxEZKBpZ7yPfwjJsa";
     private String IsvId = "a9430797-a7cf-4a9f-8438-a0b2eddd7664";
     private String SignatureKey = "NfEpJ2DFfgdDcNMgL2FMlKR7/+fUhT8vtqqj0yj90FOirQ/yQwZmSnO8UOeH0w2lP84UEt5qEpwBukOS+HOWo88Yns6tS9I+6r0oAD4oy++LPRFYr7TBUivE50J23hnU";
