@@ -5,9 +5,12 @@ import java.util.UUID;
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.ConsumptionHeartbeatDto;
+import Model.ConsumptionHeartbeatValueDto;
 import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
+import Model.ValidateConsumptionStatusDto;
 import Proxy.SampleProxy;
 
 public class Program {
@@ -70,7 +73,7 @@ public class Program {
     	usageFeatureValue2.setUsage_module_id(null);
     	usageFeatureValue2.setValue("");
      	
-     	List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList();
+     	List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList<UsageFeatureValueDto>();
      	usageFeatureValueList.add(usageFeatureValue1);
      	usageFeatureValueList.add(usageFeatureValue2);
      		
@@ -93,6 +96,39 @@ public class Program {
 
             System.out.println(unassignResult);
         }
+        
+        // ToDo
+     	var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
+     	consumptionHeartbeatValue1.setLimitation_id(UUID.fromString(""));
+     	consumptionHeartbeatValue1.setTimestamp_utc(null);
+     	consumptionHeartbeatValue1.setValue("");
+     		
+     	var consumptionHeartbeatValue2 = new ConsumptionHeartbeatValueDto();
+     	consumptionHeartbeatValue2.setLimitation_id(UUID.fromString(""));
+     	consumptionHeartbeatValue2.setTimestamp_utc(null);
+     	consumptionHeartbeatValue2.setValue("");
+     	
+     	List<ConsumptionHeartbeatValueDto> consumptionHeartbeatValueDtoList = new ArrayList<ConsumptionHeartbeatValueDto>();
+     	consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue1);
+     	consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue2);
+     		
+     	var consumptionHeartbeat = new ConsumptionHeartbeatDto();
+     	consumptionHeartbeat.setClient_id("");
+     	consumptionHeartbeat.setConsumption_heartbeat(consumptionHeartbeatValueDtoList);
+     	consumptionHeartbeat.setToken_key(null);
+
+     	var consumptionHeartbeatResult = slasconeProxy.AddConsumptionHeartbeat(consumptionHeartbeat);
+
+     	System.out.println(consumptionHeartbeatResult);
+     	
+     	// ToDo
+     	var validateConsumptionStatusDto = new ValidateConsumptionStatusDto();
+     	validateConsumptionStatusDto.client_id = "";
+     	validateConsumptionStatusDto.limitation_id = UUID.fromString("");
+     	
+     	var remainingConsumptions = slasconeProxy.GetConsumptionStatus(validateConsumptionStatusDto);
+     	
+     	System.out.println(remainingConsumptions);
 	}
 	
 }

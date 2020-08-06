@@ -33,10 +33,12 @@ import com.google.gson.Gson;
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.ConsumptionHeartbeatDto;
 import Model.LicenseInfo;
 import Model.ProvisioningInfo;
 import Model.UnassignDto;
 import Model.UsageHeartbeatDto;
+import Model.ValidateConsumptionStatusDto;
 import Model.ValidateLicenseDto;
 import Model.WarningInfo;
 
@@ -228,6 +230,44 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
     
+    /// <summary>
+    /// Creates a consumption heartbeat
+    /// </summary>
+    /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
+    /// <returns>"Successfully created consumption heartbeat." or a WarningInfoDto</returns>
+    public String AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
+    	
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/consumption_heartbeats").build();
+    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(consumptionHeartbeat);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);     	
+    	ObjectMapper mapper = new ObjectMapper();
+		
+    	if(!IsSignatureValid(response)) {
+    		throw new Exception("Signature is not valid!");
+    	}
+    	
+        // If generating a consumption heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created consumption heartbeat.".
+    	if(response.getStatusLine().getStatusCode() == 200) {  	
+    		HttpEntity entity = response.getEntity();
+    		return EntityUtils.toString(entity, "UTF-8");
+    	}
+    	
+        // If generating a consumption heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
+    	if(response.getStatusLine().getStatusCode() == 409) {
+    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		return warnInfo.message;
+    	}
+    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }    
 	
     /// <summary>
     /// Unassign a activated license.
@@ -296,6 +336,37 @@ public class SampleProxy {
     	if(response.getStatusLine().getStatusCode() == 200) {
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		return licInfo;
+    	}
+    	    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }
+    
+    /// <summary>
+    /// Get the consumption status
+    /// </summary>
+    /// <returns>Remaining consumptions</returns>
+    public String GetConsumptionStatus(ValidateConsumptionStatusDto validateConsumptionStatusDto) throws Exception {
+    	
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/validate/consumption").build();
+    	   	    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(validateConsumptionStatusDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);  
+    	ObjectMapper mapper = new ObjectMapper();
+    	String responseBody = EntityUtils.toString(response.getEntity());
+
+    	if(!IsSignatureValid(response)) {
+    		throw new Exception("Signature is not valid!");
+    	}
+    	
+    	if(response.getStatusLine().getStatusCode() == 200) {
+    		return responseBody;
     	}
     	    	
     	throw new Exception("Unexpected HttpClient Error.");
