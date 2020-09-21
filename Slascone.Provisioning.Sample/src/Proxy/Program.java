@@ -18,14 +18,16 @@ import Proxy.SampleProxy;
 
 public class Program {
 	
+	// ToDo: Insert the parameter for the respective function
 	public static void main(String [] args) throws Exception
 	{
 		var slasconeProxy = new SampleProxy();
 		
-        // ToDo
+        // ToDo: Fill the variables
         var activatedLicense = slasconeProxy.Activate(new ActivateInfo("49b47576-0317-42d6-9f5a-59f4c810d92a", "8850672b-ad4c-42dd-8861-24c8d82be093",
             "test", "test", "test"));
 
+        // If the activation failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
         if (activatedLicense.LicenseInfo == null)
         {
         	System.out.println(activatedLicense.WarningInfo.message);
@@ -35,7 +37,7 @@ public class Program {
         	System.out.println("Successfully activated license.");
         }
         
-        // Todo: Uncomment specific scenario
+        // ToDo: Uncomment specific scenario
         //HeartbeatSample(activatedLicense);
         //FloatingLicensingSample(activatedLicense);
        
@@ -44,7 +46,7 @@ public class Program {
 	private static void FloatingLicensingSample(ProvisioningInfo activatedLicense) throws Exception {
 		var slasconeProxy = new SampleProxy();
 		
-		 // ToDo
+		 // ToDo: Fill the variables
        var heartBeatDto = new AddHeartbeatDto();
        heartBeatDto.setClient_id(null);
        heartBeatDto.setGroup_id(null);
@@ -55,13 +57,15 @@ public class Program {
        heartBeatDto.setToken_key(null);
        
        var heartbeatResult = slasconeProxy.AddHeartbeat(heartBeatDto);
-
+       
+       // If the heartbeat failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
        if (heartbeatResult.LicenseInfo == null)
        {
        	System.out.println(heartbeatResult.WarningInfo.message);
        }
        else
        {
+          // After successfully generating a heartbeat the client have to check provisioning mode of the license. Is it floating a session has to be opened. 
     	  if(heartbeatResult.LicenseInfo.provisioning_mode == ProvisioningMode.Floating) {
     		   	
     		   var sessionDto = new SessionDto();
@@ -70,6 +74,7 @@ public class Program {
     		   
     		   var openSessionResult = slasconeProxy.OpenSession(sessionDto);
     		  	
+               // If the floating limit is reached the api server responses with an Error.
     		   if (openSessionResult.SessionViolationInfo == null)
                {
     			   System.out.println(openSessionResult.WarningInfo.message);
@@ -79,6 +84,7 @@ public class Program {
             	   System.out.println("Session active until: " + openSessionResult.SessionViolationInfo.session_valid_until);
                }
 
+               // If the client have finished his work, he has to close the session. Therefore other clients are not blocked anymore and have not to wait until another Client expired. 
                var closeSessionResult = slasconeProxy.CloseSession(sessionDto);
 
                System.out.println(closeSessionResult);
@@ -90,7 +96,7 @@ public class Program {
 		
 		var slasconeProxy = new SampleProxy();
 		
-		 // ToDo
+		 // ToDo: Fill the variables
         var heartBeatDto = new AddHeartbeatDto();
         heartBeatDto.setClient_id(null);
         heartBeatDto.setGroup_id(null);
@@ -101,7 +107,8 @@ public class Program {
         heartBeatDto.setToken_key(null);
         
         var heartbeatResult = slasconeProxy.AddHeartbeat(heartBeatDto);
-
+        
+        // If the heartbeat failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
         if (heartbeatResult.LicenseInfo == null)
         {
         	System.out.println(heartbeatResult.WarningInfo.message);
@@ -111,7 +118,7 @@ public class Program {
         	System.out.println("Successfully created heartbeat.");
         }
 
-        // ToDo
+        // ToDo: Fill the variables
         var analyticalHb = new AnalyticalHeartbeat();
         analyticalHb.setAnalytical_heartbeat(null);
         analyticalHb.setClient_id(null);;
@@ -120,7 +127,7 @@ public class Program {
 
         System.out.println(analyticalHeartbeatResult);
         
-        // ToDo
+        // ToDo: Fill the variables
      	var usageFeatureValue1 = new UsageFeatureValueDto();
     	usageFeatureValue1.setUsage_feature_id(UUID.fromString(""));
     	usageFeatureValue1.setUsage_module_id(null);
@@ -146,7 +153,7 @@ public class Program {
         
         if (activatedLicense.LicenseInfo != null)
         {
-            // ToDo
+            // ToDo: Fill the variables
         	var unassignDto = new UnassignDto();
         	unassignDto.setToken_key(null);
         	
@@ -155,7 +162,7 @@ public class Program {
             System.out.println(unassignResult);
         }
         
-        // ToDo
+        // ToDo: Fill the variables
      	var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
      	consumptionHeartbeatValue1.setLimitation_id(UUID.fromString(""));
      	consumptionHeartbeatValue1.setTimestamp_utc(null);
@@ -179,7 +186,7 @@ public class Program {
 
      	System.out.println(consumptionHeartbeatResult);
      	
-     	// ToDo
+     	// ToDo: Fill the variables
      	var validateConsumptionStatusDto = new ValidateConsumptionStatusDto();
      	validateConsumptionStatusDto.client_id = "";
      	validateConsumptionStatusDto.limitation_id = UUID.fromString("");
