@@ -10,6 +10,12 @@ public class LicenseInfo {
 	
 	public UUID token_key = null;	
 	
+	public String legacy_license_key = null;
+	
+	public String subscription_key = null;
+	
+	public ProvisioningMode provisioning_mode = ProvisioningMode.Named;
+
     public String client_id = null;    
     
     public Boolean is_license_valid = null;
@@ -45,8 +51,9 @@ public class LicenseInfo {
     public LicenseInfo() {
     	super();
     }
-
-	public LicenseInfo(String license_key, UUID token_key, String client_id, Boolean is_license_valid,
+    
+    public LicenseInfo(String license_key, UUID token_key, String legacy_license_key, String subscription_key,
+			ProvisioningMode provisioning_mode, String client_id, Boolean is_license_valid,
 			Boolean is_software_version_valid, Date expiration_date_utc,
 			SoftwareReleaseLimitation software_release_limitation, int heartbeat_period, int freeride,
 			String product_name, String template_name, String license_name, String client_description,
@@ -55,6 +62,9 @@ public class LicenseInfo {
 		super();
 		this.license_key = license_key;
 		this.token_key = token_key;
+		this.legacy_license_key = legacy_license_key;
+		this.subscription_key = subscription_key;
+		this.provisioning_mode = provisioning_mode;
 		this.client_id = client_id;
 		this.is_license_valid = is_license_valid;
 		this.is_software_version_valid = is_software_version_valid;
@@ -87,6 +97,30 @@ public class LicenseInfo {
 
 	public void setToken_key(UUID token_key) {
 		this.token_key = token_key;
+	}
+
+	public String getLegacy_license_key() {
+		return legacy_license_key;
+	}
+
+	public void setLegacy_license_key(String legacy_license_key) {
+		this.legacy_license_key = legacy_license_key;
+	}
+
+	public String getSubscription_key() {
+		return subscription_key;
+	}
+
+	public void setSubscription_key(String subscription_key) {
+		this.subscription_key = subscription_key;
+	}
+
+	public ProvisioningMode getProvisioning_mode() {
+		return provisioning_mode;
+	}
+
+	public void setProvisioning_mode(ProvisioningMode provisioning_mode) {
+		this.provisioning_mode = provisioning_mode;
 	}
 
 	public String getClient_id() {
@@ -215,8 +249,6 @@ public class LicenseInfo {
 
 	public void setVariables(List<LicenseVariable> variables) {
 		this.variables = variables;
-	}
-    
-    
+	}    
     
 }

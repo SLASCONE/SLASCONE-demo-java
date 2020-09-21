@@ -36,6 +36,9 @@ import Model.AnalyticalHeartbeat;
 import Model.ConsumptionHeartbeatDto;
 import Model.LicenseInfo;
 import Model.ProvisioningInfo;
+import Model.SessionDto;
+import Model.SessionInfo;
+import Model.SessionViolationInfo;
 import Model.UnassignDto;
 import Model.UsageHeartbeatDto;
 import Model.ValidateConsumptionStatusDto;
@@ -268,6 +271,37 @@ public class SampleProxy {
     	
     	throw new Exception("Unexpected HttpClient Error.");
     }    
+    
+    /// <summary>
+    /// Get the consumption status
+    /// </summary>
+    /// <returns>Remaining consumptions</returns>
+    public String GetConsumptionStatus(ValidateConsumptionStatusDto validateConsumptionStatusDto) throws Exception {
+    	
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/validate/consumption").build();
+    	   	    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(validateConsumptionStatusDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);  
+    	ObjectMapper mapper = new ObjectMapper();
+    	String responseBody = EntityUtils.toString(response.getEntity());
+
+    	if(!IsSignatureValid(response)) {
+    		throw new Exception("Signature is not valid!");
+    	}
+    	
+    	if(response.getStatusLine().getStatusCode() == 200) {
+    		return responseBody;
+    	}
+    	    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }
 	
     /// <summary>
     /// Unassign a activated license.
@@ -310,6 +344,89 @@ public class SampleProxy {
     }
     
     /// <summary>
+    /// Opens a session
+    /// </summary>
+    /// <returns>SessionInfo where SessionViolationInfo or WarningInfoDto is set.</returns>
+    public SessionInfo OpenSession(SessionDto sessionDto) throws Exception {
+        
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/session/open").build();
+    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(sessionDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+    	    	
+    	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
+    	HttpResponse response = this.client.execute(request); 
+    	
+    	if(!IsSignatureValid(response)) {
+    		throw new Exception("Signature is not valid!");
+    	}
+
+    	ObjectMapper mapper = new ObjectMapper();
+    	
+    	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
+    	if(response.getStatusLine().getStatusCode() == 200) {
+    		SessionViolationInfo sesVioInfo = mapper.readValue(response.getEntity().getContent(), SessionViolationInfo.class);
+    		SessionInfo sesInfo = new SessionInfo();
+    		sesInfo.setSessionViolationInfo(sesVioInfo);
+    		
+    		return sesInfo;
+    	}
+    	
+        // If activation was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
+    	if(response.getStatusLine().getStatusCode() == 409) {
+    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		SessionInfo sesInfo = new SessionInfo();
+    		sesInfo.setWarningInfo(warnInfo);
+    		return sesInfo;
+    	}
+    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }
+    
+    /// <summary>
+    /// Closes a session
+    /// </summary>
+    /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
+    /// <returns>"Success." or a WarningInfoDto</returns>
+    public String CloseSession(SessionDto sessionDto) throws Exception {
+    	
+    	URI uri = new URIBuilder(this.ApiBaseUrl)
+    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/session/close").build();
+    	
+    	Gson gson = new Gson();
+    	String jsonActivateBody = gson.toJson(sessionDto);
+    	StringEntity requestEntity = new StringEntity(
+    			jsonActivateBody,
+    		    ContentType.APPLICATION_JSON);
+		    	    	
+    	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
+    	HttpResponse response = this.client.execute(request);     	
+    	ObjectMapper mapper = new ObjectMapper();
+		
+    	if(!IsSignatureValid(response)) {
+    		throw new Exception("Signature is not valid!");
+    	}
+    	
+        // If closing the session was successful, the api returns a status code Ok(200) with the message "Success.".
+    	if(response.getStatusLine().getStatusCode() == 200) {  	
+    		HttpEntity entity = response.getEntity();
+    		return EntityUtils.toString(entity, "UTF-8");
+    	}
+    	
+        // If closing the session was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
+    	if(response.getStatusLine().getStatusCode() == 409) {
+    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		return warnInfo.message;
+    	}
+    	
+    	throw new Exception("Unexpected HttpClient Error.");
+    }    
+    
+    /// <summary>
     /// Get the license info
     /// </summary>
     /// <param name="deviceLicenseKey">Is the key of the license assignment where you want to get the depending license information.</param>
@@ -328,7 +445,7 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);  
     	ObjectMapper mapper = new ObjectMapper();
-    	
+
     	if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
     	}
@@ -336,37 +453,6 @@ public class SampleProxy {
     	if(response.getStatusLine().getStatusCode() == 200) {
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		return licInfo;
-    	}
-    	    	
-    	throw new Exception("Unexpected HttpClient Error.");
-    }
-    
-    /// <summary>
-    /// Get the consumption status
-    /// </summary>
-    /// <returns>Remaining consumptions</returns>
-    public String GetConsumptionStatus(ValidateConsumptionStatusDto validateConsumptionStatusDto) throws Exception {
-    	
-    	URI uri = new URIBuilder(this.ApiBaseUrl)
-    			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/validate/consumption").build();
-    	   	    	
-    	Gson gson = new Gson();
-    	String jsonActivateBody = gson.toJson(validateConsumptionStatusDto);
-    	StringEntity requestEntity = new StringEntity(
-    			jsonActivateBody,
-    		    ContentType.APPLICATION_JSON);
-		    	    	
-    	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
-    	HttpResponse response = this.client.execute(request);  
-    	ObjectMapper mapper = new ObjectMapper();
-    	String responseBody = EntityUtils.toString(response.getEntity());
-
-    	if(!IsSignatureValid(response)) {
-    		throw new Exception("Signature is not valid!");
-    	}
-    	
-    	if(response.getStatusLine().getStatusCode() == 200) {
-    		return responseBody;
     	}
     	    	
     	throw new Exception("Unexpected HttpClient Error.");

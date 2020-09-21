@@ -7,6 +7,9 @@ import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
+import Model.ProvisioningInfo;
+import Model.ProvisioningMode;
+import Model.SessionDto;
 import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
@@ -31,8 +34,63 @@ public class Program {
         {
         	System.out.println("Successfully activated license.");
         }
+        
+        // Todo: Uncomment specific scenario
+        //HeartbeatSample(activatedLicense);
+        //FloatingLicensingSample(activatedLicense);
+       
+	}
+	
+	private static void FloatingLicensingSample(ProvisioningInfo activatedLicense) throws Exception {
+		var slasconeProxy = new SampleProxy();
+		
+		 // ToDo
+       var heartBeatDto = new AddHeartbeatDto();
+       heartBeatDto.setClient_id(null);
+       heartBeatDto.setGroup_id(null);
+       heartBeatDto.setHeartbeat_type_id(null);
+       heartBeatDto.setOperating_system(null);
+       heartBeatDto.setProduct_id(null);
+       heartBeatDto.setSoftware_version(null);
+       heartBeatDto.setToken_key(null);
+       
+       var heartbeatResult = slasconeProxy.AddHeartbeat(heartBeatDto);
 
-        // ToDo
+       if (heartbeatResult.LicenseInfo == null)
+       {
+       	System.out.println(heartbeatResult.WarningInfo.message);
+       }
+       else
+       {
+    	  if(heartbeatResult.LicenseInfo.provisioning_mode == ProvisioningMode.Floating) {
+    		   	
+    		   var sessionDto = new SessionDto();
+    		   sessionDto.setClient_id(null);
+    		   sessionDto.setLicense_id(null);
+    		   
+    		   var openSessionResult = slasconeProxy.OpenSession(sessionDto);
+    		  	
+    		   if (openSessionResult.SessionViolationInfo == null)
+               {
+    			   System.out.println(openSessionResult.WarningInfo.message);
+               }
+               else
+               {
+            	   System.out.println("Session active until: " + openSessionResult.SessionViolationInfo.session_valid_until);
+               }
+
+               var closeSessionResult = slasconeProxy.CloseSession(sessionDto);
+
+               System.out.println(closeSessionResult);
+    	  }
+       }
+	}
+	
+	private static void HeartbeatSample(ProvisioningInfo activatedLicense) throws Exception {
+		
+		var slasconeProxy = new SampleProxy();
+		
+		 // ToDo
         var heartBeatDto = new AddHeartbeatDto();
         heartBeatDto.setClient_id(null);
         heartBeatDto.setGroup_id(null);
