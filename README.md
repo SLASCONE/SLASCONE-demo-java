@@ -2,4 +2,4 @@
 
 For more information about this solution, visit
 https://slascone.com/ and/or
-https://slascone.com/docs/
+https://support.slascone.com/
