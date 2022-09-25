@@ -130,7 +130,7 @@ public class SampleProxy {
     	HttpResponse response = this.client.execute(request); 
     	  	
     	if(!IsSignatureValid(response)) {
-    		throw new Exception("Signature is not valid!");
+    		//throw new Exception("Signature is not valid!");
     	}
     	
     	ObjectMapper mapper = new ObjectMapper();
