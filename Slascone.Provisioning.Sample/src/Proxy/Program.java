@@ -24,7 +24,7 @@ public class Program {
 		
         // ToDo: Fill the variables
         var activatedLicense = slasconeProxy.Activate(new ActivateInfo("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3", "27180460-29df-4a5a-a0a1-78c85ab6cee0",
-            "test", "test", "test"));
+            "test85765", "test", "test"));
 
         // If the activation failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
         if (activatedLicense.WarningInfo != null)
@@ -33,8 +33,7 @@ public class Program {
         }
         else if (activatedLicense.LicenseInfo != null)
         {
-        	System.out.println("Successfull activation.");
-            
+        	System.out.println("Successfull activation.");            
         }
         else
         {
