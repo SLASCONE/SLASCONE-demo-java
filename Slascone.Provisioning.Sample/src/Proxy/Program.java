@@ -14,7 +14,6 @@ import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
 import Model.ValidateConsumptionStatusDto;
-import Proxy.SampleProxy;
 
 public class Program {
 	
@@ -24,17 +23,22 @@ public class Program {
 		var slasconeProxy = new SampleProxy();
 		
         // ToDo: Fill the variables
-        var activatedLicense = slasconeProxy.Activate(new ActivateInfo("49b47576-0317-42d6-9f5a-59f4c810d92a", "8850672b-ad4c-42dd-8861-24c8d82be093",
+        var activatedLicense = slasconeProxy.Activate(new ActivateInfo("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3", "27180460-29df-4a5a-a0a1-78c85ab6cee0",
             "test", "test", "test"));
 
         // If the activation failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
-        if (activatedLicense.LicenseInfo == null)
+        if (activatedLicense.WarningInfo != null)
         {
         	System.out.println(activatedLicense.WarningInfo.message);
         }
+        else if (activatedLicense.LicenseInfo != null)
+        {
+        	System.out.println("Successfull activation.");
+            
+        }
         else
         {
-        	System.out.println("Successfully activated license.");
+        	System.out.println("Unknown Error");
         }
         
         // ToDo: Uncomment specific scenario
