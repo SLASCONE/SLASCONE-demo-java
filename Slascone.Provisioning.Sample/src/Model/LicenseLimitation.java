@@ -6,6 +6,10 @@ public class LicenseLimitation {
 	public UUID id = null;
 	
 	public String name = null;
+
+	public String description = null;
+	public int consumption_reset_mode;
+	public int consumption_reset_period_days;
 	
 	public int value = 0;
 	

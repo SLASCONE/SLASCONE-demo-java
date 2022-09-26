@@ -7,13 +7,13 @@ public class UsageFeatureValueDto {
 	
 	public UUID usage_module_id = null;
 	
-    public String value = null;
+    public double value;
     
     public UsageFeatureValueDto() {
     	super();
     }
 
-	public UsageFeatureValueDto(UUID usage_feature_id, UUID usage_module_id, String value) {
+	public UsageFeatureValueDto(UUID usage_feature_id, UUID usage_module_id, double value) {
 		super();
 		this.usage_feature_id = usage_feature_id;
 		this.usage_module_id = usage_module_id;
@@ -36,11 +36,11 @@ public class UsageFeatureValueDto {
 		this.usage_module_id = usage_module_id;
 	}
 
-	public String getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
     

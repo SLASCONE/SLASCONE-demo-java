@@ -8,24 +8,24 @@ import Model.AnalyticalHeartbeat;
 import Model.AnalyticalFieldValue;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
-import Model.ProvisioningInfo;
-import Model.ProvisioningMode;
 import Model.SessionDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
-import Model.ValidateConsumptionStatusDto;
+
 
 public class Program {
 	
 	// ToDo: Insert the parameter for the respective function
 	public static void main(String [] args) throws Exception
 	{
-        // ToDo: Uncomment specific scenario
-
-        //ActivateExample();
-        //HeartbeatExample();
+        // ToDo: (Un)comment specific scenario
+        ActivateExample();
+        HeartbeatExample();
         AnalyticalHeartbeatExample();
-        //FloatingLicensingSample(activatedLicense);       
+        UsageHeartbeatExample();
+        ConsumptionHeartbeatExample();
+        OpenSessionExample();
+        CloseSessionExample();     
 	}
 		
 	private static void ActivateExample() throws Exception {
@@ -40,6 +40,10 @@ public class Program {
         if (result.WarningInfo != null)
         {
         	System.out.println(result.WarningInfo.message);
+            //Example Warning handling
+            if (result.WarningInfo.id == 2006)
+            { 
+            }
         }
         else if (result.LicenseInfo != null)
         {
@@ -69,6 +73,10 @@ public class Program {
         if (result.WarningInfo != null)
         {
         	System.out.println(result.WarningInfo.message);
+            //Example Warning handling
+            if (result.WarningInfo.id == 2006)
+            { 
+            }
         }
         else if (result.LicenseInfo != null)
         {
@@ -96,9 +104,13 @@ public class Program {
   
 
         var result = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
-       if (result.WarningInfo!= null)
+        if (result.WarningInfo!= null)
         {
         	System.out.println(result.WarningInfo.message);
+            //Example Warning handling
+            if (result.WarningInfo.id == 2006)
+            { 
+            }            
         }
         else if (result.SuccessInfo != null)
         {
@@ -116,27 +128,41 @@ public class Program {
 		                
         // ToDo: Fill the variables
      	var usageFeatureValue1 = new UsageFeatureValueDto();
-    	usageFeatureValue1.setUsage_feature_id(UUID.fromString(""));
+    	usageFeatureValue1.setUsage_feature_id(UUID.fromString("66099049-0472-467c-6ea6-08da9ac57d7c"));
     	usageFeatureValue1.setUsage_module_id(null);
-     	usageFeatureValue1.setValue("");
+     	usageFeatureValue1.setValue(3);
      		
      	var usageFeatureValue2 = new UsageFeatureValueDto();
-     	usageFeatureValue2.setUsage_feature_id(UUID.fromString(""));
+     	usageFeatureValue2.setUsage_feature_id(UUID.fromString("e82619b1-f403-4e0d-5389-08da9e17dd73"));
     	usageFeatureValue2.setUsage_module_id(null);
-    	usageFeatureValue2.setValue("");
+    	usageFeatureValue2.setValue(2);
      	
      	List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList<UsageFeatureValueDto>();
      	usageFeatureValueList.add(usageFeatureValue1);
      	usageFeatureValueList.add(usageFeatureValue2);
      		
      	var usageHeartbeatDto = new UsageHeartbeatDto();
-     	usageHeartbeatDto.setClient_id("");
+     	usageHeartbeatDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
      	usageHeartbeatDto.setUsage_heartbeat(usageFeatureValueList);
-     	usageHeartbeatDto.setToken_key(null);
+     	//usageHeartbeatDto.setToken_key(null);
 
-     	var usageHeartbeatResult = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
-     	
-     	System.out.println(usageHeartbeatResult);
+     	var result = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
+         if (result.WarningInfo!= null)
+         {
+             System.out.println(result.WarningInfo.message);
+            //Example Warning handling
+            if (result.WarningInfo.id == 2006)
+            { 
+            }             
+         }
+         else if (result.SuccessInfo != null)
+         {
+             System.out.println("Successfully created usage heartbeat.");            
+         }
+         else
+         {
+             System.out.println("Unknown Error");
+         }   
 
 	}
     private static void ConsumptionHeartbeatExample() throws Exception {
@@ -145,85 +171,95 @@ public class Program {
         
         // ToDo: Fill the variables
      	var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
-     	consumptionHeartbeatValue1.setLimitation_id(UUID.fromString(""));
-     	consumptionHeartbeatValue1.setTimestamp_utc(null);
-     	consumptionHeartbeatValue1.setValue("");
+     	consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));
+     	//consumptionHeartbeatValue1.setTimestamp_utc(null);
+     	consumptionHeartbeatValue1.setValue(5);
      		
-     	var consumptionHeartbeatValue2 = new ConsumptionHeartbeatValueDto();
-     	consumptionHeartbeatValue2.setLimitation_id(UUID.fromString(""));
-     	consumptionHeartbeatValue2.setTimestamp_utc(null);
-     	consumptionHeartbeatValue2.setValue("");
      	
      	List<ConsumptionHeartbeatValueDto> consumptionHeartbeatValueDtoList = new ArrayList<ConsumptionHeartbeatValueDto>();
      	consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue1);
-     	consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue2);
+
      		
      	var consumptionHeartbeat = new ConsumptionHeartbeatDto();
-     	consumptionHeartbeat.setClient_id("");
+     	consumptionHeartbeat.setClient_id(slasconeProxy.GetUniqueDeviceId());
      	consumptionHeartbeat.setConsumption_heartbeat(consumptionHeartbeatValueDtoList);
-     	consumptionHeartbeat.setToken_key(null);
+     	//consumptionHeartbeat.setToken_key(null);
 
-     	var consumptionHeartbeatResult = slasconeProxy.AddConsumptionHeartbeat(consumptionHeartbeat);
+     	var result = slasconeProxy.AddConsumptionHeartbeat(consumptionHeartbeat);
+         if (result.WarningInfo!= null)
+         {
+             System.out.println(result.WarningInfo.message);
+            //Example Warning handling
+            if (result.WarningInfo.id == 2006)
+            { 
+            }
+                    
+         }
+         else if (result.SuccessInfo != null)
+         {
+             System.out.println("Successfully created consumption heartbeat.");            
+         }
+         else
+         {
+             System.out.println("Unknown Error");
+         }  
 
-     	System.out.println(consumptionHeartbeatResult);
-     	
-     	// ToDo: Fill the variables
-     	var validateConsumptionStatusDto = new ValidateConsumptionStatusDto();
-     	validateConsumptionStatusDto.client_id = "";
-     	validateConsumptionStatusDto.limitation_id = UUID.fromString("");
-     	
-     	var remainingConsumptions = slasconeProxy.GetConsumptionStatus(validateConsumptionStatusDto);
-     	
-     	System.out.println(remainingConsumptions);
+
 	}
-	private static void FloatingLicensingSample(ProvisioningInfo activatedLicense) throws Exception {
+	private static void OpenSessionExample() throws Exception {
 		var slasconeProxy = new SampleProxy();
-		
-		 // ToDo: Fill the variables
-       var heartBeatDto = new AddHeartbeatDto();
-       heartBeatDto.setClient_id(null);
-       heartBeatDto.setGroup_id(null);
-       heartBeatDto.setHeartbeat_type_id(null);
-       heartBeatDto.setOperating_system(null);
-       heartBeatDto.setProduct_id(null);
-       heartBeatDto.setSoftware_version(null);
-       heartBeatDto.setToken_key(null);
-       
-       var heartbeatResult = slasconeProxy.AddHeartbeat(heartBeatDto);
-
-
-       
-       // If the heartbeat failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
-       if (heartbeatResult.LicenseInfo == null)
-       {
-       	System.out.println(heartbeatResult.WarningInfo.message);
-       }
-       else
-       {
-          // After successfully generating a heartbeat the client have to check provisioning mode of the license. Is it floating a session has to be opened. 
-    	  if(heartbeatResult.LicenseInfo.provisioning_mode == ProvisioningMode.Floating) {
-    		   	
+		  	
     		   var sessionDto = new SessionDto();
-    		   sessionDto.setClient_id(null);
-    		   sessionDto.setLicense_id(null);
+    		   sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
+    		   sessionDto.setLicense_id(UUID.fromString("27180460-29df-4a5a-a0a1-78c85ab6cee0"));
     		   
-    		   var openSessionResult = slasconeProxy.OpenSession(sessionDto);
-    		  	
-               // If the floating limit is reached the api server responses with an Error.
-    		   if (openSessionResult.SessionViolationInfo == null)
+    		   var result = slasconeProxy.OpenSession(sessionDto);
+
+
+               if (result.WarningInfo!= null)
                {
-    			   System.out.println(openSessionResult.WarningInfo.message);
+                   System.out.println(result.WarningInfo.message);
+                  //Example Warning handling
+                  if (result.WarningInfo.id == 2006)
+                  { 
+                  }             
+               }
+               else if (result.OpenSessionInfo != null)
+               {
+                   System.out.println("Successfully opened session.");            
                }
                else
                {
-            	   System.out.println("Session active until: " + openSessionResult.SessionViolationInfo.session_valid_until);
+                   System.out.println("Unknown Error");
+               }  
+    	  
+       
+	}
+    private static void CloseSessionExample() throws Exception {
+		var slasconeProxy = new SampleProxy();
+		  	
+    		   var sessionDto = new SessionDto();
+    		   sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
+    		   sessionDto.setLicense_id(UUID.fromString("27180460-29df-4a5a-a0a1-78c85ab6cee0"));
+    		   
+    		   var result = slasconeProxy.CloseSession(sessionDto);
+               if (result.WarningInfo!= null)
+               {
+                   System.out.println(result.WarningInfo.message);
+                  //Example Warning handling
+                  if (result.WarningInfo.id == 2006)
+                  { 
+                  }             
                }
-
-               // If the client have finished his work, he has to close the session. Therefore other clients are not blocked anymore and have not to wait until another Client expired. 
-               var closeSessionResult = slasconeProxy.CloseSession(sessionDto);
-
-               System.out.println(closeSessionResult);
-    	  }
-       }
+               else if (result.SuccessInfo != null)
+               {
+                   System.out.println("Successfully closed session.");            
+               }
+               else
+               {
+                   System.out.println("Unknown Error");
+               }  
+    	  
+       
 	}
 }

@@ -6,6 +6,8 @@ public class LicenseFeature {
 	public UUID id = null;
 	
 	public String name = null;
+	public String description = null;
+	public Boolean is_active = null;
 	
 	public LicenseFeature() {
 		super();

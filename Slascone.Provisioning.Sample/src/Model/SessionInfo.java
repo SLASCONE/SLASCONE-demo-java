@@ -2,7 +2,7 @@ package Model;
 
 public class SessionInfo {
 
-    public SessionViolationInfo SessionViolationInfo = null;
+    public OpenSessionInfo OpenSessionInfo = null;
 	
 	public WarningInfo WarningInfo = null;
 
@@ -11,18 +11,18 @@ public class SessionInfo {
 		super();
 	}
 
-	public SessionInfo(Model.SessionViolationInfo sessionViolationInfo, Model.WarningInfo warningInfo) {
+	public SessionInfo(Model.OpenSessionInfo openSessionInfo, Model.WarningInfo warningInfo) {
 		super();
-		SessionViolationInfo = sessionViolationInfo;
+		OpenSessionInfo = openSessionInfo;
 		WarningInfo = warningInfo;
 	}
 
-	public SessionViolationInfo getSessionViolationInfo() {
-		return SessionViolationInfo;
+	public OpenSessionInfo getSessionViolationInfo() {
+		return OpenSessionInfo;
 	}
 
-	public void setSessionViolationInfo(SessionViolationInfo sessionViolationInfo) {
-		SessionViolationInfo = sessionViolationInfo;
+	public void setSessionViolationInfo(OpenSessionInfo openSessionInfo) {
+		OpenSessionInfo = openSessionInfo;
 	}
 
 	public WarningInfo getWarningInfo() {

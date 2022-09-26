@@ -6,6 +6,8 @@ public class LicenseVariable {
 	public UUID id = null;
 	
 	public String name = null;
+
+	public String description = null;
 	
 	public String value = null;
 

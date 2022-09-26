@@ -15,10 +15,18 @@ public class LicenseInfo {
 	public String subscription_key = null;
 	
 	public ProvisioningMode provisioning_mode = ProvisioningMode.Named;
+	
+	public ClientType client_type = null;
 
     public String client_id = null;    
     
     public Boolean is_license_valid = null;
+
+	public Boolean is_license_active = null;
+
+	public Boolean is_license_expired = null;
+
+	public Boolean is_temporary = null;
     
 	public Boolean is_software_version_valid = null;
 	
@@ -27,6 +35,8 @@ public class LicenseInfo {
     public SoftwareReleaseLimitation software_release_limitation = null;
     
     public int heartbeat_period = 0;
+
+	public int session_period = 0;
     
     public int freeride = 0;
     
@@ -47,6 +57,8 @@ public class LicenseInfo {
     public List<LicenseLimitation> limitations = null;
     
     public List<LicenseVariable> variables = null;
+
+	public List<LicenseUser> license_users = null;
     
     public LicenseInfo() {
     	super();
@@ -58,7 +70,7 @@ public class LicenseInfo {
 			SoftwareReleaseLimitation software_release_limitation, int heartbeat_period, int freeride,
 			String product_name, String template_name, String license_name, String client_description,
 			Boolean enforce_software_version_upgrade, Customer customer, List<LicenseFeature> features,
-			List<LicenseLimitation> limitations, List<LicenseVariable> variables) {
+			List<LicenseLimitation> limitations, List<LicenseVariable> variables, List<LicenseUser> license_users) {
 		super();
 		this.license_key = license_key;
 		this.token_key = token_key;
@@ -81,6 +93,7 @@ public class LicenseInfo {
 		this.features = features;
 		this.limitations = limitations;
 		this.variables = variables;
+		this.license_users = license_users;
 	}
 
 	public String getLicense_key() {

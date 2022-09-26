@@ -38,7 +38,7 @@ import Model.LicenseInfo;
 import Model.ProvisioningInfo;
 import Model.SessionDto;
 import Model.SessionInfo;
-import Model.SessionViolationInfo;
+import Model.OpenSessionInfo;
 import Model.StringResultInfo;
 import Model.UnassignDto;
 import Model.UsageHeartbeatDto;
@@ -52,7 +52,7 @@ public class SampleProxy {
     private String ProvisioningKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D7ashHxFtZOR142LYgKWdNocibDgN75/P58YNvUZafLdaie7eGwI/2gX/XuDPtqDW";
     private String IsvId = "2af5fe02-6207-4214-946e-b00ac5309f53";
     private String SignatureKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D42bmxuQPK5gGEseNNpFRekd/Kf059rff/N4phalkP25zVqH3VZIOlmot4jEeNr0m";
-	private int SignatureValidationMode=0;
+	private int SignatureValidationMode = 0;
     private HttpClient client; 
 	
     public SampleProxy() {
@@ -208,7 +208,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="usageHeartbeat">Is the object which contains all usage Heartbeat Information.</param>
     /// <returns>"Successfully created usage heartbeat." or a WarningInfoDto</returns>
-    public String AddUsageHeartbeat(UsageHeartbeatDto usageHeartbeat) throws Exception {
+    public StringResultInfo AddUsageHeartbeat(UsageHeartbeatDto usageHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
     			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/usage_heartbeats").build();
@@ -230,14 +230,18 @@ public class SampleProxy {
     	
         // If generating a usage heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created usage heartbeat.".
     	if(response.getStatusLine().getStatusCode() == 200) {  	
-    		HttpEntity entity = response.getEntity();
-    		return EntityUtils.toString(entity, "UTF-8");
+			StringResultInfo resInfo = new StringResultInfo();
+			HttpEntity entity = response.getEntity();
+			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
+    		return resInfo;
     	}
     	
         // If generating a usage heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
-    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.message;
+			WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		StringResultInfo resInfo = new StringResultInfo();
+    		resInfo.setWarningInfo(warnInfo);
+    		return resInfo;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -248,7 +252,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
     /// <returns>"Successfully created consumption heartbeat." or a WarningInfoDto</returns>
-    public String AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
+    public StringResultInfo AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
     			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/consumption_heartbeats").build();
@@ -270,14 +274,18 @@ public class SampleProxy {
     	
         // If generating a consumption heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created consumption heartbeat.".
     	if(response.getStatusLine().getStatusCode() == 200) {  	
-    		HttpEntity entity = response.getEntity();
-    		return EntityUtils.toString(entity, "UTF-8");
+			StringResultInfo resInfo = new StringResultInfo();
+			HttpEntity entity = response.getEntity();
+			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
+    		return resInfo;
     	}
     	
         // If generating a consumption heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
-    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.message;
+			WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		StringResultInfo resInfo = new StringResultInfo();
+    		resInfo.setWarningInfo(warnInfo);
+    		return resInfo;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -381,7 +389,7 @@ public class SampleProxy {
     	
     	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
-    		SessionViolationInfo sesVioInfo = mapper.readValue(response.getEntity().getContent(), SessionViolationInfo.class);
+    		OpenSessionInfo sesVioInfo = mapper.readValue(response.getEntity().getContent(), OpenSessionInfo.class);
     		SessionInfo sesInfo = new SessionInfo();
     		sesInfo.setSessionViolationInfo(sesVioInfo);
     		
@@ -404,7 +412,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
     /// <returns>"Success." or a WarningInfoDto</returns>
-    public String CloseSession(SessionDto sessionDto) throws Exception {
+    public StringResultInfo CloseSession(SessionDto sessionDto) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
     			.setPath("/api/v2/isv/" + this.IsvId + "/provisioning/session/close").build();
@@ -425,14 +433,18 @@ public class SampleProxy {
     	
         // If closing the session was successful, the api returns a status code Ok(200) with the message "Success.".
     	if(response.getStatusLine().getStatusCode() == 200) {  	
-    		HttpEntity entity = response.getEntity();
-    		return EntityUtils.toString(entity, "UTF-8");
+			StringResultInfo resInfo = new StringResultInfo();
+			HttpEntity entity = response.getEntity();
+			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
+    		return resInfo;
     	}
     	
         // If closing the session was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
-    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.message;
+			WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		StringResultInfo resInfo = new StringResultInfo();
+    		resInfo.setWarningInfo(warnInfo);
+    		return resInfo;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");

@@ -8,13 +8,13 @@ public class ConsumptionHeartbeatValueDto {
 	
 	public Date timestamp_utc = null;
 	
-	public String value = null;
+	public double value;
 	
 	public ConsumptionHeartbeatValueDto() {
 		super();
 	}
 	
-    public ConsumptionHeartbeatValueDto(UUID limitation_id, Date timestamp_utc, String value) {
+    public ConsumptionHeartbeatValueDto(UUID limitation_id, Date timestamp_utc, double value) {
 		super();
 		this.limitation_id = limitation_id;
 		this.timestamp_utc = timestamp_utc;
@@ -37,11 +37,11 @@ public class ConsumptionHeartbeatValueDto {
 		this.timestamp_utc = timestamp_utc;
 	}
 
-	public String getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 }
