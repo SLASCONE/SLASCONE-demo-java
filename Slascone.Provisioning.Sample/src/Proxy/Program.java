@@ -5,12 +5,12 @@ import java.util.UUID;
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.AnalyticalFieldValue;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
 import Model.ProvisioningInfo;
 import Model.ProvisioningMode;
 import Model.SessionDto;
-import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
 import Model.ValidateConsumptionStatusDto;
@@ -21,15 +21,17 @@ public class Program {
 	public static void main(String [] args) throws Exception
 	{
         // ToDo: Uncomment specific scenario
-        ActivateExample();
-        HeartbeatExample();
+
+        //ActivateExample();
+        //HeartbeatExample();
+        AnalyticalHeartbeatExample();
         //FloatingLicensingSample(activatedLicense);       
 	}
-	
-	
-	private static void ActivateExample() throws Exception {
-        var slasconeProxy = new SampleProxy();        
 		
+	private static void ActivateExample() throws Exception {
+        var slasconeProxy = new SampleProxy();      
+		
+        System.out.println(slasconeProxy.GetUniqueDeviceId());
         // ToDo: Fill the variables
         var result = slasconeProxy.Activate(new ActivateInfo("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3", "27180460-29df-4a5a-a0a1-78c85ab6cee0",
             "test85765", "test", "test"));
@@ -55,10 +57,10 @@ public class Program {
 		
 		 // ToDo: Fill the variables
         var heartBeatDto = new AddHeartbeatDto();
-        heartBeatDto.setClient_id("fsgbv");
+        heartBeatDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
         //heartBeatDto.setGroup_id(null);
         //heartBeatDto.setHeartbeat_type_id(null);
-        heartBeatDto.setOperating_system("Windows");
+        heartBeatDto.setOperating_system(slasconeProxy.GetOperatingSystem());
         heartBeatDto.setProduct_id(UUID.fromString("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3"));
         heartBeatDto.setSoftware_version("22.2");
         //heartBeatDto.setToken_key(null);
@@ -79,17 +81,39 @@ public class Program {
 	}
     private static void AnalyticalHeartbeatExample() throws Exception {
 		
-		var slasconeProxy = new SampleProxy();
-		        
+		var slasconeProxy = new SampleProxy();		        
         // ToDo: Fill the variables
         var analyticalHb = new AnalyticalHeartbeat();
-        analyticalHb.setAnalytical_heartbeat(null);
-        analyticalHb.setClient_id(null);;
+        analyticalHb.setClient_id(slasconeProxy.GetUniqueDeviceId());
+        var analyticalField = new AnalyticalFieldValue();
+        analyticalField.setAnalytical_field_id(UUID.fromString("2754aca1-4d1a-4af3-9387-08da9ac54c6d"));
+        analyticalField.setValue("SQL Server 2019");
 
-        var analyticalHeartbeatResult = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
+        List<AnalyticalFieldValue> valueList = new ArrayList<AnalyticalFieldValue>();
+        valueList.add(analyticalField);
 
-        System.out.println(analyticalHeartbeatResult);
+        analyticalHb.setAnalytical_heartbeat(valueList);
+  
+
+        var result = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
+       if (result.WarningInfo!= null)
+        {
+        	System.out.println(result.WarningInfo.message);
+        }
+        else if (result.SuccessInfo != null)
+        {
+        	System.out.println("Successfully created analytical heartbeat.");            
+        }
+        else
+        {
+        	System.out.println("Unknown Error");
+        }       
         
+	}
+    private static void UsageHeartbeatExample() throws Exception {
+		
+		var slasconeProxy = new SampleProxy();
+		                
         // ToDo: Fill the variables
      	var usageFeatureValue1 = new UsageFeatureValueDto();
     	usageFeatureValue1.setUsage_feature_id(UUID.fromString(""));
@@ -113,7 +137,11 @@ public class Program {
      	var usageHeartbeatResult = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
      	
      	System.out.println(usageHeartbeatResult);
-        
+
+	}
+    private static void ConsumptionHeartbeatExample() throws Exception {
+		
+		var slasconeProxy = new SampleProxy();		       
         
         // ToDo: Fill the variables
      	var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();

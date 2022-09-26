@@ -39,6 +39,7 @@ import Model.ProvisioningInfo;
 import Model.SessionDto;
 import Model.SessionInfo;
 import Model.SessionViolationInfo;
+import Model.StringResultInfo;
 import Model.UnassignDto;
 import Model.UsageHeartbeatDto;
 import Model.ValidateConsumptionStatusDto;
@@ -51,6 +52,7 @@ public class SampleProxy {
     private String ProvisioningKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D7ashHxFtZOR142LYgKWdNocibDgN75/P58YNvUZafLdaie7eGwI/2gX/XuDPtqDW";
     private String IsvId = "2af5fe02-6207-4214-946e-b00ac5309f53";
     private String SignatureKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D42bmxuQPK5gGEseNNpFRekd/Kf059rff/N4phalkP25zVqH3VZIOlmot4jEeNr0m";
+	private int SignatureValidationMode=0;
     private HttpClient client; 
 	
     public SampleProxy() {
@@ -81,10 +83,11 @@ public class SampleProxy {
     		    ContentType.APPLICATION_JSON);
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
-    	HttpResponse response = this.client.execute(request); 
+    	HttpResponse response = this.client.execute(request);
+		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(response)) {
-    		//throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(copyResponse)) {
+    		throw new Exception("Signature is not valid!");
     	}
 
     	ObjectMapper mapper = new ObjectMapper();
@@ -128,9 +131,10 @@ public class SampleProxy {
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request); 
-    	  	
-    	if(!IsSignatureValid(response)) {
-    		//throw new Exception("Signature is not valid!");
+		HttpResponse copyResponse = response; 
+    	
+    	if(!IsSignatureValid(copyResponse)) {
+    		throw new Exception("Signature is not valid!");
     	}
     	
     	ObjectMapper mapper = new ObjectMapper();
@@ -160,7 +164,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="analyticalHeartbeat">Is the object which contains all analytical Heartbeat Information.</param>
     /// <returns>"Successfully created analytical heartbeat." or a WarningInfoDto</returns>
-    public String AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
+    public StringResultInfo AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
     			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/analytical_heartbeats").build();
@@ -174,21 +178,26 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response; 
+    	
+    	if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
         // If generating a analytical heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created analytical heartbeat.".
     	if(response.getStatusLine().getStatusCode() == 200) {  		
     		HttpEntity entity = response.getEntity();
-    		return EntityUtils.toString(entity, "UTF-8");
+			StringResultInfo resInfo = new StringResultInfo();
+			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
+    		return resInfo;
     	}
     	
         // If generating a analytical heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
-    		WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		return warnInfo.message;
+			WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
+    		StringResultInfo resInfo = new StringResultInfo();
+    		resInfo.setWarningInfo(warnInfo);
+    		return resInfo;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
@@ -213,8 +222,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response; 
+    	
+    	if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
@@ -252,8 +262,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response; 
+    	
+    	if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
@@ -288,11 +299,12 @@ public class SampleProxy {
     		    ContentType.APPLICATION_JSON);
 		    	    	
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
-    	HttpResponse response = this.client.execute(request);  
+    	HttpResponse response = this.client.execute(request);
+		HttpResponse copyResponse = response;  
     	ObjectMapper mapper = new ObjectMapper();
-    	String responseBody = EntityUtils.toString(response.getEntity());
-
-    	if(!IsSignatureValid(response)) {
+    	String responseBody = EntityUtils.toString(response.getEntity()); 
+    	
+    	if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
@@ -360,8 +372,8 @@ public class SampleProxy {
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request); 
-    	
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response;
+		if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
 
@@ -406,8 +418,8 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response;
+		if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
@@ -445,8 +457,8 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);  
     	ObjectMapper mapper = new ObjectMapper();
-
-    	if(!IsSignatureValid(response)) {
+		HttpResponse copyResponse = response;
+		if(!IsSignatureValid(copyResponse)) {
     		throw new Exception("Signature is not valid!");
     	}
     	
@@ -476,6 +488,15 @@ public class SampleProxy {
         String MachineID=output.toString().substring(output.indexOf("\n"), output.length()).trim();;
         return MachineID;
     }
+
+	/// <summary>
+    /// Get a unique device id
+    /// </summary>
+    /// <returns>UUID via string</returns>
+    public String GetOperatingSystem() throws IOException {
+    	String os = System.getProperty("os.name") + " - " + System.getProperty("os.version");
+        return os;
+    }
     
 
     
@@ -493,7 +514,14 @@ public class SampleProxy {
     /// <returns>True if Signature is valid. False if Signature is invalid.</returns>
     private Boolean IsSignatureValid(HttpResponse response) throws IOException, NoSuchAlgorithmException, InvalidKeyException
     {
-        var responseStream = EntityUtils.toByteArray(response.getEntity()); 
+        if (SignatureValidationMode ==0)
+		{
+			return true;
+		}
+		else if (SignatureValidationMode == 1)
+		{
+		HttpResponse copyResponse = response;
+		var responseStream = EntityUtils.toByteArray(copyResponse.getEntity()); 
 
         Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
   	    SecretKeySpec secret_key = new SecretKeySpec(this.SignatureKey.getBytes("UTF-8"), "HmacSHA256");
@@ -507,6 +535,10 @@ public class SampleProxy {
         }
 
         return false;
+	}
+	else {
+		return true;
+	}
 
     }
 }
