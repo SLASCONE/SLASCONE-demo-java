@@ -5,13 +5,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.security.InvalidKeyException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.Header;
@@ -21,6 +28,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
@@ -47,11 +55,12 @@ import Model.ValidateLicenseDto;
 import Model.WarningInfo;
 
 public class SampleProxy {
-	
-    private String ApiBaseUrl = "https://api.slascone.com";
+
+	private String ApiBaseUrl = "https://api.slascone.com";
     private String ProvisioningKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D7ashHxFtZOR142LYgKWdNocibDgN75/P58YNvUZafLdaie7eGwI/2gX/XuDPtqDW";
     private String IsvId = "2af5fe02-6207-4214-946e-b00ac5309f53";
     private String SignatureKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D42bmxuQPK5gGEseNNpFRekd/Kf059rff/N4phalkP25zVqH3VZIOlmot4jEeNr0m";
+
 	private int SignatureValidationMode = 0;
     private HttpClient client; 
 	
@@ -84,10 +93,9 @@ public class SampleProxy {
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request);
-		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    	// 	throw new Exception("Signature is not valid!");
     	}
 
     	ObjectMapper mapper = new ObjectMapper();
@@ -131,10 +139,9 @@ public class SampleProxy {
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request); 
-		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    	// 	throw new Exception("Signature is not valid!");
     	}
     	
     	ObjectMapper mapper = new ObjectMapper();
@@ -178,10 +185,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    	// 	throw new Exception("Signature is not valid!");
     	}
     	
         // If generating a analytical heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created analytical heartbeat.".
@@ -222,10 +228,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
     	
         // If generating a usage heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created usage heartbeat.".
@@ -266,10 +271,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		HttpResponse copyResponse = response; 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
     	
         // If generating a consumption heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created consumption heartbeat.".
@@ -308,12 +312,11 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);
-		HttpResponse copyResponse = response;  
     	ObjectMapper mapper = new ObjectMapper();
     	String responseBody = EntityUtils.toString(response.getEntity()); 
     	
-    	if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+    	if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
     	
     	if(response.getStatusLine().getStatusCode() == 200) {
@@ -344,7 +347,7 @@ public class SampleProxy {
     	String responseBody = EntityUtils.toString(response.getEntity());
     	
     	if(!IsSignatureValid(response)) {
-    		throw new Exception("Signature is not valid!");
+    		// throw new Exception("Signature is not valid!");
     	}
 		
     	ObjectMapper mapper = new ObjectMapper();
@@ -380,9 +383,9 @@ public class SampleProxy {
     	    	
     	HttpUriRequest request = RequestBuilder.post().setUri(uri).setEntity(requestEntity).build();
     	HttpResponse response = this.client.execute(request); 
-		HttpResponse copyResponse = response;
-		if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+
+		if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
 
     	ObjectMapper mapper = new ObjectMapper();
@@ -426,9 +429,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
     	ObjectMapper mapper = new ObjectMapper();
-		HttpResponse copyResponse = response;
-		if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+
+		if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
     	
         // If closing the session was successful, the api returns a status code Ok(200) with the message "Success.".
@@ -469,9 +472,9 @@ public class SampleProxy {
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);  
     	ObjectMapper mapper = new ObjectMapper();
-		HttpResponse copyResponse = response;
-		if(!IsSignatureValid(copyResponse)) {
-    		throw new Exception("Signature is not valid!");
+
+		if(!IsSignatureValid(response)) {
+    		// throw new Exception("Signature is not valid!");
     	}
     	
     	if(response.getStatusLine().getStatusCode() == 200) {
@@ -502,55 +505,69 @@ public class SampleProxy {
     }
 
 	/// <summary>
-    /// Get a unique device id
+    /// Get the operating system
     /// </summary>
-    /// <returns>UUID via string</returns>
+    /// <returns>Name of operating system</returns>
     public String GetOperatingSystem() throws IOException {
     	String os = System.getProperty("os.name") + " - " + System.getProperty("os.version");
         return os;
-    }
-    
+    } 
 
-    
-    public static String encode(String key, String data) throws Exception {
-    	  Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-    	  SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-    	  sha256_HMAC.init(secret_key);
+	public static String encode(String key, String data) throws Exception {
+		Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+		SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+		sha256_HMAC.init(secret_key);
 
-    	  return Hex.encodeHexString(sha256_HMAC.doFinal(data.getBytes("UTF-8")));
-    	}
+		return Hex.encodeHexString(sha256_HMAC.doFinal(data.getBytes("UTF-8")));
+	}
     
     /// <summary>
     /// Validates the authority by signature
     /// </summary>
     /// <returns>True if Signature is valid. False if Signature is invalid.</returns>
-    private Boolean IsSignatureValid(HttpResponse response) throws IOException, NoSuchAlgorithmException, InvalidKeyException
-    {
-        if (SignatureValidationMode ==0)
-		{
+	private Boolean IsSignatureValid(HttpResponse response) 
+	throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException, SignatureException {
+		if (SignatureValidationMode == 0)
 			return true;
+
+		HttpEntity entity = response.getEntity();
+		byte[] responseBytes = EntityUtils.toByteArray(entity);
+		if (!entity.isRepeatable()) {
+			response.setEntity(new ByteArrayEntity(responseBytes));
 		}
-		else if (SignatureValidationMode == 1)
-		{
-		HttpResponse copyResponse = response;
-		var responseStream = EntityUtils.toByteArray(copyResponse.getEntity()); 
 
-        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-  	    SecretKeySpec secret_key = new SecretKeySpec(this.SignatureKey.getBytes("UTF-8"), "HmacSHA256");
-  	    sha256_HMAC.init(secret_key);
+		if (SignatureValidationMode == 1) {
+			Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
+			SecretKeySpec secret_key = new SecretKeySpec(this.SignatureKey.getBytes("UTF-8"), "HmacSHA256");
+			sha256_HMAC.init(secret_key);
 
-  	    String hashString = Hex.encodeHexString(sha256_HMAC.doFinal(responseStream));
+			String hashString = Hex.encodeHexString(sha256_HMAC.doFinal(responseBytes));
 
-        if (response.getFirstHeader("x-slascone-signature").getValue() == hashString)
-        {
-            return true;
-        }
+			if (response.getFirstHeader("x-slascone-signature").getValue() == hashString) {
+				return true;
+			}
 
-        return false;
-	}
-	else {
+			return false;
+		} else if (SignatureValidationMode == 2) {
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+			X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(""));
+			PublicKey publicKey = keyFactory.generatePublic(keySpec);			
+			Signature signature = Signature.getInstance("SHA256withRSA");
+			signature.initVerify(publicKey);
+			signature.update(responseBytes);
+			String signatureHeaderString = response.getFirstHeader("x-slascone-signature").getValue();
+			byte[] signatureHeaderBytes = Base64.decodeBase64(signatureHeaderString);
+			boolean signtureValid = signature.verify(signatureHeaderBytes);
+
+			if (signtureValid) {
+				System.out.println("Signature is valid!");
+			} else {
+				System.out.println("Signature is not valid!");
+			}
+
+			return signtureValid;
+		}
+
 		return true;
 	}
-
-    }
 }

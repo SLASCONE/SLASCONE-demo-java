@@ -59,18 +59,21 @@ public class LicenseInfo {
     public List<LicenseVariable> variables = null;
 
 	public List<LicenseUser> license_users = null;
+
+	public Date created_date_utc = null;
     
     public LicenseInfo() {
     	super();
     }
     
-    public LicenseInfo(String license_key, UUID token_key, String legacy_license_key, String subscription_key,
+	public LicenseInfo(String license_key, UUID token_key, String legacy_license_key, String subscription_key,
 			ProvisioningMode provisioning_mode, String client_id, Boolean is_license_valid,
 			Boolean is_software_version_valid, Date expiration_date_utc,
 			SoftwareReleaseLimitation software_release_limitation, int heartbeat_period, int freeride,
 			String product_name, String template_name, String license_name, String client_description,
 			Boolean enforce_software_version_upgrade, Customer customer, List<LicenseFeature> features,
-			List<LicenseLimitation> limitations, List<LicenseVariable> variables, List<LicenseUser> license_users) {
+			List<LicenseLimitation> limitations, List<LicenseVariable> variables, List<LicenseUser> license_users,
+			Date created_date_utc) {
 		super();
 		this.license_key = license_key;
 		this.token_key = token_key;
@@ -94,6 +97,7 @@ public class LicenseInfo {
 		this.limitations = limitations;
 		this.variables = variables;
 		this.license_users = license_users;
+		this.created_date_utc = created_date_utc;
 	}
 
 	public String getLicense_key() {

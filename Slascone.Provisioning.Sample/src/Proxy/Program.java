@@ -1,13 +1,25 @@
 package Proxy;
+
+import java.text.MessageFormat;
+import java.time.Duration;
+import java.time.Instant;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.UUID;
+
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
 import Model.AnalyticalFieldValue;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
+import Model.LicenseFeature;
+import Model.LicenseInfo;
+import Model.LicenseLimitation;
 import Model.SessionDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
@@ -16,80 +28,128 @@ import Model.UsageHeartbeatDto;
 public class Program {
 	
 	// ToDo: Insert the parameter for the respective function
-	public static void main(String [] args) throws Exception
-	{
-        // ToDo: (Un)comment specific scenario
-        ActivateExample();
-        HeartbeatExample();
-        AnalyticalHeartbeatExample();
-        UsageHeartbeatExample();
-        ConsumptionHeartbeatExample();
-        OpenSessionExample();
-        CloseSessionExample();     
+    private static String ProductId = "b18657cc-1f7c-43fa-e3a4-08da6fa41ad3";
+    private static String LicenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";
+
+    private SampleProxy slasconeProxy = new SampleProxy();
+    private Map<String, Integer> limitationMap;
+
+	public static void main(String [] args) throws Exception {
+
+        Program program = new Program();
+
+		System.out.println("Slascone client app example");
+		System.out.println("===========================");
+		System.out.println();
+		System.out.println("Unique Client-Id for this device: " + program.slasconeProxy.GetUniqueDeviceId());
+		System.out.println("Operating system: " + System.getProperty("os.name"));
+
+        Scanner scanner = new Scanner(System.in);
+        String input;
+        do {
+
+			System.out.println();
+			System.out.println("1: Activate license (can be done only once per device)");
+			System.out.println("2: Add license heartbeat");
+			System.out.println("3: Add analytical heartbeat");
+			System.out.println("4: Add usage heart beat");
+			System.out.println("5: Add consumption heartbeat");
+			System.out.println("6: Unassign license from device (has to be activated again then)");
+			System.out.println("7: Open session");
+			System.out.println("8: Close session");
+			System.out.println("x: Exit program");
+
+			System.out.print("> ");
+            input = scanner.nextLine();
+
+            switch (input) {
+                case "1":
+                    program.ActivateExample();
+                    break;
+
+                case "2":
+                    program.HeartbeatExample();
+                    break;
+                    
+                case "3":
+                    program.AnalyticalHeartbeatExample();
+                    break;
+
+                case "4":
+                    program.UsageHeartbeatExample();
+                    break;
+
+                case "5":
+                    program.ConsumptionHeartbeatExample();
+                    break;
+
+                case "7":
+                    program.OpenSessionExample();
+                    break;
+
+                case "8":
+                    program.CloseSessionExample();
+                    break;
+
+                default:
+                    break;
+            }
+
+        } while (!input.equals("x"));
+
+        scanner.close();
 	}
 		
-	private static void ActivateExample() throws Exception {
-        var slasconeProxy = new SampleProxy();      
-		
+    private void ActivateExample() throws Exception {
+
         System.out.println(slasconeProxy.GetUniqueDeviceId());
         // ToDo: Fill the variables
-        var result = slasconeProxy.Activate(new ActivateInfo("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3", "27180460-29df-4a5a-a0a1-78c85ab6cee0",
-            "test85765", "test", "test"));
+        var result = slasconeProxy
+                .Activate(new ActivateInfo(ProductId, LicenseKey, slasconeProxy.GetUniqueDeviceId(), "test", "test"));
 
-        // If the activation failed, the api server responses with a specific error message which describes the problem. Therefore the LicenseInfo object is declared with null.
-        if (result.WarningInfo != null)
-        {
-        	System.out.println(result.WarningInfo.message);
-            //Example Warning handling
-            if (result.WarningInfo.id == 2006)
-            { 
+        // If the activation failed, the api server responses with a specific error
+        // message which describes the problem. Therefore the LicenseInfo object is
+        // declared with null.
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
             }
+        } else if (result.LicenseInfo != null) {
+            System.out.println("Successfull activation.");
+        } else {
+            System.out.println("Unknown Error");
         }
-        else if (result.LicenseInfo != null)
-        {
-        	System.out.println("Successfull activation.");            
-        }
-        else
-        {
-        	System.out.println("Unknown Error");
-        }
-    
     }
-	private static void HeartbeatExample() throws Exception {
-		
-		var slasconeProxy = new SampleProxy();
-		
-		 // ToDo: Fill the variables
+
+    private void HeartbeatExample() throws Exception {
+
+        // ToDo: Fill the variables
         var heartBeatDto = new AddHeartbeatDto();
         heartBeatDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
-        //heartBeatDto.setGroup_id(null);
-        //heartBeatDto.setHeartbeat_type_id(null);
+        // heartBeatDto.setGroup_id(null);
+        // heartBeatDto.setHeartbeat_type_id(null);
         heartBeatDto.setOperating_system(slasconeProxy.GetOperatingSystem());
-        heartBeatDto.setProduct_id(UUID.fromString("b18657cc-1f7c-43fa-e3a4-08da6fa41ad3"));
+        heartBeatDto.setProduct_id(UUID.fromString(ProductId));
         heartBeatDto.setSoftware_version("22.2");
-        //heartBeatDto.setToken_key(null);
-        
+        // heartBeatDto.setToken_key(null);
+
         var result = slasconeProxy.AddHeartbeat(heartBeatDto);
-        if (result.WarningInfo != null)
-        {
-        	System.out.println(result.WarningInfo.message);
-            //Example Warning handling
-            if (result.WarningInfo.id == 2006)
-            { 
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
             }
+        } else if (result.LicenseInfo != null) {
+            System.out.println("Successfully created heartbeat.");
+            PrintLicenseInfo(result.LicenseInfo);
+        } else {
+            System.out.println("Unknown Error");
         }
-        else if (result.LicenseInfo != null)
-        {
-        	System.out.println("Successfully created heartbeat.");            
-        }
-        else
-        {
-        	System.out.println("Unknown Error");
-        }
-	}
-    private static void AnalyticalHeartbeatExample() throws Exception {
-		
-		var slasconeProxy = new SampleProxy();		        
+    }
+
+    private void AnalyticalHeartbeatExample() throws Exception {
+
         // ToDo: Fill the variables
         var analyticalHb = new AnalyticalHeartbeat();
         analyticalHb.setClient_id(slasconeProxy.GetUniqueDeviceId());
@@ -101,165 +161,172 @@ public class Program {
         valueList.add(analyticalField);
 
         analyticalHb.setAnalytical_heartbeat(valueList);
-  
 
         var result = slasconeProxy.AddAnalyticalHeartbeat(analyticalHb);
-        if (result.WarningInfo!= null)
-        {
-        	System.out.println(result.WarningInfo.message);
-            //Example Warning handling
-            if (result.WarningInfo.id == 2006)
-            { 
-            }            
-        }
-        else if (result.SuccessInfo != null)
-        {
-        	System.out.println("Successfully created analytical heartbeat.");            
-        }
-        else
-        {
-        	System.out.println("Unknown Error");
-        }       
-        
-	}
-    private static void UsageHeartbeatExample() throws Exception {
-		
-		var slasconeProxy = new SampleProxy();
-		                
-        // ToDo: Fill the variables
-     	var usageFeatureValue1 = new UsageFeatureValueDto();
-    	usageFeatureValue1.setUsage_feature_id(UUID.fromString("66099049-0472-467c-6ea6-08da9ac57d7c"));
-    	usageFeatureValue1.setUsage_module_id(null);
-     	usageFeatureValue1.setValue(3);
-     		
-     	var usageFeatureValue2 = new UsageFeatureValueDto();
-     	usageFeatureValue2.setUsage_feature_id(UUID.fromString("e82619b1-f403-4e0d-5389-08da9e17dd73"));
-    	usageFeatureValue2.setUsage_module_id(null);
-    	usageFeatureValue2.setValue(2);
-     	
-     	List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList<UsageFeatureValueDto>();
-     	usageFeatureValueList.add(usageFeatureValue1);
-     	usageFeatureValueList.add(usageFeatureValue2);
-     		
-     	var usageHeartbeatDto = new UsageHeartbeatDto();
-     	usageHeartbeatDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
-     	usageHeartbeatDto.setUsage_heartbeat(usageFeatureValueList);
-     	//usageHeartbeatDto.setToken_key(null);
-
-     	var result = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
-         if (result.WarningInfo!= null)
-         {
-             System.out.println(result.WarningInfo.message);
-            //Example Warning handling
-            if (result.WarningInfo.id == 2006)
-            { 
-            }             
-         }
-         else if (result.SuccessInfo != null)
-         {
-             System.out.println("Successfully created usage heartbeat.");            
-         }
-         else
-         {
-             System.out.println("Unknown Error");
-         }   
-
-	}
-    private static void ConsumptionHeartbeatExample() throws Exception {
-		
-		var slasconeProxy = new SampleProxy();		       
-        
-        // ToDo: Fill the variables
-     	var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
-     	consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));
-     	//consumptionHeartbeatValue1.setTimestamp_utc(null);
-     	consumptionHeartbeatValue1.setValue(5);
-     		
-     	
-     	List<ConsumptionHeartbeatValueDto> consumptionHeartbeatValueDtoList = new ArrayList<ConsumptionHeartbeatValueDto>();
-     	consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue1);
-
-     		
-     	var consumptionHeartbeat = new ConsumptionHeartbeatDto();
-     	consumptionHeartbeat.setClient_id(slasconeProxy.GetUniqueDeviceId());
-     	consumptionHeartbeat.setConsumption_heartbeat(consumptionHeartbeatValueDtoList);
-     	//consumptionHeartbeat.setToken_key(null);
-
-     	var result = slasconeProxy.AddConsumptionHeartbeat(consumptionHeartbeat);
-         if (result.WarningInfo!= null)
-         {
-             System.out.println(result.WarningInfo.message);
-            //Example Warning handling
-            if (result.WarningInfo.id == 2006)
-            { 
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
             }
-                    
-         }
-         else if (result.SuccessInfo != null)
-         {
-             System.out.println("Successfully created consumption heartbeat.");            
-         }
-         else
-         {
-             System.out.println("Unknown Error");
-         }  
+        } else if (result.SuccessInfo != null) {
+            System.out.println("Successfully created analytical heartbeat.");
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+    
+    private void UsageHeartbeatExample() throws Exception {
 
+        // ToDo: Fill the variables
+        var usageFeatureValue1 = new UsageFeatureValueDto();
+        usageFeatureValue1.setUsage_feature_id(UUID.fromString("66099049-0472-467c-6ea6-08da9ac57d7c"));
+        usageFeatureValue1.setUsage_module_id(null);
+        usageFeatureValue1.setValue(3);
 
-	}
-	private static void OpenSessionExample() throws Exception {
-		var slasconeProxy = new SampleProxy();
-		  	
-    		   var sessionDto = new SessionDto();
-    		   sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
-    		   sessionDto.setLicense_id(UUID.fromString("27180460-29df-4a5a-a0a1-78c85ab6cee0"));
-    		   
-    		   var result = slasconeProxy.OpenSession(sessionDto);
+        var usageFeatureValue2 = new UsageFeatureValueDto();
+        usageFeatureValue2.setUsage_feature_id(UUID.fromString("e82619b1-f403-4e0d-5389-08da9e17dd73"));
+        usageFeatureValue2.setUsage_module_id(null);
+        usageFeatureValue2.setValue(2);
 
+        List<UsageFeatureValueDto> usageFeatureValueList = new ArrayList<UsageFeatureValueDto>();
+        usageFeatureValueList.add(usageFeatureValue1);
+        usageFeatureValueList.add(usageFeatureValue2);
 
-               if (result.WarningInfo!= null)
-               {
-                   System.out.println(result.WarningInfo.message);
-                  //Example Warning handling
-                  if (result.WarningInfo.id == 2006)
-                  { 
-                  }             
-               }
-               else if (result.OpenSessionInfo != null)
-               {
-                   System.out.println("Successfully opened session.");            
-               }
-               else
-               {
-                   System.out.println("Unknown Error");
-               }  
-    	  
-       
-	}
-    private static void CloseSessionExample() throws Exception {
-		var slasconeProxy = new SampleProxy();
-		  	
-    		   var sessionDto = new SessionDto();
-    		   sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
-    		   sessionDto.setLicense_id(UUID.fromString("27180460-29df-4a5a-a0a1-78c85ab6cee0"));
-    		   
-    		   var result = slasconeProxy.CloseSession(sessionDto);
-               if (result.WarningInfo!= null)
-               {
-                   System.out.println(result.WarningInfo.message);
-                  //Example Warning handling
-                  if (result.WarningInfo.id == 2006)
-                  { 
-                  }             
-               }
-               else if (result.SuccessInfo != null)
-               {
-                   System.out.println("Successfully closed session.");            
-               }
-               else
-               {
-                   System.out.println("Unknown Error");
-               }  
-    	  
-       
-	}
+        var usageHeartbeatDto = new UsageHeartbeatDto();
+        usageHeartbeatDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
+        usageHeartbeatDto.setUsage_heartbeat(usageFeatureValueList);
+        // usageHeartbeatDto.setToken_key(null);
+
+        var result = slasconeProxy.AddUsageHeartbeat(usageHeartbeatDto);
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
+            }
+        } else if (result.SuccessInfo != null) {
+            System.out.println("Successfully created usage heartbeat.");
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+
+    private void ConsumptionHeartbeatExample() throws Exception {
+
+        var slasconeProxy = new SampleProxy();
+
+        // ToDo: Fill the variables
+        var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
+        consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));
+        // consumptionHeartbeatValue1.setTimestamp_utc(null);
+        consumptionHeartbeatValue1.setValue(5);
+
+        List<ConsumptionHeartbeatValueDto> consumptionHeartbeatValueDtoList = new ArrayList<ConsumptionHeartbeatValueDto>();
+        consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue1);
+
+        var consumptionHeartbeat = new ConsumptionHeartbeatDto();
+        consumptionHeartbeat.setClient_id(slasconeProxy.GetUniqueDeviceId());
+        consumptionHeartbeat.setConsumption_heartbeat(consumptionHeartbeatValueDtoList);
+        // consumptionHeartbeat.setToken_key(null);
+
+        var result = slasconeProxy.AddConsumptionHeartbeat(consumptionHeartbeat);
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
+            }
+
+        } else if (result.SuccessInfo != null) {
+            System.out.println("Successfully created consumption heartbeat.");
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+	
+    private void OpenSessionExample() throws Exception {
+
+        var sessionDto = new SessionDto();
+        sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
+        sessionDto.setLicense_id(UUID.fromString(LicenseKey));
+
+        var result = slasconeProxy.OpenSession(sessionDto);
+
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
+            }
+        } else if (result.OpenSessionInfo != null) {
+            System.out.println("Successfully opened session.");
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+
+    private void CloseSessionExample() throws Exception {
+
+        var sessionDto = new SessionDto();
+        sessionDto.setClient_id(slasconeProxy.GetUniqueDeviceId());
+        sessionDto.setLicense_id(UUID.fromString(LicenseKey));
+
+        var result = slasconeProxy.CloseSession(sessionDto);
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
+            }
+        } else if (result.SuccessInfo != null) {
+            System.out.println("Successfully closed session.");
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+
+    private void PrintLicenseInfo(LicenseInfo licenseInfo) {
+	    System.out.println(MessageFormat.format("License infos (Retrieved {0}):", licenseInfo.created_date_utc));
+	    System.out.println("   Company name: " + licenseInfo.customer.getCompany_name());
+
+	    // Handle license info
+	    //  o Active and expired state (i.e. valid state)
+	    //  o Active features and limitations
+	    System.out.println(MessageFormat.format("   License is {0} (IsActive: {1}; IsExpired: {2})",
+        licenseInfo.is_license_valid ? "valid" : "not valid",
+        licenseInfo.is_license_active,
+        licenseInfo.is_license_expired));
+
+        if (licenseInfo.is_license_expired) {
+            long expiration = Duration.between(licenseInfo.expiration_date_utc.toInstant(), Instant.now()).toDays();
+            System.out.println(MessageFormat.format("   License is expired since {0} day(s).", expiration));
+
+            // Check freeride
+            if (expiration < licenseInfo.freeride) {
+                System.out.println(MessageFormat.format("   Freeride granted for {0} day(s).", licenseInfo.freeride - expiration));
+            }
+        }
+        else {
+            long valid = Duration.between(Instant.now(), licenseInfo.expiration_date_utc.toInstant()).toDays();
+            System.out.println(MessageFormat.format("   License is valid for another {0} day(s).", valid));
+        }
+
+        StringBuilder features = new StringBuilder();
+        for (LicenseFeature feature : licenseInfo.features) {
+            if (feature.is_active) {
+                if (0 < features.length())
+                    features.append(", ");
+                features.append(feature.name);
+            }
+        }
+
+        System.out.println("   Active features: " + features);
+
+        StringBuilder limitations = new StringBuilder();
+        limitationMap = new HashMap<>();
+        for (LicenseLimitation limitation : licenseInfo.limitations) {
+            if (0 < limitations.length())
+                limitations.append(", ");
+            limitations.append(limitation.name + " = " + limitation.value);
+            limitationMap.put(limitation.name, limitation.value);
+        }
+
+        System.out.println("   Limitations: " + limitations);
+    }
 }
