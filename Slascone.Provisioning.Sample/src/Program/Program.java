@@ -15,6 +15,7 @@ import java.util.UUID;
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.ConsumptionDto;
 import Model.AnalyticalFieldValue;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
@@ -237,9 +238,9 @@ public class Program {
 
         // ToDo: Fill the variables
         var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
-        consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));
+        consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));        // Limitation: Cloud Backup functionality
         // consumptionHeartbeatValue1.setTimestamp_utc(null);
-        consumptionHeartbeatValue1.setValue(5);
+        consumptionHeartbeatValue1.setValue(1);
 
         List<ConsumptionHeartbeatValueDto> consumptionHeartbeatValueDtoList = new ArrayList<ConsumptionHeartbeatValueDto>();
         consumptionHeartbeatValueDtoList.add(consumptionHeartbeatValue1);
@@ -256,8 +257,15 @@ public class Program {
             if (result.WarningInfo.id == 2006) {
             }
 
-        } else if (result.SuccessInfo != null) {
-            System.out.println("Successfully created consumption heartbeat.");
+        } else if (result.Consumptions != null) {
+            for (ConsumptionDto consumption : result.Consumptions) {
+                UUID transactionId = consumption.getTransaction_id();
+                if (null != transactionId) {
+                    System.out.println("Successfully created consumption heartbeat. Remaining: " + consumption.getRemaining());
+                } else {
+                    System.out.println("Consumption limit reached!");
+                }
+            }
         } else {
             System.out.println("Unknown Error");
         }

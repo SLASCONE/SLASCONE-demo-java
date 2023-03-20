@@ -29,7 +29,9 @@ import com.google.gson.Gson;
 import Model.ActivateInfo;
 import Model.AddHeartbeatDto;
 import Model.AnalyticalHeartbeat;
+import Model.ConsumptionDto;
 import Model.ConsumptionHeartbeatDto;
+import Model.ConsumptionInfo;
 import Model.LicenseInfo;
 import Model.ProvisioningInfo;
 import Model.SessionDto;
@@ -247,7 +249,7 @@ public class SampleProxy {
     /// </summary>
     /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
     /// <returns>"Successfully created consumption heartbeat." or a WarningInfoDto</returns>
-    public StringResultInfo AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
+    public ConsumptionInfo AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
     			.setPath("/api/v2/isv/" + this.IsvId + "/data_gathering/consumption_heartbeats").build();
@@ -260,26 +262,30 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
-    	ObjectMapper mapper = new ObjectMapper();
     	
     	if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
     	}
-    	
-        // If generating a consumption heartbeat was successful, the api returns a status code Ok(200) with the message "Successfully created consumption heartbeat.".
-    	if(response.getStatusLine().getStatusCode() == 200) {
-			StringResultInfo resInfo = new StringResultInfo();
-			HttpEntity entity = response.getEntity();
-			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
-    		return resInfo;
-    	}
+
+		ObjectMapper mapper = new ObjectMapper();
+
+		// If generating a consumption heartbeat was successful, the api returns a status code Ok(200).
+		// For every consumption mentioned in the request the api returns if the consumption was accepted
+		// and the amount of remaining items.
+		if (response.getStatusLine().getStatusCode() == 200) {
+
+    		ConsumptionDto[] consumptions = mapper.readValue(response.getEntity().getContent(), ConsumptionDto[].class);
+			ConsumptionInfo consumptionInfo = new ConsumptionInfo();
+			consumptionInfo.setConsumptions(consumptions);
+			return consumptionInfo;
+		}
     	
         // If generating a consumption heartbeat was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
     	if(response.getStatusLine().getStatusCode() == 409) {
 			WarningInfo warnInfo = mapper.readValue(response.getEntity().getContent(), WarningInfo.class);
-    		StringResultInfo resInfo = new StringResultInfo();
-    		resInfo.setWarningInfo(warnInfo);
-    		return resInfo;
+			ConsumptionInfo consumptionInfo = new ConsumptionInfo();
+    		consumptionInfo.setWarningInfo(warnInfo);
+    		return consumptionInfo;
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
