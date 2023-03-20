@@ -1,16 +1,1 @@
-/ActivateInfo.class
-/AnalyticalFieldValue.class
-/AnalyticalHeartbeat.class
-/Customer.class
-/LicenseFeature.class
-/LicenseInfo.class
-/LicenseLimitation.class
-/LicenseVariable.class
-/ProvisioningInfo.class
-/SoftwareReleaseLimitation.class
-/UsageFeatureValueDto.class
-/UsageHeartbeatDto.class
-/WarningInfo.class
-/AddHeartbeatDto.class
-/UnassignDto.class
-/ValidateLicenseDto.class
+/*.class
