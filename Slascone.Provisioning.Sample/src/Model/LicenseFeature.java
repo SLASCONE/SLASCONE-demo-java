@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.UUID;
+import java.util.Date;
 
 public class LicenseFeature {
 	public UUID id = null;
@@ -8,6 +9,7 @@ public class LicenseFeature {
 	public String name = null;
 	public String description = null;
 	public Boolean is_active = null;
+	public Date expiration_date_utc = null;
 	
 	public LicenseFeature() {
 		super();

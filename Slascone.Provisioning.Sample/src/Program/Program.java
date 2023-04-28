@@ -2,6 +2,7 @@ package Program;
 
 import java.security.PublicKey;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -373,18 +374,20 @@ public class Program {
         licenseInfo.is_license_active,
         licenseInfo.is_license_expired));
 
+
         if (licenseInfo.is_license_expired) {
             long expiration = Duration.between(licenseInfo.expiration_date_utc.toInstant(), Instant.now()).toDays();
             System.out.println(MessageFormat.format("   License is expired since {0} day(s).", expiration));
 
             // Check freeride
             if (expiration < licenseInfo.freeride) {
-                System.out.println(MessageFormat.format("   Freeride granted for {0} day(s).", licenseInfo.freeride - expiration));
+                System.out.println(
+                        MessageFormat.format("   Freeride granted for {0} day(s).", licenseInfo.freeride - expiration));
             }
-        }
-        else {
+        } else {
             long valid = Duration.between(Instant.now(), licenseInfo.expiration_date_utc.toInstant()).toDays();
-            System.out.println(MessageFormat.format("   License is valid for another {0} day(s).", valid));
+            System.out.println(MessageFormat.format("   License is valid for another {0} day(s) until {1}.",
+                    valid, new SimpleDateFormat("yyyy-MM-dd").format(licenseInfo.expiration_date_utc)));
         }
 
         StringBuilder features = new StringBuilder();
@@ -393,6 +396,9 @@ public class Program {
                 if (0 < features.length())
                     features.append(", ");
                 features.append(feature.name);
+                if (null != feature.expiration_date_utc) {
+                    features.append(MessageFormat.format(" (expires: {0})", new SimpleDateFormat("yyyy-MM-dd").format(feature.expiration_date_utc)));
+                }
             }
         }
 

@@ -23,7 +23,9 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
 
 import Model.ActivateInfo;
@@ -90,7 +92,7 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
     	
     	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
@@ -136,7 +138,7 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
     	
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
 		
         // If generating a heartbeat was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
@@ -176,7 +178,7 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
     	
     	if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
@@ -219,7 +221,7 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
     	
     	if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
@@ -267,7 +269,7 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = CreateObjectMapper();
 
 		// If generating a consumption heartbeat was successful, the api returns a status code Ok(200).
 		// For every consumption mentioned in the request the api returns if the consumption was accepted
@@ -344,7 +346,7 @@ public class SampleProxy {
 			// throw new Exception("Signature is not valid!");
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
+		ObjectMapper mapper = CreateObjectMapper();
 
 		// If unassign was successful, the api returns a status code Ok(200) with the
 		// message "Successfully created analytical heartbeat.".
@@ -389,7 +391,7 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
     	
     	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
@@ -429,7 +431,7 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.post().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);     	
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
 
 		if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
@@ -472,7 +474,7 @@ public class SampleProxy {
 		    	    	
     	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
     	HttpResponse response = this.client.execute(request);  
-    	ObjectMapper mapper = new ObjectMapper();
+    	ObjectMapper mapper = CreateObjectMapper();
 
 		if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
@@ -485,6 +487,11 @@ public class SampleProxy {
     	    	
     	throw new Exception("Unexpected HttpClient Error.");
     }
+
+	private ObjectMapper CreateObjectMapper() {
+		return JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
+		// return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
      
 	/// <summary>
     /// Validates the authority by signature
