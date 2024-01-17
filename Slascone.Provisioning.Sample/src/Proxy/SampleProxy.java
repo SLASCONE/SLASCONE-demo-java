@@ -61,11 +61,13 @@ public class SampleProxy {
 		Header acceptEncodingHeader = new BasicHeader("Accept-Encoding", "utf-8");
     	Header contentTypeHeader = new BasicHeader("Content-type", "application/json");
     	Header provisioningHeader = new BasicHeader("ProvisioningKey", this.ProvisioningKey);
+		Header lastModifiedByHeader = new BasicHeader("LastModifiedBy", "Slascone-demo-java");
     	List<Header> headers = new ArrayList<Header>();
     	headers.add(acceptHeader);
     	headers.add(acceptEncodingHeader);
     	headers.add(contentTypeHeader);
     	headers.add(provisioningHeader);
+		headers.add(lastModifiedByHeader);
     	
     	this.client = HttpClients.custom().setDefaultHeaders(headers).build();
     }
@@ -137,6 +139,8 @@ public class SampleProxy {
     	if(!IsSignatureValid(response)) {
     		throw new Exception("Signature is not valid!");
     	}
+
+		StoreToLocalFiles(response, "license");
     	
     	ObjectMapper mapper = CreateObjectMapper();
 		
@@ -159,6 +163,27 @@ public class SampleProxy {
     	
     	throw new Exception("Unexpected HttpClient Error.");
     }
+
+	public ProvisioningInfo GetOfflineLicense() throws Exception, IOException {
+
+		// Read body of reesponse and signature header from local files
+		byte[] licenseBytes = Helper.ReadFromFile("license.txt");
+		String signatureHeaderString = new String(Helper.ReadFromFile("license_signature.txt"));
+
+		if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(licenseBytes, signatureHeaderString)) {
+			throw new Exception("Signature is not valid!");
+		} else if (SignatureValidationMode == 2 && !Helper.IsSignatureValidAsymmetricKey(licenseBytes, signatureHeaderString)) {
+			throw new Exception("Signature is not valid!");
+		}
+
+		ObjectMapper mapper = CreateObjectMapper();
+
+		LicenseInfo licInfo = mapper.readValue(new ByteArrayEntity(licenseBytes).getContent(), LicenseInfo.class);
+		ProvisioningInfo provInfo = new ProvisioningInfo();
+		provInfo.setLicenseInfo(licInfo);
+		
+		return provInfo;
+	}		
     
     /// <summary>
     /// Creates a analytical heartbeat
@@ -391,15 +416,17 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-    	ObjectMapper mapper = CreateObjectMapper();
+		StoreToLocalFiles(response, "session");
+
+		ObjectMapper mapper = CreateObjectMapper();
     	
     	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
-    		OpenSessionInfo sesVioInfo = mapper.readValue(response.getEntity().getContent(), OpenSessionInfo.class);
-    		SessionInfo sesInfo = new SessionInfo();
-    		sesInfo.setSessionViolationInfo(sesVioInfo);
+    		OpenSessionInfo openSessionInfo = mapper.readValue(response.getEntity().getContent(), OpenSessionInfo.class);
+    		SessionInfo sessionInfo = new SessionInfo();
+    		sessionInfo.setOpenSessionInfo(openSessionInfo);
     		
-    		return sesInfo;
+    		return sessionInfo;
     	}
     	
         // If activation was unsuccessful, the api returns a status code Conflict(409) with the information of a warning.
@@ -412,6 +439,36 @@ public class SampleProxy {
     	
     	throw new Exception("Unexpected HttpClient Error.");
     }
+
+	public boolean TryFindOpenSessionOffline(SessionInfo sesInfo) {
+
+		try {
+			// Read body of reesponse and signature header from local files
+			byte[] sessionBytes = Helper.ReadFromFile("session.txt");
+			String signatureHeaderString = new String(Helper.ReadFromFile("session_signature.txt"));
+
+			if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(sessionBytes, signatureHeaderString)) {
+				throw new Exception("Signature is not valid!");
+			} else if (SignatureValidationMode == 2 && !Helper.IsSignatureValidAsymmetricKey(sessionBytes, signatureHeaderString)) {
+				throw new Exception("Signature is not valid!");
+			}
+
+			ObjectMapper mapper = CreateObjectMapper();
+
+			OpenSessionInfo openSessionInfo = mapper.readValue(new ByteArrayEntity(sessionBytes).getContent(), OpenSessionInfo.class);
+
+			// Check session valid date/time against current date/time
+			if (openSessionInfo.getSession_valid_until().compareTo(new java.util.Date()) < 0) {
+				return false;
+			} 
+			
+			sesInfo.setOpenSessionInfo(openSessionInfo);
+
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
     
     /// <summary>
     /// Closes a session
@@ -442,6 +499,10 @@ public class SampleProxy {
 			StringResultInfo resInfo = new StringResultInfo();
 			HttpEntity entity = response.getEntity();
 			resInfo.setSuccessInfo(EntityUtils.toString(entity, "UTF-8"));
+
+			// Remove session info files if any exists
+			RemoveLocalFiles("session");
+
     		return resInfo;
     	}
     	
@@ -472,7 +533,12 @@ public class SampleProxy {
     			jsonActivateBody,
     		    ContentType.APPLICATION_JSON);
 		    	    	
-    	HttpUriRequest request = RequestBuilder.get().setEntity(requestEntity).setUri(uri).build();
+    	HttpUriRequest request = 
+			RequestBuilder.get()
+			.setEntity(requestEntity)
+			.setHeader("LastModifiedBy", "")
+			.setUri(uri)
+			.build();
     	HttpResponse response = this.client.execute(request);  
     	ObjectMapper mapper = CreateObjectMapper();
 
@@ -519,5 +585,25 @@ public class SampleProxy {
 		}
 
 		return true;
-	}   
+	}
+	
+	private void StoreToLocalFiles(HttpResponse response, String entityFileName) throws IOException {
+
+		HttpEntity entity = response.getEntity();
+		byte[] responseBytes = EntityUtils.toByteArray(entity);
+		if (!entity.isRepeatable()) {
+			response.setEntity(new ByteArrayEntity(responseBytes));
+		}
+
+		String signatureHeaderString = response.getFirstHeader("x-slascone-signature").getValue();
+
+		// Store body of reesponse and signature header to local files
+		Helper.StoreToFile(entityFileName + ".txt", responseBytes);
+		Helper.StoreToFile(entityFileName + "_signature.txt", signatureHeaderString.getBytes());
+	}
+
+	private void RemoveLocalFiles(String entityFileName) throws IOException {
+		Helper.RemoveFile(entityFileName + ".txt");
+		Helper.RemoveFile(entityFileName + "_signature.txt");
+	}
 }

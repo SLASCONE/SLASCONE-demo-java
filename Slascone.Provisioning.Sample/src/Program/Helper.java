@@ -1,6 +1,7 @@
 package Program;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.InvalidKeyException;
@@ -25,7 +26,8 @@ public class Helper {
     private static String SignatureKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D42bmxuQPK5gGEseNNpFRekd/Kf059rff/N4phalkP25zVqH3VZIOlmot4jEeNr0m";
 
 	// This is the public key as it can be downloaded from the slascone portal as PEM file
-	public static String SignaturePublicKey = 
+	public static String SignaturePublicKey =
+
 """
 -----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwpigzm+cZIyw6x253YRD
@@ -37,7 +39,7 @@ AHGtgLYGjbKcW4xYmpDGl0txfcipAr1zMj7X3oCO9lHcFRnXdzx+TTeJYxQX2XVb
 hQIDAQAB
 -----END PUBLIC KEY-----""";
 
-    /// <summary>
+	/// <summary>
     /// Get a unique device id
     /// </summary>
     /// <returns>UUID via string</returns>
@@ -105,5 +107,37 @@ hQIDAQAB
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(pemData));
 		return keyFactory.generatePublic(keySpec);
+	}
+
+	public static void StoreToFile(String fileName, byte[] binaryContent) {
+		// Write binary data to file
+		try {
+			File file = new File(fileName);
+			java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
+			fos.write(binaryContent);
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static byte[] ReadFromFile(String fileName) {
+		// Read binary data from file
+		try {
+			File file = new File(fileName);
+			java.io.FileInputStream fis = new java.io.FileInputStream(file);
+			byte[] binaryContent = new byte[(int) file.length()];
+			fis.read(binaryContent);
+			fis.close();
+			return binaryContent;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+    public static void RemoveFile(String string) {
+		File file = new File(string);
+		file.delete();
 	}
 }

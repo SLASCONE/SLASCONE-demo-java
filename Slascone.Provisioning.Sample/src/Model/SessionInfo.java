@@ -17,11 +17,11 @@ public class SessionInfo {
 		WarningInfo = warningInfo;
 	}
 
-	public OpenSessionInfo getSessionViolationInfo() {
+	public OpenSessionInfo getOpenSessionInfo() {
 		return OpenSessionInfo;
 	}
 
-	public void setSessionViolationInfo(OpenSessionInfo openSessionInfo) {
+	public void setOpenSessionInfo(OpenSessionInfo openSessionInfo) {
 		OpenSessionInfo = openSessionInfo;
 	}
 

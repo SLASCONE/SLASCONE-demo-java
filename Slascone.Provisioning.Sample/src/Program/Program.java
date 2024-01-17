@@ -1,5 +1,6 @@
 package Program;
 
+import java.io.IOException;
 import java.security.PublicKey;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -24,6 +25,7 @@ import Model.LicenseFeature;
 import Model.LicenseInfo;
 import Model.LicenseLimitation;
 import Model.SessionDto;
+import Model.SessionInfo;
 import Model.UnassignDto;
 import Model.UsageFeatureValueDto;
 import Model.UsageHeartbeatDto;
@@ -64,15 +66,22 @@ public class Program {
         do {
 
 			System.out.println();
-			System.out.println("1: Activate license (can be done only once per device)");
-			System.out.println("2: Add license heartbeat");
-			System.out.println("3: Add analytical heartbeat");
-			System.out.println("4: Add usage heart beat");
-			System.out.println("5: Add consumption heartbeat");
-			System.out.println("6: Unassign license from device (has to be activated again then)");
-			System.out.println("7: Open session");
-			System.out.println("8: Close session");
-			System.out.println("9: Check offline license integrity");
+			System.out.println("-- MAIN");
+			System.out.println("    1: Activate license (can be done only once per device)");
+			System.out.println("    2: Add license heartbeat");
+			System.out.println("    3: Temporary disconnection: Read local license file (only available after at least one license heartbeat)");
+			System.out.println("    4: Unassign license from device (has to be activated again then)");
+			System.out.println("-- ANALYTICS");
+			System.out.println("    5: Add analytical heartbeat");
+			System.out.println("    6: Add usage heart beat");
+			System.out.println("    7: Add consumption heartbeat");
+			System.out.println("-- FLOATING");
+			System.out.println("    8: Open session");
+			System.out.println("    9: Find open session (temporary disconnection)");
+			System.out.println("    10: Close session");
+			System.out.println("-- OFFLINE LICENSE");
+            System.out.println("    11: Validate license file (signature check)");
+
 			System.out.println("x: Exit program");
 
 			System.out.print("> ");
@@ -88,33 +97,41 @@ public class Program {
                     break;
                     
                 case "3":
-                    program.AnalyticalHeartbeatExample();
+                    program.OfflineLicenseInfoExample();
                     break;
-
+                    
                 case "4":
-                    program.UsageHeartbeatExample();
-                    break;
-
-                case "5":
-                    program.ConsumptionHeartbeatExample();
-                    break;
-
-                case "6":
                     program.UnassignExample();
                     break;
 
+                case "5":
+                    program.AnalyticalHeartbeatExample();
+                    break;
+
+                case "6":
+                    program.UsageHeartbeatExample();
+                    break;
+
                 case "7":
-                    program.OpenSessionExample();
+                    program.ConsumptionHeartbeatExample();
                     break;
 
                 case "8":
+                    program.OpenSessionExample();
+                    break;
+                    
+                case "9":
+                    program.FindOpenSessionOffline();
+                    break;
+
+                case "10":
                     program.CloseSessionExample();
                     break;
 
-                case "9":
+                case "11":
                     program.CheckOfflineLicenseExample();
                     break;
-
+                    
                 default:
                     break;
             }
@@ -123,7 +140,7 @@ public class Program {
 
         scanner.close();
 	}
-		
+
     private void ActivateExample() throws Exception {
 
         // ToDo: Fill the variables
@@ -168,6 +185,42 @@ public class Program {
             System.out.println("Successfully created heartbeat.");
             token = result.LicenseInfo.token_key.toString();
             PrintLicenseInfo(result.LicenseInfo);
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+
+    private void OfflineLicenseInfoExample() throws Exception, IOException {
+
+        var result = slasconeProxy.GetOfflineLicense();
+
+        if (result.LicenseInfo != null) {
+            System.out.println("Successfully read temporary offline license.");
+            token = result.LicenseInfo.token_key.toString();
+            PrintLicenseInfo(result.LicenseInfo);
+        } else {
+            System.out.println("Unknown Error");
+        }
+    }
+
+    private void UnassignExample() throws Exception {
+
+        if (null == token) {
+            System.out.println("You have to add a license heartbeat first to get a token for this operation.");
+            return;
+        }
+
+        var unassignDto = new UnassignDto(token);
+
+        var result = slasconeProxy.UnassignLicense(unassignDto);
+        if (result.WarningInfo != null) {
+            System.out.println(result.WarningInfo.message);
+            // Example Warning handling
+            if (result.WarningInfo.id == 2006) {
+            }
+
+        } else if (result.SuccessInfo != null) {
+            System.out.println("Successfully unaasigned device from license.");
         } else {
             System.out.println("Unknown Error");
         }
@@ -272,29 +325,6 @@ public class Program {
         }
     }
 
-    private void UnassignExample() throws Exception {
-
-        if (null == token) {
-            System.out.println("You have to add a license heartbeat first to get a token for this operation.");
-            return;
-        }
-
-        var unassignDto = new UnassignDto(token);
-
-        var result = slasconeProxy.UnassignLicense(unassignDto);
-        if (result.WarningInfo != null) {
-            System.out.println(result.WarningInfo.message);
-            // Example Warning handling
-            if (result.WarningInfo.id == 2006) {
-            }
-
-        } else if (result.SuccessInfo != null) {
-            System.out.println("Successfully unaasigned device from license.");
-        } else {
-            System.out.println("Unknown Error");
-        }
-    }
-
     private void OpenSessionExample() throws Exception {
 
         var sessionDto = new SessionDto();
@@ -310,9 +340,21 @@ public class Program {
             }
         } else if (result.OpenSessionInfo != null) {
             System.out.println("Successfully opened session.");
-            result.OpenSessionInfo.getSession_valid_until();
+            System.out.println("Session valid until: " + result.OpenSessionInfo.getSession_valid_until());
         } else {
             System.out.println("Unknown Error");
+        }
+    }
+
+    private void FindOpenSessionOffline() {
+
+        var sessionInfo = new SessionInfo();
+
+        if (slasconeProxy.TryFindOpenSessionOffline(sessionInfo)) {
+            System.out.println("Found session info.");
+            System.out.println("Session valid until: " + sessionInfo.OpenSessionInfo.getSession_valid_until());
+        } else {
+            System.out.println("No open session found.");
         }
     }
 
@@ -350,6 +392,10 @@ public class Program {
 
         PublicKey publicKey = Helper.PublicKeyFromPemString(Helper.SignaturePublicKey);
         DOMValidateContext validateContext = new DOMValidateContext(publicKey, nl.item(0));
+
+        // This is only necessary For IDL signature (SHA1)
+        validateContext.setProperty("org.jcp.xml.dsig.secureValidation", Boolean.FALSE);
+
         XMLSignatureFactory factory = XMLSignatureFactory.getInstance("DOM");
         XMLSignature signature = factory.unmarshalXMLSignature(validateContext);
 
