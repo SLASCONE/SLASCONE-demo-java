@@ -37,9 +37,12 @@ public class Program {
 	
 	// ToDo: Insert the parameter for the respective function
     private static String ProductId = "b18657cc-1f7c-43fa-e3a4-08da6fa41ad3";
-    private static String LicenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";    private SampleProxy slasconeProxy = new SampleProxy();
+    private static String LicenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";
+    
+    private SampleProxy slasconeProxy = new SampleProxy();
 
     private String token;
+    
     // Map to store limitation values from license for potential usage in the application
     private Map<String, Integer> limitationMap;
 
@@ -56,8 +59,7 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
         String input;
         do {
-
-			System.out.println();
+            System.out.println();
 			System.out.println("-- MAIN");
 			System.out.println("    1: Activate license (can be done only once per device)");
 			System.out.println("    2: Add license heartbeat");
@@ -69,7 +71,8 @@ public class Program {
 			System.out.println("    7: Add consumption heartbeat");
 			System.out.println("-- FLOATING");
 			System.out.println("    8: Open session");
-			System.out.println("    9: Find open session (temporary disconnection)");			System.out.println("    10: Close session");
+			System.out.println("    9: Find open session (temporary disconnection)");			
+            System.out.println("    10: Close session");
 			System.out.println("-- OFFLINE LICENSE");
             System.out.println("    11: Check and read offline license file");
 
@@ -117,8 +120,14 @@ public class Program {
 
                 case "10":
                     program.CloseSessionExample();
-                    break;                case "11":
+                    break;                
+                    
+                case "11":
                     program.CheckAndReadOfflineLicenseExample();
+                    break;
+                
+                case "x":
+                    System.out.println("Exiting program...");
                     break;
 
                 default:
@@ -278,7 +287,7 @@ public class Program {
 
         // ToDo: Fill the variables
         var consumptionHeartbeatValue1 = new ConsumptionHeartbeatValueDto();
-        consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("00cf2984-d71a-4c66-9f49-08da833189e3"));        // Limitation: Cloud Backup functionality
+        consumptionHeartbeatValue1.setLimitation_id(UUID.fromString("63b42990-8b30-4bb2-afbd-08db0f1a3425"));        // Limitation: Cloud Backup functionality
         // consumptionHeartbeatValue1.setTimestamp_utc(null);
         consumptionHeartbeatValue1.setValue(1);
 

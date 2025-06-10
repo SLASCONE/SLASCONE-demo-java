@@ -166,3 +166,70 @@ Slascone.Provisioning.Sample/
 5. Review the code to understand how to implement these features in your own applications
 
 For integration into your software product, focus on the relevant sections that match your licensing needs.
+
+## OFFLINE CAPABILITIES AND FREERIDE PERIODS
+
+### Temporary Offline Scenarios
+
+The SLASCONE licensing system provides robust support for temporary offline scenarios, which is essential for desktop applications that may not always have internet connectivity. This sample demonstrates how to implement this functionality:
+
+1. **License Caching**: 
+   - During a successful license heartbeat, the application saves the license data locally
+   - This cached license information includes all features, limitations, and expiration details
+   - The data is protected with digital signatures to prevent tampering
+
+2. **Offline Validation**:
+   - When the application cannot connect to the SLASCONE server, it falls back to the cached license data
+   - The application verifies the digital signature of the cached data to ensure integrity
+   - All license rules (features, limitations, expiration) continue to be enforced based on cached data
+
+3. **Implementation**:
+   - The sample stores license data in `license.txt` and its signature in `license_signature.txt`
+   - For floating licenses, session information is stored in `session.txt` and `session_signature.txt`
+   - The sample demonstrates how to read and validate this information in offline mode
+
+### Freeride Periods
+
+Freeride periods provide flexibility when heartbeats fail, allowing users to continue using the software for a specified grace period:
+
+1. **Purpose**:
+   - Prevents immediate software lockout when a heartbeat fails
+   - Gives users time to resolve connectivity issues
+   - Ensures a smoother user experience in environments with intermittent connectivity
+
+2. **Functionality**:
+   - If a heartbeat fails, the software continues to work normally during the freeride period
+   - The application tracks the time since the last successful heartbeat
+   - Once a successful heartbeat occurs, the freeride period is reset
+   - If the freeride period expires without a successful heartbeat, license enforcement takes effect
+
+3. **Configuration**:
+   - Freeride periods are configured at the license edition level in the SLASCONE portal
+   - The freeride duration is specified in days
+   - This sample demonstrates how to implement and respect freeride periods
+   - The `CheckAndReadOfflineLicenseExample` method shows how to display freeride information
+
+4. **Example Scenario**:
+   - With a daily heartbeat requirement and a 7-day freeride period
+   - If heartbeats fail, the application continues working for 7 days
+   - During this time, the application should notify the user about the need to go online
+   - If a heartbeat succeeds within those 7 days, normal operation resumes
+   - After 7 days without a successful heartbeat, the license becomes invalid
+
+This implementation ensures that temporary network issues or brief periods offline do not disrupt users' work while still maintaining proper license enforcement in the long term.
+
+## Dev Container Environment
+
+### Connecting to Host Services
+
+If you're running this sample in a Dev Container and need to connect to SLASCONE services running on your host machine, please see the [Dev Container Networking Guide](README-DEVCONTAINER-NETWORKING.md) for detailed instructions on:
+
+- Using `host.docker.internal` to connect to host services
+- Handling SSL/HTTPS certificate issues
+- Configuring host services to accept connections from containers
+- Troubleshooting connection problems
+
+The sample includes built-in options to:
+1. Trust all SSL certificates (for development only)
+2. Configure HTTP/HTTPS connection preferences
+3. Change connection parameters through an interactive menu (option 12)
