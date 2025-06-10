@@ -2,13 +2,7 @@ package Program;
 
 import java.io.IOException;
 import java.security.PublicKey;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -21,9 +15,6 @@ import Model.ConsumptionDto;
 import Model.AnalyticalFieldValue;
 import Model.ConsumptionHeartbeatDto;
 import Model.ConsumptionHeartbeatValueDto;
-import Model.LicenseFeature;
-import Model.LicenseInfo;
-import Model.LicenseLimitation;
 import Model.SessionDto;
 import Model.SessionInfo;
 import Model.UnassignDto;
@@ -40,15 +31,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+import Model.LicenseXml;
+
 public class Program {
 	
 	// ToDo: Insert the parameter for the respective function
     private static String ProductId = "b18657cc-1f7c-43fa-e3a4-08da6fa41ad3";
-    private static String LicenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";
-
-    private SampleProxy slasconeProxy = new SampleProxy();
+    private static String LicenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";    private SampleProxy slasconeProxy = new SampleProxy();
 
     private String token;
+    // Map to store limitation values from license for potential usage in the application
     private Map<String, Integer> limitationMap;
 
 	public static void main(String [] args) throws Exception {
@@ -77,10 +69,9 @@ public class Program {
 			System.out.println("    7: Add consumption heartbeat");
 			System.out.println("-- FLOATING");
 			System.out.println("    8: Open session");
-			System.out.println("    9: Find open session (temporary disconnection)");
-			System.out.println("    10: Close session");
+			System.out.println("    9: Find open session (temporary disconnection)");			System.out.println("    10: Close session");
 			System.out.println("-- OFFLINE LICENSE");
-            System.out.println("    11: Validate license file (signature check)");
+            System.out.println("    11: Check and read offline license file");
 
 			System.out.println("x: Exit program");
 
@@ -126,12 +117,10 @@ public class Program {
 
                 case "10":
                     program.CloseSessionExample();
+                    break;                case "11":
+                    program.CheckAndReadOfflineLicenseExample();
                     break;
 
-                case "11":
-                    program.CheckOfflineLicenseExample();
-                    break;
-                    
                 default:
                     break;
             }
@@ -180,11 +169,10 @@ public class Program {
             System.out.println(result.WarningInfo.message);
             // Example Warning handling
             if (result.WarningInfo.id == 2006) {
-            }
-        } else if (result.LicenseInfo != null) {
+            }        } else if (result.LicenseInfo != null) {
             System.out.println("Successfully created heartbeat.");
             token = result.LicenseInfo.token_key.toString();
-            PrintLicenseInfo(result.LicenseInfo);
+            limitationMap = Helper.PrintLicenseInfo(result.LicenseInfo);
         } else {
             System.out.println("Unknown Error");
         }
@@ -192,12 +180,10 @@ public class Program {
 
     private void OfflineLicenseInfoExample() throws Exception, IOException {
 
-        var result = slasconeProxy.GetOfflineLicense();
-
-        if (result.LicenseInfo != null) {
+        var result = slasconeProxy.GetOfflineLicense();        if (result.LicenseInfo != null) {
             System.out.println("Successfully read temporary offline license.");
             token = result.LicenseInfo.token_key.toString();
-            PrintLicenseInfo(result.LicenseInfo);
+            limitationMap = Helper.PrintLicenseInfo(result.LicenseInfo);
         } else {
             System.out.println("Unknown Error");
         }
@@ -375,15 +361,18 @@ public class Program {
         } else {
             System.out.println("Unknown Error");
         }
-    }
+    }    // Combined method to check signature and read license file contents
 
-    private void CheckOfflineLicenseExample() throws Exception {
-
+    private void CheckAndReadOfflineLicenseExample() throws Exception {
+        String licenseFilePath = "Slascone.Provisioning.Sample/assets/OfflineLicenseFile.xml";
+        
+        System.out.println("Checking offline license file signature...");
+        
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         documentBuilderFactory.setNamespaceAware(true);
 
         DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
-        Document doc = builder.parse("assets/OfflineLicenseFile.xml");
+        Document doc = builder.parse(licenseFilePath);
         NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
 
         if (nl.getLength() == 0) {
@@ -402,63 +391,31 @@ public class Program {
         boolean isValid = signature.validate(validateContext);
 
         if (isValid) {
-            System.out.println("Offline license integrity successfully checked!");
-        } else {
-            System.out.println("Offline license invalid!");
-        }
-    }
-
-    private void PrintLicenseInfo(LicenseInfo licenseInfo) {
-	    System.out.println(MessageFormat.format("License infos (Retrieved {0}):", licenseInfo.created_date_utc));
-	    System.out.println("   Company name: " + licenseInfo.customer.getCompany_name());
-
-	    // Handle license info
-	    //  o Active and expired state (i.e. valid state)
-	    //  o Active features and limitations
-	    System.out.println(MessageFormat.format("   License is {0} (IsActive: {1}; IsExpired: {2})",
-        licenseInfo.is_license_valid ? "valid" : "not valid",
-        licenseInfo.is_license_active,
-        licenseInfo.is_license_expired));
-
-
-        if (licenseInfo.is_license_expired) {
-            long expiration = Duration.between(licenseInfo.expiration_date_utc.toInstant(), Instant.now()).toDays();
-            System.out.println(MessageFormat.format("   License is expired since {0} day(s).", expiration));
-
-            // Check freeride
-            if (expiration < licenseInfo.freeride) {
-                System.out.println(
-                        MessageFormat.format("   Freeride granted for {0} day(s).", licenseInfo.freeride - expiration));
+            System.out.println("✓ Offline license signature is valid!");
+            
+            try {
+                System.out.println("\nReading license file content...");
+                
+                // Create Jackson XmlMapper to deserialize XML to Java object
+                com.fasterxml.jackson.dataformat.xml.XmlMapper xmlMapper = new com.fasterxml.jackson.dataformat.xml.XmlMapper();
+                
+                // Configure mapper to ignore unknown properties
+                xmlMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                
+                // Read the license file
+                java.io.File file = new java.io.File(licenseFilePath);
+                
+                // Parse the XML into our LicenseXml class
+                LicenseXml licenseXml = xmlMapper.readValue(file, LicenseXml.class);
+                
+                // Display the main properties of the license
+                Helper.PrintLicenseXmlDetails(licenseXml);
+            } catch (Exception e) {
+                System.out.println("Error reading offline license file: " + e.getMessage());
+                e.printStackTrace();
             }
         } else {
-            long valid = Duration.between(Instant.now(), licenseInfo.expiration_date_utc.toInstant()).toDays();
-            System.out.println(MessageFormat.format("   License is valid for another {0} day(s) until {1}.",
-                    valid, new SimpleDateFormat("yyyy-MM-dd").format(licenseInfo.expiration_date_utc)));
+            System.out.println("❌ Offline license signature is invalid! The license file may have been tampered with.");
         }
-
-        StringBuilder features = new StringBuilder();
-        for (LicenseFeature feature : licenseInfo.features) {
-            if (feature.is_active) {
-                if (0 < features.length())
-                    features.append(", ");
-                features.append(feature.name);
-                if (null != feature.expiration_date_utc) {
-                    features.append(MessageFormat.format(" (expires: {0})", new SimpleDateFormat("yyyy-MM-dd").format(feature.expiration_date_utc)));
-                }
-            }
-        }
-
-        System.out.println("   Active features: " + features);
-
-        StringBuilder limitations = new StringBuilder();
-        limitationMap = new HashMap<>();
-        for (LicenseLimitation limitation : licenseInfo.limitations) {
-            if (0 < limitations.length())
-                limitations.append(", ");
-            limitations.append(limitation.name + " = " + limitation.value);
-            limitationMap.put(limitation.name, limitation.value);
-        }
-
-        System.out.println("   Limitations: " + limitations);
-    }
+    }    // Combined method to check signature and read license file contents
 }
