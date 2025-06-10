@@ -1,1 +1,4 @@
 Slascone.Provisioning.Sample/**/*.class
+Slascone.Provisioning.Sample/lib/*
+!Slascone.Provisioning.Sample/lib/README.md
+target/
