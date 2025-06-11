@@ -232,7 +232,7 @@ By default, the application data is stored in:
 - `~/.slascone` on Linux/macOS (user's home directory)
 - `%ProgramData%\Slascone` on Windows
 
-#### Customizing the Data Folder
+#### Custom Location
 
 You can change the application data folder programmatically using 
 the `Helper.setAppDataFolder()` method in your own code
