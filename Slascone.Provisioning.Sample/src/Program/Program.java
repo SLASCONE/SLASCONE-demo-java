@@ -146,29 +146,20 @@ public class Program {
      */
     private void initializeAppDataFolder() {
         try {
-            // Check if app data folder is specified in environment variables
-            String envAppDataFolder = System.getenv("SLASCONE_APP_DATA");
+            // Set folder based on OS
+            String osName = System.getProperty("os.name").toLowerCase();
+            String appDataFolder;
             
-            if (envAppDataFolder != null && !envAppDataFolder.trim().isEmpty()) {
-                // Environment variable has priority
-                slasconeProxy.setAppDataFolder(envAppDataFolder);
-                System.out.println("Using app data folder from environment: " + envAppDataFolder);
+            if (osName.contains("win")) {
+                // On Windows, use ProgramData folder
+                appDataFolder = System.getenv("ProgramData") + File.separator + "Slascone";
             } else {
-                // Set folder based on OS
-                String osName = System.getProperty("os.name").toLowerCase();
-                String appDataFolder;
-                
-                if (osName.contains("win")) {
-                    // On Windows, use ProgramData folder
-                    appDataFolder = System.getenv("ProgramData") + File.separator + "Slascone";
-                } else {
-                    // On Linux/macOS, use user's home directory
-                    appDataFolder = System.getProperty("user.home") + File.separator + ".slascone";
-                }
-                
-                slasconeProxy.setAppDataFolder(appDataFolder);
-                System.out.println("Using app data folder: " + appDataFolder);
+                // On Linux/macOS, use user's home directory
+                appDataFolder = System.getProperty("user.home") + File.separator + ".slascone";
             }
+            
+            slasconeProxy.setAppDataFolder(appDataFolder);
+            System.out.println("Using app data folder: " + appDataFolder);
         } catch (Exception e) {
             System.err.println("Error initializing app data folder: " + e.getMessage());
             e.printStackTrace();
