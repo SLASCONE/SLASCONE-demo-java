@@ -170,7 +170,7 @@ public class Program {
 
         // ToDo: Fill the variables
         var result = slasconeProxy
-                .Activate(new ActivateInfo(ProductId, LicenseKey, Helper.GetUniqueDeviceId(), "test", "test"));
+                .Activate(new ActivateInfo(ProductId, LicenseKey, Helper.GetUniqueDeviceId(), "SLASCONE-demo-java", "SLASCONE Java demo"));
 
         // If the activation failed, the api server responses with a specific error
         // message which describes the problem. Therefore the LicenseInfo object is
@@ -196,7 +196,7 @@ public class Program {
         // heartBeatDto.setHeartbeat_type_id(null);
         heartBeatDto.setOperating_system(Helper.GetOperatingSystem());
         heartBeatDto.setProduct_id(UUID.fromString(ProductId));
-        heartBeatDto.setSoftware_version("22.2");
+        heartBeatDto.setSoftware_version("25.1.0");
         // heartBeatDto.setToken_key(null);
 
         var result = slasconeProxy.AddHeartbeat(heartBeatDto);
