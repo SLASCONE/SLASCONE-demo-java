@@ -230,7 +230,7 @@ The sample application now stores license and session files in a dedicated appli
 
 By default, the application data is stored in:
 - `~/.slascone` on Linux/macOS (user's home directory)
-- `C:\Users\<username>\.slascone` on Windows
+- `%ProgramData%\Slascone` on Windows
 
 #### Customizing the Data Folder
 

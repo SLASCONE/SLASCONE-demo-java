@@ -281,7 +281,7 @@ hQIDAQAB
             System.out.println("No license information available.");
             return;
         }
-        
+
         // Display the main properties of the license
         System.out.println("\nLicense Information:");
         System.out.println("-------------------");
@@ -293,6 +293,7 @@ hQIDAQAB
         CustomerAccountXml customer = licenseXml.getCustomer();
         if (customer != null) {
             System.out.println("\nCustomer Information:");
+            System.out.println("---------------------");
             System.out.println("Customer ID: " + customer.getCustomerId());
             if (customer.getCompanyName() != null) {
                 System.out.println("Company Name: " + customer.getCompanyName());
@@ -310,17 +311,20 @@ hQIDAQAB
         
         // Product information
         System.out.println("\nProduct Information:");
+        System.out.println("--------------------");
         System.out.println("Product Name: " + licenseXml.getProductName());
         System.out.println("Product ID: " + licenseXml.getProductId());
         System.out.println("Template Name: " + licenseXml.getTemplateName());
           // License details
         System.out.println("\nLicense Details:");
+        System.out.println("----------------");
         System.out.println("Provisioning Mode: " + licenseXml.getProvisioningMode());
         System.out.println("Is Temporary: " + licenseXml.isTemporary());
         
         // Date information and license validity
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("\nLicense Validity:");
+        System.out.println("-------------------");
         if (licenseXml.getModifiedDateUtc() != null) {
             System.out.println("Modified Date: " + dateFormat.format(licenseXml.getModifiedDateUtc()));
         }
@@ -328,7 +332,9 @@ hQIDAQAB
         boolean isExpired = false;
         long daysRemaining = 0;
         
-        if (licenseXml.getExpirationDateUtc() != null) {
+        if (licenseXml.getExpirationDateUtc() != null
+            && licenseXml.getExpirationDateUtc().toInstant().atZone(java.time.ZoneId.systemDefault()).getYear() < 9999) {
+
             System.out.println("Expiration Date: " + dateFormat.format(licenseXml.getExpirationDateUtc()));
             
             // Calculate remaining days
@@ -361,7 +367,7 @@ hQIDAQAB
                 
                 // Show freeride information
                 if (licenseXml.getFreeRide() != null) {
-                    System.out.println(MessageFormat.format("Freeride Period: {0} day(s) after expiration", 
+                    System.out.println(MessageFormat.format("Freeride Period: {0} day(s) after last heartbeat.", 
                         licenseXml.getFreeRide()));
                 }
             }
@@ -414,44 +420,107 @@ hQIDAQAB
      * 
      * @param licenseInfo The LicenseInfo object to print
      * @return A map of limitations for further use in the application
-     */
-    public static Map<String, Integer> PrintLicenseInfo(LicenseInfo licenseInfo) {
+     */    public static Map<String, Integer> PrintLicenseInfo(LicenseInfo licenseInfo) {
         System.out.println(MessageFormat.format("License infos (Retrieved {0}):", licenseInfo.created_date_utc));
-        System.out.println("   Company name: " + licenseInfo.customer.getCompany_name());
-        System.out.println("   Edition: " + licenseInfo.getTemplate_name());
 
-        // Handle license info
-        //  o Active and expired state (i.e. valid state)
-        //  o Active features and limitations
-        System.out.println(MessageFormat.format("   License is {0} (IsActive: {1}; IsExpired: {2})",
+        // Display the main properties of the license
+        System.out.println("\nLicense Information:");
+        System.out.println("-------------------");
+        System.out.println("License Name: " + licenseInfo.license_name);
+        System.out.println("License Key: " + licenseInfo.license_key);
+        if (licenseInfo.legacy_license_key != null && !licenseInfo.legacy_license_key.isEmpty()) {
+            System.out.println("Legacy License Key: " + licenseInfo.legacy_license_key);
+        }
+        if (licenseInfo.token_key != null) {
+            System.out.println("Token Key: " + licenseInfo.token_key);
+        }
+        
+        // Customer information
+        if (licenseInfo.customer != null) {
+            System.out.println("\nCustomer Information:");
+            System.out.println("---------------------");
+            System.out.println("Customer ID: " + licenseInfo.customer.getCustomer_id());
+            System.out.println("Company Name: " + licenseInfo.customer.getCompany_name());
+            if (licenseInfo.customer.getCustomer_number() != null && !licenseInfo.customer.getCustomer_number().isEmpty()) {
+                System.out.println("Customer Number: " + licenseInfo.customer.getCustomer_number());
+            }
+        }
+        
+        // Product information
+        System.out.println("\nProduct Information:");
+        System.out.println("--------------------");
+        System.out.println("Product Name: " + licenseInfo.product_name);
+        System.out.println("Template Name: " + licenseInfo.template_name);
+        
+        // License details
+        System.out.println("\nLicense Details:");
+        System.out.println("----------------");
+        System.out.println("Provisioning Mode: " + licenseInfo.provisioning_mode);
+        System.out.println("Is Temporary: " + (licenseInfo.is_temporary != null ? licenseInfo.is_temporary : "N/A"));
+        System.out.println("Heartbeat Period: " + licenseInfo.heartbeat_period + " days");
+        if (licenseInfo.session_period > 0) {
+            System.out.println("Session Period: " + licenseInfo.session_period + " days");
+        }
+        
+        // License validity status
+        System.out.println("\nLicense Validity Status:");
+        System.out.println("-----------------------");
+        System.out.println(MessageFormat.format("License is {0} (IsActive: {1}; IsExpired: {2})",
             licenseInfo.is_license_valid ? "valid" : "not valid",
             licenseInfo.is_license_active,
             licenseInfo.is_license_expired));
 
-        if (licenseInfo.is_license_expired) {
-            long expiration = Duration.between(licenseInfo.expiration_date_utc.toInstant(), Instant.now()).toDays();
-            System.out.println(MessageFormat.format("   License is expired since {0} day(s).", expiration));
-
-            // Check freeride
-            if (expiration < licenseInfo.freeride) {
-                System.out.println(
-                        MessageFormat.format("   Freeride granted for {0} day(s).", licenseInfo.freeride - expiration));
+        // Date information and license validity
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        if (licenseInfo.created_date_utc != null) {
+            System.out.println("Created Date: " + dateFormat.format(licenseInfo.created_date_utc));
+        }
+        
+        if (licenseInfo.expiration_date_utc != null) {
+            System.out.println("Expiration Date: " + dateFormat.format(licenseInfo.expiration_date_utc));
+            
+            // Check if it's a "9999" perpetual license
+            if (licenseInfo.expiration_date_utc.toInstant().atZone(java.time.ZoneId.systemDefault()).getYear() >= 9999) {
+                System.out.println("This is a perpetual license.");
+            } else if (licenseInfo.is_license_expired) {
+                long expiration = Duration.between(licenseInfo.expiration_date_utc.toInstant(), Instant.now()).toDays();
+                System.out.println(MessageFormat.format("License is expired since {0} day(s).", expiration));
+                
+                // Check freeride
+                if (licenseInfo.freeride > 0) {
+                    if (expiration < licenseInfo.freeride) {
+                        System.out.println(MessageFormat.format("Freeride granted for {0} day(s).", licenseInfo.freeride));
+                        System.out.println(MessageFormat.format("License is still usable during freeride period (expires in {0} day(s)).", 
+                            licenseInfo.freeride - expiration));
+                    } else {
+                        System.out.println("Freeride period has expired. License is no longer valid.");
+                    }
+                }
+            } else {
+                long valid = Duration.between(Instant.now(), licenseInfo.expiration_date_utc.toInstant()).toDays();
+                System.out.println(MessageFormat.format("License is valid for another {0} day(s) until {1}.",
+                        valid, dateFormat.format(licenseInfo.expiration_date_utc)));
+                
+                // Show freeride information
+                if (licenseInfo.freeride > 0) {
+                    System.out.println(MessageFormat.format("Freeride Period: {0} day(s) after expiration", 
+                        licenseInfo.freeride));
+                }
             }
         } else {
-            long valid = Duration.between(Instant.now(), licenseInfo.expiration_date_utc.toInstant()).toDays();
-            System.out.println(MessageFormat.format("   License is valid for another {0} day(s) until {1}.",
-                    valid, new SimpleDateFormat("yyyy-MM-dd").format(licenseInfo.expiration_date_utc)));
+            System.out.println("License has no expiration date.");
         }
-
-        StringBuilder features = new StringBuilder();
-        for (LicenseFeature feature : licenseInfo.features) {
-            if (feature.is_active) {
-                if (0 < features.length())
-                    features.append(", ");
-                features.append(feature.name);
-                if (null != feature.expiration_date_utc) {
-                    features.append(MessageFormat.format(" (expires: {0})", new SimpleDateFormat("yyyy-MM-dd").format(feature.expiration_date_utc)));
-                }
+          // Software version information
+        if (licenseInfo.software_release_limitation != null) {
+            System.out.println("\nSoftware Version Information:");
+            System.out.println("----------------------------");
+            System.out.println("Is Software Version Valid: " + licenseInfo.is_software_version_valid);
+            System.out.println("Enforce Software Upgrade: " + licenseInfo.enforce_software_version_upgrade);
+            if (licenseInfo.software_release_limitation.getSoftwareRelease() != null) {
+                System.out.println("Software Release: " + licenseInfo.software_release_limitation.getSoftwareRelease());
+            }
+            if (licenseInfo.software_release_limitation.getDescription() != null) {
+                System.out.println("Description: " + licenseInfo.software_release_limitation.getDescription());
             }
         }
 
@@ -460,11 +529,13 @@ hQIDAQAB
             System.out.println("\nFeatures:");
             for (LicenseFeature feature : licenseInfo.features) {
                 System.out.println("- " + feature.name + " (Active: " + feature.is_active + ")");
+                if (feature.expiration_date_utc != null) {
+                    System.out.println("  Expires: " + dateFormat.format(feature.expiration_date_utc));
+                }
             }
         } else {
             System.out.println("\nNo features available in this license.");
         }
-
 		// Enumerate limitations
 		if (licenseInfo.limitations != null && licenseInfo.limitations.size() > 0) {
 			System.out.println("\nLimitations:");
@@ -484,6 +555,13 @@ hQIDAQAB
 		} else {
 			System.out.println("\nNo variables available in this license.");
 		}
+				// User information if present
+		if (licenseInfo.license_users != null && !licenseInfo.license_users.isEmpty()) {
+			System.out.println("\nLicense Users:");
+			System.out.println("Number of users: " + licenseInfo.license_users.size());
+		}
+
+        System.out.println("\nLicense information successfully validated!");
 
         Map<String, Integer> limitationMap = new HashMap<>();
         for (LicenseLimitation limitation : licenseInfo.limitations) {
