@@ -1,5 +1,6 @@
 package Proxy;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidKeyException;
@@ -47,6 +48,10 @@ import Model.ValidateLicenseDto;
 import Model.WarningInfo;
 import Program.Helper;
 
+/**
+ * SampleProxy is a class that provides methods to interact with the Slascone API for license provisioning and management.
+ * It includes methods for activating licenses, adding heartbeats, managing sessions, and handling consumption data.
+ */
 public class SampleProxy {
 
 	private String ApiBaseUrl = "https://api.slascone.com";
@@ -54,28 +59,97 @@ public class SampleProxy {
     private String IsvId = "2af5fe02-6207-4214-946e-b00ac5309f53";
 
 	private int SignatureValidationMode = 2;
-    private HttpClient client; 
-	
-    public SampleProxy() {
-    	Header acceptHeader = new BasicHeader("Accept", "application/json");
-		Header acceptEncodingHeader = new BasicHeader("Accept-Encoding", "utf-8");
-    	Header contentTypeHeader = new BasicHeader("Content-type", "application/json");
-    	Header provisioningHeader = new BasicHeader("ProvisioningKey", this.ProvisioningKey);
-		Header lastModifiedByHeader = new BasicHeader("LastModifiedBy", "Slascone-demo-java");
-    	List<Header> headers = new ArrayList<Header>();
-    	headers.add(acceptHeader);
-    	headers.add(acceptEncodingHeader);
-    	headers.add(contentTypeHeader);
-    	headers.add(provisioningHeader);
-		headers.add(lastModifiedByHeader);
-    	
-    	this.client = HttpClients.custom().setDefaultHeaders(headers).build();
+    private HttpClient client;
+    
+    /**
+     * The folder where application data files will be stored.
+     * This folder is used for license files, session data, and other application data.
+     */
+    private String AppDataFolder;
+    
+    /**
+     * Gets the current AppDataFolder where files are stored.
+     * 
+     * @return The current application data folder path
+     */
+    public String getAppDataFolder() {
+        return AppDataFolder;
     }
     
-    /// <summary>
-    /// Activates a License
-    /// </summary>
-    /// <returns>ProvisioningInfo where LicenseInfoDto or WarningInfoDto is set.</returns>
+    /**
+     * Sets the AppDataFolder to a new location.
+     * Creates the directory if it doesn't exist.
+     * 
+     * @param folder The new folder path to use for application data
+     * @return true if the folder was set successfully, false otherwise
+     */
+    public boolean setAppDataFolder(String folder) {
+        try {
+            File dir = new File(folder);
+            if (!dir.exists()) {
+                boolean created = dir.mkdirs();
+                if (!created) {
+                    System.err.println("Failed to create directory: " + folder);
+                    return false;
+                }
+            } else if (!dir.isDirectory()) {
+                System.err.println("Path exists but is not a directory: " + folder);
+                return false;
+            }
+            
+            // Check if the directory is writable
+            if (!dir.canWrite()) {
+                System.err.println("Directory is not writable: " + folder);
+                return false;
+            }
+            
+            AppDataFolder = folder;
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error setting AppDataFolder: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+      /**
+     * Constructor that initializes the HTTP client with the appropriate headers for API communication.
+     */
+    public SampleProxy() {
+		Header acceptHeader = new BasicHeader("Accept", "application/json");
+		Header acceptEncodingHeader = new BasicHeader("Accept-Encoding", "utf-8");
+		Header contentTypeHeader = new BasicHeader("Content-type", "application/json");
+		Header provisioningHeader = new BasicHeader("ProvisioningKey", this.ProvisioningKey);
+		Header lastModifiedByHeader = new BasicHeader("LastModifiedBy", "Slascone-demo-java");
+		List<Header> headers = new ArrayList<Header>();
+		headers.add(acceptHeader);
+		headers.add(acceptEncodingHeader);
+		headers.add(contentTypeHeader);
+		headers.add(provisioningHeader);
+		headers.add(lastModifiedByHeader);
+		
+		this.client = HttpClients.custom().setDefaultHeaders(headers).build();
+        
+        // Set default app data folder
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            // On Windows, use ProgramData folder
+            this.AppDataFolder = System.getenv("ProgramData") + File.separator + "Slascone";
+        } else {
+            // On Linux/macOS, use user's home directory
+            this.AppDataFolder = System.getProperty("user.home") + File.separator + ".slascone";
+        }
+        
+        // Create the folder if it doesn't exist
+        this.setAppDataFolder(this.AppDataFolder);
+    }
+    
+    /**
+     * Activates a License with the SLASCONE service.
+     *
+     * @param activateDto The activation information required to activate the license
+     * @return ProvisioningInfo containing either LicenseInfo on success or WarningInfo on failure
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public ProvisioningInfo Activate(ActivateInfo activateDto) throws Exception {
         
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -96,8 +170,11 @@ public class SampleProxy {
 
     	ObjectMapper mapper = CreateObjectMapper();
     	
-    	 // If activation was successful, the api returns a status code Ok(200) with the information of the license.
+    	// If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
+
+			StoreToLocalFiles(response, "license");
+    	
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		ProvisioningInfo provInfo = new ProvisioningInfo();
     		provInfo.setLicenseInfo(licInfo);
@@ -116,12 +193,14 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
     
-    // Creates a heartbeat
-    // Response is either a LicenseInfoDto or a WarningInfoDto
-    /// <summary>
-    /// Creates a heartbeat
-    /// </summary>
-    /// <returns>ProvisioningInfo where LicenseInfoDto or WarningInfoDto is set.</returns>
+    /**
+     * Creates a heartbeat to verify license status with the SLASCONE server.
+     * Stores license information locally for offline use.
+     *
+     * @param heartbeatDto The heartbeat information to send to the server
+     * @return ProvisioningInfo containing either LicenseInfo on success or WarningInfo on failure
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public ProvisioningInfo AddHeartbeat(AddHeartbeatDto heartbeatDto) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -140,12 +219,13 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-		StoreToLocalFiles(response, "license");
-    	
     	ObjectMapper mapper = CreateObjectMapper();
 		
         // If generating a heartbeat was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
+
+			StoreToLocalFiles(response, "license");
+    	
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		ProvisioningInfo provInfo = new ProvisioningInfo();
     		provInfo.setLicenseInfo(licInfo);
@@ -164,32 +244,73 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
 
-	public ProvisioningInfo GetOfflineLicense() throws Exception, IOException {
+	/**
+	 * Retrieves license information from local cache for offline use.
+	 * Validates the signature of the cached license data.
+	 *
+	 * @return ProvisioningInfo containing the license information, or null if validation fails
+	 * @throws IOException If an I/O error occurs reading the cache files
+	 */
+	public ProvisioningInfo GetOfflineLicense() throws IOException {
+		try {
+			// Read body of response and signature header from local files
+			byte[] licenseBytes = Helper.ReadFromFile("license.txt", this.AppDataFolder);
+			byte[] signatureBytes = Helper.ReadFromFile("license_signature.txt", this.AppDataFolder);
 
-		// Read body of reesponse and signature header from local files
-		byte[] licenseBytes = Helper.ReadFromFile("license.txt");
-		String signatureHeaderString = new String(Helper.ReadFromFile("license_signature.txt"));
+			if (signatureBytes != null) {
+				String signatureHeaderString = new String(signatureBytes);
 
-		if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(licenseBytes, signatureHeaderString)) {
-			throw new Exception("Signature is not valid!");
-		} else if (SignatureValidationMode == 2 && !Helper.IsSignatureValidAsymmetricKey(licenseBytes, signatureHeaderString)) {
-			throw new Exception("Signature is not valid!");
+				boolean isValid = true;
+				if (SignatureValidationMode == 1) {
+					try {
+						isValid = Helper.IsSignatureValidSymmetricKey(licenseBytes, signatureHeaderString);
+						if (!isValid) {
+							System.err.println("Signature validation failed: Symmetric key validation error");
+						}
+					} catch (Exception e) {
+						System.err.println("Error checking signature with symmetric key: " + e.getMessage());
+						isValid = false;
+					}
+				} else if (SignatureValidationMode == 2) {
+					try {
+						isValid = Helper.IsSignatureValidAsymmetricKey(licenseBytes, signatureHeaderString);
+						if (!isValid) {
+							System.err.println("Signature validation failed: Asymmetric key validation error");
+						}
+					} catch (Exception e) {
+						System.err.println("Error checking signature with asymmetric key: " + e.getMessage());
+						isValid = false;
+					}
+				}
+
+				if (!isValid) {
+					return null;
+				}
+			} else {
+				System.err.println("Signature file not found or empty.");
+				return null;
+			}
+
+			ObjectMapper mapper = CreateObjectMapper();
+
+			LicenseInfo licInfo = mapper.readValue(new ByteArrayEntity(licenseBytes).getContent(), LicenseInfo.class);
+			ProvisioningInfo provInfo = new ProvisioningInfo();
+			provInfo.setLicenseInfo(licInfo);
+			
+			return provInfo;
+		} catch (Exception e) {
+			System.err.println("Error retrieving offline license: " + e.getMessage());
+			return null;
 		}
-
-		ObjectMapper mapper = CreateObjectMapper();
-
-		LicenseInfo licInfo = mapper.readValue(new ByteArrayEntity(licenseBytes).getContent(), LicenseInfo.class);
-		ProvisioningInfo provInfo = new ProvisioningInfo();
-		provInfo.setLicenseInfo(licInfo);
-		
-		return provInfo;
-	}		
+	}
     
-    /// <summary>
-    /// Creates a analytical heartbeat
-    /// </summary>
-    /// <param name="analyticalHeartbeat">Is the object which contains all analytical Heartbeat Information.</param>
-    /// <returns>"Successfully created analytical heartbeat." or a WarningInfoDto</returns>
+    /**
+     * Creates an analytical heartbeat for data gathering purposes.
+     *
+     * @param analyticalHeartbeat The object containing analytical heartbeat information
+     * @return StringResultInfo containing either success message or warning information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public StringResultInfo AddAnalyticalHeartbeat(AnalyticalHeartbeat analyticalHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -228,11 +349,13 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
     
-    /// <summary>
-    /// Creates a usage heartbeat
-    /// </summary>
-    /// <param name="usageHeartbeat">Is the object which contains all usage Heartbeat Information.</param>
-    /// <returns>"Successfully created usage heartbeat." or a WarningInfoDto</returns>
+    /**
+     * Creates a usage heartbeat for tracking feature usage.
+     *
+     * @param usageHeartbeat The object containing usage heartbeat information
+     * @return StringResultInfo containing either success message or warning information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public StringResultInfo AddUsageHeartbeat(UsageHeartbeatDto usageHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -271,11 +394,13 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
     
-    /// <summary>
-    /// Creates a consumption heartbeat
-    /// </summary>
-    /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
-    /// <returns>"Successfully created consumption heartbeat." or a WarningInfoDto</returns>
+    /**
+     * Creates a consumption heartbeat for tracking license consumption metrics.
+     *
+     * @param consumptionHeartbeat The object containing consumption heartbeat information
+     * @return ConsumptionInfo containing consumption status or warning information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public ConsumptionInfo AddConsumptionHeartbeat(ConsumptionHeartbeatDto consumptionHeartbeat) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -318,10 +443,13 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }    
     
-    /// <summary>
-    /// Get the consumption status
-    /// </summary>
-    /// <returns>Remaining consumptions</returns>
+    /**
+     * Gets the consumption status for a license.
+     *
+     * @param validateConsumptionStatusDto The DTO containing information needed to validate consumption
+     * @return String containing the remaining consumption information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public String GetConsumptionStatus(ValidateConsumptionStatusDto validateConsumptionStatusDto) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -348,11 +476,13 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
 	
-    /// <summary>
-    /// Unassign a activated license.
-    /// </summary>
-    /// <param name="deviceLicenseKey">Is the key of the license assignment which you want to unassign.</param>
-    /// <returns>"Successfully deactivated License." or a WarningInfoDto</returns>
+    /**
+     * Unassigns an activated license from a device.
+     *
+     * @param unassignDto The DTO containing license key and device information
+     * @return StringResultInfo containing either success message or warning information
+     * @throws Exception If signature validation fails or other errors occur
+     */
 	public StringResultInfo UnassignLicense(UnassignDto unassignDto) throws Exception {
 
 		URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -394,10 +524,14 @@ public class SampleProxy {
 		throw new Exception("Unexpected HttpClient Error.");
 	}
     
-    /// <summary>
-    /// Opens a session
-    /// </summary>
-    /// <returns>SessionInfo where SessionViolationInfo or WarningInfoDto is set.</returns>
+    /**
+     * Opens a floating license session.
+     * Stores session information locally for offline use.
+     *
+     * @param sessionDto The DTO containing session information
+     * @return SessionInfo containing either OpenSessionInfo on success or WarningInfo on failure
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public SessionInfo OpenSession(SessionDto sessionDto) throws Exception {
         
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -438,14 +572,19 @@ public class SampleProxy {
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
-    }
-
+    }    /**
+     * Attempts to find an open session in the local cache for offline use.
+     * Validates the session signature and checks if it's still valid.
+     *
+     * @param sesInfo SessionInfo object to populate with session data if found
+     * @return boolean true if a valid session was found, false otherwise
+     */
 	public boolean TryFindOpenSessionOffline(SessionInfo sesInfo) {
 
 		try {
-			// Read body of reesponse and signature header from local files
-			byte[] sessionBytes = Helper.ReadFromFile("session.txt");
-			String signatureHeaderString = new String(Helper.ReadFromFile("session_signature.txt"));
+			// Read body of response and signature header from local files
+			byte[] sessionBytes = Helper.ReadFromFile("session.txt", this.AppDataFolder);
+			String signatureHeaderString = new String(Helper.ReadFromFile("session_signature.txt", this.AppDataFolder));
 
 			if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(sessionBytes, signatureHeaderString)) {
 				throw new Exception("Signature is not valid!");
@@ -470,11 +609,14 @@ public class SampleProxy {
 		}
 	}
     
-    /// <summary>
-    /// Closes a session
-    /// </summary>
-    /// <param name="consumptionHeartbeat">Is the object which contains all consumption Heartbeat Information.</param>
-    /// <returns>"Success." or a WarningInfoDto</returns>
+    /**
+     * Closes an open floating license session.
+     * Removes local session cache files.
+     *
+     * @param sessionDto The DTO containing session information
+     * @return StringResultInfo containing either success message or warning information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public StringResultInfo CloseSession(SessionDto sessionDto) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -517,11 +659,13 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }    
     
-    /// <summary>
-    /// Get the license info
-    /// </summary>
-    /// <param name="deviceLicenseKey">Is the key of the license assignment where you want to get the depending license information.</param>
-    /// <returns>LicenseInfo</returns>
+    /**
+     * Gets the license information for a specific license key.
+     *
+     * @param validateLicenseDto The DTO containing license key information
+     * @return LicenseInfo containing detailed license information
+     * @throws Exception If signature validation fails or other errors occur
+     */
     public LicenseInfo GetLicenseInfo(ValidateLicenseDto validateLicenseDto) throws Exception {
     	
     	URI uri = new URIBuilder(this.ApiBaseUrl)
@@ -554,15 +698,27 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
 
+    /**
+     * Creates an ObjectMapper configured to ignore unknown properties.
+     *
+     * @return ObjectMapper instance configured for JSON deserialization
+     */
 	private ObjectMapper CreateObjectMapper() {
 		return JsonMapper.builder().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES).build();
 		// return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
      
-	/// <summary>
-    /// Validates the authority by signature
-    /// </summary>
-    /// <returns>True if Signature is valid. False if Signature is invalid.</returns>
+    /**
+     * Validates the authority of a response by checking its signature.
+     *
+     * @param response The HTTP response to validate
+     * @return True if signature is valid, false otherwise
+     * @throws IOException If an I/O error occurs
+     * @throws NoSuchAlgorithmException If the encryption algorithm is not available
+     * @throws InvalidKeyException If the key is invalid
+     * @throws InvalidKeySpecException If the key specification is invalid
+     * @throws SignatureException If the signature operation fails
+     */
 	private Boolean IsSignatureValid(HttpResponse response)
 			throws IOException, NoSuchAlgorithmException, InvalidKeyException, InvalidKeySpecException,
 			SignatureException {
@@ -585,8 +741,13 @@ public class SampleProxy {
 		}
 
 		return true;
-	}
-	
+	}    /**
+     * Stores response body and signature to local files for offline use.
+     *
+     * @param response The HTTP response to store
+     * @param entityFileName Base name for the files to create
+     * @throws IOException If an I/O error occurs
+     */
 	private void StoreToLocalFiles(HttpResponse response, String entityFileName) throws IOException {
 
 		HttpEntity entity = response.getEntity();
@@ -597,13 +758,19 @@ public class SampleProxy {
 
 		String signatureHeaderString = response.getFirstHeader("x-slascone-signature").getValue();
 
-		// Store body of reesponse and signature header to local files
-		Helper.StoreToFile(entityFileName + ".txt", responseBytes);
-		Helper.StoreToFile(entityFileName + "_signature.txt", signatureHeaderString.getBytes());
+		// Store body of response and signature header to local files
+		Helper.StoreToFile(entityFileName + ".txt", responseBytes, this.AppDataFolder);
+		Helper.StoreToFile(entityFileName + "_signature.txt", signatureHeaderString.getBytes(), this.AppDataFolder);
 	}
 
+    /**
+     * Removes local cache files for a given entity.
+     *
+     * @param entityFileName Base name of the files to remove
+     * @throws IOException If an I/O error occurs
+     */
 	private void RemoveLocalFiles(String entityFileName) throws IOException {
-		Helper.RemoveFile(entityFileName + ".txt");
-		Helper.RemoveFile(entityFileName + "_signature.txt");
+		Helper.RemoveFile(entityFileName + ".txt", this.AppDataFolder);
+		Helper.RemoveFile(entityFileName + "_signature.txt", this.AppDataFolder);
 	}
 }

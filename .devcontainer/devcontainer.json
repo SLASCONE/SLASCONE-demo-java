@@ -1,0 +1,25 @@
+{
+    "name": "SLASCONE Java Development",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "vscjava.vscode-java-pack",
+                "vscjava.vscode-maven",
+                "redhat.java",
+                "vscjava.vscode-java-debug",
+                "vscjava.vscode-java-dependency",
+                "vscjava.vscode-java-test"
+            ],
+            "settings": {
+                "java.configuration.updateBuildConfiguration": "automatic",
+                "java.import.gradle.enabled": false,
+                "java.import.maven.enabled": true,
+                "java.server.launchMode": "Standard"
+            }
+        }
+    },
+    "postCreateCommand": "mkdir -p .vscode && echo '{\"java.configuration.updateBuildConfiguration\": \"automatic\"}' > .vscode/settings.json && mkdir -p Slascone.Provisioning.Sample/target"
+}
