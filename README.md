@@ -1,6 +1,6 @@
 # LICENSING & ANALYTICS FOR SOFTWARE AND IoT VENDORS
 
-This console application demonstrates the usage of the SLASCONE API for standard operations such as activation, license file validation, heartbeat and floating session management.
+This console application demonstrates the usage of the [SLASCONE API](https://api.slascone.com/swagger/index.html?urls.primaryName=V2) for standard operations such as license activation, file validation, heartbeat and floating session management.
 
 For more information about this solution, visit
 https://slascone.com/ and/or
@@ -30,9 +30,8 @@ This sample application showcases the following key features of the SLASCONE lic
 4. **License Unassignment**
    - Demonstrates how to unassign a license from a device
    - Allows licenses to be transferred to different machines
-   - Releases the license allocation from the current device
 
-5. **Offline License File Handling**
+5. **License File Handling**
    - Validates the digital signature of license files to prevent tampering
    - Reads and displays comprehensive license information from XML files
    - Provides detailed analysis of license validity, features, and limitations
@@ -40,9 +39,8 @@ This sample application showcases the following key features of the SLASCONE lic
 ### Analytics Capabilities
 
 1. **Analytical Heartbeat**
-   - Collects and sends general usage statistics back to SLASCONE
+   - Gathers general troubleshooting statistics
    - Supports custom fields for gathering application-specific metrics
-   - Enables vendors to understand how their software is being used
 
 2. **Feature Usage Tracking**
    - Records which specific features are being used within the application
@@ -167,7 +165,7 @@ Slascone.Provisioning.Sample/
 
 For integration into your software product, focus on the relevant sections that match your licensing needs.
 
-## OFFLINE CAPABILITIES AND FREERIDE PERIODS
+## OFFLINE CAPABILITIES AND FREERIDE PERIOD
 
 ### Temporary Offline Scenarios
 
@@ -188,9 +186,9 @@ The SLASCONE licensing system provides robust support for temporary offline scen
    - For floating licenses, session information is stored in `session.txt` and `session_signature.txt`
    - The sample demonstrates how to read and validate this information in offline mode
 
-### Freeride Periods
+### Freeride Period
 
-Freeride periods provide flexibility when heartbeats fail, allowing users to continue using the software for a specified grace period:
+Freeride period provide flexibility when heartbeats fail, allowing users to continue using the software for a specified grace period:
 
 1. **Purpose**:
    - Prevents immediate software lockout when a heartbeat fails
