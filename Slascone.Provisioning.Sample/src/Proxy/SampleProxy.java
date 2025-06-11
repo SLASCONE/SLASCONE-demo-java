@@ -1,5 +1,6 @@
 package Proxy;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.security.InvalidKeyException;
@@ -58,9 +59,59 @@ public class SampleProxy {
     private String IsvId = "2af5fe02-6207-4214-946e-b00ac5309f53";
 
 	private int SignatureValidationMode = 2;
-    private HttpClient client; 
-	
+    private HttpClient client;
+    
     /**
+     * The folder where application data files will be stored.
+     * This folder is used for license files, session data, and other application data.
+     */
+    private String AppDataFolder;
+    
+    /**
+     * Gets the current AppDataFolder where files are stored.
+     * 
+     * @return The current application data folder path
+     */
+    public String getAppDataFolder() {
+        return AppDataFolder;
+    }
+    
+    /**
+     * Sets the AppDataFolder to a new location.
+     * Creates the directory if it doesn't exist.
+     * 
+     * @param folder The new folder path to use for application data
+     * @return true if the folder was set successfully, false otherwise
+     */
+    public boolean setAppDataFolder(String folder) {
+        try {
+            File dir = new File(folder);
+            if (!dir.exists()) {
+                boolean created = dir.mkdirs();
+                if (!created) {
+                    System.err.println("Failed to create directory: " + folder);
+                    return false;
+                }
+            } else if (!dir.isDirectory()) {
+                System.err.println("Path exists but is not a directory: " + folder);
+                return false;
+            }
+            
+            // Check if the directory is writable
+            if (!dir.canWrite()) {
+                System.err.println("Directory is not writable: " + folder);
+                return false;
+            }
+            
+            AppDataFolder = folder;
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error setting AppDataFolder: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+      /**
      * Constructor that initializes the HTTP client with the appropriate headers for API communication.
      */
     public SampleProxy() {
@@ -77,6 +128,19 @@ public class SampleProxy {
 		headers.add(lastModifiedByHeader);
 		
 		this.client = HttpClients.custom().setDefaultHeaders(headers).build();
+        
+        // Set default app data folder
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("win")) {
+            // On Windows, use ProgramData folder
+            this.AppDataFolder = System.getenv("ProgramData") + File.separator + "Slascone";
+        } else {
+            // On Linux/macOS, use user's home directory
+            this.AppDataFolder = System.getProperty("user.home") + File.separator + ".slascone";
+        }
+        
+        // Create the folder if it doesn't exist
+        this.setAppDataFolder(this.AppDataFolder);
     }
     
     /**
@@ -108,6 +172,9 @@ public class SampleProxy {
     	
     	// If activation was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
+
+			StoreToLocalFiles(response, "license");
+    	
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		ProvisioningInfo provInfo = new ProvisioningInfo();
     		provInfo.setLicenseInfo(licInfo);
@@ -152,12 +219,13 @@ public class SampleProxy {
     		throw new Exception("Signature is not valid!");
     	}
 
-		StoreToLocalFiles(response, "license");
-    	
     	ObjectMapper mapper = CreateObjectMapper();
 		
         // If generating a heartbeat was successful, the api returns a status code Ok(200) with the information of the license.
     	if(response.getStatusLine().getStatusCode() == 200) {
+
+			StoreToLocalFiles(response, "license");
+    	
     		LicenseInfo licInfo = mapper.readValue(response.getEntity().getContent(), LicenseInfo.class);
     		ProvisioningInfo provInfo = new ProvisioningInfo();
     		provInfo.setLicenseInfo(licInfo);
@@ -176,34 +244,65 @@ public class SampleProxy {
     	throw new Exception("Unexpected HttpClient Error.");
     }
 
-    /**
-     * Retrieves license information from local cache for offline use.
-     * Validates the signature of the cached license data.
-     *
-     * @return ProvisioningInfo containing the license information
-     * @throws Exception If signature validation fails or if the cache is invalid
-     * @throws IOException If an I/O error occurs reading the cache files
-     */
-	public ProvisioningInfo GetOfflineLicense() throws Exception, IOException {
+	/**
+	 * Retrieves license information from local cache for offline use.
+	 * Validates the signature of the cached license data.
+	 *
+	 * @return ProvisioningInfo containing the license information, or null if validation fails
+	 * @throws IOException If an I/O error occurs reading the cache files
+	 */
+	public ProvisioningInfo GetOfflineLicense() throws IOException {
+		try {
+			// Read body of response and signature header from local files
+			byte[] licenseBytes = Helper.ReadFromFile("license.txt", this.AppDataFolder);
+			byte[] signatureBytes = Helper.ReadFromFile("license_signature.txt", this.AppDataFolder);
 
-		// Read body of reesponse and signature header from local files
-		byte[] licenseBytes = Helper.ReadFromFile("license.txt");
-		String signatureHeaderString = new String(Helper.ReadFromFile("license_signature.txt"));
+			if (signatureBytes != null) {
+				String signatureHeaderString = new String(signatureBytes);
 
-		if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(licenseBytes, signatureHeaderString)) {
-			throw new Exception("Signature is not valid!");
-		} else if (SignatureValidationMode == 2 && !Helper.IsSignatureValidAsymmetricKey(licenseBytes, signatureHeaderString)) {
-			throw new Exception("Signature is not valid!");
+				boolean isValid = true;
+				if (SignatureValidationMode == 1) {
+					try {
+						isValid = Helper.IsSignatureValidSymmetricKey(licenseBytes, signatureHeaderString);
+						if (!isValid) {
+							System.err.println("Signature validation failed: Symmetric key validation error");
+						}
+					} catch (Exception e) {
+						System.err.println("Error checking signature with symmetric key: " + e.getMessage());
+						isValid = false;
+					}
+				} else if (SignatureValidationMode == 2) {
+					try {
+						isValid = Helper.IsSignatureValidAsymmetricKey(licenseBytes, signatureHeaderString);
+						if (!isValid) {
+							System.err.println("Signature validation failed: Asymmetric key validation error");
+						}
+					} catch (Exception e) {
+						System.err.println("Error checking signature with asymmetric key: " + e.getMessage());
+						isValid = false;
+					}
+				}
+
+				if (!isValid) {
+					return null;
+				}
+			} else {
+				System.err.println("Signature file not found or empty.");
+				return null;
+			}
+
+			ObjectMapper mapper = CreateObjectMapper();
+
+			LicenseInfo licInfo = mapper.readValue(new ByteArrayEntity(licenseBytes).getContent(), LicenseInfo.class);
+			ProvisioningInfo provInfo = new ProvisioningInfo();
+			provInfo.setLicenseInfo(licInfo);
+			
+			return provInfo;
+		} catch (Exception e) {
+			System.err.println("Error retrieving offline license: " + e.getMessage());
+			return null;
 		}
-
-		ObjectMapper mapper = CreateObjectMapper();
-
-		LicenseInfo licInfo = mapper.readValue(new ByteArrayEntity(licenseBytes).getContent(), LicenseInfo.class);
-		ProvisioningInfo provInfo = new ProvisioningInfo();
-		provInfo.setLicenseInfo(licInfo);
-		
-		return provInfo;
-	}		
+	}
     
     /**
      * Creates an analytical heartbeat for data gathering purposes.
@@ -473,9 +572,7 @@ public class SampleProxy {
     	}
     	
     	throw new Exception("Unexpected HttpClient Error.");
-    }
-
-    /**
+    }    /**
      * Attempts to find an open session in the local cache for offline use.
      * Validates the session signature and checks if it's still valid.
      *
@@ -485,9 +582,9 @@ public class SampleProxy {
 	public boolean TryFindOpenSessionOffline(SessionInfo sesInfo) {
 
 		try {
-			// Read body of reesponse and signature header from local files
-			byte[] sessionBytes = Helper.ReadFromFile("session.txt");
-			String signatureHeaderString = new String(Helper.ReadFromFile("session_signature.txt"));
+			// Read body of response and signature header from local files
+			byte[] sessionBytes = Helper.ReadFromFile("session.txt", this.AppDataFolder);
+			String signatureHeaderString = new String(Helper.ReadFromFile("session_signature.txt", this.AppDataFolder));
 
 			if (SignatureValidationMode == 1 && !Helper.IsSignatureValidSymmetricKey(sessionBytes, signatureHeaderString)) {
 				throw new Exception("Signature is not valid!");
@@ -644,9 +741,7 @@ public class SampleProxy {
 		}
 
 		return true;
-	}
-	
-    /**
+	}    /**
      * Stores response body and signature to local files for offline use.
      *
      * @param response The HTTP response to store
@@ -663,9 +758,9 @@ public class SampleProxy {
 
 		String signatureHeaderString = response.getFirstHeader("x-slascone-signature").getValue();
 
-		// Store body of reesponse and signature header to local files
-		Helper.StoreToFile(entityFileName + ".txt", responseBytes);
-		Helper.StoreToFile(entityFileName + "_signature.txt", signatureHeaderString.getBytes());
+		// Store body of response and signature header to local files
+		Helper.StoreToFile(entityFileName + ".txt", responseBytes, this.AppDataFolder);
+		Helper.StoreToFile(entityFileName + "_signature.txt", signatureHeaderString.getBytes(), this.AppDataFolder);
 	}
 
     /**
@@ -675,7 +770,7 @@ public class SampleProxy {
      * @throws IOException If an I/O error occurs
      */
 	private void RemoveLocalFiles(String entityFileName) throws IOException {
-		Helper.RemoveFile(entityFileName + ".txt");
-		Helper.RemoveFile(entityFileName + "_signature.txt");
+		Helper.RemoveFile(entityFileName + ".txt", this.AppDataFolder);
+		Helper.RemoveFile(entityFileName + "_signature.txt", this.AppDataFolder);
 	}
 }

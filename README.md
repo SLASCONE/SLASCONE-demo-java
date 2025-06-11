@@ -216,18 +216,34 @@ Freeride period provide flexibility when heartbeats fail, allowing users to cont
 
 This implementation ensures that temporary network issues or brief periods offline do not disrupt users' work while still maintaining proper license enforcement in the long term.
 
-## Dev Container Environment
+## Configuration and Storage
 
-### Connecting to Host Services
+### Application Data Folder
 
-If you're running this sample in a Dev Container and need to connect to SLASCONE services running on your host machine, please see the [Dev Container Networking Guide](README-DEVCONTAINER-NETWORKING.md) for detailed instructions on:
+The sample application now stores license and session files in a dedicated application data folder instead of the current working directory. This provides several benefits:
 
-- Using `host.docker.internal` to connect to host services
-- Handling SSL/HTTPS certificate issues
-- Configuring host services to accept connections from containers
-- Troubleshooting connection problems
+1. **Persistent Storage**: License and session files remain accessible across application restarts
+2. **Centralized Location**: All application data is stored in a single, dedicated location
+3. **Security**: Files are stored outside of the application directory, reducing the risk of accidental deletion
 
-The sample includes built-in options to:
-1. Trust all SSL certificates (for development only)
-2. Configure HTTP/HTTPS connection preferences
-3. Change connection parameters through an interactive menu (option 12)
+#### Default Location
+
+By default, the application data is stored in:
+- `~/.slascone` on Linux/macOS (user's home directory)
+- `C:\Users\<username>\.slascone` on Windows
+
+#### Customizing the Data Folder
+
+You can change the application data folder programmatically using 
+the `Helper.setAppDataFolder()` method in your own code
+
+#### Stored Files
+
+The following files are managed in the application data folder:
+
+- `license.txt`: The cached license information from the last successful heartbeat
+- `license_signature.txt`: The digital signature for verifying the license file
+- `session.txt`: Information about the current floating license session (if applicable)
+- `session_signature.txt`: The digital signature for verifying the session file
+
+All files are automatically created, updated, and removed as needed during application operation.

@@ -1,5 +1,6 @@
 package Program;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -44,22 +45,24 @@ public class Program {
     private String token;
     
     // Map to store limitation values from license for potential usage in the application
-    private Map<String, Integer> limitationMap;
-
-	public static void main(String [] args) throws Exception {
-
+    private Map<String, Integer> limitationMap;	
+    
+    public static void main(String [] args) throws Exception {
         Program program = new Program();
+
+        // Initialize application data folder
+        program.initializeAppDataFolder();
 
 		System.out.println("Slascone client app example");
 		System.out.println("===========================");
 		System.out.println();
 		System.out.println("Unique Client-Id for this device: " + Helper.GetUniqueDeviceId());
 		System.out.println("Operating system: " + System.getProperty("os.name"));
+        System.out.println("App data folder: " + program.slasconeProxy.getAppDataFolder());
 
         Scanner scanner = new Scanner(System.in);
         String input;
-        do {
-            System.out.println();
+        do {            System.out.println();
 			System.out.println("-- MAIN");
 			System.out.println("    1: Activate license (can be done only once per device)");
 			System.out.println("    2: Add license heartbeat");
@@ -72,8 +75,7 @@ public class Program {
 			System.out.println("-- FLOATING");
 			System.out.println("    8: Open session");
 			System.out.println("    9: Find open session (temporary disconnection)");			
-            System.out.println("    10: Close session");
-			System.out.println("-- OFFLINE LICENSE");
+            System.out.println("    10: Close session");			System.out.println("-- OFFLINE LICENSE");
             System.out.println("    11: Check and read offline license file");
 
 			System.out.println("x: Exit program");
@@ -120,12 +122,10 @@ public class Program {
 
                 case "10":
                     program.CloseSessionExample();
-                    break;                
-                    
-                case "11":
+                    break;                        case "11":
                     program.CheckAndReadOfflineLicenseExample();
                     break;
-                
+
                 case "x":
                     System.out.println("Exiting program...");
                     break;
@@ -137,7 +137,43 @@ public class Program {
         } while (!input.equals("x"));
 
         scanner.close();
-	}
+	}    
+    
+    /**
+     * Initializes the application data folder.
+     * If running on Windows, uses the ProgramData folder.
+     * If running on Linux or macOS, uses the user's home directory.
+     */
+    private void initializeAppDataFolder() {
+        try {
+            // Check if app data folder is specified in environment variables
+            String envAppDataFolder = System.getenv("SLASCONE_APP_DATA");
+            
+            if (envAppDataFolder != null && !envAppDataFolder.trim().isEmpty()) {
+                // Environment variable has priority
+                slasconeProxy.setAppDataFolder(envAppDataFolder);
+                System.out.println("Using app data folder from environment: " + envAppDataFolder);
+            } else {
+                // Set folder based on OS
+                String osName = System.getProperty("os.name").toLowerCase();
+                String appDataFolder;
+                
+                if (osName.contains("win")) {
+                    // On Windows, use ProgramData folder
+                    appDataFolder = System.getenv("ProgramData") + File.separator + "Slascone";
+                } else {
+                    // On Linux/macOS, use user's home directory
+                    appDataFolder = System.getProperty("user.home") + File.separator + ".slascone";
+                }
+                
+                slasconeProxy.setAppDataFolder(appDataFolder);
+                System.out.println("Using app data folder: " + appDataFolder);
+            }
+        } catch (Exception e) {
+            System.err.println("Error initializing app data folder: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     private void ActivateExample() throws Exception {
 
@@ -189,7 +225,8 @@ public class Program {
 
     private void OfflineLicenseInfoExample() throws Exception, IOException {
 
-        var result = slasconeProxy.GetOfflineLicense();        if (result.LicenseInfo != null) {
+        var result = slasconeProxy.GetOfflineLicense();
+        if (result != null && result.LicenseInfo != null) {
             System.out.println("Successfully read temporary offline license.");
             token = result.LicenseInfo.token_key.toString();
             limitationMap = Helper.PrintLicenseInfo(result.LicenseInfo);
@@ -422,9 +459,8 @@ public class Program {
             } catch (Exception e) {
                 System.out.println("Error reading offline license file: " + e.getMessage());
                 e.printStackTrace();
-            }
-        } else {
+            }        } else {
             System.out.println("❌ Offline license signature is invalid! The license file may have been tampered with.");
         }
-    }    // Combined method to check signature and read license file contents
+    }
 }

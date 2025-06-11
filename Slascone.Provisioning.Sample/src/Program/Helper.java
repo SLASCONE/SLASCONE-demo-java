@@ -212,18 +212,22 @@ hQIDAQAB
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 		X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(pemData));
 		return keyFactory.generatePublic(keySpec);
-	}
-
-	/**
-     * Stores binary content to a file.
+	}	/**
+     * Stores binary content to a file in the specified folder.
      *
      * @param fileName The name of the file to store the data in
      * @param binaryContent The binary data to store
+     * @param folder The folder where the file should be stored
      */
-	public static void StoreToFile(String fileName, byte[] binaryContent) {
+	public static void StoreToFile(String fileName, byte[] binaryContent, String folder) {
 		// Write binary data to file
 		try {
-			File file = new File(fileName);
+			File dir = new File(folder);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+			
+			File file = new File(folder, fileName);
 			java.io.FileOutputStream fos = new java.io.FileOutputStream(file);
 			fos.write(binaryContent);
 			fos.close();
@@ -233,15 +237,16 @@ hQIDAQAB
 	}
 
 	/**
-     * Reads binary data from a file.
+     * Reads binary data from a file in the specified folder.
      *
      * @param fileName The name of the file to read
+     * @param folder The folder where the file is located
      * @return The binary content of the file
      */
-	public static byte[] ReadFromFile(String fileName) {
+	public static byte[] ReadFromFile(String fileName, String folder) {
 		// Read binary data from file
 		try {
-			File file = new File(fileName);
+			File file = new File(folder, fileName);
 			java.io.FileInputStream fis = new java.io.FileInputStream(file);
 			byte[] binaryContent = new byte[(int) file.length()];
 			fis.read(binaryContent);
@@ -251,16 +256,18 @@ hQIDAQAB
 			e.printStackTrace();
 		}
 		return null;
-	}
-
+	}    
+    
     /**
-     * Deletes a file from the filesystem.
+     * Deletes a file from the specified folder.
      *
-     * @param string The path of the file to remove
+     * @param fileName The name of the file to remove
+     * @param folder The folder where the file is located
+     * @return true if the file was successfully deleted, false otherwise
      */
-    public static void RemoveFile(String string) {
-		File file = new File(string);
-		file.delete();
+    public static boolean RemoveFile(String fileName, String folder) {
+		File file = new File(folder, fileName);
+		return file.delete();
 	}
 
 	/**
