@@ -1,7 +1,0 @@
-.settings/
-.vscode/
-bin/
-bin/**
-./**/*.class
-lib/
-lib/**
