@@ -7,18 +7,18 @@
     <parent>
         <groupId>com.slascone</groupId>
         <artifactId>slascone-demo-java</artifactId>
-        <version>25.0</version>
+        <version>25.2</version>
     </parent>
 
     <artifactId>slascone-provisioning-sample</artifactId>
-    <version>25.0</version>
+    <version>25.2</version>
 
     <dependencies>
         <!-- SLASCONE API Client -->
         <dependency>
             <groupId>com.slascone</groupId>
             <artifactId>slascone-client</artifactId>
-            <version>25.0</version>
+            <version>25.2</version>
         </dependency>
         
         <!-- Apache HTTP Client -->

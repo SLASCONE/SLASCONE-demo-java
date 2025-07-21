@@ -44,6 +44,8 @@ public class ErrorHandlingHelper {
             String callerMethodName) throws InterruptedException, IOException {
 
         int retryCountdown = MAX_RETRY_COUNT;
+        Exception lastException = null;
+        ErrorType lastErrorType = ErrorType.TECHNICAL;
 
         while (0 <= retryCountdown) {
 
@@ -52,7 +54,7 @@ public class ErrorHandlingHelper {
                 ApiResponse<TOut> result = func.apply(Settings.ISV_ID, argument);
 
                 // Success
-                return new ResultWithError<>(result.getData(), null);
+                return new ResultWithError<>(result.getData());
 
             } catch (ApiException ex) {
 
@@ -62,37 +64,90 @@ public class ErrorHandlingHelper {
 
                     var errorResult = ErrorResultObjects.fromJson(ex.getResponseBody());
 
-                    return new ResultWithError<>(null,
-                            callerMethodName + " resulted in an API error: " + System.lineSeparator() +
-                                    "Code: " + errorResult.getId() + ", Message: " + errorResult.getMessage());
+                    return new ResultWithError<>(errorResult);
 
                 } else if (isTransientHttpError(ex.getCode())) {
+
                     // Transient error: Wait and try again
+                    lastException = ex;
+                    lastErrorType = ErrorType.TECHNICAL;
                     retryCountdown--;
                     Thread.sleep(RETRY_WAIT_TIME.toMillis());
-                } else {
-                    // Check if cause is a transient network exception
-                    if (isTransientNetworkException(ex.getCause())) {
-                        // Transient error: Wait and try again
-                        retryCountdown--;
-                        Thread.sleep(RETRY_WAIT_TIME.toMillis());
-                        continue;
-                    }
+                    continue;
 
-                    // Standard error handling: Return error message
-                    return new ResultWithError<>(null,
-                            callerMethodName + " threw an ApiException: " + System.lineSeparator() +
-                                    "Code: " + ex.getCode() + ", Message: " + ex.getMessage());
+                } else if (isTransientNetworkException(ex.getCause())) {
+
+                    // Transient network error: Wait and try again
+                    lastException = ex;
+                    lastErrorType = ErrorType.NETWORK;
+                    retryCountdown--;
+                    Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                    continue;
                 }
 
+                // Standard error handling: Return error
+                //  - has an HTTP status code != 0 => TECHNICAL error
+                //  - has an HTTP status code == 0 => NETWORK error
+                return new ResultWithError<>(ex, ex.getCode() != 0 ? ErrorType.TECHNICAL : ErrorType.NETWORK);
+
             } catch (Exception ex) {
-                return new ResultWithError<>(null,
-                        callerMethodName + " threw an exception: " + System.lineSeparator() + ex.getMessage());
+
+                // For non-transient exceptions, return immediately
+                if (!isTransientNetworkException(ex)) {
+
+                    return new ResultWithError<>(callerMethodName + " threw an exception: " + 
+                        ex.getClass().getSimpleName() + " - " + ex.getMessage(), ErrorType.NETWORK);
+                }
+                
+                // For transient exceptions, store and retry
+                lastException = ex;
+                lastErrorType = ErrorType.NETWORK;
+                retryCountdown--;
+                Thread.sleep(RETRY_WAIT_TIME.toMillis());
             }
         }
 
         // If we reach here, all retries failed
-        return new ResultWithError<>(null, callerMethodName + " failed after " + MAX_RETRY_COUNT + " retries.");
+        String errorMessage;
+        if (lastException != null) {
+            if (lastException instanceof ApiException) {
+
+                ApiException apiEx = (ApiException) lastException;
+                return new ResultWithError<>(apiEx, lastErrorType);
+            } else {
+                errorMessage = callerMethodName + " failed after " + MAX_RETRY_COUNT + " retries. Last error: " +
+                    lastException.getClass().getSimpleName() + " - " + lastException.getMessage();
+            }
+        }  else {
+            errorMessage = callerMethodName + " failed after " + MAX_RETRY_COUNT + " retries.";
+        }
+        
+        return new ResultWithError<>(errorMessage, lastErrorType);
+    }
+    
+    /**
+     * Error type enum to differentiate between error categories
+     */
+    public enum ErrorType {
+        /**
+         * No error occurred
+         */
+        NONE,
+        
+        /**
+         * Business logic or validation error (e.g., invalid input, conflict)
+         */
+        FUNCTIONAL,
+        
+        /**
+         * Technical error in the system (e.g., internal server error)
+         */
+        TECHNICAL,
+        
+        /**
+         * Network or connectivity issue
+         */
+        NETWORK
     }
     
     /**
@@ -102,23 +157,67 @@ public class ErrorHandlingHelper {
      */
     public static class ResultWithError<T> {
         private final T result;
+        private final ErrorResultObjects errorResult;
+        private final ApiException apiException;
         private final String errorMessage;
+        private final ErrorType errorType;
         
-        public ResultWithError(T result, String errorMessage) {
+        public ResultWithError(T result) {
             this.result = result;
+            this.errorResult = null;
+            this.apiException = null;
+            this.errorMessage = null;
+            this.errorType = ErrorType.NONE;
+        }
+        
+        public ResultWithError(ErrorResultObjects errorResult) {
+            this.result = null;
+            this.errorResult = errorResult;
+            this.apiException = null;
+            this.errorMessage = errorResult != null ? "Code: " + errorResult.getId() + ", Message: " + errorResult.getMessage() : null;
+            this.errorType = ErrorType.FUNCTIONAL;
+        }
+
+        public ResultWithError(String errorMessage, ErrorType errorType) {
+            this.result = null;
+            this.errorResult = null;
+            this.apiException = null;
             this.errorMessage = errorMessage;
+            this.errorType = errorType != null ? errorType : ErrorType.TECHNICAL;
+        }
+
+        public ResultWithError(ApiException apiException, ErrorType errorType) {
+            this.result = null;
+            this.errorResult = null;
+            this.apiException = apiException;
+            this.errorMessage = apiException.getCode() != 0
+                ? "Status: " + apiException.getCode() + ", Message: " + apiException.getMessage()
+                : apiException.getCause().getClass().getSimpleName() + " - " + apiException.getMessage();
+            this.errorType = errorType != null ? errorType : ErrorType.TECHNICAL;
         }
         
         public T getResult() {
             return result;
         }
         
+        public ErrorResultObjects getErrorResult() {
+            return errorResult;
+        }
+
+        public ApiException getApiException() {
+            return apiException;
+        }
+
         public String getErrorMessage() {
             return errorMessage;
         }
         
+        public ErrorType getErrorType() {
+            return errorType;
+        }
+        
         public boolean hasError() {
-            return errorMessage != null;
+            return result == null;
         }
     }
 
