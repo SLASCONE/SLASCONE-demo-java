@@ -1,0 +1,22 @@
+
+
+# ConstrainedVariableDto
+
+
+## Properties
+
+| Name | Type | Description | Notes |
+|------------ | ------------- | ------------- | -------------|
+|**id** | **UUID** |  |  [optional] |
+|**productId** | **UUID** |  |  |
+|**name** | **String** |  |  |
+|**description** | **String** |  |  [optional] |
+|**customListId** | **UUID** |  |  |
+|**mode** | **ConstrainedVariableMode** |  |  |
+|**selectionMode** | **ConstrainedVariableSelectionMode** |  |  |
+|**createdDateUtc** | **OffsetDateTime** |  |  [optional] |
+|**modifiedDateUtc** | **OffsetDateTime** |  |  [optional] |
+|**lastModifiedBy** | **String** |  |  [optional] |
+
+
+

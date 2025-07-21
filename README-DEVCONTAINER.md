@@ -10,33 +10,39 @@ This project demonstrates the SLASCONE licensing API usage in Java. It's configu
 4. Click on the green icon in the bottom-left corner (or press F1 and select "Dev Containers: Reopen in Container")
 5. VS Code will build and open the project in a container with all necessary dependencies
 
+## Project Structure
+
+This is a multi-module Maven project with the following structure:
+
+- `slascone-provisioning-sample/` - The main application module
+  - `src/`
+    - `Model/` - Data models specific to the sample application
+    - `Program/` - Main program and helper classes
+- `slascone-client/` - Generated API client for SLASCONE services
+  - Contains auto-generated API clients for interacting with SLASCONE services
+
 ## Building and Running the Project
 
 Once inside the dev container, you can build and run the project using Maven:
 
 ```bash
-# Build the project
-mvn compile
+# Build the entire project
+mvn clean package
 
-# Run the project
+# Run the application using the convenience script
+./run.sh
+
+# Alternatively, navigate to the sample project directory and run it directly
+cd slascone-provisioning-sample
 mvn exec:java
 ```
 
-## Project Structure
-
-- `src/` - Contains all Java source files
-  - `Model/` - Data models for the SLASCONE API
-  - `Program/` - Main program and helper classes
-  - `Proxy/` - API proxy for communication with SLASCONE
-
 ## Dependencies
 
-All dependencies are managed through Maven in the `pom.xml` file, including:
+All dependencies are managed through Maven in the `pom.xml` files, including:
 - Apache HTTP Client
 - Apache Commons Codec
 - Jackson (JSON/XML processing)
 - Gson
 
-## Switching from Local Build to Maven
-
-This project was originally built using local JAR files and custom tasks. The Dev Container setup uses Maven for dependency management, which simplifies the build process and ensures consistency.
+The project uses a parent-child structure where common dependencies are defined in the root pom.xml.
