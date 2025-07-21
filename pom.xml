@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.slascone</groupId>
     <artifactId>slascone-demo-java</artifactId>
-    <version>25.0</version>
+    <version>25.2</version>
     <packaging>pom</packaging>
 
     <modules>
