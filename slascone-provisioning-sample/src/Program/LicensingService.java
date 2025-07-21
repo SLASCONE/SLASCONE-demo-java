@@ -601,7 +601,7 @@ public class LicensingService {
                 //   provided in the response body.
                 //   You can find a list of possible error codes here:
                 //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/CloseSession
-                //   Please also refer to the SLASCONE documentationh for more details on floating licenses:
+                //   Please also refer to the SLASCONE documentation for more details on floating licenses:
                 //   https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES
                 //   https://support.slascone.com/hc/en-us/articles/7756256586653-FLOATING-USER-LICENSES
                 // - Technical error, SLASCONE API responded with HTTP status code != 409:
