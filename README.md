@@ -223,7 +223,7 @@ Freeride period provide flexibility when heartbeats fail, allowing users to cont
 
 This implementation ensures that temporary network issues or brief periods offline do not disrupt users' work while still maintaining proper license enforcement in the long term.
 
-## Configuration and Storage
+## CONFIGURATION AND STORAGE
 
 ### Application Data Folder
 

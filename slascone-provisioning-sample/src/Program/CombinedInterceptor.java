@@ -66,35 +66,38 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
         // Proceed with the request
         Response originalResponse = chain.proceed(request);
         
-        // Only process successful responses
-        if (originalResponse.isSuccessful()) {
-            try {
-                // Get response body bytes without consuming the original response
-                ResponseBody originalBody = originalResponse.body();
-                if (originalBody == null) {
-                    return originalResponse;
-                }
+        try {
+            // Get response body bytes without consuming the original response
+            ResponseBody originalBody = originalResponse.body();
+            if (originalBody == null) {
+                return originalResponse;
+            }
 
-                // Check if it's likely a LicenseInfoDto response
-                boolean isLicenseInfo = isLicenseInfoResponse(request, originalResponse);
-                boolean isOpenSessionResponse = isOpenSessionResponse(request, originalResponse);
-                
-                // Read the entire response body as bytes
-                BufferedSource source = originalBody.source();
-                source.request(Long.MAX_VALUE); // Buffer the entire body
-                Buffer buffer = source.getBuffer().clone();
-                byte[] bodyBytes = buffer.readByteArray();
+            // Read the entire response body as bytes
+            BufferedSource source = originalBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body
+            Buffer buffer = source.getBuffer().clone();
+            byte[] bodyBytes = buffer.readByteArray();
 
-                // Get the signature from the header
-                String signatureHeaderString = originalResponse.header("x-slascone-signature");
+            // Get the signature from the header
+            String signatureHeaderString = originalResponse.header("x-slascone-signature");
+            
+            // Only perform validation if we have a signature
+            boolean isValidSignature = false;
+            if (signatureHeaderString != null) {
+
+                // Validate the signature
+                isValidSignature = validateSignature(bodyBytes, signatureHeaderString);
                 
-                // Only perform validation if we have a signature
-                boolean isValidSignature = false;
-                if (signatureHeaderString != null) {
-                    // Validate the signature
-                    isValidSignature = validateSignature(bodyBytes, signatureHeaderString);
-                    
-                    if (isValidSignature) {
+                if (isValidSignature) {
+
+                    // Only process successful responses
+                    if (originalResponse.isSuccessful()) {
+
+                        // Check if it's likely a LicenseInfoDto response
+                        boolean isLicenseInfo = isLicenseInfoResponse(request, originalResponse);
+                        boolean isOpenSessionResponse = isOpenSessionResponse(request, originalResponse);
+
                         if (isLicenseInfo) {
                             // Store the response and signature in the app data folder
                             storeToLocalFiles(bodyBytes, signatureHeaderString, "license");
@@ -102,25 +105,28 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
                             // Store the response and signature in the app data folder
                             storeToLocalFiles(bodyBytes, signatureHeaderString, "session");
                         }
-                    } else {
-                        System.err.println("Signature validation failed for: " + request.url().toString());
                     }
                 } else {
-                    // If signature validation is activated but no signature header is found
-                    // this is a severe error and could indicate a man-in-the-middle attack
-                    System.err.println("No signature header found for: " + request.url().toString());
-                }
 
-                // Create a new response with the same body since we've consumed the original
-                ResponseBody newBody = ResponseBody.create(bodyBytes, originalBody.contentType());
-                return originalResponse.newBuilder().body(newBody).build();
-                
-            } catch (Exception e) {
-                System.err.println("Error processing response: " + e.getMessage());
-                e.printStackTrace();
+                    // Signature validation failed
+                    System.err.println("Signature validation failed for: " + request.url().toString());
+                }
+            } else {
+
+                // If signature validation is activated but no signature header is found
+                // this is a severe error and could indicate a man-in-the-middle attack
+                System.err.println("No signature header found for: " + request.url().toString());
             }
+
+            // Create a new response with the same body since we've consumed the original
+            ResponseBody newBody = ResponseBody.create(bodyBytes, originalBody.contentType());
+            return originalResponse.newBuilder().body(newBody).build();
+
+        } catch (Exception e) {
+            System.err.println("Error processing response: " + e.getMessage());
+            e.printStackTrace();
         }
-        
+
         return originalResponse;
     }
     
