@@ -201,7 +201,7 @@ public class ResellerPortalRoleDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ResellerPortalRoleDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in ResellerPortalRoleDto is not found in the empty JSON string".formatted(ResellerPortalRoleDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerPortalRoleDto is not found in the empty JSON string", ResellerPortalRoleDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -209,18 +209,18 @@ public class ResellerPortalRoleDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ResellerPortalRoleDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `ResellerPortalRoleDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerPortalRoleDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("resellerId") != null && !jsonObj.get("resellerId").isJsonNull()) && !jsonObj.get("resellerId").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `resellerId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("resellerId").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `resellerId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerId").toString()));
       }
       if ((jsonObj.get("resellerName") != null && !jsonObj.get("resellerName").isJsonNull()) && !jsonObj.get("resellerName").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `resellerName` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("resellerName").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `resellerName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerName").toString()));
       }
       if ((jsonObj.get("resellerPortalRoleId") != null && !jsonObj.get("resellerPortalRoleId").isJsonNull()) && !jsonObj.get("resellerPortalRoleId").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `resellerPortalRoleId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("resellerPortalRoleId").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `resellerPortalRoleId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerPortalRoleId").toString()));
       }
   }
 

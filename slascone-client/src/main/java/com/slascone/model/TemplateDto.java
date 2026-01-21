@@ -157,6 +157,11 @@ public class TemplateDto {
   @javax.annotation.Nullable
   private Boolean isExpirationModeAdjustable;
 
+  public static final String SERIALIZED_NAME_IS_EXPIRATION_HIDDEN = "is_expiration_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_EXPIRATION_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isExpirationHidden;
+
   public static final String SERIALIZED_NAME_EXPIRATION_MODE = "expiration_mode";
   @SerializedName(SERIALIZED_NAME_EXPIRATION_MODE)
   @javax.annotation.Nullable
@@ -624,6 +629,25 @@ public class TemplateDto {
 
   public void setIsExpirationModeAdjustable(@javax.annotation.Nullable Boolean isExpirationModeAdjustable) {
     this.isExpirationModeAdjustable = isExpirationModeAdjustable;
+  }
+
+
+  public TemplateDto isExpirationHidden(@javax.annotation.Nullable Boolean isExpirationHidden) {
+    this.isExpirationHidden = isExpirationHidden;
+    return this;
+  }
+
+  /**
+   * Get isExpirationHidden
+   * @return isExpirationHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsExpirationHidden() {
+    return isExpirationHidden;
+  }
+
+  public void setIsExpirationHidden(@javax.annotation.Nullable Boolean isExpirationHidden) {
+    this.isExpirationHidden = isExpirationHidden;
   }
 
 
@@ -1162,6 +1186,7 @@ public class TemplateDto {
         Objects.equals(this.softwareReleaseLimitationId, templateDto.softwareReleaseLimitationId) &&
         Objects.equals(this.allowsInvalidSoftwareRelease, templateDto.allowsInvalidSoftwareRelease) &&
         Objects.equals(this.isExpirationModeAdjustable, templateDto.isExpirationModeAdjustable) &&
+        Objects.equals(this.isExpirationHidden, templateDto.isExpirationHidden) &&
         Objects.equals(this.expirationMode, templateDto.expirationMode) &&
         Objects.equals(this.expirationDateUtc, templateDto.expirationDateUtc) &&
         Objects.equals(this.validDaysCount, templateDto.validDaysCount) &&
@@ -1195,7 +1220,7 @@ public class TemplateDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, productId, productName, name, description, shortDescription, isActive, tokenLimit, goodwillTokenLimit, floatingTokenLimit, enforceFloatingLimit, userLimit, licenseTypeId, licenseType, isSoftwareReleaseLimitationAdjustable, softwareReleaseLimitationId, allowsInvalidSoftwareRelease, isExpirationModeAdjustable, expirationMode, expirationDateUtc, validDaysCount, trialDaysCount, heartbeatMode, heartbeatPeriod, freeRide, clientType, activationUponLicenseCreation, tokenUiMode, features, limitations, variables, constrainedVariables, provisioningMode, sessionPeriod, maxFloatingSessionsWithSameClientId, isTemporary, hasStrictHeartbeats, createdDateUtc, modifiedDateUtc, lastModifiedBy, softwareReleaseLimitation, supportsLicenseUserGroups, heartbeatSamplingRate);
+    return Objects.hash(id, productId, productName, name, description, shortDescription, isActive, tokenLimit, goodwillTokenLimit, floatingTokenLimit, enforceFloatingLimit, userLimit, licenseTypeId, licenseType, isSoftwareReleaseLimitationAdjustable, softwareReleaseLimitationId, allowsInvalidSoftwareRelease, isExpirationModeAdjustable, isExpirationHidden, expirationMode, expirationDateUtc, validDaysCount, trialDaysCount, heartbeatMode, heartbeatPeriod, freeRide, clientType, activationUponLicenseCreation, tokenUiMode, features, limitations, variables, constrainedVariables, provisioningMode, sessionPeriod, maxFloatingSessionsWithSameClientId, isTemporary, hasStrictHeartbeats, createdDateUtc, modifiedDateUtc, lastModifiedBy, softwareReleaseLimitation, supportsLicenseUserGroups, heartbeatSamplingRate);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1227,6 +1252,7 @@ public class TemplateDto {
     sb.append("    softwareReleaseLimitationId: ").append(toIndentedString(softwareReleaseLimitationId)).append("\n");
     sb.append("    allowsInvalidSoftwareRelease: ").append(toIndentedString(allowsInvalidSoftwareRelease)).append("\n");
     sb.append("    isExpirationModeAdjustable: ").append(toIndentedString(isExpirationModeAdjustable)).append("\n");
+    sb.append("    isExpirationHidden: ").append(toIndentedString(isExpirationHidden)).append("\n");
     sb.append("    expirationMode: ").append(toIndentedString(expirationMode)).append("\n");
     sb.append("    expirationDateUtc: ").append(toIndentedString(expirationDateUtc)).append("\n");
     sb.append("    validDaysCount: ").append(toIndentedString(validDaysCount)).append("\n");
@@ -1273,7 +1299,7 @@ public class TemplateDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "product_name", "name", "description", "short_description", "is_active", "token_limit", "goodwill_token_limit", "floating_token_limit", "enforce_floating_limit", "user_limit", "license_type_id", "license_type", "is_software_release_limitation_adjustable", "software_release_limitation_id", "allows_invalid_software_release", "is_expiration_mode_adjustable", "expiration_mode", "expiration_date_utc", "valid_days_count", "trial_days_count", "heartbeat_mode", "heartbeat_period", "free_ride", "client_type", "activation_upon_license_creation", "token_ui_mode", "features", "limitations", "variables", "constrained_variables", "provisioning_mode", "session_period", "max_floating_sessions_with_same_client_id", "is_temporary", "has_strict_heartbeats", "created_date_utc", "modified_date_utc", "last_modified_by", "software_release_limitation", "supports_license_user_groups", "heartbeat_sampling_rate"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "product_id", "product_name", "name", "description", "short_description", "is_active", "token_limit", "goodwill_token_limit", "floating_token_limit", "enforce_floating_limit", "user_limit", "license_type_id", "license_type", "is_software_release_limitation_adjustable", "software_release_limitation_id", "allows_invalid_software_release", "is_expiration_mode_adjustable", "is_expiration_hidden", "expiration_mode", "expiration_date_utc", "valid_days_count", "trial_days_count", "heartbeat_mode", "heartbeat_period", "free_ride", "client_type", "activation_upon_license_creation", "token_ui_mode", "features", "limitations", "variables", "constrained_variables", "provisioning_mode", "session_period", "max_floating_sessions_with_same_client_id", "is_temporary", "has_strict_heartbeats", "created_date_utc", "modified_date_utc", "last_modified_by", "software_release_limitation", "supports_license_user_groups", "heartbeat_sampling_rate"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("id", "product_id", "name", "token_limit"));
@@ -1288,7 +1314,7 @@ public class TemplateDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TemplateDto is not found in the empty JSON string".formatted(TemplateDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateDto is not found in the empty JSON string", TemplateDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -1296,44 +1322,44 @@ public class TemplateDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
       }
       if ((jsonObj.get("product_name") != null && !jsonObj.get("product_name").isJsonNull()) && !jsonObj.get("product_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_name").toString()));
       }
       if (!jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("description").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
       }
       if ((jsonObj.get("short_description") != null && !jsonObj.get("short_description").isJsonNull()) && !jsonObj.get("short_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `short_description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("short_description").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `short_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("short_description").toString()));
       }
       if ((jsonObj.get("license_type_id") != null && !jsonObj.get("license_type_id").isJsonNull()) && !jsonObj.get("license_type_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `license_type_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_type_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `license_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_type_id").toString()));
       }
       // validate the optional field `license_type`
       if (jsonObj.get("license_type") != null && !jsonObj.get("license_type").isJsonNull()) {
         LicenseTypeDto.validateJsonElement(jsonObj.get("license_type"));
       }
       if ((jsonObj.get("software_release_limitation_id") != null && !jsonObj.get("software_release_limitation_id").isJsonNull()) && !jsonObj.get("software_release_limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `software_release_limitation_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("software_release_limitation_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `software_release_limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_release_limitation_id").toString()));
       }
       // validate the optional field `expiration_mode`
       if (jsonObj.get("expiration_mode") != null && !jsonObj.get("expiration_mode").isJsonNull()) {
@@ -1360,7 +1386,7 @@ public class TemplateDto {
         if (jsonArrayfeatures != null) {
           // ensure the json data is an array
           if (!jsonObj.get("features").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `features` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("features").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `features` to be an array in the JSON string but got `%s`", jsonObj.get("features").toString()));
           }
 
           // validate the optional field `features` (array)
@@ -1374,7 +1400,7 @@ public class TemplateDto {
         if (jsonArraylimitations != null) {
           // ensure the json data is an array
           if (!jsonObj.get("limitations").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `limitations` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("limitations").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `limitations` to be an array in the JSON string but got `%s`", jsonObj.get("limitations").toString()));
           }
 
           // validate the optional field `limitations` (array)
@@ -1388,7 +1414,7 @@ public class TemplateDto {
         if (jsonArrayvariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("variables").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("variables").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `variables` to be an array in the JSON string but got `%s`", jsonObj.get("variables").toString()));
           }
 
           // validate the optional field `variables` (array)
@@ -1402,7 +1428,7 @@ public class TemplateDto {
         if (jsonArrayconstrainedVariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("constrained_variables").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("constrained_variables").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`", jsonObj.get("constrained_variables").toString()));
           }
 
           // validate the optional field `constrained_variables` (array)
@@ -1416,7 +1442,7 @@ public class TemplateDto {
         ProvisioningMode.validateJsonElement(jsonObj.get("provisioning_mode"));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
       // validate the optional field `software_release_limitation`
       if (jsonObj.get("software_release_limitation") != null && !jsonObj.get("software_release_limitation").isJsonNull()) {

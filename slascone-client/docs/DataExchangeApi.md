@@ -96,9 +96,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addLicenseAsync"></a>
 # **addLicenseAsync**
@@ -178,9 +178,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addLicenseByDetailsAsync"></a>
 # **addLicenseByDetailsAsync**
@@ -260,9 +260,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addOrUpdateCustomerContactAsync"></a>
 # **addOrUpdateCustomerContactAsync**
@@ -340,9 +340,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="downloadCustomerCsvTemplate"></a>
 # **downloadCustomerCsvTemplate**
@@ -418,9 +418,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="downloadLicenseCsvTemplate"></a>
 # **downloadLicenseCsvTemplate**
@@ -496,9 +496,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="importCustomersFromCsv"></a>
 # **importCustomersFromCsv**
@@ -584,9 +584,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="importLicensesFromCsv"></a>
 # **importLicensesFromCsv**
@@ -672,9 +672,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="patchLicenseByDetailsAsync"></a>
 # **patchLicenseByDetailsAsync**
@@ -754,9 +754,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="updateCustomerAsync"></a>
 # **updateCustomerAsync**
@@ -836,9 +836,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="updateLicenseAsync"></a>
 # **updateLicenseAsync**
@@ -918,9 +918,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="updateLicenseByDetailsAsync"></a>
 # **updateLicenseByDetailsAsync**
@@ -1000,7 +1000,7 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 

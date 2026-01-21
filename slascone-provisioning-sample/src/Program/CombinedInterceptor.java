@@ -10,8 +10,10 @@ import okio.BufferedSource;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Base64;
 
 /**
  * Combined interceptor that both validates signatures and stores responses.
@@ -23,6 +25,9 @@ import java.security.spec.InvalidKeySpecException;
  */
 public class CombinedInterceptor implements okhttp3.Interceptor {
 
+    private static final int NONCE_SIZE_BYTES = 16;
+    private static final SecureRandom secureRandom = new SecureRandom();
+    
     private int signatureValidationMode = 2; // Default to asymmetric key validation
     private FileService fileService;
 
@@ -58,9 +63,16 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
     public Response intercept(okhttp3.Interceptor.Chain chain) throws java.io.IOException {
         Request request = chain.request();
 
+        // Generate a nonce for replay attack protection (16 random bytes, Base64 encoded)
+        byte[] nonceBytes = new byte[NONCE_SIZE_BYTES];
+        secureRandom.nextBytes(nonceBytes);
+        String nonceBase64 = Base64.getEncoder().encodeToString(nonceBytes);
+
         // Set Accept-Encoding header to utf-8 to prevent compression issues
+        // and add the X-Nonce header for replay attack protection
         request = request.newBuilder()
                 .header("Accept-Encoding", "utf-8")
+                .header("X-Nonce", nonceBase64)
                 .build();
         
         // Proceed with the request
@@ -82,14 +94,34 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
             // Get the signature from the header
             String signatureHeaderString = originalResponse.header("x-slascone-signature");
             
+            // Get the nonce signature from the header for replay attack protection
+            String nonceSignatureHeader = originalResponse.header("X-Nonce-Signature");
+            
             // Only perform validation if we have a signature
             boolean isValidSignature = false;
+            boolean isValidNonceSignature = false;
+            
             if (signatureHeaderString != null) {
 
-                // Validate the signature
+                // Validate the response body signature
                 isValidSignature = validateSignature(bodyBytes, signatureHeaderString);
                 
-                if (isValidSignature) {
+                // Validate the nonce signature for replay attack protection
+                if (nonceSignatureHeader != null) {
+                    isValidNonceSignature = validateSignature(nonceBytes, nonceSignatureHeader);
+                    
+                    if (!isValidNonceSignature) {
+                        // Nonce signature validation failed - potential replay attack
+                        System.err.println("Nonce signature validation failed for: " + request.url().toString());
+                        System.err.println("This could indicate a replay attack!");
+                    }
+                } else {
+                    // No nonce signature in response - server may not support nonce validation
+                    // or this could indicate a man-in-the-middle attack
+                    System.err.println("No X-Nonce-Signature header found for: " + request.url().toString());
+                }
+                
+                if (isValidSignature && isValidNonceSignature) {
 
                     // Only process successful responses
                     if (originalResponse.isSuccessful()) {
@@ -106,7 +138,7 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
                             storeToLocalFiles(bodyBytes, signatureHeaderString, "session");
                         }
                     }
-                } else {
+                } else if (!isValidSignature) {
 
                     // Signature validation failed
                     System.err.println("Signature validation failed for: " + request.url().toString());

@@ -185,7 +185,7 @@ public class LicenseFeatureExceptionsDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseFeatureExceptionsDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in LicenseFeatureExceptionsDto is not found in the empty JSON string".formatted(LicenseFeatureExceptionsDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFeatureExceptionsDto is not found in the empty JSON string", LicenseFeatureExceptionsDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -193,7 +193,7 @@ public class LicenseFeatureExceptionsDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseFeatureExceptionsDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseFeatureExceptionsDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFeatureExceptionsDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -202,7 +202,7 @@ public class LicenseFeatureExceptionsDto {
         if (jsonArrayexceptions != null) {
           // ensure the json data is an array
           if (!jsonObj.get("exceptions").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `exceptions` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("exceptions").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `exceptions` to be an array in the JSON string but got `%s`", jsonObj.get("exceptions").toString()));
           }
 
           // validate the optional field `exceptions` (array)

@@ -40,12 +40,6 @@ public class Example {
     // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
     //Bearer.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: CustomerPortalKey
-    ApiKeyAuth CustomerPortalKey = (ApiKeyAuth) defaultClient.getAuthentication("CustomerPortalKey");
-    CustomerPortalKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //CustomerPortalKey.setApiKeyPrefix("Token");
-
     CustomerPortalApi apiInstance = new CustomerPortalApi(defaultClient);
     UUID isvId = UUID.randomUUID(); // UUID | 
     try {
@@ -74,7 +68,7 @@ public class Example {
 
 ### Authorization
 
-[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer), [CustomerPortalKey](../README.md#CustomerPortalKey)
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -87,7 +81,7 @@ public class Example {
 | **200** | OK |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 

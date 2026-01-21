@@ -91,13 +91,13 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="deleteUserEmailTemplate"></a>
 # **deleteUserEmailTemplate**
@@ -172,13 +172,13 @@ null (empty response body)
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="getAllUserEmailTemplates"></a>
 # **getAllUserEmailTemplates**
@@ -254,9 +254,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getNotificationSettings"></a>
 # **getNotificationSettings**
@@ -332,9 +332,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getUserEmailTemplate"></a>
 # **getUserEmailTemplate**
@@ -410,13 +410,13 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="getUserEmailTemplatesByPurpose"></a>
 # **getUserEmailTemplatesByPurpose**
@@ -494,9 +494,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="patchUserEmailTemplate"></a>
 # **patchUserEmailTemplate**
@@ -574,13 +574,13 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="sendLicenseMail"></a>
 # **sendLicenseMail**
@@ -664,9 +664,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="sendTestEmail"></a>
 # **sendTestEmail**
@@ -744,9 +744,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="updateNotificationSettings"></a>
 # **updateNotificationSettings**
@@ -824,9 +824,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="updateUserEmailTemplate"></a>
 # **updateUserEmailTemplate**
@@ -902,11 +902,11 @@ public class Example {
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 

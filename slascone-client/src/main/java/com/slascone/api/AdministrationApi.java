@@ -96,9 +96,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
@@ -177,9 +177,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public CustomListDto addCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -201,9 +201,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomListDto> addCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -227,9 +227,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
@@ -252,9 +252,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call customOperationsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -325,9 +325,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void customOperations(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -347,9 +347,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> customOperationsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -371,9 +371,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call customOperationsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -394,12 +394,12 @@ public class AdministrationApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
@@ -475,12 +475,12 @@ public class AdministrationApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
      </table>
      */
     public void deleteCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
@@ -499,12 +499,12 @@ public class AdministrationApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> deleteCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
@@ -525,12 +525,12 @@ public class AdministrationApi {
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback<Void> _callback) throws ApiException {
@@ -552,9 +552,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteInactiveSessionsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -625,9 +625,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void deleteInactiveSessions(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -647,9 +647,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> deleteInactiveSessionsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -671,9 +671,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteInactiveSessionsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -695,9 +695,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call gatherAnalyticsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -768,9 +768,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void gatherAnalytics(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -790,9 +790,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> gatherAnalyticsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -814,9 +814,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call gatherAnalyticsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -838,9 +838,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAllCustomListsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -912,9 +912,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public List<CustomListDto> getAllCustomLists(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -935,9 +935,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<CustomListDto>> getAllCustomListsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -960,9 +960,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAllCustomListsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<CustomListDto>> _callback) throws ApiException {
@@ -985,9 +985,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getBackupStorageCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -1059,9 +1059,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public BackupStorageDto getBackupStorage(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1082,9 +1082,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<BackupStorageDto> getBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1107,9 +1107,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<BackupStorageDto> _callback) throws ApiException {
@@ -1132,9 +1132,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getBackupStorageAccessTokenCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -1207,9 +1207,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public String getBackupStorageAccessToken(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1230,9 +1230,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> getBackupStorageAccessTokenWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1255,9 +1255,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getBackupStorageAccessTokenAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<String> _callback) throws ApiException {
@@ -1280,9 +1280,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getConfigurationCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -1354,9 +1354,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ConfigurationDto getConfiguration(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1377,9 +1377,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ConfigurationDto> getConfigurationWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1402,9 +1402,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getConfigurationAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<ConfigurationDto> _callback) throws ApiException {
@@ -1428,10 +1428,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
@@ -1510,10 +1510,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
      </table>
      */
     public CustomListDto getCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
@@ -1535,10 +1535,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomListDto> getCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
@@ -1562,10 +1562,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback<CustomListDto> _callback) throws ApiException {
@@ -1592,9 +1592,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseSeatsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds, final ApiCallback _callback) throws ApiException {
@@ -1686,9 +1686,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public Integer getLicenseSeats(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
@@ -1713,9 +1713,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Integer> getLicenseSeatsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
@@ -1742,9 +1742,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseSeatsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds, final ApiCallback<Integer> _callback) throws ApiException {
@@ -1768,9 +1768,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getSlasconeLicenseInfoCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat, final ApiCallback _callback) throws ApiException {
@@ -1847,9 +1847,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public SlasconeLicenseInfoDto getSlasconeLicenseInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
@@ -1871,9 +1871,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<SlasconeLicenseInfoDto> getSlasconeLicenseInfoWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
@@ -1897,9 +1897,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getSlasconeLicenseInfoAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat, final ApiCallback<SlasconeLicenseInfoDto> _callback) throws ApiException {
@@ -1922,9 +1922,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call healthCheckCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -1997,9 +1997,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public String healthCheck(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -2020,9 +2020,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> healthCheckWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -2045,9 +2045,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call healthCheckAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<String> _callback) throws ApiException {
@@ -2072,9 +2072,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call initBackupStorageCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive, final ApiCallback _callback) throws ApiException {
@@ -2157,9 +2157,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public String initBackupStorage(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive) throws ApiException {
@@ -2182,9 +2182,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> initBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive) throws ApiException {
@@ -2209,9 +2209,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call initBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive, final ApiCallback<String> _callback) throws ApiException {
@@ -2234,9 +2234,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call migrateDatabaseCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -2307,9 +2307,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void migrateDatabase(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -2329,9 +2329,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> migrateDatabaseWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -2353,9 +2353,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call migrateDatabaseAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -2378,9 +2378,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchConfigurationCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto, final ApiCallback _callback) throws ApiException {
@@ -2459,9 +2459,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ConfigurationDto patchConfiguration(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
@@ -2483,9 +2483,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ConfigurationDto> patchConfigurationWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
@@ -2509,9 +2509,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchConfigurationAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto, final ApiCallback<ConfigurationDto> _callback) throws ApiException {
@@ -2535,10 +2535,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
@@ -2617,10 +2617,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public CustomListDto patchCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -2642,10 +2642,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomListDto> patchCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -2669,10 +2669,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
@@ -2696,9 +2696,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call signatureCheckCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body, final ApiCallback _callback) throws ApiException {
@@ -2778,9 +2778,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public String signatureCheck(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body) throws ApiException {
@@ -2802,9 +2802,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> signatureCheckWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body) throws ApiException {
@@ -2828,9 +2828,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call signatureCheckAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body, final ApiCallback<String> _callback) throws ApiException {
@@ -2854,9 +2854,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateBackupStorageCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto, final ApiCallback _callback) throws ApiException {
@@ -2935,9 +2935,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public BackupStorageDto updateBackupStorage(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
@@ -2959,9 +2959,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<BackupStorageDto> updateBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
@@ -2985,9 +2985,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto, final ApiCallback<BackupStorageDto> _callback) throws ApiException {
@@ -3011,10 +3011,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
@@ -3093,10 +3093,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public CustomListDto updateCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -3118,10 +3118,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomListDto> updateCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
@@ -3145,10 +3145,10 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
@@ -3171,9 +3171,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAlertsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -3244,9 +3244,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateAlerts(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3266,9 +3266,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateAlertsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3290,9 +3290,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAlertsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -3314,9 +3314,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAssignmentsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -3387,9 +3387,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateAssignments(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3409,9 +3409,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3433,9 +3433,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -3459,9 +3459,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAssignmentsByProductIdCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, final ApiCallback _callback) throws ApiException {
@@ -3546,9 +3546,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateAssignmentsByProductId(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
@@ -3570,9 +3570,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateAssignmentsByProductIdWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
@@ -3596,9 +3596,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateAssignmentsByProductIdAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, final ApiCallback<Void> _callback) throws ApiException {
@@ -3620,9 +3620,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateConsumptionBalancesCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -3693,9 +3693,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateConsumptionBalances(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3715,9 +3715,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateConsumptionBalancesWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3739,9 +3739,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateConsumptionBalancesAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -3763,9 +3763,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateHeartbeatGroupsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -3836,9 +3836,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateHeartbeatGroups(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3858,9 +3858,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateHeartbeatGroupsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -3882,9 +3882,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateHeartbeatGroupsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -3906,9 +3906,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateLicenseExpirationDateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -3979,9 +3979,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateLicenseExpirationDate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -4001,9 +4001,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateLicenseExpirationDateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -4025,9 +4025,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateLicenseExpirationDateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
@@ -4049,9 +4049,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateSoftwareVersionsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -4122,9 +4122,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public void validateSoftwareVersions(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -4144,9 +4144,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> validateSoftwareVersionsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -4168,9 +4168,9 @@ public class AdministrationApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call validateSoftwareVersionsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {

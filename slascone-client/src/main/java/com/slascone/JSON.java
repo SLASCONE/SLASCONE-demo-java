@@ -224,6 +224,8 @@ public class JSON {
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerLazyLoadDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerLightDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerPortalRoleDto.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerPortalSettingsDto.CustomTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerSettingsDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerTemplateDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerTypeDto.CustomTypeAdapterFactory());
         gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResourceDto.CustomTypeAdapterFactory());

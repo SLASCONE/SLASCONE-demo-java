@@ -103,13 +103,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addCustomerContact"></a>
 # **addCustomerContact**
@@ -188,13 +188,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addCustomerType"></a>
 # **addCustomerType**
@@ -271,13 +271,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="customerGetCustomerByCustomerNumberDeprecated"></a>
 # **customerGetCustomerByCustomerNumberDeprecated**
@@ -352,13 +352,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteCustomer"></a>
 # **deleteCustomer**
@@ -433,13 +433,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteCustomerContact"></a>
 # **deleteCustomerContact**
@@ -518,13 +518,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllCustomers"></a>
 # **getAllCustomers**
@@ -599,13 +599,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllCustomersLight"></a>
 # **getAllCustomersLight**
@@ -680,13 +680,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomer"></a>
 # **getCustomer**
@@ -761,13 +761,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerByNumber"></a>
 # **getCustomerByNumber**
@@ -842,13 +842,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerContactByUserId"></a>
 # **getCustomerContactByUserId**
@@ -921,13 +921,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerContactLanguages"></a>
 # **getCustomerContactLanguages**
@@ -1000,13 +1000,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerContacts"></a>
 # **getCustomerContacts**
@@ -1081,13 +1081,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerCount"></a>
 # **getCustomerCount**
@@ -1160,13 +1160,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerTagAssignments"></a>
 # **getCustomerTagAssignments**
@@ -1241,13 +1241,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getCustomerTypes"></a>
 # **getCustomerTypes**
@@ -1324,13 +1324,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getFilteredCustomers"></a>
 # **getFilteredCustomers**
@@ -1405,13 +1405,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="removeCustomerType"></a>
 # **removeCustomerType**
@@ -1490,13 +1490,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="resendCustomerContactInvitation"></a>
 # **resendCustomerContactInvitation**
@@ -1574,13 +1574,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="toggleCustomerContactState"></a>
 # **toggleCustomerContactState**
@@ -1659,13 +1659,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateCustomer"></a>
 # **updateCustomer**
@@ -1740,13 +1740,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateCustomerContact"></a>
 # **updateCustomerContact**
@@ -1823,13 +1823,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateCustomerTagAssignments"></a>
 # **updateCustomerTagAssignments**
@@ -1906,13 +1906,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateCustomerType"></a>
 # **updateCustomerType**
@@ -1989,11 +1989,11 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 

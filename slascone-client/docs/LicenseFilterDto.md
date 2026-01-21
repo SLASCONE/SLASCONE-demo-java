@@ -29,6 +29,7 @@
 |**isGoodwillToken** | **Boolean** |  |  [optional] |
 |**isGroupValid** | **Boolean** |  |  [optional] |
 |**isAssignedToken** | **Boolean** |  |  [optional] |
+|**isSuspendedToken** | **Boolean** |  |  [optional] |
 |**groupCountFilter** | **Integer** |  |  [optional] |
 |**groupCountMode** | **String** |  |  [optional] |
 |**sortType** | **LicenseFilterSortType** |  |  [optional] |

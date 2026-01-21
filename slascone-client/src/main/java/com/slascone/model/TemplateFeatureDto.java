@@ -77,6 +77,16 @@ public class TemplateFeatureDto {
   @javax.annotation.Nullable
   private Boolean isActive;
 
+  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isHidden;
+
+  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isCustomerPortalHidden;
+
   public TemplateFeatureDto() {
   }
 
@@ -175,6 +185,44 @@ public class TemplateFeatureDto {
   }
 
 
+  public TemplateFeatureDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+    return this;
+  }
+
+  /**
+   * Get isHidden
+   * @return isHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsHidden() {
+    return isHidden;
+  }
+
+  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+  }
+
+
+  public TemplateFeatureDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+    return this;
+  }
+
+  /**
+   * Get isCustomerPortalHidden
+   * @return isCustomerPortalHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsCustomerPortalHidden() {
+    return isCustomerPortalHidden;
+  }
+
+  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -189,7 +237,9 @@ public class TemplateFeatureDto {
         Objects.equals(this.featureId, templateFeatureDto.featureId) &&
         Objects.equals(this.featureName, templateFeatureDto.featureName) &&
         Objects.equals(this.isAdjustable, templateFeatureDto.isAdjustable) &&
-        Objects.equals(this.isActive, templateFeatureDto.isActive);
+        Objects.equals(this.isActive, templateFeatureDto.isActive) &&
+        Objects.equals(this.isHidden, templateFeatureDto.isHidden) &&
+        Objects.equals(this.isCustomerPortalHidden, templateFeatureDto.isCustomerPortalHidden);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -198,7 +248,7 @@ public class TemplateFeatureDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, featureId, featureName, isAdjustable, isActive);
+    return Objects.hash(templateId, featureId, featureName, isAdjustable, isActive, isHidden, isCustomerPortalHidden);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -217,6 +267,8 @@ public class TemplateFeatureDto {
     sb.append("    featureName: ").append(toIndentedString(featureName)).append("\n");
     sb.append("    isAdjustable: ").append(toIndentedString(isAdjustable)).append("\n");
     sb.append("    isActive: ").append(toIndentedString(isActive)).append("\n");
+    sb.append("    isHidden: ").append(toIndentedString(isHidden)).append("\n");
+    sb.append("    isCustomerPortalHidden: ").append(toIndentedString(isCustomerPortalHidden)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -238,7 +290,7 @@ public class TemplateFeatureDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "feature_id", "feature_name", "is_adjustable", "is_active"));
+    openapiFields = new HashSet<String>(Arrays.asList("template_id", "feature_id", "feature_name", "is_adjustable", "is_active", "is_hidden", "is_customer_portal_hidden"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("feature_id"));
@@ -253,7 +305,7 @@ public class TemplateFeatureDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateFeatureDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TemplateFeatureDto is not found in the empty JSON string".formatted(TemplateFeatureDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateFeatureDto is not found in the empty JSON string", TemplateFeatureDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -261,25 +313,25 @@ public class TemplateFeatureDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateFeatureDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateFeatureDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateFeatureDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateFeatureDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
       }
       if (!jsonObj.get("feature_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("feature_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_id").toString()));
       }
       if ((jsonObj.get("feature_name") != null && !jsonObj.get("feature_name").isJsonNull()) && !jsonObj.get("feature_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("feature_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_name").toString()));
       }
   }
 

@@ -29,6 +29,7 @@
 |**operatingSystem** | **String** |  |  [optional] |
 |**tagAssignments** | [**List&lt;TagAssignmentDto&gt;**](TagAssignmentDto.md) |  |  [optional] |
 |**licenseActivationType** | **LicenseActivationType** |  |  [optional] |
+|**suspendedUntilUtc** | **OffsetDateTime** |  |  [optional] |
 |**createdDateUtc** | **OffsetDateTime** |  |  [optional] |
 |**modifiedDateUtc** | **OffsetDateTime** |  |  [optional] |
 |**lastModifiedBy** | **String** |  |  [optional] |

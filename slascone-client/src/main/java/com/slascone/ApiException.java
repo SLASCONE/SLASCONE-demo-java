@@ -14,7 +14,6 @@
 package com.slascone;
 
 import java.util.Map;
-import java.io.Serial;
 import java.util.List;
 
 
@@ -24,8 +23,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
 public class ApiException extends Exception {
-  @Serial
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private int code = 0;
     private Map<String, List<String>> responseHeaders = null;
@@ -163,7 +161,7 @@ public class ApiException extends Exception {
      * @return The exception message
      */
     public String getMessage() {
-        return "Message: %s%nHTTP response code: %s%nHTTP response body: %s%nHTTP response headers: %s".formatted(
-            super.getMessage(), this.getCode(), this.getResponseBody(), this.getResponseHeaders());
+        return String.format("Message: %s%nHTTP response code: %s%nHTTP response body: %s%nHTTP response headers: %s",
+                super.getMessage(), this.getCode(), this.getResponseBody(), this.getResponseHeaders());
     }
 }

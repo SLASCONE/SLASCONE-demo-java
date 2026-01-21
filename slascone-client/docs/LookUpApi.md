@@ -88,13 +88,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **401** | Unauthorized |  -  |
-| **403** | Forbidden |  -  |
-| **500** | Internal server error |  -  |
-| **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 | **200** | Success |  -  |
 | **204** | No Content |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
 
 <a id="lookupLicenses"></a>
 # **lookupLicenses**
@@ -175,12 +175,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="lookupProduct"></a>
 # **lookupProduct**
@@ -261,11 +261,11 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-| **401** | Unauthorized |  -  |
-| **403** | Forbidden |  -  |
-| **500** | Internal server error |  -  |
-| **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 | **200** | Success |  -  |
 | **204** | No Content |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
 

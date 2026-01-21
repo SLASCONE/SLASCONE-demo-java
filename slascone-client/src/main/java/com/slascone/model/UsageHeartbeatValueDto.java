@@ -228,7 +228,7 @@ public class UsageHeartbeatValueDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!UsageHeartbeatValueDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in UsageHeartbeatValueDto is not found in the empty JSON string".formatted(UsageHeartbeatValueDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in UsageHeartbeatValueDto is not found in the empty JSON string", UsageHeartbeatValueDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -236,22 +236,22 @@ public class UsageHeartbeatValueDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!UsageHeartbeatValueDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `UsageHeartbeatValueDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UsageHeartbeatValueDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : UsageHeartbeatValueDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("usage_feature_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `usage_feature_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("usage_feature_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `usage_feature_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("usage_feature_id").toString()));
       }
       if ((jsonObj.get("usage_module_id") != null && !jsonObj.get("usage_module_id").isJsonNull()) && !jsonObj.get("usage_module_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `usage_module_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("usage_module_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `usage_module_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("usage_module_id").toString()));
       }
   }
 

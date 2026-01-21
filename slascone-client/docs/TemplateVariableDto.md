@@ -11,6 +11,9 @@
 |**variableId** | **UUID** |  |  |
 |**variableName** | **String** |  |  [optional] |
 |**isAdjustable** | **Boolean** |  |  [optional] |
+|**isRequired** | **Boolean** |  |  [optional] |
+|**isHidden** | **Boolean** |  |  [optional] |
+|**isCustomerPortalHidden** | **Boolean** |  |  [optional] |
 |**value** | **String** |  |  [optional] |
 
 

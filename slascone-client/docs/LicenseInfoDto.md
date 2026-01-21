@@ -13,6 +13,7 @@
 |**tokenKey** | **UUID** |  |  [optional] |
 |**legacyLicenseKey** | **String** |  |  [optional] |
 |**clientId** | **String** |  |  [optional] |
+|**clientName** | **String** |  |  [optional] |
 |**clientDescription** | **String** |  |  [optional] |
 |**productName** | **String** |  |  [optional] |
 |**productId** | **UUID** |  |  [optional] |

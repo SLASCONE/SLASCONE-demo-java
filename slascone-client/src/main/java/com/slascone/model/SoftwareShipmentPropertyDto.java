@@ -332,7 +332,7 @@ public class SoftwareShipmentPropertyDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!SoftwareShipmentPropertyDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in SoftwareShipmentPropertyDto is not found in the empty JSON string".formatted(SoftwareShipmentPropertyDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in SoftwareShipmentPropertyDto is not found in the empty JSON string", SoftwareShipmentPropertyDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -340,27 +340,27 @@ public class SoftwareShipmentPropertyDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!SoftwareShipmentPropertyDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `SoftwareShipmentPropertyDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SoftwareShipmentPropertyDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `value` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("value").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
       }
       if ((jsonObj.get("software_shipment_id") != null && !jsonObj.get("software_shipment_id").isJsonNull()) && !jsonObj.get("software_shipment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `software_shipment_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("software_shipment_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `software_shipment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_shipment_id").toString()));
       }
       if ((jsonObj.get("product_software_shipment_property_id") != null && !jsonObj.get("product_software_shipment_property_id").isJsonNull()) && !jsonObj.get("product_software_shipment_property_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_software_shipment_property_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_software_shipment_property_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_software_shipment_property_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_software_shipment_property_id").toString()));
       }
       if ((jsonObj.get("product_software_shipment_property_name") != null && !jsonObj.get("product_software_shipment_property_name").isJsonNull()) && !jsonObj.get("product_software_shipment_property_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_software_shipment_property_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_software_shipment_property_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_software_shipment_property_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_software_shipment_property_name").toString()));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
   }
 

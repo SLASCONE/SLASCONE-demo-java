@@ -100,16 +100,16 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="activateOfflineLicense"></a>
 # **activateOfflineLicense**
-> activateOfflineLicense(isvId, productId, licenseKey, clientId, softwareVersion, tags, fileName)
+> activateOfflineLicense(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName)
 
 Activates an offline client (assigns a token to a offline client)
 
@@ -165,11 +165,13 @@ public class Example {
     UUID productId = UUID.randomUUID(); // UUID | 
     String licenseKey = "licenseKey_example"; // String | 
     String clientId = "clientId_example"; // String | 
+    String clientName = "clientName_example"; // String | 
+    String clientDescription = "clientDescription_example"; // String | 
     String softwareVersion = "softwareVersion_example"; // String | 
     List<String> tags = Arrays.asList(); // List<String> | 
     String fileName = "fileName_example"; // String | 
     try {
-      apiInstance.activateOfflineLicense(isvId, productId, licenseKey, clientId, softwareVersion, tags, fileName);
+      apiInstance.activateOfflineLicense(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName);
     } catch (ApiException e) {
       System.err.println("Exception when calling ProvisioningApi#activateOfflineLicense");
       System.err.println("Status code: " + e.getCode());
@@ -189,6 +191,8 @@ public class Example {
 | **productId** | **UUID**|  | [optional] |
 | **licenseKey** | **String**|  | [optional] |
 | **clientId** | **String**|  | [optional] |
+| **clientName** | **String**|  | [optional] |
+| **clientDescription** | **String**|  | [optional] |
 | **softwareVersion** | **String**|  | [optional] |
 | **tags** | [**List&lt;String&gt;**](String.md)|  | [optional] |
 | **fileName** | **String**|  | [optional] |
@@ -204,17 +208,17 @@ null (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json, application/xml
+ - **Accept**: application/xml, application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Xml Document |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Xml Document |  -  |
 
 <a id="addHeartbeat"></a>
 # **addHeartbeat**
@@ -297,12 +301,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="closeSession"></a>
 # **closeSession**
@@ -385,12 +389,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getActiveFloatingTokensCount"></a>
 # **getActiveFloatingTokensCount**
@@ -473,12 +477,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getConsumptionStatus"></a>
 # **getConsumptionStatus**
@@ -561,12 +565,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getDeviceInfo"></a>
 # **getDeviceInfo**
@@ -649,12 +653,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicensesByCustomerAsync"></a>
 # **getLicensesByCustomerAsync**
@@ -737,12 +741,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicensesByLicenseKeyAsync"></a>
 # **getLicensesByLicenseKeyAsync**
@@ -825,12 +829,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicensesByUserAsync"></a>
 # **getLicensesByUserAsync**
@@ -913,12 +917,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="openSession"></a>
 # **openSession**
@@ -1001,12 +1005,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="toogleLicenseStateAsync"></a>
 # **toogleLicenseStateAsync**
@@ -1089,12 +1093,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="unassignLicense"></a>
 # **unassignLicense**
@@ -1177,10 +1181,10 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 

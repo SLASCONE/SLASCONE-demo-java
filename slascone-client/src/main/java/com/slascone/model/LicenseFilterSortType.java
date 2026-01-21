@@ -45,7 +45,9 @@ public enum LicenseFilterSortType {
   
   NUMBER_7(7),
   
-  NUMBER_8(8);
+  NUMBER_8(8),
+  
+  NUMBER_9(9);
 
   private Integer value;
 

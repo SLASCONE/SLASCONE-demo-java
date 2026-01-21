@@ -72,16 +72,19 @@ public class ErrorHandlingHelper {
                     lastException = ex;
                     lastErrorType = ErrorType.TECHNICAL;
                     retryCountdown--;
-                    Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                    if (0 <= retryCountdown) {
+                        Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                    }
                     continue;
-
                 } else if (isTransientNetworkException(ex.getCause())) {
 
                     // Transient network error: Wait and try again
                     lastException = ex;
                     lastErrorType = ErrorType.NETWORK;
                     retryCountdown--;
-                    Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                    if (0 <= retryCountdown) {
+                        Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                    }
                     continue;
                 }
 

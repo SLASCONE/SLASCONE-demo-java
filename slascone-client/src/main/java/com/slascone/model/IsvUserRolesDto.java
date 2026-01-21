@@ -299,7 +299,7 @@ public class IsvUserRolesDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!IsvUserRolesDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in IsvUserRolesDto is not found in the empty JSON string".formatted(IsvUserRolesDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in IsvUserRolesDto is not found in the empty JSON string", IsvUserRolesDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -307,28 +307,28 @@ public class IsvUserRolesDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!IsvUserRolesDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `IsvUserRolesDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `IsvUserRolesDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("isvId") != null && !jsonObj.get("isvId").isJsonNull()) && !jsonObj.get("isvId").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `isvId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("isvId").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `isvId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("isvId").toString()));
       }
       if ((jsonObj.get("isvName") != null && !jsonObj.get("isvName").isJsonNull()) && !jsonObj.get("isvName").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `isvName` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("isvName").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `isvName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("isvName").toString()));
       }
       if ((jsonObj.get("userId") != null && !jsonObj.get("userId").isJsonNull()) && !jsonObj.get("userId").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `userId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("userId").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `userId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("userId").toString()));
       }
       if ((jsonObj.get("vendorRoleId") != null && !jsonObj.get("vendorRoleId").isJsonNull()) && !jsonObj.get("vendorRoleId").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `vendorRoleId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("vendorRoleId").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `vendorRoleId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("vendorRoleId").toString()));
       }
       if (jsonObj.get("resellerPortalRoles") != null && !jsonObj.get("resellerPortalRoles").isJsonNull()) {
         JsonArray jsonArrayresellerPortalRoles = jsonObj.getAsJsonArray("resellerPortalRoles");
         if (jsonArrayresellerPortalRoles != null) {
           // ensure the json data is an array
           if (!jsonObj.get("resellerPortalRoles").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `resellerPortalRoles` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("resellerPortalRoles").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `resellerPortalRoles` to be an array in the JSON string but got `%s`", jsonObj.get("resellerPortalRoles").toString()));
           }
 
           // validate the optional field `resellerPortalRoles` (array)
@@ -342,7 +342,7 @@ public class IsvUserRolesDto {
         if (jsonArraycustomerPortalRoles != null) {
           // ensure the json data is an array
           if (!jsonObj.get("customerPortalRoles").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `customerPortalRoles` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customerPortalRoles").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `customerPortalRoles` to be an array in the JSON string but got `%s`", jsonObj.get("customerPortalRoles").toString()));
           }
 
           // validate the optional field `customerPortalRoles` (array)

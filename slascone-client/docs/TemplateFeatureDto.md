@@ -12,6 +12,8 @@
 |**featureName** | **String** |  |  [optional] |
 |**isAdjustable** | **Boolean** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
+|**isHidden** | **Boolean** |  |  [optional] |
+|**isCustomerPortalHidden** | **Boolean** |  |  [optional] |
 
 
 

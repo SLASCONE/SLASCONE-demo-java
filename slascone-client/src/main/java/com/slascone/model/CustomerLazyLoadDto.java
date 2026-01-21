@@ -219,7 +219,7 @@ public class CustomerLazyLoadDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!CustomerLazyLoadDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in CustomerLazyLoadDto is not found in the empty JSON string".formatted(CustomerLazyLoadDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomerLazyLoadDto is not found in the empty JSON string", CustomerLazyLoadDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -227,7 +227,7 @@ public class CustomerLazyLoadDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!CustomerLazyLoadDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `CustomerLazyLoadDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomerLazyLoadDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -236,7 +236,7 @@ public class CustomerLazyLoadDto {
         if (jsonArraycustomers != null) {
           // ensure the json data is an array
           if (!jsonObj.get("customers").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `customers` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customers").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `customers` to be an array in the JSON string but got `%s`", jsonObj.get("customers").toString()));
           }
 
           // validate the optional field `customers` (array)
@@ -247,7 +247,7 @@ public class CustomerLazyLoadDto {
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_characters") != null && !jsonObj.get("customer_characters").isJsonNull() && !jsonObj.get("customer_characters").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `customer_characters` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_characters").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_characters` to be an array in the JSON string but got `%s`", jsonObj.get("customer_characters").toString()));
       }
   }
 

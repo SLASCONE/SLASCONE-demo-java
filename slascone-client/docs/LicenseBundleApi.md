@@ -86,13 +86,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteLicenseBundle"></a>
 # **deleteLicenseBundle**
@@ -167,13 +167,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseBundle"></a>
 # **getLicenseBundle**
@@ -248,13 +248,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseBundleHistory"></a>
 # **getLicenseBundleHistory**
@@ -329,13 +329,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseBundleHistoryDetail"></a>
 # **getLicenseBundleHistoryDetail**
@@ -412,13 +412,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseBundles"></a>
 # **getLicenseBundles**
@@ -493,13 +493,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLicenseBundle"></a>
 # **updateLicenseBundle**
@@ -574,11 +574,11 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 

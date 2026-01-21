@@ -167,6 +167,11 @@ public class LicenseFilterDto {
   @javax.annotation.Nullable
   private Boolean isAssignedToken;
 
+  public static final String SERIALIZED_NAME_IS_SUSPENDED_TOKEN = "is_suspended_token";
+  @SerializedName(SERIALIZED_NAME_IS_SUSPENDED_TOKEN)
+  @javax.annotation.Nullable
+  private Boolean isSuspendedToken;
+
   public static final String SERIALIZED_NAME_GROUP_COUNT_FILTER = "group_count_filter";
   @SerializedName(SERIALIZED_NAME_GROUP_COUNT_FILTER)
   @javax.annotation.Nullable
@@ -692,6 +697,25 @@ public class LicenseFilterDto {
   }
 
 
+  public LicenseFilterDto isSuspendedToken(@javax.annotation.Nullable Boolean isSuspendedToken) {
+    this.isSuspendedToken = isSuspendedToken;
+    return this;
+  }
+
+  /**
+   * Get isSuspendedToken
+   * @return isSuspendedToken
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsSuspendedToken() {
+    return isSuspendedToken;
+  }
+
+  public void setIsSuspendedToken(@javax.annotation.Nullable Boolean isSuspendedToken) {
+    this.isSuspendedToken = isSuspendedToken;
+  }
+
+
   public LicenseFilterDto groupCountFilter(@javax.annotation.Nullable Integer groupCountFilter) {
     this.groupCountFilter = groupCountFilter;
     return this;
@@ -900,6 +924,7 @@ public class LicenseFilterDto {
         Objects.equals(this.isGoodwillToken, licenseFilterDto.isGoodwillToken) &&
         Objects.equals(this.isGroupValid, licenseFilterDto.isGroupValid) &&
         Objects.equals(this.isAssignedToken, licenseFilterDto.isAssignedToken) &&
+        Objects.equals(this.isSuspendedToken, licenseFilterDto.isSuspendedToken) &&
         Objects.equals(this.groupCountFilter, licenseFilterDto.groupCountFilter) &&
         Objects.equals(this.groupCountMode, licenseFilterDto.groupCountMode) &&
         Objects.equals(this.sortType, licenseFilterDto.sortType) &&
@@ -916,7 +941,7 @@ public class LicenseFilterDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(pageSize, page, isActive, keySearch, productFilter, customerFilter, customerNumberFilter, customerTypeFilter, resellerTypeFilter, templateFilter, licenseTypeFilter, operatingSystemFilter, softwareVersionFilter, isSoftwareVersionValid, featureFilter, isFeatureActive, dateFilter, dateFilterMode, isNormalToken, isGoodwillToken, isGroupValid, isAssignedToken, groupCountFilter, groupCountMode, sortType, sortOrder, licenseTagFilter, tokenTagFilter, customerTagFilter, analyticalFieldFilter);
+    return Objects.hash(pageSize, page, isActive, keySearch, productFilter, customerFilter, customerNumberFilter, customerTypeFilter, resellerTypeFilter, templateFilter, licenseTypeFilter, operatingSystemFilter, softwareVersionFilter, isSoftwareVersionValid, featureFilter, isFeatureActive, dateFilter, dateFilterMode, isNormalToken, isGoodwillToken, isGroupValid, isAssignedToken, isSuspendedToken, groupCountFilter, groupCountMode, sortType, sortOrder, licenseTagFilter, tokenTagFilter, customerTagFilter, analyticalFieldFilter);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -952,6 +977,7 @@ public class LicenseFilterDto {
     sb.append("    isGoodwillToken: ").append(toIndentedString(isGoodwillToken)).append("\n");
     sb.append("    isGroupValid: ").append(toIndentedString(isGroupValid)).append("\n");
     sb.append("    isAssignedToken: ").append(toIndentedString(isAssignedToken)).append("\n");
+    sb.append("    isSuspendedToken: ").append(toIndentedString(isSuspendedToken)).append("\n");
     sb.append("    groupCountFilter: ").append(toIndentedString(groupCountFilter)).append("\n");
     sb.append("    groupCountMode: ").append(toIndentedString(groupCountMode)).append("\n");
     sb.append("    sortType: ").append(toIndentedString(sortType)).append("\n");
@@ -981,7 +1007,7 @@ public class LicenseFilterDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("page_size", "page", "is_active", "key_search", "product_filter", "customer_filter", "customer_number_filter", "customer_type_filter", "reseller_type_filter", "template_filter", "license_type_filter", "operating_system_filter", "software_version_filter", "is_software_version_valid", "feature_filter", "is_feature_active", "date_filter", "date_filter_mode", "is_normal_token", "is_goodwill_token", "is_group_valid", "is_assigned_token", "group_count_filter", "group_count_mode", "sort_type", "sort_order", "license_tag_filter", "token_tag_filter", "customer_tag_filter", "analytical_field_filter"));
+    openapiFields = new HashSet<String>(Arrays.asList("page_size", "page", "is_active", "key_search", "product_filter", "customer_filter", "customer_number_filter", "customer_type_filter", "reseller_type_filter", "template_filter", "license_type_filter", "operating_system_filter", "software_version_filter", "is_software_version_valid", "feature_filter", "is_feature_active", "date_filter", "date_filter_mode", "is_normal_token", "is_goodwill_token", "is_group_valid", "is_assigned_token", "is_suspended_token", "group_count_filter", "group_count_mode", "sort_type", "sort_order", "license_tag_filter", "token_tag_filter", "customer_tag_filter", "analytical_field_filter"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("page_size"));
@@ -996,7 +1022,7 @@ public class LicenseFilterDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseFilterDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in LicenseFilterDto is not found in the empty JSON string".formatted(LicenseFilterDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFilterDto is not found in the empty JSON string", LicenseFilterDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -1004,63 +1030,63 @@ public class LicenseFilterDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseFilterDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseFilterDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFilterDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : LicenseFilterDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("key_search") != null && !jsonObj.get("key_search").isJsonNull()) && !jsonObj.get("key_search").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `key_search` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("key_search").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `key_search` to be a primitive type in the JSON string but got `%s`", jsonObj.get("key_search").toString()));
       }
       if ((jsonObj.get("product_filter") != null && !jsonObj.get("product_filter").isJsonNull()) && !jsonObj.get("product_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_filter` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_filter").toString()));
       }
       if ((jsonObj.get("customer_filter") != null && !jsonObj.get("customer_filter").isJsonNull()) && !jsonObj.get("customer_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `customer_filter` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("customer_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_number_filter") != null && !jsonObj.get("customer_number_filter").isJsonNull() && !jsonObj.get("customer_number_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `customer_number_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_number_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_number_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_number_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_type_filter") != null && !jsonObj.get("customer_type_filter").isJsonNull() && !jsonObj.get("customer_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `customer_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_type_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("reseller_type_filter") != null && !jsonObj.get("reseller_type_filter").isJsonNull() && !jsonObj.get("reseller_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `reseller_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("reseller_type_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `reseller_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("template_filter") != null && !jsonObj.get("template_filter").isJsonNull() && !jsonObj.get("template_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `template_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("template_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_filter` to be an array in the JSON string but got `%s`", jsonObj.get("template_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("license_type_filter") != null && !jsonObj.get("license_type_filter").isJsonNull() && !jsonObj.get("license_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `license_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("license_type_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `license_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("operating_system_filter") != null && !jsonObj.get("operating_system_filter").isJsonNull() && !jsonObj.get("operating_system_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `operating_system_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("operating_system_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `operating_system_filter` to be an array in the JSON string but got `%s`", jsonObj.get("operating_system_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("software_version_filter") != null && !jsonObj.get("software_version_filter").isJsonNull() && !jsonObj.get("software_version_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `software_version_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("software_version_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `software_version_filter` to be an array in the JSON string but got `%s`", jsonObj.get("software_version_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("feature_filter") != null && !jsonObj.get("feature_filter").isJsonNull() && !jsonObj.get("feature_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `feature_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("feature_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_filter` to be an array in the JSON string but got `%s`", jsonObj.get("feature_filter").toString()));
       }
       if ((jsonObj.get("date_filter_mode") != null && !jsonObj.get("date_filter_mode").isJsonNull()) && !jsonObj.get("date_filter_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `date_filter_mode` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("date_filter_mode").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `date_filter_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("date_filter_mode").toString()));
       }
       if ((jsonObj.get("group_count_mode") != null && !jsonObj.get("group_count_mode").isJsonNull()) && !jsonObj.get("group_count_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `group_count_mode` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("group_count_mode").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `group_count_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_count_mode").toString()));
       }
       // validate the optional field `sort_type`
       if (jsonObj.get("sort_type") != null && !jsonObj.get("sort_type").isJsonNull()) {
@@ -1068,15 +1094,15 @@ public class LicenseFilterDto {
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("license_tag_filter") != null && !jsonObj.get("license_tag_filter").isJsonNull() && !jsonObj.get("license_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `license_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("license_tag_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `license_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_tag_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("token_tag_filter") != null && !jsonObj.get("token_tag_filter").isJsonNull() && !jsonObj.get("token_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `token_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("token_tag_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `token_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("token_tag_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_tag_filter") != null && !jsonObj.get("customer_tag_filter").isJsonNull() && !jsonObj.get("customer_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `customer_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_tag_filter").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_tag_filter").toString()));
       }
       // validate the optional field `analytical_field_filter`
       if (jsonObj.get("analytical_field_filter") != null && !jsonObj.get("analytical_field_filter").isJsonNull()) {

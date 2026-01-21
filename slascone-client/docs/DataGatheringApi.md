@@ -95,9 +95,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addConsumptionHeartbeat"></a>
 # **addConsumptionHeartbeat**
@@ -183,9 +183,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addUsageHeartbeat"></a>
 # **addUsageHeartbeat**
@@ -271,9 +271,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="addUsageHeartbeatByName"></a>
 # **addUsageHeartbeatByName**
@@ -359,9 +359,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="rollbackConsumptionHeartbeat"></a>
 # **rollbackConsumptionHeartbeat**
@@ -447,7 +447,7 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 

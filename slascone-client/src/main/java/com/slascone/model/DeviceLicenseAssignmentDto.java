@@ -169,6 +169,11 @@ public class DeviceLicenseAssignmentDto {
   @javax.annotation.Nullable
   private LicenseActivationType licenseActivationType;
 
+  public static final String SERIALIZED_NAME_SUSPENDED_UNTIL_UTC = "suspended_until_utc";
+  @SerializedName(SERIALIZED_NAME_SUSPENDED_UNTIL_UTC)
+  @javax.annotation.Nullable
+  private OffsetDateTime suspendedUntilUtc;
+
   public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
   @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
   @javax.annotation.Nullable
@@ -621,6 +626,25 @@ public class DeviceLicenseAssignmentDto {
   }
 
 
+  public DeviceLicenseAssignmentDto suspendedUntilUtc(@javax.annotation.Nullable OffsetDateTime suspendedUntilUtc) {
+    this.suspendedUntilUtc = suspendedUntilUtc;
+    return this;
+  }
+
+  /**
+   * Get suspendedUntilUtc
+   * @return suspendedUntilUtc
+   */
+  @javax.annotation.Nullable
+  public OffsetDateTime getSuspendedUntilUtc() {
+    return suspendedUntilUtc;
+  }
+
+  public void setSuspendedUntilUtc(@javax.annotation.Nullable OffsetDateTime suspendedUntilUtc) {
+    this.suspendedUntilUtc = suspendedUntilUtc;
+  }
+
+
   public DeviceLicenseAssignmentDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
@@ -710,6 +734,7 @@ public class DeviceLicenseAssignmentDto {
         Objects.equals(this.operatingSystem, deviceLicenseAssignmentDto.operatingSystem) &&
         Objects.equals(this.tagAssignments, deviceLicenseAssignmentDto.tagAssignments) &&
         Objects.equals(this.licenseActivationType, deviceLicenseAssignmentDto.licenseActivationType) &&
+        Objects.equals(this.suspendedUntilUtc, deviceLicenseAssignmentDto.suspendedUntilUtc) &&
         Objects.equals(this.createdDateUtc, deviceLicenseAssignmentDto.createdDateUtc) &&
         Objects.equals(this.modifiedDateUtc, deviceLicenseAssignmentDto.modifiedDateUtc) &&
         Objects.equals(this.lastModifiedBy, deviceLicenseAssignmentDto.lastModifiedBy);
@@ -721,7 +746,7 @@ public class DeviceLicenseAssignmentDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, licenseId, productId, deviceName, deviceDescription, tokenKey, userEmail, userId, clientId, activated, isSoftwareVersionValid, isGoodwillLicense, hasHeartbeats, hasConsumptionHeartbeats, activatedDateUtc, heartbeatInfo, enforceSoftwareVersionUpgrade, deviceAnalyticalHeartbeats, softwareVersion, operatingSystem, tagAssignments, licenseActivationType, createdDateUtc, modifiedDateUtc, lastModifiedBy);
+    return Objects.hash(id, licenseId, productId, deviceName, deviceDescription, tokenKey, userEmail, userId, clientId, activated, isSoftwareVersionValid, isGoodwillLicense, hasHeartbeats, hasConsumptionHeartbeats, activatedDateUtc, heartbeatInfo, enforceSoftwareVersionUpgrade, deviceAnalyticalHeartbeats, softwareVersion, operatingSystem, tagAssignments, licenseActivationType, suspendedUntilUtc, createdDateUtc, modifiedDateUtc, lastModifiedBy);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -757,6 +782,7 @@ public class DeviceLicenseAssignmentDto {
     sb.append("    operatingSystem: ").append(toIndentedString(operatingSystem)).append("\n");
     sb.append("    tagAssignments: ").append(toIndentedString(tagAssignments)).append("\n");
     sb.append("    licenseActivationType: ").append(toIndentedString(licenseActivationType)).append("\n");
+    sb.append("    suspendedUntilUtc: ").append(toIndentedString(suspendedUntilUtc)).append("\n");
     sb.append("    createdDateUtc: ").append(toIndentedString(createdDateUtc)).append("\n");
     sb.append("    modifiedDateUtc: ").append(toIndentedString(modifiedDateUtc)).append("\n");
     sb.append("    lastModifiedBy: ").append(toIndentedString(lastModifiedBy)).append("\n");
@@ -781,7 +807,7 @@ public class DeviceLicenseAssignmentDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "license_id", "product_id", "device_name", "device_description", "token_key", "user_email", "user_id", "client_id", "activated", "is_software_version_valid", "is_goodwill_license", "has_heartbeats", "has_consumption_heartbeats", "activated_date_utc", "heartbeat_info", "enforce_software_version_upgrade", "device_analytical_heartbeats", "software_version", "operating_system", "tag_assignments", "license_activation_type", "created_date_utc", "modified_date_utc", "last_modified_by"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "license_id", "product_id", "device_name", "device_description", "token_key", "user_email", "user_id", "client_id", "activated", "is_software_version_valid", "is_goodwill_license", "has_heartbeats", "has_consumption_heartbeats", "activated_date_utc", "heartbeat_info", "enforce_software_version_upgrade", "device_analytical_heartbeats", "software_version", "operating_system", "tag_assignments", "license_activation_type", "suspended_until_utc", "created_date_utc", "modified_date_utc", "last_modified_by"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -796,7 +822,7 @@ public class DeviceLicenseAssignmentDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!DeviceLicenseAssignmentDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in DeviceLicenseAssignmentDto is not found in the empty JSON string".formatted(DeviceLicenseAssignmentDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in DeviceLicenseAssignmentDto is not found in the empty JSON string", DeviceLicenseAssignmentDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -804,36 +830,36 @@ public class DeviceLicenseAssignmentDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!DeviceLicenseAssignmentDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `DeviceLicenseAssignmentDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DeviceLicenseAssignmentDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
       }
       if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
       }
       if ((jsonObj.get("device_name") != null && !jsonObj.get("device_name").isJsonNull()) && !jsonObj.get("device_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `device_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("device_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `device_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_name").toString()));
       }
       if ((jsonObj.get("device_description") != null && !jsonObj.get("device_description").isJsonNull()) && !jsonObj.get("device_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `device_description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("device_description").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `device_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_description").toString()));
       }
       if ((jsonObj.get("token_key") != null && !jsonObj.get("token_key").isJsonNull()) && !jsonObj.get("token_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("token_key").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_key").toString()));
       }
       if ((jsonObj.get("user_email") != null && !jsonObj.get("user_email").isJsonNull()) && !jsonObj.get("user_email").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `user_email` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("user_email").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `user_email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_email").toString()));
       }
       if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("user_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
       }
       if ((jsonObj.get("client_id") != null && !jsonObj.get("client_id").isJsonNull()) && !jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("client_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
       }
       // validate the optional field `heartbeat_info`
       if (jsonObj.get("heartbeat_info") != null && !jsonObj.get("heartbeat_info").isJsonNull()) {
@@ -844,7 +870,7 @@ public class DeviceLicenseAssignmentDto {
         if (jsonArraydeviceAnalyticalHeartbeats != null) {
           // ensure the json data is an array
           if (!jsonObj.get("device_analytical_heartbeats").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `device_analytical_heartbeats` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("device_analytical_heartbeats").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `device_analytical_heartbeats` to be an array in the JSON string but got `%s`", jsonObj.get("device_analytical_heartbeats").toString()));
           }
 
           // validate the optional field `device_analytical_heartbeats` (array)
@@ -854,17 +880,17 @@ public class DeviceLicenseAssignmentDto {
         }
       }
       if ((jsonObj.get("software_version") != null && !jsonObj.get("software_version").isJsonNull()) && !jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("software_version").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
       }
       if ((jsonObj.get("operating_system") != null && !jsonObj.get("operating_system").isJsonNull()) && !jsonObj.get("operating_system").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("operating_system").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`", jsonObj.get("operating_system").toString()));
       }
       if (jsonObj.get("tag_assignments") != null && !jsonObj.get("tag_assignments").isJsonNull()) {
         JsonArray jsonArraytagAssignments = jsonObj.getAsJsonArray("tag_assignments");
         if (jsonArraytagAssignments != null) {
           // ensure the json data is an array
           if (!jsonObj.get("tag_assignments").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `tag_assignments` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("tag_assignments").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `tag_assignments` to be an array in the JSON string but got `%s`", jsonObj.get("tag_assignments").toString()));
           }
 
           // validate the optional field `tag_assignments` (array)
@@ -878,7 +904,7 @@ public class DeviceLicenseAssignmentDto {
         LicenseActivationType.validateJsonElement(jsonObj.get("license_activation_type"));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
   }
 

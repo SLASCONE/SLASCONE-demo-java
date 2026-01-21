@@ -113,6 +113,16 @@ public class TemplateLimitationDto {
   @javax.annotation.Nullable
   private ConsumptionBalanceMode consumptionBalanceMode;
 
+  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isHidden;
+
+  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isCustomerPortalHidden;
+
   public static final String SERIALIZED_NAME_ALERTS = "alerts";
   @SerializedName(SERIALIZED_NAME_ALERTS)
   @javax.annotation.Nullable
@@ -330,6 +340,44 @@ public class TemplateLimitationDto {
   }
 
 
+  public TemplateLimitationDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+    return this;
+  }
+
+  /**
+   * Get isHidden
+   * @return isHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsHidden() {
+    return isHidden;
+  }
+
+  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+  }
+
+
+  public TemplateLimitationDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+    return this;
+  }
+
+  /**
+   * Get isCustomerPortalHidden
+   * @return isCustomerPortalHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsCustomerPortalHidden() {
+    return isCustomerPortalHidden;
+  }
+
+  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+  }
+
+
   public TemplateLimitationDto alerts(@javax.annotation.Nullable List<TemplateLimitationAlertDto> alerts) {
     this.alerts = alerts;
     return this;
@@ -378,6 +426,8 @@ public class TemplateLimitationDto {
         Objects.equals(this.enforceLimit, templateLimitationDto.enforceLimit) &&
         Objects.equals(this.userProvisioning, templateLimitationDto.userProvisioning) &&
         Objects.equals(this.consumptionBalanceMode, templateLimitationDto.consumptionBalanceMode) &&
+        Objects.equals(this.isHidden, templateLimitationDto.isHidden) &&
+        Objects.equals(this.isCustomerPortalHidden, templateLimitationDto.isCustomerPortalHidden) &&
         Objects.equals(this.alerts, templateLimitationDto.alerts);
   }
 
@@ -387,7 +437,7 @@ public class TemplateLimitationDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, limitationId, limitationName, isAdjustable, limit, consumptionResetMode, consumptionResetPeriodDays, goodwill, enforceLimit, userProvisioning, consumptionBalanceMode, alerts);
+    return Objects.hash(templateId, limitationId, limitationName, isAdjustable, limit, consumptionResetMode, consumptionResetPeriodDays, goodwill, enforceLimit, userProvisioning, consumptionBalanceMode, isHidden, isCustomerPortalHidden, alerts);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -412,6 +462,8 @@ public class TemplateLimitationDto {
     sb.append("    enforceLimit: ").append(toIndentedString(enforceLimit)).append("\n");
     sb.append("    userProvisioning: ").append(toIndentedString(userProvisioning)).append("\n");
     sb.append("    consumptionBalanceMode: ").append(toIndentedString(consumptionBalanceMode)).append("\n");
+    sb.append("    isHidden: ").append(toIndentedString(isHidden)).append("\n");
+    sb.append("    isCustomerPortalHidden: ").append(toIndentedString(isCustomerPortalHidden)).append("\n");
     sb.append("    alerts: ").append(toIndentedString(alerts)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -434,7 +486,7 @@ public class TemplateLimitationDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "limitation_id", "limitation_name", "is_adjustable", "limit", "consumption_reset_mode", "consumption_reset_period_days", "goodwill", "enforce_limit", "user_provisioning", "consumption_balance_mode", "alerts"));
+    openapiFields = new HashSet<String>(Arrays.asList("template_id", "limitation_id", "limitation_name", "is_adjustable", "limit", "consumption_reset_mode", "consumption_reset_period_days", "goodwill", "enforce_limit", "user_provisioning", "consumption_balance_mode", "is_hidden", "is_customer_portal_hidden", "alerts"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("limitation_id"));
@@ -449,7 +501,7 @@ public class TemplateLimitationDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateLimitationDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TemplateLimitationDto is not found in the empty JSON string".formatted(TemplateLimitationDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateLimitationDto is not found in the empty JSON string", TemplateLimitationDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -457,25 +509,25 @@ public class TemplateLimitationDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateLimitationDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateLimitationDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateLimitationDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateLimitationDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
       }
       if (!jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("limitation_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
       }
       if ((jsonObj.get("limitation_name") != null && !jsonObj.get("limitation_name").isJsonNull()) && !jsonObj.get("limitation_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `limitation_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("limitation_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `limitation_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_name").toString()));
       }
       // validate the optional field `consumption_reset_mode`
       if (jsonObj.get("consumption_reset_mode") != null && !jsonObj.get("consumption_reset_mode").isJsonNull()) {
@@ -490,7 +542,7 @@ public class TemplateLimitationDto {
         if (jsonArrayalerts != null) {
           // ensure the json data is an array
           if (!jsonObj.get("alerts").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `alerts` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("alerts").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `alerts` to be an array in the JSON string but got `%s`", jsonObj.get("alerts").toString()));
           }
 
           // validate the optional field `alerts` (array)

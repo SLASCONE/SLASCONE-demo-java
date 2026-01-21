@@ -200,7 +200,7 @@ public class BackupStorageSasTokenCredentialsError {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!BackupStorageSasTokenCredentialsError.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in BackupStorageSasTokenCredentialsError is not found in the empty JSON string".formatted(BackupStorageSasTokenCredentialsError.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in BackupStorageSasTokenCredentialsError is not found in the empty JSON string", BackupStorageSasTokenCredentialsError.openapiRequiredFields.toString()));
         }
       }
 
@@ -208,15 +208,15 @@ public class BackupStorageSasTokenCredentialsError {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!BackupStorageSasTokenCredentialsError.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `BackupStorageSasTokenCredentialsError` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BackupStorageSasTokenCredentialsError` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("message") != null && !jsonObj.get("message").isJsonNull()) && !jsonObj.get("message").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `message` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("message").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
       }
       if ((jsonObj.get("help") != null && !jsonObj.get("help").isJsonNull()) && !jsonObj.get("help").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `help` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("help").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `help` to be a primitive type in the JSON string but got `%s`", jsonObj.get("help").toString()));
       }
   }
 

@@ -47,6 +47,8 @@ All URIs are relative to *http://localhost*
 
 Creates a license
 
+Sample request:                  GET /api/customers/123
+
 ### Example
 ```java
 // Import classes:
@@ -114,12 +116,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="addLicenseType"></a>
 # **addLicenseType**
@@ -194,12 +196,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="addLicenseUserAsync"></a>
 # **addLicenseUserAsync**
@@ -278,14 +280,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="addLicenseUserGroupAsync"></a>
 # **addLicenseUserGroupAsync**
@@ -364,14 +366,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="closeAllSessionsAsync"></a>
 # **closeAllSessionsAsync**
@@ -449,9 +451,9 @@ null (empty response body)
 |-------------|-------------|------------------|
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
 
 <a id="deleteLicense"></a>
 # **deleteLicense**
@@ -526,12 +528,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteLicenseAssignment"></a>
 # **deleteLicenseAssignment**
@@ -608,12 +610,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteLicenseUserAsync"></a>
 # **deleteLicenseUserAsync**
@@ -692,14 +694,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="deleteLicenseUserGroupAsync"></a>
 # **deleteLicenseUserGroupAsync**
@@ -780,14 +782,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="deleteLicenseUsersAsync"></a>
 # **deleteLicenseUsersAsync**
@@ -866,14 +868,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="downloadLicenseFileXml"></a>
 # **downloadLicenseFileXml**
@@ -950,17 +952,17 @@ null (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json, application/xml
+ - **Accept**: application/xml, application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Xml Document |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Xml Document |  -  |
 
 <a id="getAllLicenseHistory"></a>
 # **getAllLicenseHistory**
@@ -1035,12 +1037,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getAssignmentAsync"></a>
 # **getAssignmentAsync**
@@ -1117,12 +1119,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getConsumptionBalance"></a>
 # **getConsumptionBalance**
@@ -1205,16 +1207,16 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getConsumptionHeartbeats"></a>
 # **getConsumptionHeartbeats**
-> ConsumptionHeartbeatLazyLoadDto getConsumptionHeartbeats(isvId, licenseId, dateFrom, dateTo, limitations)
+> ConsumptionHeartbeatLazyLoadDto getConsumptionHeartbeats(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations)
 
 Returns all consumption heartbeats
 
@@ -1250,11 +1252,14 @@ public class Example {
     LicenseApi apiInstance = new LicenseApi(defaultClient);
     UUID isvId = UUID.randomUUID(); // UUID | 
     UUID licenseId = UUID.randomUUID(); // UUID | 
+    UUID transactionId = UUID.randomUUID(); // UUID | 
+    String userId = "userId_example"; // String | 
+    String clientId = "clientId_example"; // String | 
     OffsetDateTime dateFrom = OffsetDateTime.now(); // OffsetDateTime | 
     OffsetDateTime dateTo = OffsetDateTime.now(); // OffsetDateTime | 
     List<UUID> limitations = Arrays.asList(); // List<UUID> | 
     try {
-      ConsumptionHeartbeatLazyLoadDto result = apiInstance.getConsumptionHeartbeats(isvId, licenseId, dateFrom, dateTo, limitations);
+      ConsumptionHeartbeatLazyLoadDto result = apiInstance.getConsumptionHeartbeats(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling LicenseApi#getConsumptionHeartbeats");
@@ -1273,6 +1278,9 @@ public class Example {
 |------------- | ------------- | ------------- | -------------|
 | **isvId** | **UUID**|  | |
 | **licenseId** | **UUID**|  | |
+| **transactionId** | **UUID**|  | [optional] |
+| **userId** | **String**|  | [optional] |
+| **clientId** | **String**|  | [optional] |
 | **dateFrom** | **OffsetDateTime**|  | [optional] |
 | **dateTo** | **OffsetDateTime**|  | [optional] |
 | **limitations** | [**List&lt;UUID&gt;**](UUID.md)|  | [optional] |
@@ -1293,12 +1301,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicense"></a>
 # **getLicense**
@@ -1379,12 +1387,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseAssignments"></a>
 # **getLicenseAssignments**
@@ -1479,12 +1487,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseHistory"></a>
 # **getLicenseHistory**
@@ -1561,12 +1569,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseTagAssignments"></a>
 # **getLicenseTagAssignments**
@@ -1647,12 +1655,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseTypes"></a>
 # **getLicenseTypes**
@@ -1733,12 +1741,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicenseUserGroupsAsync"></a>
 # **getLicenseUserGroupsAsync**
@@ -1813,14 +1821,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="getLicenseUsersAsync"></a>
 # **getLicenseUsersAsync**
@@ -1897,14 +1905,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="getLicensesByFilter"></a>
 # **getLicensesByFilter**
@@ -1979,12 +1987,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getLicensesByFilterSettings"></a>
 # **getLicensesByFilterSettings**
@@ -2059,12 +2067,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="getOpenSessionsAsync"></a>
 # **getOpenSessionsAsync**
@@ -2139,12 +2147,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="recalculateConsumptionBalance"></a>
 # **recalculateConsumptionBalance**
@@ -2222,12 +2230,12 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="removeLicenseType"></a>
 # **removeLicenseType**
@@ -2304,12 +2312,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="resetConsumptionBalance"></a>
 # **resetConsumptionBalance**
@@ -2387,12 +2395,12 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="toggleLicenseStateAsync"></a>
 # **toggleLicenseStateAsync**
@@ -2467,12 +2475,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="updateAssignmentAsync"></a>
 # **updateAssignmentAsync**
@@ -2549,12 +2557,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLicense"></a>
 # **updateLicense**
@@ -2631,12 +2639,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLicenseTagAssignments"></a>
 # **updateLicenseTagAssignments**
@@ -2713,12 +2721,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLicenseType"></a>
 # **updateLicenseType**
@@ -2793,12 +2801,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLicenseUserAsync"></a>
 # **updateLicenseUserAsync**
@@ -2877,14 +2885,14 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 
 <a id="updateLicenseUserGroupAsync"></a>
 # **updateLicenseUserGroupAsync**
@@ -2963,12 +2971,12 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Warning |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Warning |  -  |
-| **200** | Success |  -  |
-| **404** | Not found |  -  |
-| **400** | Bad request |  -  |
 

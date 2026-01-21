@@ -145,13 +145,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addConstrainedVariable"></a>
 # **addConstrainedVariable**
@@ -228,13 +228,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addEmailTemplate"></a>
 # **addEmailTemplate**
@@ -311,13 +311,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addFeature"></a>
 # **addFeature**
@@ -394,13 +394,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addLimitation"></a>
 # **addLimitation**
@@ -477,13 +477,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addProduct"></a>
 # **addProduct**
@@ -558,13 +558,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addSoftwareReleaseLimitation"></a>
 # **addSoftwareReleaseLimitation**
@@ -641,13 +641,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addSoftwareShipment"></a>
 # **addSoftwareShipment**
@@ -726,13 +726,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addSoftwareShipmentProperty"></a>
 # **addSoftwareShipmentProperty**
@@ -811,13 +811,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addUsageFeature"></a>
 # **addUsageFeature**
@@ -894,13 +894,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addUsageModule"></a>
 # **addUsageModule**
@@ -977,13 +977,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addVariable"></a>
 # **addVariable**
@@ -1060,13 +1060,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteAnalyticalField"></a>
 # **deleteAnalyticalField**
@@ -1142,13 +1142,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteConstrainedVariable"></a>
 # **deleteConstrainedVariable**
@@ -1224,13 +1224,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteEmailTemplate"></a>
 # **deleteEmailTemplate**
@@ -1306,13 +1306,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteFeature"></a>
 # **deleteFeature**
@@ -1388,13 +1388,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteLimitation"></a>
 # **deleteLimitation**
@@ -1470,13 +1470,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteProduct"></a>
 # **deleteProduct**
@@ -1550,13 +1550,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteSoftwareReleaseLimitation"></a>
 # **deleteSoftwareReleaseLimitation**
@@ -1634,13 +1634,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteSoftwareShipment"></a>
 # **deleteSoftwareShipment**
@@ -1718,13 +1718,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteSoftwareShipmentProperty"></a>
 # **deleteSoftwareShipmentProperty**
@@ -1800,13 +1800,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteUsageFeature"></a>
 # **deleteUsageFeature**
@@ -1882,13 +1882,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteUsageModule"></a>
 # **deleteUsageModule**
@@ -1964,13 +1964,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteVariable"></a>
 # **deleteVariable**
@@ -2046,13 +2046,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="exportFullProduct"></a>
 # **exportFullProduct**
@@ -2122,18 +2122,18 @@ public class Example {
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json, application/octet-stream
+ - **Accept**: application/octet-stream, application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllAnalyticalFields"></a>
 # **getAllAnalyticalFields**
@@ -2208,13 +2208,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllConstrainedVariables"></a>
 # **getAllConstrainedVariables**
@@ -2289,13 +2289,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllEmailTemplates"></a>
 # **getAllEmailTemplates**
@@ -2370,13 +2370,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllFeatures"></a>
 # **getAllFeatures**
@@ -2451,13 +2451,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllLimitations"></a>
 # **getAllLimitations**
@@ -2532,13 +2532,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllProducts"></a>
 # **getAllProducts**
@@ -2613,13 +2613,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllSoftwareReleaseLimitations"></a>
 # **getAllSoftwareReleaseLimitations**
@@ -2694,13 +2694,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllSoftwareShipmentProperties"></a>
 # **getAllSoftwareShipmentProperties**
@@ -2775,13 +2775,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllSoftwareShipments"></a>
 # **getAllSoftwareShipments**
@@ -2858,13 +2858,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllUsageFeatures"></a>
 # **getAllUsageFeatures**
@@ -2939,13 +2939,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllUsageModules"></a>
 # **getAllUsageModules**
@@ -3020,13 +3020,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllVariables"></a>
 # **getAllVariables**
@@ -3101,13 +3101,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAnalyticalFieldById"></a>
 # **getAnalyticalFieldById**
@@ -3184,13 +3184,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getConstrainedVariableById"></a>
 # **getConstrainedVariableById**
@@ -3267,13 +3267,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getEmailTemplateById"></a>
 # **getEmailTemplateById**
@@ -3350,13 +3350,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getFeatureById"></a>
 # **getFeatureById**
@@ -3433,13 +3433,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getLimitationById"></a>
 # **getLimitationById**
@@ -3516,13 +3516,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getProduct"></a>
 # **getProduct**
@@ -3597,13 +3597,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getProductDetails"></a>
 # **getProductDetails**
@@ -3678,13 +3678,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getProductHistoryAsync"></a>
 # **getProductHistoryAsync**
@@ -3759,13 +3759,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getSoftwareReleaseLimitationById"></a>
 # **getSoftwareReleaseLimitationById**
@@ -3842,13 +3842,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getSoftwareShipmentById"></a>
 # **getSoftwareShipmentById**
@@ -3927,13 +3927,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getSoftwareShipmentPropertyById"></a>
 # **getSoftwareShipmentPropertyById**
@@ -4010,13 +4010,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getUsageFeatureById"></a>
 # **getUsageFeatureById**
@@ -4093,13 +4093,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getUsageModuleById"></a>
 # **getUsageModuleById**
@@ -4176,13 +4176,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getVariableById"></a>
 # **getVariableById**
@@ -4259,13 +4259,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="importProductFromFile"></a>
 # **importProductFromFile**
@@ -4340,13 +4340,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateAnalyticalField"></a>
 # **updateAnalyticalField**
@@ -4423,13 +4423,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateConstrainedVariable"></a>
 # **updateConstrainedVariable**
@@ -4506,13 +4506,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateEmailTemplate"></a>
 # **updateEmailTemplate**
@@ -4589,13 +4589,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateFeature"></a>
 # **updateFeature**
@@ -4672,13 +4672,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateLimitation"></a>
 # **updateLimitation**
@@ -4755,13 +4755,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateProduct"></a>
 # **updateProduct**
@@ -4836,13 +4836,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateSoftwareReleaseLimitation"></a>
 # **updateSoftwareReleaseLimitation**
@@ -4919,13 +4919,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateSoftwareShipment"></a>
 # **updateSoftwareShipment**
@@ -5004,13 +5004,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateSoftwareShipmentProperty"></a>
 # **updateSoftwareShipmentProperty**
@@ -5087,13 +5087,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateUsageFeature"></a>
 # **updateUsageFeature**
@@ -5170,13 +5170,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateUsageModule"></a>
 # **updateUsageModule**
@@ -5253,13 +5253,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateVariable"></a>
 # **updateVariable**
@@ -5336,11 +5336,11 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
 | **504** | Gateway timeout |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 

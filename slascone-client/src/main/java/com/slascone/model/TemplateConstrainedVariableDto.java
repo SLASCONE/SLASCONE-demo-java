@@ -74,6 +74,16 @@ public class TemplateConstrainedVariableDto {
   @javax.annotation.Nullable
   private Boolean isAdjustable;
 
+  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isHidden;
+
+  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isCustomerPortalHidden;
+
   public static final String SERIALIZED_NAME_VALUES = "values";
   @SerializedName(SERIALIZED_NAME_VALUES)
   @javax.annotation.Nullable
@@ -158,6 +168,44 @@ public class TemplateConstrainedVariableDto {
   }
 
 
+  public TemplateConstrainedVariableDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+    return this;
+  }
+
+  /**
+   * Get isHidden
+   * @return isHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsHidden() {
+    return isHidden;
+  }
+
+  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+  }
+
+
+  public TemplateConstrainedVariableDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+    return this;
+  }
+
+  /**
+   * Get isCustomerPortalHidden
+   * @return isCustomerPortalHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsCustomerPortalHidden() {
+    return isCustomerPortalHidden;
+  }
+
+  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+  }
+
+
   public TemplateConstrainedVariableDto values(@javax.annotation.Nullable List<String> values) {
     this.values = values;
     return this;
@@ -199,6 +247,8 @@ public class TemplateConstrainedVariableDto {
         Objects.equals(this.variableId, templateConstrainedVariableDto.variableId) &&
         Objects.equals(this.variableName, templateConstrainedVariableDto.variableName) &&
         Objects.equals(this.isAdjustable, templateConstrainedVariableDto.isAdjustable) &&
+        Objects.equals(this.isHidden, templateConstrainedVariableDto.isHidden) &&
+        Objects.equals(this.isCustomerPortalHidden, templateConstrainedVariableDto.isCustomerPortalHidden) &&
         Objects.equals(this.values, templateConstrainedVariableDto.values);
   }
 
@@ -208,7 +258,7 @@ public class TemplateConstrainedVariableDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, variableId, variableName, isAdjustable, values);
+    return Objects.hash(templateId, variableId, variableName, isAdjustable, isHidden, isCustomerPortalHidden, values);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -226,6 +276,8 @@ public class TemplateConstrainedVariableDto {
     sb.append("    variableId: ").append(toIndentedString(variableId)).append("\n");
     sb.append("    variableName: ").append(toIndentedString(variableName)).append("\n");
     sb.append("    isAdjustable: ").append(toIndentedString(isAdjustable)).append("\n");
+    sb.append("    isHidden: ").append(toIndentedString(isHidden)).append("\n");
+    sb.append("    isCustomerPortalHidden: ").append(toIndentedString(isCustomerPortalHidden)).append("\n");
     sb.append("    values: ").append(toIndentedString(values)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -248,7 +300,7 @@ public class TemplateConstrainedVariableDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "variable_id", "variable_name", "is_adjustable", "values"));
+    openapiFields = new HashSet<String>(Arrays.asList("template_id", "variable_id", "variable_name", "is_adjustable", "is_hidden", "is_customer_portal_hidden", "values"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("variable_id"));
@@ -263,7 +315,7 @@ public class TemplateConstrainedVariableDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateConstrainedVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TemplateConstrainedVariableDto is not found in the empty JSON string".formatted(TemplateConstrainedVariableDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateConstrainedVariableDto is not found in the empty JSON string", TemplateConstrainedVariableDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -271,29 +323,29 @@ public class TemplateConstrainedVariableDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateConstrainedVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateConstrainedVariableDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateConstrainedVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateConstrainedVariableDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
       }
       if (!jsonObj.get("variable_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_id").toString()));
       }
       if ((jsonObj.get("variable_name") != null && !jsonObj.get("variable_name").isJsonNull()) && !jsonObj.get("variable_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_name").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("values") != null && !jsonObj.get("values").isJsonNull() && !jsonObj.get("values").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `values` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("values").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `values` to be an array in the JSON string but got `%s`", jsonObj.get("values").toString()));
       }
   }
 

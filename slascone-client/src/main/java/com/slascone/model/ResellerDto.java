@@ -20,6 +20,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.slascone.model.ResellerContactDto;
+import com.slascone.model.ResellerSettingsDto;
 import com.slascone.model.ResellerTypeDto;
 import com.slascone.model.ResourceDto;
 import java.io.IOException;
@@ -132,6 +133,11 @@ public class ResellerDto {
   @SerializedName(SERIALIZED_NAME_RESELLER_CONTACTS)
   @javax.annotation.Nullable
   private List<ResellerContactDto> resellerContacts;
+
+  public static final String SERIALIZED_NAME_RESELLER_SETTINGS = "reseller_settings";
+  @SerializedName(SERIALIZED_NAME_RESELLER_SETTINGS)
+  @javax.annotation.Nullable
+  private ResellerSettingsDto resellerSettings;
 
   public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
   @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
@@ -444,6 +450,25 @@ public class ResellerDto {
   }
 
 
+  public ResellerDto resellerSettings(@javax.annotation.Nullable ResellerSettingsDto resellerSettings) {
+    this.resellerSettings = resellerSettings;
+    return this;
+  }
+
+  /**
+   * Get resellerSettings
+   * @return resellerSettings
+   */
+  @javax.annotation.Nullable
+  public ResellerSettingsDto getResellerSettings() {
+    return resellerSettings;
+  }
+
+  public void setResellerSettings(@javax.annotation.Nullable ResellerSettingsDto resellerSettings) {
+    this.resellerSettings = resellerSettings;
+  }
+
+
   public ResellerDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
     return this;
@@ -526,6 +551,7 @@ public class ResellerDto {
         Objects.equals(this.resellerTypeId, resellerDto.resellerTypeId) &&
         Objects.equals(this.resellerType, resellerDto.resellerType) &&
         Objects.equals(this.resellerContacts, resellerDto.resellerContacts) &&
+        Objects.equals(this.resellerSettings, resellerDto.resellerSettings) &&
         Objects.equals(this.lastModifiedBy, resellerDto.lastModifiedBy) &&
         Objects.equals(this.modifiedDateUtc, resellerDto.modifiedDateUtc) &&
         Objects.equals(this.createdDateUtc, resellerDto.createdDateUtc);
@@ -537,7 +563,7 @@ public class ResellerDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, street, city, postalcode, country, phone, logo, number, longitude, latitude, email, resellerTypeId, resellerType, resellerContacts, lastModifiedBy, modifiedDateUtc, createdDateUtc);
+    return Objects.hash(id, name, street, city, postalcode, country, phone, logo, number, longitude, latitude, email, resellerTypeId, resellerType, resellerContacts, resellerSettings, lastModifiedBy, modifiedDateUtc, createdDateUtc);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -566,6 +592,7 @@ public class ResellerDto {
     sb.append("    resellerTypeId: ").append(toIndentedString(resellerTypeId)).append("\n");
     sb.append("    resellerType: ").append(toIndentedString(resellerType)).append("\n");
     sb.append("    resellerContacts: ").append(toIndentedString(resellerContacts)).append("\n");
+    sb.append("    resellerSettings: ").append(toIndentedString(resellerSettings)).append("\n");
     sb.append("    lastModifiedBy: ").append(toIndentedString(lastModifiedBy)).append("\n");
     sb.append("    modifiedDateUtc: ").append(toIndentedString(modifiedDateUtc)).append("\n");
     sb.append("    createdDateUtc: ").append(toIndentedString(createdDateUtc)).append("\n");
@@ -590,7 +617,7 @@ public class ResellerDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "street", "city", "postalcode", "country", "phone", "logo", "number", "longitude", "latitude", "email", "reseller_type_id", "reseller_type", "reseller_contacts", "last_modified_by", "modified_date_utc", "created_date_utc"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "street", "city", "postalcode", "country", "phone", "logo", "number", "longitude", "latitude", "email", "reseller_type_id", "reseller_type", "reseller_contacts", "reseller_settings", "last_modified_by", "modified_date_utc", "created_date_utc"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -605,7 +632,7 @@ public class ResellerDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ResellerDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in ResellerDto is not found in the empty JSON string".formatted(ResellerDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerDto is not found in the empty JSON string", ResellerDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -613,43 +640,43 @@ public class ResellerDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ResellerDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `ResellerDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
       if ((jsonObj.get("street") != null && !jsonObj.get("street").isJsonNull()) && !jsonObj.get("street").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `street` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("street").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `street` to be a primitive type in the JSON string but got `%s`", jsonObj.get("street").toString()));
       }
       if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `city` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("city").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
       }
       if ((jsonObj.get("postalcode") != null && !jsonObj.get("postalcode").isJsonNull()) && !jsonObj.get("postalcode").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `postalcode` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("postalcode").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `postalcode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("postalcode").toString()));
       }
       if ((jsonObj.get("country") != null && !jsonObj.get("country").isJsonNull()) && !jsonObj.get("country").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `country` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("country").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `country` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country").toString()));
       }
       if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `phone` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("phone").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
       }
       // validate the optional field `logo`
       if (jsonObj.get("logo") != null && !jsonObj.get("logo").isJsonNull()) {
         ResourceDto.validateJsonElement(jsonObj.get("logo"));
       }
       if ((jsonObj.get("number") != null && !jsonObj.get("number").isJsonNull()) && !jsonObj.get("number").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `number` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("number").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("number").toString()));
       }
       if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `email` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("email").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
       }
       if ((jsonObj.get("reseller_type_id") != null && !jsonObj.get("reseller_type_id").isJsonNull()) && !jsonObj.get("reseller_type_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `reseller_type_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("reseller_type_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `reseller_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("reseller_type_id").toString()));
       }
       // validate the optional field `reseller_type`
       if (jsonObj.get("reseller_type") != null && !jsonObj.get("reseller_type").isJsonNull()) {
@@ -660,7 +687,7 @@ public class ResellerDto {
         if (jsonArrayresellerContacts != null) {
           // ensure the json data is an array
           if (!jsonObj.get("reseller_contacts").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `reseller_contacts` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("reseller_contacts").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `reseller_contacts` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_contacts").toString()));
           }
 
           // validate the optional field `reseller_contacts` (array)
@@ -669,8 +696,12 @@ public class ResellerDto {
           };
         }
       }
+      // validate the optional field `reseller_settings`
+      if (jsonObj.get("reseller_settings") != null && !jsonObj.get("reseller_settings").isJsonNull()) {
+        ResellerSettingsDto.validateJsonElement(jsonObj.get("reseller_settings"));
+      }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
   }
 
