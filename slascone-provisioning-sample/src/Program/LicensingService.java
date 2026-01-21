@@ -20,6 +20,7 @@ import com.slascone.model.SessionRequestDto;
 import com.slascone.model.SessionStatusDto;
 import com.slascone.model.UnassignDto;
 import com.slascone.model.UsageHeartbeatValueDto;
+
 import com.slascone.model.ConsumptionHeartbeatValueDto;
 import com.slascone.model.FullConsumptionHeartbeatDto;
 import com.slascone.model.ConsumptionDto;
@@ -93,8 +94,28 @@ public class LicensingService {
     
             LicenseInfoDto licenseInfo = result.getResult();
 
-            if (result.hasError()) {
-                System.out.println("Activation failed: " + result.getErrorMessage());
+            if (result.hasError()) {                
+                System.out.println("Activation failed!");
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. license key not valid, already used, etc.
+                //   Your software should handle those errors depending on the error code 
+                //   provided in the response body.
+                //   For example, if the error code is 1001 ("The license is expired."), you might want
+                //   to inform the user that the license key is no longer valid and suggest renewing it.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/ActivateLicense
+                //   Please also refer to the SLASCONE documentation for more details:
+                //   https://support.slascone.com/hc/en-us/articles/11993387685789-ACTIVATE-A-LICENSE-CONSIDERATIONS
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
@@ -131,7 +152,7 @@ public class LicensingService {
                 .clientId(DeviceInfoService.getUniqueDeviceId())
                 .operatingSystem(DeviceInfoService.getOperatingSystem())
                 .productId(UUID.fromString(Settings.PRODUCT_ID))
-                .softwareVersion("25.1.0");
+                .softwareVersion("25.2.0");
 
         try {
 
@@ -142,7 +163,33 @@ public class LicensingService {
                 "addHeartbeat");
 
             if (result.hasError()) {
-                System.out.println("Error during heartbeat: " + result.getErrorMessage());
+                System.out.println("Error during heartbeat: ");
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. token not assigned, unknown client
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   A typical response of the AddHeartbeat request is error code 2006 ("Unknown client").
+                //   That means that a license activation is required to register the device with the SLASCONE server.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/AddHeartbeat
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //
+                // When successful heartbeats are received, the CombinedInterceptor class
+                // automatically stores a local copy of the license information and its digital
+                // signature in the application data folder. This temporary offline license can 
+                // later be used through FileService.GetOfflineLicense() when the application 
+                // cannot connect to the SLASCONE server. This provides offline operation capability
+                // during temporary network outages while maintaining license validation security
+                // through digital signature verification.
                 return;
             }
 
@@ -192,6 +239,22 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Unassign failed: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown token, token already unassigned
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/UnassignLicense 
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
@@ -240,6 +303,24 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Error during analytical heartbeat: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown analytical field, invalid value, etc.
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/DataGathering/AddAnalyticalHeartbeat
+                //   Find more details about analytics in the SLASCONE documentation:
+                //   https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
@@ -304,6 +385,24 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Error during usage heartbeat: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown usage feature, invalid value, etc.
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/DataGathering/AddUsageHeartbeat
+                //   Find more details about usage analytics in the SLASCONE documentation:
+                //   https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
@@ -354,6 +453,24 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Error during consumption heartbeat: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown limitation, invalid value, etc.
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/DataGathering/AddConsumptionHeartbeat
+                //   Find more details in the SLASCONE documentation:
+                //   https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
@@ -403,6 +520,37 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Opening session failed: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. 
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   A typical response of the OpenSession request is error code 1007 ("The number of allowed connections has been reached.").
+                //   That means that the maximum number of concurrent usage seats for the license has been reached.
+                //   Depending on your company's policy, you might allow overusage or strictly enforce the limit.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/OpenSession
+                //   Please also refer to the SLASCONE documentation for more details on floating licenses:
+                //   https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES
+                //   https://support.slascone.com/hc/en-us/articles/7756256586653-FLOATING-USER-LICENSES
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //
+                // When a session is successfully opened, the CombinedInterceptor automatically
+                // stores the session information and its digital signature in the application
+                // data folder. This cached session data can be accessed through the 
+                // FileService.TryFindOpenSessionOffline() method when network connectivity
+                // is unavailable. This enables your application to continue operation during
+                // temporary network outages while still respecting session time limits through
+                // the stored session expiration timestamp. See the findOpenSessionOffline() method
+                // in Program.java for an example of how to utilize this functionality.
                 return;
             }
 
@@ -443,6 +591,23 @@ public class LicensingService {
 
             if (result.hasError()) {
                 System.out.println("Closing session failed: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown session, session already closed, etc.
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/CloseSession
+                //   Please also refer to the SLASCONE documentation for more details on floating licenses:
+                //   https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES
+                //   https://support.slascone.com/hc/en-us/articles/7756256586653-FLOATING-USER-LICENSES
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, SLASCONE API is down, etc.
                 return;
             }
 
