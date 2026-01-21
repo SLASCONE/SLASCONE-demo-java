@@ -254,7 +254,7 @@ public class HeartbeatTypeDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!HeartbeatTypeDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in HeartbeatTypeDto is not found in the empty JSON string", HeartbeatTypeDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in HeartbeatTypeDto is not found in the empty JSON string".formatted(HeartbeatTypeDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -262,18 +262,18 @@ public class HeartbeatTypeDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!HeartbeatTypeDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HeartbeatTypeDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `HeartbeatTypeDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
       }
   }
 

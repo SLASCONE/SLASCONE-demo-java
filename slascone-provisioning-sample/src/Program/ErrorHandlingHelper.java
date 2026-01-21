@@ -110,9 +110,7 @@ public class ErrorHandlingHelper {
         // If we reach here, all retries failed
         String errorMessage;
         if (lastException != null) {
-            if (lastException instanceof ApiException) {
-
-                ApiException apiEx = (ApiException) lastException;
+            if (lastException instanceof ApiException apiEx) {
                 return new ResultWithError<>(apiEx, lastErrorType);
             } else {
                 errorMessage = callerMethodName + " failed after " + MAX_RETRY_COUNT + " retries. Last error: " +

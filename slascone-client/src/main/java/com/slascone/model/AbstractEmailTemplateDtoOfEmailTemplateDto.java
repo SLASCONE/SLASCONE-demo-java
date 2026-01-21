@@ -395,7 +395,7 @@ public class AbstractEmailTemplateDtoOfEmailTemplateDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!AbstractEmailTemplateDtoOfEmailTemplateDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AbstractEmailTemplateDtoOfEmailTemplateDto is not found in the empty JSON string", AbstractEmailTemplateDtoOfEmailTemplateDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in AbstractEmailTemplateDtoOfEmailTemplateDto is not found in the empty JSON string".formatted(AbstractEmailTemplateDtoOfEmailTemplateDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -403,34 +403,34 @@ public class AbstractEmailTemplateDtoOfEmailTemplateDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!AbstractEmailTemplateDtoOfEmailTemplateDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AbstractEmailTemplateDtoOfEmailTemplateDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `AbstractEmailTemplateDtoOfEmailTemplateDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
       }
       if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
+        throw new IllegalArgumentException("Expected the field `language` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("language").toString()));
       }
       if ((jsonObj.get("subject") != null && !jsonObj.get("subject").isJsonNull()) && !jsonObj.get("subject").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `subject` to be a primitive type in the JSON string but got `%s`", jsonObj.get("subject").toString()));
+        throw new IllegalArgumentException("Expected the field `subject` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("subject").toString()));
       }
       if ((jsonObj.get("body") != null && !jsonObj.get("body").isJsonNull()) && !jsonObj.get("body").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `body` to be a primitive type in the JSON string but got `%s`", jsonObj.get("body").toString()));
+        throw new IllegalArgumentException("Expected the field `body` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("body").toString()));
       }
       if ((jsonObj.get("parent_id") != null && !jsonObj.get("parent_id").isJsonNull()) && !jsonObj.get("parent_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `parent_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("parent_id").toString()));
+        throw new IllegalArgumentException("Expected the field `parent_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("parent_id").toString()));
       }
       if (jsonObj.get("sub_email_templates") != null && !jsonObj.get("sub_email_templates").isJsonNull()) {
         JsonArray jsonArraysubEmailTemplates = jsonObj.getAsJsonArray("sub_email_templates");
         if (jsonArraysubEmailTemplates != null) {
           // ensure the json data is an array
           if (!jsonObj.get("sub_email_templates").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `sub_email_templates` to be an array in the JSON string but got `%s`", jsonObj.get("sub_email_templates").toString()));
+            throw new IllegalArgumentException("Expected the field `sub_email_templates` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("sub_email_templates").toString()));
           }
 
           // validate the optional field `sub_email_templates` (array)
@@ -440,7 +440,7 @@ public class AbstractEmailTemplateDtoOfEmailTemplateDto {
         }
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
       }
   }
 

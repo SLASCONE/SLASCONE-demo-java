@@ -186,7 +186,7 @@ public class UserRolesDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!UserRolesDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in UserRolesDto is not found in the empty JSON string", UserRolesDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in UserRolesDto is not found in the empty JSON string".formatted(UserRolesDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -194,7 +194,7 @@ public class UserRolesDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!UserRolesDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UserRolesDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `UserRolesDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -203,7 +203,7 @@ public class UserRolesDto {
         if (jsonArrayuserRoles != null) {
           // ensure the json data is an array
           if (!jsonObj.get("userRoles").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `userRoles` to be an array in the JSON string but got `%s`", jsonObj.get("userRoles").toString()));
+            throw new IllegalArgumentException("Expected the field `userRoles` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("userRoles").toString()));
           }
 
           // validate the optional field `userRoles` (array)

@@ -646,7 +646,7 @@ public class DeviceHeartbeatDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!DeviceHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in DeviceHeartbeatDto is not found in the empty JSON string", DeviceHeartbeatDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in DeviceHeartbeatDto is not found in the empty JSON string".formatted(DeviceHeartbeatDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -654,65 +654,65 @@ public class DeviceHeartbeatDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!DeviceHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DeviceHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `DeviceHeartbeatDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("software_version") != null && !jsonObj.get("software_version").isJsonNull()) && !jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
+        throw new IllegalArgumentException("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("software_version").toString()));
       }
       if ((jsonObj.get("operating_system") != null && !jsonObj.get("operating_system").isJsonNull()) && !jsonObj.get("operating_system").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`", jsonObj.get("operating_system").toString()));
+        throw new IllegalArgumentException("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("operating_system").toString()));
       }
       if ((jsonObj.get("ip_address") != null && !jsonObj.get("ip_address").isJsonNull()) && !jsonObj.get("ip_address").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `ip_address` to be a primitive type in the JSON string but got `%s`", jsonObj.get("ip_address").toString()));
+        throw new IllegalArgumentException("Expected the field `ip_address` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("ip_address").toString()));
       }
       if ((jsonObj.get("client_id") != null && !jsonObj.get("client_id").isJsonNull()) && !jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
+        throw new IllegalArgumentException("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("client_id").toString()));
       }
       if ((jsonObj.get("country") != null && !jsonObj.get("country").isJsonNull()) && !jsonObj.get("country").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `country` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country").toString()));
+        throw new IllegalArgumentException("Expected the field `country` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("country").toString()));
       }
       if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
+        throw new IllegalArgumentException("Expected the field `city` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("city").toString()));
       }
       if ((jsonObj.get("zip") != null && !jsonObj.get("zip").isJsonNull()) && !jsonObj.get("zip").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `zip` to be a primitive type in the JSON string but got `%s`", jsonObj.get("zip").toString()));
+        throw new IllegalArgumentException("Expected the field `zip` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("zip").toString()));
       }
       if ((jsonObj.get("latitude") != null && !jsonObj.get("latitude").isJsonNull()) && !jsonObj.get("latitude").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `latitude` to be a primitive type in the JSON string but got `%s`", jsonObj.get("latitude").toString()));
+        throw new IllegalArgumentException("Expected the field `latitude` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("latitude").toString()));
       }
       if ((jsonObj.get("longitude") != null && !jsonObj.get("longitude").isJsonNull()) && !jsonObj.get("longitude").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `longitude` to be a primitive type in the JSON string but got `%s`", jsonObj.get("longitude").toString()));
+        throw new IllegalArgumentException("Expected the field `longitude` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("longitude").toString()));
       }
       if ((jsonObj.get("device_license_assignment_id") != null && !jsonObj.get("device_license_assignment_id").isJsonNull()) && !jsonObj.get("device_license_assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `device_license_assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_license_assignment_id").toString()));
+        throw new IllegalArgumentException("Expected the field `device_license_assignment_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("device_license_assignment_id").toString()));
       }
       if ((jsonObj.get("device_license_id") != null && !jsonObj.get("device_license_id").isJsonNull()) && !jsonObj.get("device_license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `device_license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_license_id").toString()));
+        throw new IllegalArgumentException("Expected the field `device_license_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("device_license_id").toString()));
       }
       if ((jsonObj.get("customer_name") != null && !jsonObj.get("customer_name").isJsonNull()) && !jsonObj.get("customer_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_name").toString()));
+        throw new IllegalArgumentException("Expected the field `customer_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("customer_name").toString()));
       }
       if ((jsonObj.get("heartbeat_type_id") != null && !jsonObj.get("heartbeat_type_id").isJsonNull()) && !jsonObj.get("heartbeat_type_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `heartbeat_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("heartbeat_type_id").toString()));
+        throw new IllegalArgumentException("Expected the field `heartbeat_type_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("heartbeat_type_id").toString()));
       }
       // validate the optional field `heartbeat_type`
       if (jsonObj.get("heartbeat_type") != null && !jsonObj.get("heartbeat_type").isJsonNull()) {
         HeartbeatTypeDto.validateJsonElement(jsonObj.get("heartbeat_type"));
       }
       if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
+        throw new IllegalArgumentException("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("user_id").toString()));
       }
       // validate the optional field `license_user`
       if (jsonObj.get("license_user") != null && !jsonObj.get("license_user").isJsonNull()) {
         LicenseUserDto.validateJsonElement(jsonObj.get("license_user"));
       }
       if ((jsonObj.get("group_id") != null && !jsonObj.get("group_id").isJsonNull()) && !jsonObj.get("group_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `group_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_id").toString()));
+        throw new IllegalArgumentException("Expected the field `group_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("group_id").toString()));
       }
   }
 

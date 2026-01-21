@@ -1061,7 +1061,7 @@ public class FullProductDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!FullProductDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in FullProductDto is not found in the empty JSON string", FullProductDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in FullProductDto is not found in the empty JSON string".formatted(FullProductDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -1069,38 +1069,38 @@ public class FullProductDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!FullProductDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `FullProductDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `FullProductDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : FullProductDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
+        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
       }
       if (!jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
+        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
       }
       if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
+        throw new IllegalArgumentException("Expected the field `description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("description").toString()));
       }
       if ((jsonObj.get("short_description") != null && !jsonObj.get("short_description").isJsonNull()) && !jsonObj.get("short_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `short_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("short_description").toString()));
+        throw new IllegalArgumentException("Expected the field `short_description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("short_description").toString()));
       }
       if ((jsonObj.get("minimum_software_release_id") != null && !jsonObj.get("minimum_software_release_id").isJsonNull()) && !jsonObj.get("minimum_software_release_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `minimum_software_release_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("minimum_software_release_id").toString()));
+        throw new IllegalArgumentException("Expected the field `minimum_software_release_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("minimum_software_release_id").toString()));
       }
       if (jsonObj.get("software_release") != null && !jsonObj.get("software_release").isJsonNull()) {
         JsonArray jsonArraysoftwareRelease = jsonObj.getAsJsonArray("software_release");
         if (jsonArraysoftwareRelease != null) {
           // ensure the json data is an array
           if (!jsonObj.get("software_release").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_release` to be an array in the JSON string but got `%s`", jsonObj.get("software_release").toString()));
+            throw new IllegalArgumentException("Expected the field `software_release` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("software_release").toString()));
           }
 
           // validate the optional field `software_release` (array)
@@ -1116,7 +1116,7 @@ public class FullProductDto {
         OfflineLicensing.validateJsonElement(jsonObj.get("offline_licensing"));
       }
       if ((jsonObj.get("license_file_name") != null && !jsonObj.get("license_file_name").isJsonNull()) && !jsonObj.get("license_file_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_file_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_file_name").toString()));
+        throw new IllegalArgumentException("Expected the field `license_file_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_file_name").toString()));
       }
       // validate the optional field `user_id_type`
       if (jsonObj.get("user_id_type") != null && !jsonObj.get("user_id_type").isJsonNull()) {
@@ -1127,7 +1127,7 @@ public class FullProductDto {
         ClientIdMode.validateJsonElement(jsonObj.get("client_id_mode"));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
       }
       // validate the optional field `minimum_software_release`
       if (jsonObj.get("minimum_software_release") != null && !jsonObj.get("minimum_software_release").isJsonNull()) {
@@ -1142,7 +1142,7 @@ public class FullProductDto {
         if (jsonArrayfeatures != null) {
           // ensure the json data is an array
           if (!jsonObj.get("features").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `features` to be an array in the JSON string but got `%s`", jsonObj.get("features").toString()));
+            throw new IllegalArgumentException("Expected the field `features` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("features").toString()));
           }
 
           // validate the optional field `features` (array)
@@ -1156,7 +1156,7 @@ public class FullProductDto {
         if (jsonArraylimitations != null) {
           // ensure the json data is an array
           if (!jsonObj.get("limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `limitations` to be an array in the JSON string but got `%s`", jsonObj.get("limitations").toString()));
+            throw new IllegalArgumentException("Expected the field `limitations` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("limitations").toString()));
           }
 
           // validate the optional field `limitations` (array)
@@ -1170,7 +1170,7 @@ public class FullProductDto {
         if (jsonArrayconstrainedVariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("constrained_variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`", jsonObj.get("constrained_variables").toString()));
+            throw new IllegalArgumentException("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("constrained_variables").toString()));
           }
 
           // validate the optional field `constrained_variables` (array)
@@ -1184,7 +1184,7 @@ public class FullProductDto {
         if (jsonArrayvariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `variables` to be an array in the JSON string but got `%s`", jsonObj.get("variables").toString()));
+            throw new IllegalArgumentException("Expected the field `variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("variables").toString()));
           }
 
           // validate the optional field `variables` (array)
@@ -1198,7 +1198,7 @@ public class FullProductDto {
         if (jsonArrayanalyticalFields != null) {
           // ensure the json data is an array
           if (!jsonObj.get("analytical_fields").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `analytical_fields` to be an array in the JSON string but got `%s`", jsonObj.get("analytical_fields").toString()));
+            throw new IllegalArgumentException("Expected the field `analytical_fields` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("analytical_fields").toString()));
           }
 
           // validate the optional field `analytical_fields` (array)
@@ -1212,7 +1212,7 @@ public class FullProductDto {
         if (jsonArraysoftwareShipmentProperties != null) {
           // ensure the json data is an array
           if (!jsonObj.get("software_shipment_properties").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_shipment_properties` to be an array in the JSON string but got `%s`", jsonObj.get("software_shipment_properties").toString()));
+            throw new IllegalArgumentException("Expected the field `software_shipment_properties` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("software_shipment_properties").toString()));
           }
 
           // validate the optional field `software_shipment_properties` (array)
@@ -1226,7 +1226,7 @@ public class FullProductDto {
         if (jsonArraysoftwareReleaseLimitations != null) {
           // ensure the json data is an array
           if (!jsonObj.get("software_release_limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_release_limitations` to be an array in the JSON string but got `%s`", jsonObj.get("software_release_limitations").toString()));
+            throw new IllegalArgumentException("Expected the field `software_release_limitations` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("software_release_limitations").toString()));
           }
 
           // validate the optional field `software_release_limitations` (array)
@@ -1240,7 +1240,7 @@ public class FullProductDto {
         if (jsonArrayusageFeatures != null) {
           // ensure the json data is an array
           if (!jsonObj.get("usage_features").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `usage_features` to be an array in the JSON string but got `%s`", jsonObj.get("usage_features").toString()));
+            throw new IllegalArgumentException("Expected the field `usage_features` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("usage_features").toString()));
           }
 
           // validate the optional field `usage_features` (array)
@@ -1254,7 +1254,7 @@ public class FullProductDto {
         if (jsonArrayusageModules != null) {
           // ensure the json data is an array
           if (!jsonObj.get("usage_modules").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `usage_modules` to be an array in the JSON string but got `%s`", jsonObj.get("usage_modules").toString()));
+            throw new IllegalArgumentException("Expected the field `usage_modules` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("usage_modules").toString()));
           }
 
           // validate the optional field `usage_modules` (array)
@@ -1268,7 +1268,7 @@ public class FullProductDto {
         if (jsonArrayemailTemplates != null) {
           // ensure the json data is an array
           if (!jsonObj.get("email_templates").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `email_templates` to be an array in the JSON string but got `%s`", jsonObj.get("email_templates").toString()));
+            throw new IllegalArgumentException("Expected the field `email_templates` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("email_templates").toString()));
           }
 
           // validate the optional field `email_templates` (array)

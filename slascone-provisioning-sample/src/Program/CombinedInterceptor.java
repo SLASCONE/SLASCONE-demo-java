@@ -145,10 +145,10 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
         // Check if the path matches "/api/v2/isv/{isv_id}/provisioning/heartbeats"
         // or "/api/v2/isv/{isv_id}/provisioning/activations" (isv_id is a UUID)
         String hexRegex = "[0-9a-fA-F]";
-        String uuidRegEx = String.format("%s{8}-%s{4}-%s{4}-%s{4}-%s{12}", hexRegex, hexRegex, hexRegex, hexRegex, hexRegex);
+        String uuidRegEx = "%s{8}-%s{4}-%s{4}-%s{4}-%s{12}".formatted(hexRegex, hexRegex, hexRegex, hexRegex, hexRegex);
         return method.equals("POST") 
-               && (path.matches(String.format("/api/v2/isv/%s/provisioning/heartbeats", uuidRegEx))
-                   || path.matches(String.format("/api/v2/isv/%s/provisioning/activations", uuidRegEx)))
+               && (path.matches("/api/v2/isv/%s/provisioning/heartbeats".formatted(uuidRegEx))
+                   || path.matches("/api/v2/isv/%s/provisioning/activations".formatted(uuidRegEx)))
                && (contentType != null && contentType.toString().contains("application/json"));
     }
 
@@ -166,9 +166,9 @@ public class CombinedInterceptor implements okhttp3.Interceptor {
 
         // Check if the path matches "/api/v2/isv/{isv_id}/provisioning/session/open"
         String hexRegex = "[0-9a-fA-F]";
-        String uuidRegEx = String.format("%s{8}-%s{4}-%s{4}-%s{4}-%s{12}", hexRegex, hexRegex, hexRegex, hexRegex, hexRegex);
+        String uuidRegEx = "%s{8}-%s{4}-%s{4}-%s{4}-%s{12}".formatted(hexRegex, hexRegex, hexRegex, hexRegex, hexRegex);
         return method.equals("POST") 
-               && path.matches(String.format("/api/v2/isv/%s/provisioning/session/open", uuidRegEx))
+               && path.matches("/api/v2/isv/%s/provisioning/session/open".formatted(uuidRegEx))
                && (contentType != null && contentType.toString().contains("application/json"));
     }
     

@@ -31,7 +31,7 @@ public class DeviceInfoService {
             String command = "wmic csproduct get UUID";
             List<String> output = new LinkedList<String>();
 
-            Process serNumProcess = Runtime.getRuntime().exec(command);
+            Process serNumProcess = Runtime.getRuntime().exec(command.split(" "));
             BufferedReader sNumReader = new BufferedReader(new InputStreamReader(serNumProcess.getInputStream()));
 
             // Read the "wmic" command output line by line (omit blank lines)

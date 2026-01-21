@@ -200,7 +200,7 @@ public class BulkDeleteUserResultDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!BulkDeleteUserResultDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in BulkDeleteUserResultDto is not found in the empty JSON string", BulkDeleteUserResultDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in BulkDeleteUserResultDto is not found in the empty JSON string".formatted(BulkDeleteUserResultDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -208,15 +208,15 @@ public class BulkDeleteUserResultDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!BulkDeleteUserResultDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BulkDeleteUserResultDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `BulkDeleteUserResultDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("userId") != null && !jsonObj.get("userId").isJsonNull()) && !jsonObj.get("userId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `userId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("userId").toString()));
+        throw new IllegalArgumentException("Expected the field `userId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("userId").toString()));
       }
       if ((jsonObj.get("errorMessage") != null && !jsonObj.get("errorMessage").isJsonNull()) && !jsonObj.get("errorMessage").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `errorMessage` to be a primitive type in the JSON string but got `%s`", jsonObj.get("errorMessage").toString()));
+        throw new IllegalArgumentException("Expected the field `errorMessage` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("errorMessage").toString()));
       }
   }
 
