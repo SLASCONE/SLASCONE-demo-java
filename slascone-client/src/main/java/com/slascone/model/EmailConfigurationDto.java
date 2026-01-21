@@ -445,7 +445,7 @@ public class EmailConfigurationDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!EmailConfigurationDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in EmailConfigurationDto is not found in the empty JSON string".formatted(EmailConfigurationDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in EmailConfigurationDto is not found in the empty JSON string", EmailConfigurationDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -453,31 +453,31 @@ public class EmailConfigurationDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!EmailConfigurationDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `EmailConfigurationDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `EmailConfigurationDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("from_email") != null && !jsonObj.get("from_email").isJsonNull()) && !jsonObj.get("from_email").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `from_email` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("from_email").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `from_email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("from_email").toString()));
       }
       if ((jsonObj.get("password") != null && !jsonObj.get("password").isJsonNull()) && !jsonObj.get("password").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `password` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("password").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `password` to be a primitive type in the JSON string but got `%s`", jsonObj.get("password").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("to_email") != null && !jsonObj.get("to_email").isJsonNull() && !jsonObj.get("to_email").isJsonArray()) {
-        throw new IllegalArgumentException("Expected the field `to_email` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("to_email").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `to_email` to be an array in the JSON string but got `%s`", jsonObj.get("to_email").toString()));
       }
       if ((jsonObj.get("smtp_client") != null && !jsonObj.get("smtp_client").isJsonNull()) && !jsonObj.get("smtp_client").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `smtp_client` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("smtp_client").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `smtp_client` to be a primitive type in the JSON string but got `%s`", jsonObj.get("smtp_client").toString()));
       }
       if ((jsonObj.get("acs_sender_domain") != null && !jsonObj.get("acs_sender_domain").isJsonNull()) && !jsonObj.get("acs_sender_domain").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `acs_sender_domain` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("acs_sender_domain").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `acs_sender_domain` to be a primitive type in the JSON string but got `%s`", jsonObj.get("acs_sender_domain").toString()));
       }
       if ((jsonObj.get("acs_sender_username") != null && !jsonObj.get("acs_sender_username").isJsonNull()) && !jsonObj.get("acs_sender_username").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `acs_sender_username` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("acs_sender_username").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `acs_sender_username` to be a primitive type in the JSON string but got `%s`", jsonObj.get("acs_sender_username").toString()));
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
   }
 

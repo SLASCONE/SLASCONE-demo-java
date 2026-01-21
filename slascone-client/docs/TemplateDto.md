@@ -25,6 +25,7 @@
 |**softwareReleaseLimitationId** | **UUID** |  |  [optional] |
 |**allowsInvalidSoftwareRelease** | **Boolean** |  |  [optional] |
 |**isExpirationModeAdjustable** | **Boolean** |  |  [optional] |
+|**isExpirationHidden** | **Boolean** |  |  [optional] |
 |**expirationMode** | **ExpirationMode** |  |  [optional] |
 |**expirationDateUtc** | **OffsetDateTime** |  |  [optional] |
 |**validDaysCount** | **Integer** |  |  [optional] |

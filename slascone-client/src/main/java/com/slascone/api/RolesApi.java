@@ -29,6 +29,7 @@ import java.io.IOException;
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.ProblemDetails;
+import java.util.UUID;
 import com.slascone.model.UserRoleContextDto;
 import com.slascone.model.UserRolesDto;
 
@@ -76,7 +77,7 @@ public class RolesApi {
     }
 
     /**
-     * Build call for getUserRolesAndLastActiveContext
+     * Build call for getAllUserRolesAndLastActiveContext
      * @param _callback Callback for upload/download progress
      * @return Call to execute
      * @throws ApiException If fail to serialize the request body object
@@ -84,17 +85,17 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getUserRolesAndLastActiveContextCall(final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getAllUserRolesAndLastActiveContextCall(final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -111,7 +112,7 @@ public class RolesApi {
         Object localVarPostBody = null;
 
         // create path and map variables
-        String localVarPath = "/api/v2/roles";
+        String localVarPath = "/api/v2/roles/complete";
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
         List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
@@ -139,8 +140,8 @@ public class RolesApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getUserRolesAndLastActiveContextValidateBeforeCall(final ApiCallback _callback) throws ApiException {
-        return getUserRolesAndLastActiveContextCall(_callback);
+    private okhttp3.Call getAllUserRolesAndLastActiveContextValidateBeforeCall(final ApiCallback _callback) throws ApiException {
+        return getAllUserRolesAndLastActiveContextCall(_callback);
 
     }
 
@@ -153,18 +154,18 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
-    public UserRolesDto getUserRolesAndLastActiveContext() throws ApiException {
-        ApiResponse<UserRolesDto> localVarResp = getUserRolesAndLastActiveContextWithHttpInfo();
+    public UserRolesDto getAllUserRolesAndLastActiveContext() throws ApiException {
+        ApiResponse<UserRolesDto> localVarResp = getAllUserRolesAndLastActiveContextWithHttpInfo();
         return localVarResp.getData();
     }
 
@@ -177,18 +178,18 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<UserRolesDto> getUserRolesAndLastActiveContextWithHttpInfo() throws ApiException {
-        okhttp3.Call localVarCall = getUserRolesAndLastActiveContextValidateBeforeCall(null);
+    public ApiResponse<UserRolesDto> getAllUserRolesAndLastActiveContextWithHttpInfo() throws ApiException {
+        okhttp3.Call localVarCall = getAllUserRolesAndLastActiveContextValidateBeforeCall(null);
         Type localVarReturnType = new TypeToken<UserRolesDto>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -203,19 +204,172 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getUserRolesAndLastActiveContextAsync(final ApiCallback<UserRolesDto> _callback) throws ApiException {
+    public okhttp3.Call getAllUserRolesAndLastActiveContextAsync(final ApiCallback<UserRolesDto> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getUserRolesAndLastActiveContextValidateBeforeCall(_callback);
+        okhttp3.Call localVarCall = getAllUserRolesAndLastActiveContextValidateBeforeCall(_callback);
+        Type localVarReturnType = new TypeToken<UserRolesDto>(){}.getType();
+        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
+        return localVarCall;
+    }
+    /**
+     * Build call for getUserRolesAndLastActiveContext
+     * @param isvId  (optional)
+     * @param _callback Callback for upload/download progress
+     * @return Call to execute
+     * @throws ApiException If fail to serialize the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getUserRolesAndLastActiveContextCall(@javax.annotation.Nullable UUID isvId, final ApiCallback _callback) throws ApiException {
+        String basePath = null;
+        // Operation Servers
+        String[] localBasePaths = new String[] {  };
+
+        // Determine Base Path to Use
+        if (localCustomBaseUrl != null){
+            basePath = localCustomBaseUrl;
+        } else if ( localBasePaths.length > 0 ) {
+            basePath = localBasePaths[localHostIndex];
+        } else {
+            basePath = null;
+        }
+
+        Object localVarPostBody = null;
+
+        // create path and map variables
+        String localVarPath = "/api/v2/roles";
+
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, String> localVarCookieParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (isvId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("isv_id", isvId));
+        }
+
+        final String[] localVarAccepts = {
+            "application/json"
+        };
+        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
+        if (localVarAccept != null) {
+            localVarHeaderParams.put("Accept", localVarAccept);
+        }
+
+        final String[] localVarContentTypes = {
+        };
+        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
+        if (localVarContentType != null) {
+            localVarHeaderParams.put("Content-Type", localVarContentType);
+        }
+
+        String[] localVarAuthNames = new String[] { "Bearer" };
+        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private okhttp3.Call getUserRolesAndLastActiveContextValidateBeforeCall(@javax.annotation.Nullable UUID isvId, final ApiCallback _callback) throws ApiException {
+        return getUserRolesAndLastActiveContextCall(isvId, _callback);
+
+    }
+
+    /**
+     * Get user roles and last active context for the authenticated user.
+     * 
+     * @param isvId  (optional)
+     * @return UserRolesDto
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
+     </table>
+     */
+    public UserRolesDto getUserRolesAndLastActiveContext(@javax.annotation.Nullable UUID isvId) throws ApiException {
+        ApiResponse<UserRolesDto> localVarResp = getUserRolesAndLastActiveContextWithHttpInfo(isvId);
+        return localVarResp.getData();
+    }
+
+    /**
+     * Get user roles and last active context for the authenticated user.
+     * 
+     * @param isvId  (optional)
+     * @return ApiResponse&lt;UserRolesDto&gt;
+     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
+     </table>
+     */
+    public ApiResponse<UserRolesDto> getUserRolesAndLastActiveContextWithHttpInfo(@javax.annotation.Nullable UUID isvId) throws ApiException {
+        okhttp3.Call localVarCall = getUserRolesAndLastActiveContextValidateBeforeCall(isvId, null);
+        Type localVarReturnType = new TypeToken<UserRolesDto>(){}.getType();
+        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    }
+
+    /**
+     * Get user roles and last active context for the authenticated user. (asynchronously)
+     * 
+     * @param isvId  (optional)
+     * @param _callback The callback to be executed when the API call finishes
+     * @return The request call
+     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
+     * @http.response.details
+     <table border="1">
+       <caption>Response Details</caption>
+        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
+        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
+        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
+        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
+        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
+     </table>
+     */
+    public okhttp3.Call getUserRolesAndLastActiveContextAsync(@javax.annotation.Nullable UUID isvId, final ApiCallback<UserRolesDto> _callback) throws ApiException {
+
+        okhttp3.Call localVarCall = getUserRolesAndLastActiveContextValidateBeforeCall(isvId, _callback);
         Type localVarReturnType = new TypeToken<UserRolesDto>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -230,14 +384,14 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call switchUserContextCall(@javax.annotation.Nonnull UserRoleContextDto userRoleContextDto, final ApiCallback _callback) throws ApiException {
@@ -305,14 +459,14 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public void switchUserContext(@javax.annotation.Nonnull UserRoleContextDto userRoleContextDto) throws ApiException {
@@ -329,14 +483,14 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> switchUserContextWithHttpInfo(@javax.annotation.Nonnull UserRoleContextDto userRoleContextDto) throws ApiException {
@@ -355,14 +509,14 @@ public class RolesApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call switchUserContextAsync(@javax.annotation.Nonnull UserRoleContextDto userRoleContextDto, final ApiCallback<Void> _callback) throws ApiException {

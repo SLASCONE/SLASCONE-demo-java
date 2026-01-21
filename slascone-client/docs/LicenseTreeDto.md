@@ -10,6 +10,7 @@
 |**id** | **UUID** |  |  [optional] |
 |**description** | **String** |  |  [optional] |
 |**legacyLicenseKey** | **String** |  |  [optional] |
+|**licenseName** | **String** |  |  [optional] |
 |**isActive** | **Boolean** |  |  [optional] |
 |**isSoftwareReleaseValid** | **Boolean** |  |  [optional] |
 |**isGroupValid** | **Boolean** |  |  [optional] |

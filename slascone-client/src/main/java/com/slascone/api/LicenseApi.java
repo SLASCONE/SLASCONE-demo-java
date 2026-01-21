@@ -106,12 +106,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, final ApiCallback _callback) throws ApiException {
@@ -178,7 +178,7 @@ public class LicenseApi {
 
     /**
      * Creates a license
-     * 
+     * Sample request:                  GET /api/customers/123
      * @param isvId  (required)
      * @param licenseDto  (required)
      * @return LicenseDto
@@ -187,12 +187,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseDto addLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto) throws ApiException {
@@ -202,7 +202,7 @@ public class LicenseApi {
 
     /**
      * Creates a license
-     * 
+     * Sample request:                  GET /api/customers/123
      * @param isvId  (required)
      * @param licenseDto  (required)
      * @return ApiResponse&lt;LicenseDto&gt;
@@ -211,12 +211,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseDto> addLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto) throws ApiException {
@@ -227,7 +227,7 @@ public class LicenseApi {
 
     /**
      * Creates a license (asynchronously)
-     * 
+     * Sample request:                  GET /api/customers/123
      * @param isvId  (required)
      * @param licenseDto  (required)
      * @param _callback The callback to be executed when the API call finishes
@@ -237,12 +237,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, final ApiCallback<LicenseDto> _callback) throws ApiException {
@@ -263,12 +263,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto, final ApiCallback _callback) throws ApiException {
@@ -344,12 +344,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseTypeDto addLicenseType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto) throws ApiException {
@@ -368,12 +368,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseTypeDto> addLicenseTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto) throws ApiException {
@@ -394,12 +394,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto, final ApiCallback<LicenseTypeDto> _callback) throws ApiException {
@@ -421,14 +421,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseUserAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto, final ApiCallback _callback) throws ApiException {
@@ -511,14 +511,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public LicenseUserDto addLicenseUserAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto) throws ApiException {
@@ -538,14 +538,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseUserDto> addLicenseUserAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto) throws ApiException {
@@ -567,14 +567,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseUserAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto, final ApiCallback<LicenseUserDto> _callback) throws ApiException {
@@ -596,14 +596,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseUserGroupAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto, final ApiCallback _callback) throws ApiException {
@@ -686,14 +686,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public LicenseUserGroupDto addLicenseUserGroupAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto) throws ApiException {
@@ -713,14 +713,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseUserGroupDto> addLicenseUserGroupAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto) throws ApiException {
@@ -742,14 +742,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseUserGroupAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto, final ApiCallback<LicenseUserGroupDto> _callback) throws ApiException {
@@ -773,9 +773,9 @@ public class LicenseApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call closeAllSessionsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull CloseAllSessionsRequestDto closeAllSessionsRequestDto, final ApiCallback _callback) throws ApiException {
@@ -859,9 +859,9 @@ public class LicenseApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public void closeAllSessionsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull CloseAllSessionsRequestDto closeAllSessionsRequestDto) throws ApiException {
@@ -882,9 +882,9 @@ public class LicenseApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> closeAllSessionsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull CloseAllSessionsRequestDto closeAllSessionsRequestDto) throws ApiException {
@@ -907,9 +907,9 @@ public class LicenseApi {
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call closeAllSessionsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull CloseAllSessionsRequestDto closeAllSessionsRequestDto, final ApiCallback<Void> _callback) throws ApiException {
@@ -929,12 +929,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -1010,12 +1010,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseDto deleteLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -1034,12 +1034,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseDto> deleteLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -1060,12 +1060,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<LicenseDto> _callback) throws ApiException {
@@ -1087,12 +1087,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseAssignmentCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId, final ApiCallback _callback) throws ApiException {
@@ -1175,12 +1175,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<DeviceLicenseAssignmentDto> deleteLicenseAssignment(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId) throws ApiException {
@@ -1200,12 +1200,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<DeviceLicenseAssignmentDto>> deleteLicenseAssignmentWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId) throws ApiException {
@@ -1227,12 +1227,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseAssignmentAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId, final ApiCallback<List<DeviceLicenseAssignmentDto>> _callback) throws ApiException {
@@ -1254,14 +1254,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      * @deprecated
      */
@@ -1347,14 +1347,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      * @deprecated
      */
@@ -1376,14 +1376,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      * @deprecated
      */
@@ -1407,14 +1407,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      * @deprecated
      */
@@ -1439,14 +1439,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseUserGroupAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID userGroupId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable Boolean removeUsers, final ApiCallback _callback) throws ApiException {
@@ -1534,14 +1534,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public LicenseUserGroupDto deleteLicenseUserGroupAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID userGroupId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable Boolean removeUsers) throws ApiException {
@@ -1562,14 +1562,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseUserGroupDto> deleteLicenseUserGroupAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID userGroupId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable Boolean removeUsers) throws ApiException {
@@ -1592,14 +1592,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseUserGroupAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID userGroupId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable Boolean removeUsers, final ApiCallback<LicenseUserGroupDto> _callback) throws ApiException {
@@ -1621,14 +1621,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseUsersAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<String> requestBody, final ApiCallback _callback) throws ApiException {
@@ -1711,14 +1711,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public List<BulkDeleteUserResultDto> deleteLicenseUsersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<String> requestBody) throws ApiException {
@@ -1738,14 +1738,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<BulkDeleteUserResultDto>> deleteLicenseUsersAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<String> requestBody) throws ApiException {
@@ -1767,14 +1767,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call deleteLicenseUsersAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<String> requestBody, final ApiCallback<List<BulkDeleteUserResultDto>> _callback) throws ApiException {
@@ -1796,12 +1796,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadLicenseFileXmlCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID tokenKey, final ApiCallback _callback) throws ApiException {
@@ -1836,8 +1836,8 @@ public class LicenseApi {
         }
 
         final String[] localVarAccepts = {
-            "application/json",
-            "application/xml"
+            "application/xml",
+            "application/json"
         };
         final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
         if (localVarAccept != null) {
@@ -1882,12 +1882,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
      </table>
      */
     public void downloadLicenseFileXml(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID tokenKey) throws ApiException {
@@ -1906,12 +1906,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> downloadLicenseFileXmlWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID tokenKey) throws ApiException {
@@ -1932,12 +1932,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadLicenseFileXmlAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID tokenKey, final ApiCallback<Void> _callback) throws ApiException {
@@ -1957,12 +1957,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAllLicenseHistoryCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -2038,12 +2038,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<HistoryDto> getAllLicenseHistory(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2062,12 +2062,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<HistoryDto>> getAllLicenseHistoryWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2088,12 +2088,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAllLicenseHistoryAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<HistoryDto>> _callback) throws ApiException {
@@ -2115,12 +2115,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAssignmentAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId, final ApiCallback _callback) throws ApiException {
@@ -2203,12 +2203,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public DeviceLicenseAssignmentDto getAssignmentAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId) throws ApiException {
@@ -2228,12 +2228,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<DeviceLicenseAssignmentDto> getAssignmentAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId) throws ApiException {
@@ -2255,12 +2255,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getAssignmentAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID assignmentId, final ApiCallback<DeviceLicenseAssignmentDto> _callback) throws ApiException {
@@ -2281,12 +2281,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getConsumptionBalanceCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -2362,12 +2362,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<ConsumptionBalanceDto> getConsumptionBalance(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2386,12 +2386,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<ConsumptionBalanceDto>> getConsumptionBalanceWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2412,12 +2412,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getConsumptionBalanceAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<ConsumptionBalanceDto>> _callback) throws ApiException {
@@ -2431,6 +2431,9 @@ public class LicenseApi {
      * Build call for getConsumptionHeartbeats
      * @param isvId  (required)
      * @param licenseId  (required)
+     * @param transactionId  (optional)
+     * @param userId  (optional)
+     * @param clientId  (optional)
      * @param dateFrom  (optional)
      * @param dateTo  (optional)
      * @param limitations  (optional)
@@ -2441,15 +2444,15 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getConsumptionHeartbeatsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback _callback) throws ApiException {
+    public okhttp3.Call getConsumptionHeartbeatsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID transactionId, @javax.annotation.Nullable String userId, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback _callback) throws ApiException {
         String basePath = null;
         // Operation Servers
         String[] localBasePaths = new String[] {  };
@@ -2475,6 +2478,18 @@ public class LicenseApi {
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
         Map<String, String> localVarCookieParams = new HashMap<String, String>();
         Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+        if (transactionId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("transaction_id", transactionId));
+        }
+
+        if (userId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("user_id", userId));
+        }
+
+        if (clientId != null) {
+            localVarQueryParams.addAll(localVarApiClient.parameterToPair("client_id", clientId));
+        }
 
         if (dateFrom != null) {
             localVarQueryParams.addAll(localVarApiClient.parameterToPair("date_from", dateFrom));
@@ -2508,7 +2523,7 @@ public class LicenseApi {
     }
 
     @SuppressWarnings("rawtypes")
-    private okhttp3.Call getConsumptionHeartbeatsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback _callback) throws ApiException {
+    private okhttp3.Call getConsumptionHeartbeatsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID transactionId, @javax.annotation.Nullable String userId, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback _callback) throws ApiException {
         // verify the required parameter 'isvId' is set
         if (isvId == null) {
             throw new ApiException("Missing the required parameter 'isvId' when calling getConsumptionHeartbeats(Async)");
@@ -2519,7 +2534,7 @@ public class LicenseApi {
             throw new ApiException("Missing the required parameter 'licenseId' when calling getConsumptionHeartbeats(Async)");
         }
 
-        return getConsumptionHeartbeatsCall(isvId, licenseId, dateFrom, dateTo, limitations, _callback);
+        return getConsumptionHeartbeatsCall(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations, _callback);
 
     }
 
@@ -2528,6 +2543,9 @@ public class LicenseApi {
      * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/10506993302557-UNDERSTANDING-CONSUMPTION-BASED-ASPECTS\&quot;&gt;consumption based aspects&lt;/a&gt;
      * @param isvId  (required)
      * @param licenseId  (required)
+     * @param transactionId  (optional)
+     * @param userId  (optional)
+     * @param clientId  (optional)
      * @param dateFrom  (optional)
      * @param dateTo  (optional)
      * @param limitations  (optional)
@@ -2537,16 +2555,16 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
-    public ConsumptionHeartbeatLazyLoadDto getConsumptionHeartbeats(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations) throws ApiException {
-        ApiResponse<ConsumptionHeartbeatLazyLoadDto> localVarResp = getConsumptionHeartbeatsWithHttpInfo(isvId, licenseId, dateFrom, dateTo, limitations);
+    public ConsumptionHeartbeatLazyLoadDto getConsumptionHeartbeats(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID transactionId, @javax.annotation.Nullable String userId, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations) throws ApiException {
+        ApiResponse<ConsumptionHeartbeatLazyLoadDto> localVarResp = getConsumptionHeartbeatsWithHttpInfo(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations);
         return localVarResp.getData();
     }
 
@@ -2555,6 +2573,9 @@ public class LicenseApi {
      * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/10506993302557-UNDERSTANDING-CONSUMPTION-BASED-ASPECTS\&quot;&gt;consumption based aspects&lt;/a&gt;
      * @param isvId  (required)
      * @param licenseId  (required)
+     * @param transactionId  (optional)
+     * @param userId  (optional)
+     * @param clientId  (optional)
      * @param dateFrom  (optional)
      * @param dateTo  (optional)
      * @param limitations  (optional)
@@ -2564,16 +2585,16 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
-    public ApiResponse<ConsumptionHeartbeatLazyLoadDto> getConsumptionHeartbeatsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations) throws ApiException {
-        okhttp3.Call localVarCall = getConsumptionHeartbeatsValidateBeforeCall(isvId, licenseId, dateFrom, dateTo, limitations, null);
+    public ApiResponse<ConsumptionHeartbeatLazyLoadDto> getConsumptionHeartbeatsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID transactionId, @javax.annotation.Nullable String userId, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations) throws ApiException {
+        okhttp3.Call localVarCall = getConsumptionHeartbeatsValidateBeforeCall(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations, null);
         Type localVarReturnType = new TypeToken<ConsumptionHeartbeatLazyLoadDto>(){}.getType();
         return localVarApiClient.execute(localVarCall, localVarReturnType);
     }
@@ -2583,6 +2604,9 @@ public class LicenseApi {
      * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/10506993302557-UNDERSTANDING-CONSUMPTION-BASED-ASPECTS\&quot;&gt;consumption based aspects&lt;/a&gt;
      * @param isvId  (required)
      * @param licenseId  (required)
+     * @param transactionId  (optional)
+     * @param userId  (optional)
+     * @param clientId  (optional)
      * @param dateFrom  (optional)
      * @param dateTo  (optional)
      * @param limitations  (optional)
@@ -2593,17 +2617,17 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
-    public okhttp3.Call getConsumptionHeartbeatsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback<ConsumptionHeartbeatLazyLoadDto> _callback) throws ApiException {
+    public okhttp3.Call getConsumptionHeartbeatsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable UUID transactionId, @javax.annotation.Nullable String userId, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable OffsetDateTime dateFrom, @javax.annotation.Nullable OffsetDateTime dateTo, @javax.annotation.Nullable List<UUID> limitations, final ApiCallback<ConsumptionHeartbeatLazyLoadDto> _callback) throws ApiException {
 
-        okhttp3.Call localVarCall = getConsumptionHeartbeatsValidateBeforeCall(isvId, licenseId, dateFrom, dateTo, limitations, _callback);
+        okhttp3.Call localVarCall = getConsumptionHeartbeatsValidateBeforeCall(isvId, licenseId, transactionId, userId, clientId, dateFrom, dateTo, limitations, _callback);
         Type localVarReturnType = new TypeToken<ConsumptionHeartbeatLazyLoadDto>(){}.getType();
         localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
         return localVarCall;
@@ -2619,12 +2643,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -2700,12 +2724,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseDto getLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2724,12 +2748,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseDto> getLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -2750,12 +2774,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<LicenseDto> _callback) throws ApiException {
@@ -2783,12 +2807,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseAssignmentsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable DevicesSortEnum sortOption, @javax.annotation.Nullable Boolean descending, @javax.annotation.Nullable Boolean includeAnalyticalHeartbeats, @javax.annotation.Nullable List<String> operatingSystems, @javax.annotation.Nullable List<String> versionNumber, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer pageSize, final ApiCallback _callback) throws ApiException {
@@ -2899,12 +2923,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<DeviceLicenseAssignmentDto> getLicenseAssignments(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable DevicesSortEnum sortOption, @javax.annotation.Nullable Boolean descending, @javax.annotation.Nullable Boolean includeAnalyticalHeartbeats, @javax.annotation.Nullable List<String> operatingSystems, @javax.annotation.Nullable List<String> versionNumber, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer pageSize) throws ApiException {
@@ -2930,12 +2954,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<DeviceLicenseAssignmentDto>> getLicenseAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable DevicesSortEnum sortOption, @javax.annotation.Nullable Boolean descending, @javax.annotation.Nullable Boolean includeAnalyticalHeartbeats, @javax.annotation.Nullable List<String> operatingSystems, @javax.annotation.Nullable List<String> versionNumber, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer pageSize) throws ApiException {
@@ -2963,12 +2987,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nullable DevicesSortEnum sortOption, @javax.annotation.Nullable Boolean descending, @javax.annotation.Nullable Boolean includeAnalyticalHeartbeats, @javax.annotation.Nullable List<String> operatingSystems, @javax.annotation.Nullable List<String> versionNumber, @javax.annotation.Nullable Integer page, @javax.annotation.Nullable Integer pageSize, final ApiCallback<List<DeviceLicenseAssignmentDto>> _callback) throws ApiException {
@@ -2990,12 +3014,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseHistoryCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID historyId, final ApiCallback _callback) throws ApiException {
@@ -3078,12 +3102,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public HistoryDto getLicenseHistory(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID historyId) throws ApiException {
@@ -3103,12 +3127,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<HistoryDto> getLicenseHistoryWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID historyId) throws ApiException {
@@ -3130,12 +3154,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseHistoryAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID historyId, final ApiCallback<HistoryDto> _callback) throws ApiException {
@@ -3156,12 +3180,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseTagAssignmentsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -3237,12 +3261,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<ItemTagAssignmentDto> getLicenseTagAssignments(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3261,12 +3285,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<ItemTagAssignmentDto>> getLicenseTagAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3287,12 +3311,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseTagAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<ItemTagAssignmentDto>> _callback) throws ApiException {
@@ -3313,12 +3337,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseTypesCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
@@ -3392,12 +3416,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<LicenseTypeDto> getLicenseTypes(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
@@ -3416,12 +3440,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<LicenseTypeDto>> getLicenseTypesWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
@@ -3442,12 +3466,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseTypesAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback<List<LicenseTypeDto>> _callback) throws ApiException {
@@ -3468,14 +3492,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseUserGroupsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -3551,14 +3575,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public List<LicenseUserGroupDto> getLicenseUserGroupsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3577,14 +3601,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<LicenseUserGroupDto>> getLicenseUserGroupsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3605,14 +3629,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseUserGroupsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<LicenseUserGroupDto>> _callback) throws ApiException {
@@ -3633,14 +3657,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseUsersAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -3716,14 +3740,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public List<LicenseUserDto> getLicenseUsersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3742,14 +3766,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<LicenseUserDto>> getLicenseUsersAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -3770,14 +3794,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicenseUsersAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<LicenseUserDto>> _callback) throws ApiException {
@@ -3798,12 +3822,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicensesByFilterCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto, final ApiCallback _callback) throws ApiException {
@@ -3879,12 +3903,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<LicenseDto> getLicensesByFilter(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto) throws ApiException {
@@ -3903,12 +3927,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<LicenseDto>> getLicensesByFilterWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto) throws ApiException {
@@ -3929,12 +3953,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicensesByFilterAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto, final ApiCallback<List<LicenseDto>> _callback) throws ApiException {
@@ -3955,12 +3979,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicensesByFilterSettingsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto, final ApiCallback _callback) throws ApiException {
@@ -4036,12 +4060,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseLazyLoadDto getLicensesByFilterSettings(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto) throws ApiException {
@@ -4060,12 +4084,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseLazyLoadDto> getLicensesByFilterSettingsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto) throws ApiException {
@@ -4086,12 +4110,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getLicensesByFilterSettingsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseFilterDto licenseFilterDto, final ApiCallback<LicenseLazyLoadDto> _callback) throws ApiException {
@@ -4112,12 +4136,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getOpenSessionsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -4193,12 +4217,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<SessionDto> getOpenSessionsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -4217,12 +4241,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<SessionDto>> getOpenSessionsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -4243,12 +4267,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call getOpenSessionsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<List<SessionDto>> _callback) throws ApiException {
@@ -4270,12 +4294,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call recalculateConsumptionBalanceCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId, final ApiCallback _callback) throws ApiException {
@@ -4357,12 +4381,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public void recalculateConsumptionBalance(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId) throws ApiException {
@@ -4381,12 +4405,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> recalculateConsumptionBalanceWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId) throws ApiException {
@@ -4407,12 +4431,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call recalculateConsumptionBalanceAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId, final ApiCallback<Void> _callback) throws ApiException {
@@ -4433,12 +4457,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call removeLicenseTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback _callback) throws ApiException {
@@ -4521,12 +4545,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseTypeDto removeLicenseType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
@@ -4546,12 +4570,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseTypeDto> removeLicenseTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
@@ -4573,12 +4597,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call removeLicenseTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback<LicenseTypeDto> _callback) throws ApiException {
@@ -4600,12 +4624,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call resetConsumptionBalanceCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId, final ApiCallback _callback) throws ApiException {
@@ -4687,12 +4711,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public void resetConsumptionBalance(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId) throws ApiException {
@@ -4711,12 +4735,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<Void> resetConsumptionBalanceWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId) throws ApiException {
@@ -4737,12 +4761,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call resetConsumptionBalanceAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull UUID limitationId, final ApiCallback<Void> _callback) throws ApiException {
@@ -4762,12 +4786,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call toggleLicenseStateAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
@@ -4843,12 +4867,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseDto toggleLicenseStateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -4867,12 +4891,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseDto> toggleLicenseStateAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
@@ -4893,12 +4917,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call toggleLicenseStateAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<LicenseDto> _callback) throws ApiException {
@@ -4920,12 +4944,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateAssignmentAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull DeviceLicenseAssignmentDto deviceLicenseAssignmentDto, final ApiCallback _callback) throws ApiException {
@@ -5008,12 +5032,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public DeviceLicenseAssignmentDto updateAssignmentAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull DeviceLicenseAssignmentDto deviceLicenseAssignmentDto) throws ApiException {
@@ -5033,12 +5057,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<DeviceLicenseAssignmentDto> updateAssignmentAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull DeviceLicenseAssignmentDto deviceLicenseAssignmentDto) throws ApiException {
@@ -5060,12 +5084,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateAssignmentAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull DeviceLicenseAssignmentDto deviceLicenseAssignmentDto, final ApiCallback<DeviceLicenseAssignmentDto> _callback) throws ApiException {
@@ -5087,12 +5111,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, @javax.annotation.Nullable Boolean applyTemplateProperties, final ApiCallback _callback) throws ApiException {
@@ -5173,12 +5197,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseDto updateLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, @javax.annotation.Nullable Boolean applyTemplateProperties) throws ApiException {
@@ -5198,12 +5222,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseDto> updateLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, @javax.annotation.Nullable Boolean applyTemplateProperties) throws ApiException {
@@ -5225,12 +5249,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseDto licenseDto, @javax.annotation.Nullable Boolean applyTemplateProperties, final ApiCallback<LicenseDto> _callback) throws ApiException {
@@ -5252,12 +5276,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseTagAssignmentsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, final ApiCallback _callback) throws ApiException {
@@ -5340,12 +5364,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public List<ItemTagAssignmentDto> updateLicenseTagAssignments(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
@@ -5365,12 +5389,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<ItemTagAssignmentDto>> updateLicenseTagAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
@@ -5392,12 +5416,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseTagAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, final ApiCallback<List<ItemTagAssignmentDto>> _callback) throws ApiException {
@@ -5418,12 +5442,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto, final ApiCallback _callback) throws ApiException {
@@ -5499,12 +5523,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public LicenseTypeDto updateLicenseType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto) throws ApiException {
@@ -5523,12 +5547,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseTypeDto> updateLicenseTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto) throws ApiException {
@@ -5549,12 +5573,12 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseTypeDto licenseTypeDto, final ApiCallback<LicenseTypeDto> _callback) throws ApiException {
@@ -5576,14 +5600,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseUserAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto, final ApiCallback _callback) throws ApiException {
@@ -5666,14 +5690,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public LicenseUserDto updateLicenseUserAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto) throws ApiException {
@@ -5693,14 +5717,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseUserDto> updateLicenseUserAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto) throws ApiException {
@@ -5722,14 +5746,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseUserAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String licenseId, @javax.annotation.Nonnull LicenseUserDto licenseUserDto, final ApiCallback<LicenseUserDto> _callback) throws ApiException {
@@ -5751,14 +5775,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseUserGroupAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto, final ApiCallback _callback) throws ApiException {
@@ -5841,14 +5865,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public LicenseUserGroupDto updateLicenseUserGroupAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto) throws ApiException {
@@ -5868,14 +5892,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<LicenseUserGroupDto> updateLicenseUserGroupAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto) throws ApiException {
@@ -5897,14 +5921,14 @@ public class LicenseApi {
      <table border="1">
        <caption>Response Details</caption>
         <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
+        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
+        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseUserGroupAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, @javax.annotation.Nonnull LicenseUserGroupDto licenseUserGroupDto, final ApiCallback<LicenseUserGroupDto> _callback) throws ApiException {

@@ -253,7 +253,7 @@ public class TagAssignmentDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TagAssignmentDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TagAssignmentDto is not found in the empty JSON string".formatted(TagAssignmentDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TagAssignmentDto is not found in the empty JSON string", TagAssignmentDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -261,18 +261,18 @@ public class TagAssignmentDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TagAssignmentDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TagAssignmentDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TagAssignmentDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("customer_id") != null && !jsonObj.get("customer_id").isJsonNull()) && !jsonObj.get("customer_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `customer_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("customer_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `customer_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_id").toString()));
       }
       if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
       }
       if ((jsonObj.get("assignment_id") != null && !jsonObj.get("assignment_id").isJsonNull()) && !jsonObj.get("assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("assignment_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("assignment_id").toString()));
       }
   }
 

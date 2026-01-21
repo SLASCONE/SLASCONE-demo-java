@@ -22,6 +22,7 @@
 |**resellerTypeId** | **UUID** |  |  [optional] |
 |**resellerType** | [**ResellerTypeDto**](ResellerTypeDto.md) |  |  [optional] |
 |**resellerContacts** | [**List&lt;ResellerContactDto&gt;**](ResellerContactDto.md) |  |  [optional] |
+|**resellerSettings** | [**ResellerSettingsDto**](ResellerSettingsDto.md) |  |  [optional] |
 |**lastModifiedBy** | **String** |  |  [optional] |
 |**modifiedDateUtc** | **OffsetDateTime** |  |  [optional] |
 |**createdDateUtc** | **OffsetDateTime** |  |  [optional] |

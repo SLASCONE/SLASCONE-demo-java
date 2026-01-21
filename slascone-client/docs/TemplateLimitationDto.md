@@ -18,6 +18,8 @@
 |**enforceLimit** | **Boolean** |  |  [optional] |
 |**userProvisioning** | **Boolean** |  |  [optional] |
 |**consumptionBalanceMode** | **ConsumptionBalanceMode** |  |  [optional] |
+|**isHidden** | **Boolean** |  |  [optional] |
+|**isCustomerPortalHidden** | **Boolean** |  |  [optional] |
 |**alerts** | [**List&lt;TemplateLimitationAlertDto&gt;**](TemplateLimitationAlertDto.md) |  |  [optional] |
 
 

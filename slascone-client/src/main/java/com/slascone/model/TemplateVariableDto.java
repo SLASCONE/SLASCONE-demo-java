@@ -72,6 +72,21 @@ public class TemplateVariableDto {
   @javax.annotation.Nullable
   private Boolean isAdjustable;
 
+  public static final String SERIALIZED_NAME_IS_REQUIRED = "is_required";
+  @SerializedName(SERIALIZED_NAME_IS_REQUIRED)
+  @javax.annotation.Nullable
+  private Boolean isRequired;
+
+  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isHidden;
+
+  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
+  @javax.annotation.Nullable
+  private Boolean isCustomerPortalHidden;
+
   public static final String SERIALIZED_NAME_VALUE = "value";
   @SerializedName(SERIALIZED_NAME_VALUE)
   @javax.annotation.Nullable
@@ -156,6 +171,63 @@ public class TemplateVariableDto {
   }
 
 
+  public TemplateVariableDto isRequired(@javax.annotation.Nullable Boolean isRequired) {
+    this.isRequired = isRequired;
+    return this;
+  }
+
+  /**
+   * Get isRequired
+   * @return isRequired
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsRequired() {
+    return isRequired;
+  }
+
+  public void setIsRequired(@javax.annotation.Nullable Boolean isRequired) {
+    this.isRequired = isRequired;
+  }
+
+
+  public TemplateVariableDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+    return this;
+  }
+
+  /**
+   * Get isHidden
+   * @return isHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsHidden() {
+    return isHidden;
+  }
+
+  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+    this.isHidden = isHidden;
+  }
+
+
+  public TemplateVariableDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+    return this;
+  }
+
+  /**
+   * Get isCustomerPortalHidden
+   * @return isCustomerPortalHidden
+   */
+  @javax.annotation.Nullable
+  public Boolean getIsCustomerPortalHidden() {
+    return isCustomerPortalHidden;
+  }
+
+  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+    this.isCustomerPortalHidden = isCustomerPortalHidden;
+  }
+
+
   public TemplateVariableDto value(@javax.annotation.Nullable String value) {
     this.value = value;
     return this;
@@ -189,6 +261,9 @@ public class TemplateVariableDto {
         Objects.equals(this.variableId, templateVariableDto.variableId) &&
         Objects.equals(this.variableName, templateVariableDto.variableName) &&
         Objects.equals(this.isAdjustable, templateVariableDto.isAdjustable) &&
+        Objects.equals(this.isRequired, templateVariableDto.isRequired) &&
+        Objects.equals(this.isHidden, templateVariableDto.isHidden) &&
+        Objects.equals(this.isCustomerPortalHidden, templateVariableDto.isCustomerPortalHidden) &&
         Objects.equals(this.value, templateVariableDto.value);
   }
 
@@ -198,7 +273,7 @@ public class TemplateVariableDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, variableId, variableName, isAdjustable, value);
+    return Objects.hash(templateId, variableId, variableName, isAdjustable, isRequired, isHidden, isCustomerPortalHidden, value);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -216,6 +291,9 @@ public class TemplateVariableDto {
     sb.append("    variableId: ").append(toIndentedString(variableId)).append("\n");
     sb.append("    variableName: ").append(toIndentedString(variableName)).append("\n");
     sb.append("    isAdjustable: ").append(toIndentedString(isAdjustable)).append("\n");
+    sb.append("    isRequired: ").append(toIndentedString(isRequired)).append("\n");
+    sb.append("    isHidden: ").append(toIndentedString(isHidden)).append("\n");
+    sb.append("    isCustomerPortalHidden: ").append(toIndentedString(isCustomerPortalHidden)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("}");
     return sb.toString();
@@ -238,7 +316,7 @@ public class TemplateVariableDto {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "variable_id", "variable_name", "is_adjustable", "value"));
+    openapiFields = new HashSet<String>(Arrays.asList("template_id", "variable_id", "variable_name", "is_adjustable", "is_required", "is_hidden", "is_customer_portal_hidden", "value"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(Arrays.asList("variable_id"));
@@ -253,7 +331,7 @@ public class TemplateVariableDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in TemplateVariableDto is not found in the empty JSON string".formatted(TemplateVariableDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateVariableDto is not found in the empty JSON string", TemplateVariableDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -261,28 +339,28 @@ public class TemplateVariableDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateVariableDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateVariableDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
       }
       if (!jsonObj.get("variable_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_id").toString()));
       }
       if ((jsonObj.get("variable_name") != null && !jsonObj.get("variable_name").isJsonNull()) && !jsonObj.get("variable_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_name").toString()));
       }
       if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `value` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("value").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
       }
   }
 

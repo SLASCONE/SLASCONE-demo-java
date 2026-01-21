@@ -387,7 +387,7 @@ public class AlertDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!AlertDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in AlertDto is not found in the empty JSON string".formatted(AlertDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in AlertDto is not found in the empty JSON string", AlertDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -395,29 +395,29 @@ public class AlertDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!AlertDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `AlertDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AlertDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
       }
       // validate the optional field `mode`
       if (jsonObj.get("mode") != null && !jsonObj.get("mode").isJsonNull()) {
         AlertMode.validateJsonElement(jsonObj.get("mode"));
       }
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
       }
       // validate the optional field `template`
       if (jsonObj.get("template") != null && !jsonObj.get("template").isJsonNull()) {
         TemplateDto.validateJsonElement(jsonObj.get("template"));
       }
       if ((jsonObj.get("email_template_id") != null && !jsonObj.get("email_template_id").isJsonNull()) && !jsonObj.get("email_template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `email_template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("email_template_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `email_template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email_template_id").toString()));
       }
       // validate the optional field `email_template`
       if (jsonObj.get("email_template") != null && !jsonObj.get("email_template").isJsonNull()) {

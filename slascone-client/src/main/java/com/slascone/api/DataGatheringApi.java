@@ -98,9 +98,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addAnalyticalHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, final ApiCallback _callback) throws ApiException {
@@ -179,9 +179,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public String addAnalyticalHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
@@ -203,9 +203,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> addAnalyticalHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
@@ -229,9 +229,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addAnalyticalHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, final ApiCallback<String> _callback) throws ApiException {
@@ -255,9 +255,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addConsumptionHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, final ApiCallback _callback) throws ApiException {
@@ -336,9 +336,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public List<ConsumptionDto> addConsumptionHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
@@ -360,9 +360,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<List<ConsumptionDto>> addConsumptionHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
@@ -386,9 +386,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addConsumptionHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, final ApiCallback<List<ConsumptionDto>> _callback) throws ApiException {
@@ -412,9 +412,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addUsageHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, final ApiCallback _callback) throws ApiException {
@@ -493,9 +493,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public String addUsageHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
@@ -517,9 +517,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> addUsageHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
@@ -543,9 +543,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addUsageHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, final ApiCallback<String> _callback) throws ApiException {
@@ -569,9 +569,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addUsageHeartbeatByNameCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, final ApiCallback _callback) throws ApiException {
@@ -650,9 +650,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public String addUsageHeartbeatByName(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
@@ -674,9 +674,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<String> addUsageHeartbeatByNameWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
@@ -700,9 +700,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addUsageHeartbeatByNameAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, final ApiCallback<String> _callback) throws ApiException {
@@ -726,9 +726,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call rollbackConsumptionHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, final ApiCallback _callback) throws ApiException {
@@ -807,9 +807,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ConsumptionDto rollbackConsumptionHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
@@ -831,9 +831,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ConsumptionDto> rollbackConsumptionHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
@@ -857,9 +857,9 @@ public class DataGatheringApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call rollbackConsumptionHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, final ApiCallback<ConsumptionDto> _callback) throws ApiException {

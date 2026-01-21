@@ -32,7 +32,7 @@ import java.net.URI;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.SecureRandom;
@@ -401,8 +401,8 @@ public class ApiClient {
      */
     public void setUsername(String username) {
         for (Authentication auth : authentications.values()) {
-            if (auth instanceof HttpBasicAuth basicAuth) {
-                basicAuth.setUsername(username);
+            if (auth instanceof HttpBasicAuth) {
+                ((HttpBasicAuth) auth).setUsername(username);
                 return;
             }
         }
@@ -416,8 +416,8 @@ public class ApiClient {
      */
     public void setPassword(String password) {
         for (Authentication auth : authentications.values()) {
-            if (auth instanceof HttpBasicAuth basicAuth) {
-                basicAuth.setPassword(password);
+            if (auth instanceof HttpBasicAuth) {
+                ((HttpBasicAuth) auth).setPassword(password);
                 return;
             }
         }
@@ -431,8 +431,8 @@ public class ApiClient {
      */
     public void setApiKey(String apiKey) {
         for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth keyAuth) {
-                keyAuth.setApiKey(apiKey);
+            if (auth instanceof ApiKeyAuth) {
+                ((ApiKeyAuth) auth).setApiKey(apiKey);
                 return;
             }
         }
@@ -446,8 +446,8 @@ public class ApiClient {
      */
     public void setApiKeyPrefix(String apiKeyPrefix) {
         for (Authentication auth : authentications.values()) {
-            if (auth instanceof ApiKeyAuth keyAuth) {
-                keyAuth.setApiKeyPrefix(apiKeyPrefix);
+            if (auth instanceof ApiKeyAuth) {
+                ((ApiKeyAuth) auth).setApiKeyPrefix(apiKeyPrefix);
                 return;
             }
         }
@@ -658,9 +658,9 @@ public class ApiClient {
             //Serialize to json string and remove the " enclosing characters
             String jsonStr = JSON.serialize(param);
             return jsonStr.substring(1, jsonStr.length() - 1);
-        } else if (param instanceof Collection collection) {
+        } else if (param instanceof Collection) {
             StringBuilder b = new StringBuilder();
-            for (Object o : collection) {
+            for (Object o : (Collection) param) {
                 if (b.length() > 0) {
                     b.append(",");
                 }
@@ -962,14 +962,14 @@ public class ApiClient {
      * @throws com.slascone.ApiException If fail to serialize the given object
      */
     public RequestBody serialize(Object obj, String contentType) throws ApiException {
-        if (obj instanceof byte[] bytes) {
+        if (obj instanceof byte[]) {
             // Binary (byte array) body parameter support.
-            return RequestBody.create(bytes, MediaType.parse(contentType));
-        } else if (obj instanceof File file) {
+            return RequestBody.create((byte[]) obj, MediaType.parse(contentType));
+        } else if (obj instanceof File) {
             // File body parameter support.
-            return RequestBody.create(file, MediaType.parse(contentType));
-        } else if ("text/plain".equals(contentType) && obj instanceof String string) {
-            return RequestBody.create(string, MediaType.parse(contentType));
+            return RequestBody.create((File) obj, MediaType.parse(contentType));
+        } else if ("text/plain".equals(contentType) && obj instanceof String) {
+            return RequestBody.create((String) obj, MediaType.parse(contentType));
         } else if (isJsonMime(contentType)) {
             String content;
             if (obj != null) {
@@ -978,8 +978,8 @@ public class ApiClient {
                 content = null;
             }
             return RequestBody.create(content, MediaType.parse(contentType));
-        } else if (obj instanceof String string) {
-            return RequestBody.create(string, MediaType.parse(contentType));
+        } else if (obj instanceof String) {
+            return RequestBody.create((String) obj, MediaType.parse(contentType));
         } else {
             throw new ApiException("Content type \"" + contentType + "\" is not supported");
         }
@@ -1044,7 +1044,7 @@ public class ApiClient {
         if (tempFolderPath == null)
             return Files.createTempFile(prefix, suffix).toFile();
         else
-            return Files.createTempFile(Path.of(tempFolderPath), prefix, suffix).toFile();
+            return Files.createTempFile(Paths.get(tempFolderPath), prefix, suffix).toFile();
     }
 
     /**
@@ -1274,7 +1274,8 @@ public class ApiClient {
             String baseURL;
             if (serverIndex != null) {
                 if (serverIndex < 0 || serverIndex >= servers.size()) {
-                    throw new ArrayIndexOutOfBoundsException("Invalid index %d when selecting the host settings. Must be less than %d".formatted(serverIndex, servers.size()
+                    throw new ArrayIndexOutOfBoundsException(String.format(
+                    "Invalid index %d when selecting the host settings. Must be less than %d", serverIndex, servers.size()
                     ));
                 }
                 baseURL = servers.get(serverIndex).URL(serverVariables);
@@ -1346,11 +1347,11 @@ public class ApiClient {
      */
     public void processCookieParams(Map<String, String> cookieParams, Request.Builder reqBuilder) {
         for (Entry<String, String> param : cookieParams.entrySet()) {
-            reqBuilder.addHeader("Cookie", "%s=%s".formatted(param.getKey(), param.getValue()));
+            reqBuilder.addHeader("Cookie", String.format("%s=%s", param.getKey(), param.getValue()));
         }
         for (Entry<String, String> param : defaultCookieMap.entrySet()) {
             if (!cookieParams.containsKey(param.getKey())) {
-                reqBuilder.addHeader("Cookie", "%s=%s".formatted(param.getKey(), param.getValue()));
+                reqBuilder.addHeader("Cookie", String.format("%s=%s", param.getKey(), param.getValue()));
             }
         }
     }
@@ -1408,8 +1409,8 @@ public class ApiClient {
             } else if (param.getValue() instanceof List) {
                 List list = (List) param.getValue();
                 for (Object item: list) {
-                    if (item instanceof File file) {
-                        addPartToMultiPartBuilder(mpBuilder, param.getKey(), file);
+                    if (item instanceof File) {
+                        addPartToMultiPartBuilder(mpBuilder, param.getKey(), (File) item);
                     } else {
                         addPartToMultiPartBuilder(mpBuilder, param.getKey(), param.getValue());
                     }
@@ -1458,8 +1459,8 @@ public class ApiClient {
      */
     protected void addPartToMultiPartBuilder(MultipartBody.Builder mpBuilder, String key, Object obj) {
         RequestBody requestBody;
-        if (obj instanceof String string) {
-            requestBody = RequestBody.create(string, MediaType.parse("text/plain"));
+        if (obj instanceof String) {
+            requestBody = RequestBody.create((String) obj, MediaType.parse("text/plain"));
         } else {
             String content;
             if (obj != null) {

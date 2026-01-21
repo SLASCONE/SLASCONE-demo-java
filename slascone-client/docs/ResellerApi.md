@@ -105,13 +105,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addResellerContact"></a>
 # **addResellerContact**
@@ -188,13 +188,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addResellerTemplate"></a>
 # **addResellerTemplate**
@@ -269,13 +269,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="addResellerType"></a>
 # **addResellerType**
@@ -350,13 +350,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteReseller"></a>
 # **deleteReseller**
@@ -431,13 +431,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteResellerContact"></a>
 # **deleteResellerContact**
@@ -516,13 +516,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="deleteResellerTemplate"></a>
 # **deleteResellerTemplate**
@@ -599,13 +599,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllResellers"></a>
 # **getAllResellers**
@@ -680,13 +680,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getAllResellersLight"></a>
 # **getAllResellersLight**
@@ -759,13 +759,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getFilteredResellers"></a>
 # **getFilteredResellers**
@@ -840,13 +840,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getReseller"></a>
 # **getReseller**
@@ -921,13 +921,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerByNumber"></a>
 # **getResellerByNumber**
@@ -1002,13 +1002,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerByUser"></a>
 # **getResellerByUser**
@@ -1081,13 +1081,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerContactByUserId"></a>
 # **getResellerContactByUserId**
@@ -1160,13 +1160,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerContacts"></a>
 # **getResellerContacts**
@@ -1241,13 +1241,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerCount"></a>
 # **getResellerCount**
@@ -1320,13 +1320,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerTemplates"></a>
 # **getResellerTemplates**
@@ -1401,13 +1401,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="getResellerTypes"></a>
 # **getResellerTypes**
@@ -1482,13 +1482,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="removeResellerType"></a>
 # **removeResellerType**
@@ -1565,13 +1565,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="resellerGetResellerByResellerNumberDeprecated"></a>
 # **resellerGetResellerByResellerNumberDeprecated**
@@ -1646,13 +1646,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="resendResellerContactInvitation"></a>
 # **resendResellerContactInvitation**
@@ -1730,13 +1730,13 @@ null (empty response body)
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="toggleResellerContactState"></a>
 # **toggleResellerContactState**
@@ -1813,13 +1813,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateReseller"></a>
 # **updateReseller**
@@ -1894,13 +1894,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateResellerContact"></a>
 # **updateResellerContact**
@@ -1977,13 +1977,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateResellerTemplate"></a>
 # **updateResellerTemplate**
@@ -2058,13 +2058,13 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 
 <a id="updateResellerType"></a>
 # **updateResellerType**
@@ -2139,11 +2139,11 @@ public class Example {
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **204** | No content |  -  |
-| **409** | Conflict |  -  |
-| **200** | Success |  -  |
 

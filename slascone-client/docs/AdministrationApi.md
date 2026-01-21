@@ -115,9 +115,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="customOperations"></a>
 # **customOperations**
@@ -204,9 +204,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="deleteCustomList"></a>
 # **deleteCustomList**
@@ -287,12 +287,12 @@ null (empty response body)
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
+| **204** | No content |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **204** | No content |  -  |
 
 <a id="deleteInactiveSessions"></a>
 # **deleteInactiveSessions**
@@ -379,9 +379,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="gatherAnalytics"></a>
 # **gatherAnalytics**
@@ -468,9 +468,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getAllCustomLists"></a>
 # **getAllCustomLists**
@@ -552,9 +552,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getBackupStorage"></a>
 # **getBackupStorage**
@@ -642,9 +642,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getBackupStorageAccessToken"></a>
 # **getBackupStorageAccessToken**
@@ -726,9 +726,9 @@ public class Example {
 | **200** | Plain text |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getConfiguration"></a>
 # **getConfiguration**
@@ -810,9 +810,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getCustomList"></a>
 # **getCustomList**
@@ -896,10 +896,10 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** |  |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** |  |  -  |
 
 <a id="getLicenseSeats"></a>
 # **getLicenseSeats**
@@ -995,9 +995,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="getSlasconeLicenseInfo"></a>
 # **getSlasconeLicenseInfo**
@@ -1087,9 +1087,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="healthCheck"></a>
 # **healthCheck**
@@ -1177,9 +1177,9 @@ public class Example {
 | **200** | Plain text |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="initBackupStorage"></a>
 # **initBackupStorage**
@@ -1265,9 +1265,9 @@ public class Example {
 | **200** | Plain text |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="migrateDatabase"></a>
 # **migrateDatabase**
@@ -1348,9 +1348,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="patchConfiguration"></a>
 # **patchConfiguration**
@@ -1434,9 +1434,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="patchCustomList"></a>
 # **patchCustomList**
@@ -1520,10 +1520,10 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
 
 <a id="signatureCheck"></a>
 # **signatureCheck**
@@ -1613,9 +1613,9 @@ public class Example {
 | **200** | Plain text |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="updateBackupStorage"></a>
 # **updateBackupStorage**
@@ -1699,9 +1699,9 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="updateCustomList"></a>
 # **updateCustomList**
@@ -1785,10 +1785,10 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **404** | Not found |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
-| **404** | Not found |  -  |
 
 <a id="validateAlerts"></a>
 # **validateAlerts**
@@ -1875,9 +1875,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateAssignments"></a>
 # **validateAssignments**
@@ -1964,9 +1964,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateAssignmentsByProductId"></a>
 # **validateAssignmentsByProductId**
@@ -2057,9 +2057,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateConsumptionBalances"></a>
 # **validateConsumptionBalances**
@@ -2146,9 +2146,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateHeartbeatGroups"></a>
 # **validateHeartbeatGroups**
@@ -2235,9 +2235,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateLicenseExpirationDate"></a>
 # **validateLicenseExpirationDate**
@@ -2324,9 +2324,9 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 
 <a id="validateSoftwareVersions"></a>
 # **validateSoftwareVersions**
@@ -2413,7 +2413,7 @@ null (empty response body)
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
+| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
-| **409** | Conflict |  -  |
 

@@ -280,7 +280,7 @@ public class LicenseFeatureDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseFeatureDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in LicenseFeatureDto is not found in the empty JSON string".formatted(LicenseFeatureDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFeatureDto is not found in the empty JSON string", LicenseFeatureDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -288,28 +288,28 @@ public class LicenseFeatureDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseFeatureDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseFeatureDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFeatureDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : LicenseFeatureDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
       }
       if (!jsonObj.get("feature_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("feature_id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_id").toString()));
       }
       if ((jsonObj.get("feature_name") != null && !jsonObj.get("feature_name").isJsonNull()) && !jsonObj.get("feature_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("feature_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_name").toString()));
       }
       if ((jsonObj.get("feature_description") != null && !jsonObj.get("feature_description").isJsonNull()) && !jsonObj.get("feature_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `feature_description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("feature_description").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `feature_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_description").toString()));
       }
       // validate the optional field `feature_exceptions`
       if (jsonObj.get("feature_exceptions") != null && !jsonObj.get("feature_exceptions").isJsonNull()) {

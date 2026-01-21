@@ -107,9 +107,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addCustomerAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, final ApiCallback _callback) throws ApiException {
@@ -188,9 +188,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public CustomerDto addCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
@@ -212,9 +212,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomerDto> addCustomerAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
@@ -238,9 +238,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addCustomerAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
@@ -264,9 +264,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, final ApiCallback _callback) throws ApiException {
@@ -345,9 +345,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public UUID addLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
@@ -369,9 +369,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<UUID> addLicenseAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
@@ -395,9 +395,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, final ApiCallback<UUID> _callback) throws ApiException {
@@ -421,9 +421,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, final ApiCallback _callback) throws ApiException {
@@ -502,9 +502,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public UUID addLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
@@ -526,9 +526,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<UUID> addLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
@@ -552,9 +552,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, final ApiCallback<UUID> _callback) throws ApiException {
@@ -578,9 +578,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addOrUpdateCustomerContactAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, final ApiCallback _callback) throws ApiException {
@@ -659,9 +659,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public CustomerContactDto addOrUpdateCustomerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
@@ -683,9 +683,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomerContactDto> addOrUpdateCustomerContactAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
@@ -709,9 +709,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call addOrUpdateCustomerContactAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
@@ -734,9 +734,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadCustomerCsvTemplateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -809,9 +809,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public File downloadCustomerCsvTemplate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -832,9 +832,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<File> downloadCustomerCsvTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -857,9 +857,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadCustomerCsvTemplateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<File> _callback) throws ApiException {
@@ -882,9 +882,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadLicenseCsvTemplateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
@@ -957,9 +957,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public File downloadLicenseCsvTemplate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -980,9 +980,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<File> downloadLicenseCsvTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
@@ -1005,9 +1005,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call downloadLicenseCsvTemplateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<File> _callback) throws ApiException {
@@ -1034,9 +1034,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call importCustomersFromCsvCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
@@ -1129,9 +1129,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ImportResultDto importCustomersFromCsv(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
@@ -1156,9 +1156,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ImportResultDto> importCustomersFromCsvWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
@@ -1185,9 +1185,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call importCustomersFromCsvAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback<ImportResultDto> _callback) throws ApiException {
@@ -1214,9 +1214,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call importLicensesFromCsvCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
@@ -1309,9 +1309,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ImportResultDto importLicensesFromCsv(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
@@ -1336,9 +1336,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<ImportResultDto> importLicensesFromCsvWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
@@ -1365,9 +1365,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call importLicensesFromCsvAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback<ImportResultDto> _callback) throws ApiException {
@@ -1391,9 +1391,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, final ApiCallback _callback) throws ApiException {
@@ -1472,9 +1472,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public UUID patchLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
@@ -1496,9 +1496,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<UUID> patchLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
@@ -1522,9 +1522,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call patchLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, final ApiCallback<UUID> _callback) throws ApiException {
@@ -1548,9 +1548,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateCustomerAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, final ApiCallback _callback) throws ApiException {
@@ -1629,9 +1629,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public CustomerDto updateCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
@@ -1653,9 +1653,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<CustomerDto> updateCustomerAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
@@ -1679,9 +1679,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateCustomerAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
@@ -1705,9 +1705,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, final ApiCallback _callback) throws ApiException {
@@ -1786,9 +1786,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public UUID updateLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
@@ -1810,9 +1810,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<UUID> updateLicenseAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
@@ -1836,9 +1836,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, final ApiCallback<UUID> _callback) throws ApiException {
@@ -1862,9 +1862,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, final ApiCallback _callback) throws ApiException {
@@ -1943,9 +1943,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public UUID updateLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
@@ -1967,9 +1967,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public ApiResponse<UUID> updateLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
@@ -1993,9 +1993,9 @@ public class DataExchangeApi {
         <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
         <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
         <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
+        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
         <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
         <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
      </table>
      */
     public okhttp3.Call updateLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, final ApiCallback<UUID> _callback) throws ApiException {

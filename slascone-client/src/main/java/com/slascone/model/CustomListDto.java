@@ -291,7 +291,7 @@ public class CustomListDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!CustomListDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException("The required field(s) %s in CustomListDto is not found in the empty JSON string".formatted(CustomListDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomListDto is not found in the empty JSON string", CustomListDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -299,22 +299,22 @@ public class CustomListDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!CustomListDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `CustomListDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomListDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("id").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
       }
       if ((jsonObj.get("custom_list_name") != null && !jsonObj.get("custom_list_name").isJsonNull()) && !jsonObj.get("custom_list_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `custom_list_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("custom_list_name").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `custom_list_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("custom_list_name").toString()));
       }
       if (jsonObj.get("elements") != null && !jsonObj.get("elements").isJsonNull()) {
         JsonArray jsonArrayelements = jsonObj.getAsJsonArray("elements");
         if (jsonArrayelements != null) {
           // ensure the json data is an array
           if (!jsonObj.get("elements").isJsonArray()) {
-            throw new IllegalArgumentException("Expected the field `elements` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("elements").toString()));
+            throw new IllegalArgumentException(String.format("Expected the field `elements` to be an array in the JSON string but got `%s`", jsonObj.get("elements").toString()));
           }
 
           // validate the optional field `elements` (array)
@@ -324,7 +324,7 @@ public class CustomListDto {
         }
       }
       if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("last_modified_by").toString()));
+        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
       }
   }
 
