@@ -237,7 +237,7 @@ public class ImportResultDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ImportResultDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ImportResultDto is not found in the empty JSON string", ImportResultDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in ImportResultDto is not found in the empty JSON string".formatted(ImportResultDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -245,7 +245,7 @@ public class ImportResultDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ImportResultDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ImportResultDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `ImportResultDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -254,7 +254,7 @@ public class ImportResultDto {
         if (jsonArrayomittedRows != null) {
           // ensure the json data is an array
           if (!jsonObj.get("omitted_rows").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `omitted_rows` to be an array in the JSON string but got `%s`", jsonObj.get("omitted_rows").toString()));
+            throw new IllegalArgumentException("Expected the field `omitted_rows` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("omitted_rows").toString()));
           }
 
           // validate the optional field `omitted_rows` (array)

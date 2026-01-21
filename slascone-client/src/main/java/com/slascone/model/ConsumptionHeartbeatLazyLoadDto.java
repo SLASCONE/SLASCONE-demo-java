@@ -212,7 +212,7 @@ public class ConsumptionHeartbeatLazyLoadDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ConsumptionHeartbeatLazyLoadDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionHeartbeatLazyLoadDto is not found in the empty JSON string", ConsumptionHeartbeatLazyLoadDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in ConsumptionHeartbeatLazyLoadDto is not found in the empty JSON string".formatted(ConsumptionHeartbeatLazyLoadDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -220,7 +220,7 @@ public class ConsumptionHeartbeatLazyLoadDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ConsumptionHeartbeatLazyLoadDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionHeartbeatLazyLoadDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `ConsumptionHeartbeatLazyLoadDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -229,7 +229,7 @@ public class ConsumptionHeartbeatLazyLoadDto {
         if (jsonArrayconsumptionHeartbeats != null) {
           // ensure the json data is an array
           if (!jsonObj.get("consumption_heartbeats").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `consumption_heartbeats` to be an array in the JSON string but got `%s`", jsonObj.get("consumption_heartbeats").toString()));
+            throw new IllegalArgumentException("Expected the field `consumption_heartbeats` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("consumption_heartbeats").toString()));
           }
 
           // validate the optional field `consumption_heartbeats` (array)

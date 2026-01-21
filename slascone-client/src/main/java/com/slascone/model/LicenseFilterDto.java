@@ -996,7 +996,7 @@ public class LicenseFilterDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseFilterDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFilterDto is not found in the empty JSON string", LicenseFilterDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in LicenseFilterDto is not found in the empty JSON string".formatted(LicenseFilterDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -1004,63 +1004,63 @@ public class LicenseFilterDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseFilterDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFilterDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseFilterDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : LicenseFilterDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("key_search") != null && !jsonObj.get("key_search").isJsonNull()) && !jsonObj.get("key_search").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `key_search` to be a primitive type in the JSON string but got `%s`", jsonObj.get("key_search").toString()));
+        throw new IllegalArgumentException("Expected the field `key_search` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("key_search").toString()));
       }
       if ((jsonObj.get("product_filter") != null && !jsonObj.get("product_filter").isJsonNull()) && !jsonObj.get("product_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `product_filter` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_filter").toString()));
       }
       if ((jsonObj.get("customer_filter") != null && !jsonObj.get("customer_filter").isJsonNull()) && !jsonObj.get("customer_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `customer_filter` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("customer_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_number_filter") != null && !jsonObj.get("customer_number_filter").isJsonNull() && !jsonObj.get("customer_number_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_number_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `customer_number_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_number_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_type_filter") != null && !jsonObj.get("customer_type_filter").isJsonNull() && !jsonObj.get("customer_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_type_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `customer_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("reseller_type_filter") != null && !jsonObj.get("reseller_type_filter").isJsonNull() && !jsonObj.get("reseller_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_type_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `reseller_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("reseller_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("template_filter") != null && !jsonObj.get("template_filter").isJsonNull() && !jsonObj.get("template_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_filter` to be an array in the JSON string but got `%s`", jsonObj.get("template_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `template_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("template_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("license_type_filter") != null && !jsonObj.get("license_type_filter").isJsonNull() && !jsonObj.get("license_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_type_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `license_type_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("license_type_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("operating_system_filter") != null && !jsonObj.get("operating_system_filter").isJsonNull() && !jsonObj.get("operating_system_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `operating_system_filter` to be an array in the JSON string but got `%s`", jsonObj.get("operating_system_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `operating_system_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("operating_system_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("software_version_filter") != null && !jsonObj.get("software_version_filter").isJsonNull() && !jsonObj.get("software_version_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version_filter` to be an array in the JSON string but got `%s`", jsonObj.get("software_version_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `software_version_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("software_version_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("feature_filter") != null && !jsonObj.get("feature_filter").isJsonNull() && !jsonObj.get("feature_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_filter` to be an array in the JSON string but got `%s`", jsonObj.get("feature_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `feature_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("feature_filter").toString()));
       }
       if ((jsonObj.get("date_filter_mode") != null && !jsonObj.get("date_filter_mode").isJsonNull()) && !jsonObj.get("date_filter_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `date_filter_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("date_filter_mode").toString()));
+        throw new IllegalArgumentException("Expected the field `date_filter_mode` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("date_filter_mode").toString()));
       }
       if ((jsonObj.get("group_count_mode") != null && !jsonObj.get("group_count_mode").isJsonNull()) && !jsonObj.get("group_count_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `group_count_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_count_mode").toString()));
+        throw new IllegalArgumentException("Expected the field `group_count_mode` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("group_count_mode").toString()));
       }
       // validate the optional field `sort_type`
       if (jsonObj.get("sort_type") != null && !jsonObj.get("sort_type").isJsonNull()) {
@@ -1068,15 +1068,15 @@ public class LicenseFilterDto {
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("license_tag_filter") != null && !jsonObj.get("license_tag_filter").isJsonNull() && !jsonObj.get("license_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_tag_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `license_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("license_tag_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("token_tag_filter") != null && !jsonObj.get("token_tag_filter").isJsonNull() && !jsonObj.get("token_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("token_tag_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `token_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("token_tag_filter").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("customer_tag_filter") != null && !jsonObj.get("customer_tag_filter").isJsonNull() && !jsonObj.get("customer_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_tag_filter").toString()));
+        throw new IllegalArgumentException("Expected the field `customer_tag_filter` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("customer_tag_filter").toString()));
       }
       // validate the optional field `analytical_field_filter`
       if (jsonObj.get("analytical_field_filter") != null && !jsonObj.get("analytical_field_filter").isJsonNull()) {

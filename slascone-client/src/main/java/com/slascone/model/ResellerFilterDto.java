@@ -376,7 +376,7 @@ public class ResellerFilterDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!ResellerFilterDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerFilterDto is not found in the empty JSON string", ResellerFilterDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in ResellerFilterDto is not found in the empty JSON string".formatted(ResellerFilterDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -384,26 +384,26 @@ public class ResellerFilterDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!ResellerFilterDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerFilterDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `ResellerFilterDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("search_text") != null && !jsonObj.get("search_text").isJsonNull()) && !jsonObj.get("search_text").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `search_text` to be a primitive type in the JSON string but got `%s`", jsonObj.get("search_text").toString()));
+        throw new IllegalArgumentException("Expected the field `search_text` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("search_text").toString()));
       }
       if ((jsonObj.get("plz_query") != null && !jsonObj.get("plz_query").isJsonNull()) && !jsonObj.get("plz_query").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `plz_query` to be a primitive type in the JSON string but got `%s`", jsonObj.get("plz_query").toString()));
+        throw new IllegalArgumentException("Expected the field `plz_query` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("plz_query").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("reseller_types") != null && !jsonObj.get("reseller_types").isJsonNull() && !jsonObj.get("reseller_types").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_types` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_types").toString()));
+        throw new IllegalArgumentException("Expected the field `reseller_types` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("reseller_types").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("tag_ids") != null && !jsonObj.get("tag_ids").isJsonNull() && !jsonObj.get("tag_ids").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `tag_ids` to be an array in the JSON string but got `%s`", jsonObj.get("tag_ids").toString()));
+        throw new IllegalArgumentException("Expected the field `tag_ids` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("tag_ids").toString()));
       }
       if ((jsonObj.get("start_character") != null && !jsonObj.get("start_character").isJsonNull()) && !jsonObj.get("start_character").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `start_character` to be a primitive type in the JSON string but got `%s`", jsonObj.get("start_character").toString()));
+        throw new IllegalArgumentException("Expected the field `start_character` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("start_character").toString()));
       }
       // validate the optional field `reseller_sort_type`
       if (jsonObj.get("reseller_sort_type") != null && !jsonObj.get("reseller_sort_type").isJsonNull()) {

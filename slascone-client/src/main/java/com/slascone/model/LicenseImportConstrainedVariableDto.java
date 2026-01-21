@@ -184,7 +184,7 @@ public class LicenseImportConstrainedVariableDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseImportConstrainedVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseImportConstrainedVariableDto is not found in the empty JSON string", LicenseImportConstrainedVariableDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in LicenseImportConstrainedVariableDto is not found in the empty JSON string".formatted(LicenseImportConstrainedVariableDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -192,16 +192,16 @@ public class LicenseImportConstrainedVariableDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseImportConstrainedVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseImportConstrainedVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseImportConstrainedVariableDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("variable") != null && !jsonObj.get("variable").isJsonNull()) && !jsonObj.get("variable").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable").toString()));
+        throw new IllegalArgumentException("Expected the field `variable` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("values") != null && !jsonObj.get("values").isJsonNull() && !jsonObj.get("values").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `values` to be an array in the JSON string but got `%s`", jsonObj.get("values").toString()));
+        throw new IllegalArgumentException("Expected the field `values` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("values").toString()));
       }
   }
 

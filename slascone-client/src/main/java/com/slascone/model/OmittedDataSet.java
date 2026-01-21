@@ -184,7 +184,7 @@ public class OmittedDataSet {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!OmittedDataSet.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in OmittedDataSet is not found in the empty JSON string", OmittedDataSet.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in OmittedDataSet is not found in the empty JSON string".formatted(OmittedDataSet.openapiRequiredFields.toString()));
         }
       }
 
@@ -192,13 +192,13 @@ public class OmittedDataSet {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!OmittedDataSet.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `OmittedDataSet` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `OmittedDataSet` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       // ensure the optional json data is an array if present
       if (jsonObj.get("errors") != null && !jsonObj.get("errors").isJsonNull() && !jsonObj.get("errors").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `errors` to be an array in the JSON string but got `%s`", jsonObj.get("errors").toString()));
+        throw new IllegalArgumentException("Expected the field `errors` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("errors").toString()));
       }
   }
 

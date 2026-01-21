@@ -463,7 +463,7 @@ public class LicenseSubscriptionPlanDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseSubscriptionPlanDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseSubscriptionPlanDto is not found in the empty JSON string", LicenseSubscriptionPlanDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in LicenseSubscriptionPlanDto is not found in the empty JSON string".formatted(LicenseSubscriptionPlanDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -471,7 +471,7 @@ public class LicenseSubscriptionPlanDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseSubscriptionPlanDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseSubscriptionPlanDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseSubscriptionPlanDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();

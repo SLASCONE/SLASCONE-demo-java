@@ -1140,7 +1140,7 @@ public class LicenseInfoDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseInfoDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseInfoDto is not found in the empty JSON string", LicenseInfoDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in LicenseInfoDto is not found in the empty JSON string".formatted(LicenseInfoDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -1148,7 +1148,7 @@ public class LicenseInfoDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseInfoDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseInfoDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseInfoDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
@@ -1157,34 +1157,34 @@ public class LicenseInfoDto {
         CustomerAccountDto.validateJsonElement(jsonObj.get("customer"));
       }
       if ((jsonObj.get("license_name") != null && !jsonObj.get("license_name").isJsonNull()) && !jsonObj.get("license_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_name").toString()));
+        throw new IllegalArgumentException("Expected the field `license_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_name").toString()));
       }
       if ((jsonObj.get("license_key") != null && !jsonObj.get("license_key").isJsonNull()) && !jsonObj.get("license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_key").toString()));
+        throw new IllegalArgumentException("Expected the field `license_key` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("license_key").toString()));
       }
       if ((jsonObj.get("token_key") != null && !jsonObj.get("token_key").isJsonNull()) && !jsonObj.get("token_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_key").toString()));
+        throw new IllegalArgumentException("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("token_key").toString()));
       }
       if ((jsonObj.get("legacy_license_key") != null && !jsonObj.get("legacy_license_key").isJsonNull()) && !jsonObj.get("legacy_license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `legacy_license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("legacy_license_key").toString()));
+        throw new IllegalArgumentException("Expected the field `legacy_license_key` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("legacy_license_key").toString()));
       }
       if ((jsonObj.get("client_id") != null && !jsonObj.get("client_id").isJsonNull()) && !jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
+        throw new IllegalArgumentException("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("client_id").toString()));
       }
       if ((jsonObj.get("client_description") != null && !jsonObj.get("client_description").isJsonNull()) && !jsonObj.get("client_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_description").toString()));
+        throw new IllegalArgumentException("Expected the field `client_description` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("client_description").toString()));
       }
       if ((jsonObj.get("product_name") != null && !jsonObj.get("product_name").isJsonNull()) && !jsonObj.get("product_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_name").toString()));
+        throw new IllegalArgumentException("Expected the field `product_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_name").toString()));
       }
       if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
+        throw new IllegalArgumentException("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("product_id").toString()));
       }
       if ((jsonObj.get("template_name") != null && !jsonObj.get("template_name").isJsonNull()) && !jsonObj.get("template_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_name").toString()));
+        throw new IllegalArgumentException("Expected the field `template_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_name").toString()));
       }
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
       }
       // validate the optional field `provisioning_mode`
       if (jsonObj.get("provisioning_mode") != null && !jsonObj.get("provisioning_mode").isJsonNull()) {
@@ -1211,7 +1211,7 @@ public class LicenseInfoDto {
         if (jsonArrayfeatures != null) {
           // ensure the json data is an array
           if (!jsonObj.get("features").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `features` to be an array in the JSON string but got `%s`", jsonObj.get("features").toString()));
+            throw new IllegalArgumentException("Expected the field `features` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("features").toString()));
           }
 
           // validate the optional field `features` (array)
@@ -1225,7 +1225,7 @@ public class LicenseInfoDto {
         if (jsonArraylimitations != null) {
           // ensure the json data is an array
           if (!jsonObj.get("limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `limitations` to be an array in the JSON string but got `%s`", jsonObj.get("limitations").toString()));
+            throw new IllegalArgumentException("Expected the field `limitations` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("limitations").toString()));
           }
 
           // validate the optional field `limitations` (array)
@@ -1239,7 +1239,7 @@ public class LicenseInfoDto {
         if (jsonArrayvariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `variables` to be an array in the JSON string but got `%s`", jsonObj.get("variables").toString()));
+            throw new IllegalArgumentException("Expected the field `variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("variables").toString()));
           }
 
           // validate the optional field `variables` (array)
@@ -1253,7 +1253,7 @@ public class LicenseInfoDto {
         if (jsonArrayconstrainedVariables != null) {
           // ensure the json data is an array
           if (!jsonObj.get("constrained_variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`", jsonObj.get("constrained_variables").toString()));
+            throw new IllegalArgumentException("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("constrained_variables").toString()));
           }
 
           // validate the optional field `constrained_variables` (array)
@@ -1267,7 +1267,7 @@ public class LicenseInfoDto {
         if (jsonArraylicenseUsers != null) {
           // ensure the json data is an array
           if (!jsonObj.get("license_users").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `license_users` to be an array in the JSON string but got `%s`", jsonObj.get("license_users").toString()));
+            throw new IllegalArgumentException("Expected the field `license_users` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("license_users").toString()));
           }
 
           // validate the optional field `license_users` (array)

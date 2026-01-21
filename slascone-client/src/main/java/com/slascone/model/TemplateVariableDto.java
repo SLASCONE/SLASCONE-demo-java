@@ -253,7 +253,7 @@ public class TemplateVariableDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!TemplateVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateVariableDto is not found in the empty JSON string", TemplateVariableDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in TemplateVariableDto is not found in the empty JSON string".formatted(TemplateVariableDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -261,28 +261,28 @@ public class TemplateVariableDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!TemplateVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `TemplateVariableDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : TemplateVariableDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
+        throw new IllegalArgumentException("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("template_id").toString()));
       }
       if (!jsonObj.get("variable_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_id").toString()));
+        throw new IllegalArgumentException("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_id").toString()));
       }
       if ((jsonObj.get("variable_name") != null && !jsonObj.get("variable_name").isJsonNull()) && !jsonObj.get("variable_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_name").toString()));
+        throw new IllegalArgumentException("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("variable_name").toString()));
       }
       if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
+        throw new IllegalArgumentException("Expected the field `value` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("value").toString()));
       }
   }
 

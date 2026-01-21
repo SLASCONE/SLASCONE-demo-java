@@ -297,7 +297,7 @@ public class LicenseMailDto {
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
         if (!LicenseMailDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseMailDto is not found in the empty JSON string", LicenseMailDto.openapiRequiredFields.toString()));
+          throw new IllegalArgumentException("The required field(s) %s in LicenseMailDto is not found in the empty JSON string".formatted(LicenseMailDto.openapiRequiredFields.toString()));
         }
       }
 
@@ -305,38 +305,38 @@ public class LicenseMailDto {
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
         if (!LicenseMailDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseMailDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+          throw new IllegalArgumentException("The field `%s` in the JSON string is not defined in the `LicenseMailDto` properties. JSON: %s".formatted(entry.getKey(), jsonElement.toString()));
         }
       }
 
       // check to make sure all required properties/fields are present in the JSON string
       for (String requiredField : LicenseMailDto.openapiRequiredFields) {
         if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
+          throw new IllegalArgumentException("The required field `%s` is not found in the JSON string: %s".formatted(requiredField, jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
       if (!jsonObj.get("licenseKey").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `licenseKey` to be a primitive type in the JSON string but got `%s`", jsonObj.get("licenseKey").toString()));
+        throw new IllegalArgumentException("Expected the field `licenseKey` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("licenseKey").toString()));
       }
       if (!jsonObj.get("emailTemplateId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `emailTemplateId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("emailTemplateId").toString()));
+        throw new IllegalArgumentException("Expected the field `emailTemplateId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("emailTemplateId").toString()));
       }
       if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
+        throw new IllegalArgumentException("Expected the field `language` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("language").toString()));
       }
       if (!jsonObj.get("productId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `productId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("productId").toString()));
+        throw new IllegalArgumentException("Expected the field `productId` to be a primitive type in the JSON string but got `%s`".formatted(jsonObj.get("productId").toString()));
       }
       // ensure the required json array is present
       if (jsonObj.get("toEmails") == null) {
         throw new IllegalArgumentException("Expected the field `linkedContent` to be an array in the JSON string but got `null`");
       } else if (!jsonObj.get("toEmails").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `toEmails` to be an array in the JSON string but got `%s`", jsonObj.get("toEmails").toString()));
+        throw new IllegalArgumentException("Expected the field `toEmails` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("toEmails").toString()));
       }
       // ensure the optional json data is an array if present
       if (jsonObj.get("ccEmails") != null && !jsonObj.get("ccEmails").isJsonNull() && !jsonObj.get("ccEmails").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `ccEmails` to be an array in the JSON string but got `%s`", jsonObj.get("ccEmails").toString()));
+        throw new IllegalArgumentException("Expected the field `ccEmails` to be an array in the JSON string but got `%s`".formatted(jsonObj.get("ccEmails").toString()));
       }
   }
 
