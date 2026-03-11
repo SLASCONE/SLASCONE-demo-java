@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.CustomerContactDto;
@@ -50,1959 +41,1816 @@ import com.slascone.model.LicenseImportByDetailsPutDto;
 import com.slascone.model.ProblemDetails;
 import java.util.UUID;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class DataExchangeApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public DataExchangeApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public DataExchangeApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for addCustomerAsync
-     * @param isvId  (required)
-     * @param dataExchangeAddCustomerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call addCustomerAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  public DataExchangeApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public DataExchangeApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Creates a customer
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
+   * @param isvId  (required)
+   * @param dataExchangeAddCustomerDto  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto addCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
+    return addCustomerAsync(isvId, dataExchangeAddCustomerDto, null);
+  }
+
+  /**
+   * Creates a customer
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
+   * @param isvId  (required)
+   * @param dataExchangeAddCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto addCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = addCustomerAsyncWithHttpInfo(isvId, dataExchangeAddCustomerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a customer
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
+   * @param isvId  (required)
+   * @param dataExchangeAddCustomerDto  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> addCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
+    return addCustomerAsyncWithHttpInfo(isvId, dataExchangeAddCustomerDto, null);
+  }
+
+  /**
+   * Creates a customer
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
+   * @param isvId  (required)
+   * @param dataExchangeAddCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> addCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addCustomerAsyncRequestBuilder(isvId, dataExchangeAddCustomerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addCustomerAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = dataExchangeAddCustomerDto;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder addCustomerAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addCustomerAsync");
+    }
+    // verify the required parameter 'dataExchangeAddCustomerDto' is set
+    if (dataExchangeAddCustomerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'dataExchangeAddCustomerDto' when calling addCustomerAsync");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addCustomerAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addCustomerAsync(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(dataExchangeAddCustomerDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeAddLicenseDto  (required)
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID addLicenseAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
+    return addLicenseAsync(isvId, dataExchangeAddLicenseDto, null);
+  }
+
+  /**
+   * Creates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeAddLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID addLicenseAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UUID> localVarResponse = addLicenseAsyncWithHttpInfo(isvId, dataExchangeAddLicenseDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeAddLicenseDto  (required)
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> addLicenseAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
+    return addLicenseAsyncWithHttpInfo(isvId, dataExchangeAddLicenseDto, null);
+  }
+
+  /**
+   * Creates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeAddLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> addLicenseAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addLicenseAsyncRequestBuilder(isvId, dataExchangeAddLicenseDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addLicenseAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UUID>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'dataExchangeAddCustomerDto' is set
-        if (dataExchangeAddCustomerDto == null) {
-            throw new ApiException("Missing the required parameter 'dataExchangeAddCustomerDto' when calling addCustomerAsync(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UUID responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UUID>() {});
+        
+
+        return new ApiResponse<UUID>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        return addCustomerAsyncCall(isvId, dataExchangeAddCustomerDto, _callback);
-
+  private HttpRequest.Builder addLicenseAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addLicenseAsync");
+    }
+    // verify the required parameter 'dataExchangeAddLicenseDto' is set
+    if (dataExchangeAddLicenseDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'dataExchangeAddLicenseDto' when calling addLicenseAsync");
     }
 
-    /**
-     * Creates a customer
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
-     * @param isvId  (required)
-     * @param dataExchangeAddCustomerDto  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto addCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = addCustomerAsyncWithHttpInfo(isvId, dataExchangeAddCustomerDto);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/by_template"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(dataExchangeAddLicenseDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsDto  (required)
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID addLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
+    return addLicenseByDetailsAsync(isvId, licenseImportByDetailsDto, null);
+  }
+
+  /**
+   * Creates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID addLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UUID> localVarResponse = addLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsDto  (required)
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> addLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
+    return addLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsDto, null);
+  }
+
+  /**
+   * Creates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> addLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addLicenseByDetailsAsyncRequestBuilder(isvId, licenseImportByDetailsDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addLicenseByDetailsAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UUID>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UUID responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UUID>() {});
+        
+
+        return new ApiResponse<UUID>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addLicenseByDetailsAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addLicenseByDetailsAsync");
+    }
+    // verify the required parameter 'licenseImportByDetailsDto' is set
+    if (licenseImportByDetailsDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseImportByDetailsDto' when calling addLicenseByDetailsAsync");
     }
 
-    /**
-     * Creates a customer
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
-     * @param isvId  (required)
-     * @param dataExchangeAddCustomerDto  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> addCustomerAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto) throws ApiException {
-        okhttp3.Call localVarCall = addCustomerAsyncValidateBeforeCall(isvId, dataExchangeAddCustomerDto, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseImportByDetailsDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto addOrUpdateCustomerContactAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
+    return addOrUpdateCustomerContactAsync(isvId, dataExchangeAddOrUpdateCustomerContactDto, null);
+  }
+
+  /**
+   * Creates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto addOrUpdateCustomerContactAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerContactDto> localVarResponse = addOrUpdateCustomerContactAsyncWithHttpInfo(isvId, dataExchangeAddOrUpdateCustomerContactDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> addOrUpdateCustomerContactAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
+    return addOrUpdateCustomerContactAsyncWithHttpInfo(isvId, dataExchangeAddOrUpdateCustomerContactDto, null);
+  }
+
+  /**
+   * Creates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> addOrUpdateCustomerContactAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addOrUpdateCustomerContactAsyncRequestBuilder(isvId, dataExchangeAddOrUpdateCustomerContactDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addOrUpdateCustomerContactAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerContactDto>() {});
+        
+
+        return new ApiResponse<CustomerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addOrUpdateCustomerContactAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addOrUpdateCustomerContactAsync");
+    }
+    // verify the required parameter 'dataExchangeAddOrUpdateCustomerContactDto' is set
+    if (dataExchangeAddOrUpdateCustomerContactDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'dataExchangeAddOrUpdateCustomerContactDto' when calling addOrUpdateCustomerContactAsync");
     }
 
-    /**
-     * Creates a customer (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;
-     * @param isvId  (required)
-     * @param dataExchangeAddCustomerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddCustomerDto dataExchangeAddCustomerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = addCustomerAsyncValidateBeforeCall(isvId, dataExchangeAddCustomerDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(dataExchangeAddOrUpdateCustomerContactDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-    /**
-     * Build call for addLicenseAsync
-     * @param isvId  (required)
-     * @param dataExchangeAddLicenseDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addLicenseAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = dataExchangeAddLicenseDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/by_template"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addLicenseAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addLicenseAsync(Async)");
-        }
-
-        // verify the required parameter 'dataExchangeAddLicenseDto' is set
-        if (dataExchangeAddLicenseDto == null) {
-            throw new ApiException("Missing the required parameter 'dataExchangeAddLicenseDto' when calling addLicenseAsync(Async)");
-        }
-
-        return addLicenseAsyncCall(isvId, dataExchangeAddLicenseDto, _callback);
-
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     * Creates a license based on an edition (template)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeAddLicenseDto  (required)
-     * @return UUID
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UUID addLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
-        ApiResponse<UUID> localVarResp = addLicenseAsyncWithHttpInfo(isvId, dataExchangeAddLicenseDto);
-        return localVarResp.getData();
+  /**
+   * Downloads a csv customer file template
+   * 
+   * @param isvId  (required)
+   * @return File
+   * @throws ApiException if fails to make API call
+   */
+  public File downloadCustomerCsvTemplate(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return downloadCustomerCsvTemplate(isvId, null);
+  }
+
+  /**
+   * Downloads a csv customer file template
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return File
+   * @throws ApiException if fails to make API call
+   */
+  public File downloadCustomerCsvTemplate(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<File> localVarResponse = downloadCustomerCsvTemplateWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Downloads a csv customer file template
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;File&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<File> downloadCustomerCsvTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return downloadCustomerCsvTemplateWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Downloads a csv customer file template
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;File&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<File> downloadCustomerCsvTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = downloadCustomerCsvTemplateRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("downloadCustomerCsvTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<File>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        // Handle file downloading.
+        File responseValue = downloadFileFromResponse(localVarResponse, localVarResponseBody);
+        
+
+        return new ApiResponse<File>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder downloadCustomerCsvTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling downloadCustomerCsvTemplate");
     }
 
-    /**
-     * Creates a license based on an edition (template)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeAddLicenseDto  (required)
-     * @return ApiResponse&lt;UUID&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UUID> addLicenseAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto) throws ApiException {
-        okhttp3.Call localVarCall = addLicenseAsyncValidateBeforeCall(isvId, dataExchangeAddLicenseDto, null);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/download_csv"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/octet-stream, application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Downloads a csv license file template
+   * 
+   * @param isvId  (required)
+   * @return File
+   * @throws ApiException if fails to make API call
+   */
+  public File downloadLicenseCsvTemplate(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return downloadLicenseCsvTemplate(isvId, null);
+  }
+
+  /**
+   * Downloads a csv license file template
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return File
+   * @throws ApiException if fails to make API call
+   */
+  public File downloadLicenseCsvTemplate(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<File> localVarResponse = downloadLicenseCsvTemplateWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Downloads a csv license file template
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;File&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<File> downloadLicenseCsvTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return downloadLicenseCsvTemplateWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Downloads a csv license file template
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;File&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<File> downloadLicenseCsvTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = downloadLicenseCsvTemplateRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("downloadLicenseCsvTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<File>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        // Handle file downloading.
+        File responseValue = downloadFileFromResponse(localVarResponse, localVarResponseBody);
+        
+
+        return new ApiResponse<File>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder downloadLicenseCsvTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling downloadLicenseCsvTemplate");
     }
 
-    /**
-     * Creates a license based on an edition (template) (asynchronously)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeAddLicenseDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addLicenseAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddLicenseDto dataExchangeAddLicenseDto, final ApiCallback<UUID> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = addLicenseAsyncValidateBeforeCall(isvId, dataExchangeAddLicenseDto, _callback);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/download_csv"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/octet-stream, application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-    /**
-     * Build call for addLicenseByDetailsAsync
-     * @param isvId  (required)
-     * @param licenseImportByDetailsDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = licenseImportByDetailsDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addLicenseByDetailsAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addLicenseByDetailsAsync(Async)");
+  /**
+   * Imports a csv customer file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param delimiter  (optional)
+   * @param overwriteExisting  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @return ImportResultDto
+   * @throws ApiException if fails to make API call
+   */
+  public ImportResultDto importCustomersFromCsv(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean overwriteExisting, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file) throws ApiException {
+    return importCustomersFromCsv(isvId, delimiter, overwriteExisting, resumeOnError, _file, null);
+  }
+
+  /**
+   * Imports a csv customer file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param delimiter  (optional)
+   * @param overwriteExisting  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ImportResultDto
+   * @throws ApiException if fails to make API call
+   */
+  public ImportResultDto importCustomersFromCsv(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean overwriteExisting, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportResultDto> localVarResponse = importCustomersFromCsvWithHttpInfo(isvId, delimiter, overwriteExisting, resumeOnError, _file, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Imports a csv customer file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param delimiter  (optional)
+   * @param overwriteExisting  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @return ApiResponse&lt;ImportResultDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ImportResultDto> importCustomersFromCsvWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean overwriteExisting, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file) throws ApiException {
+    return importCustomersFromCsvWithHttpInfo(isvId, delimiter, overwriteExisting, resumeOnError, _file, null);
+  }
+
+  /**
+   * Imports a csv customer file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param delimiter  (optional)
+   * @param overwriteExisting  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ImportResultDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ImportResultDto> importCustomersFromCsvWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean overwriteExisting, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = importCustomersFromCsvRequestBuilder(isvId, delimiter, overwriteExisting, resumeOnError, _file, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("importCustomersFromCsv", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ImportResultDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'licenseImportByDetailsDto' is set
-        if (licenseImportByDetailsDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseImportByDetailsDto' when calling addLicenseByDetailsAsync(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ImportResultDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportResultDto>() {});
+        
+
+        return new ApiResponse<ImportResultDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
-
-        return addLicenseByDetailsAsyncCall(isvId, licenseImportByDetailsDto, _callback);
-
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * Creates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsDto  (required)
-     * @return UUID
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UUID addLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
-        ApiResponse<UUID> localVarResp = addLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsDto);
-        return localVarResp.getData();
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
     }
+  }
 
-    /**
-     * Creates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsDto  (required)
-     * @return ApiResponse&lt;UUID&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UUID> addLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto) throws ApiException {
-        okhttp3.Call localVarCall = addLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsDto, null);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+  private HttpRequest.Builder importCustomersFromCsvRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean overwriteExisting, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling importCustomersFromCsv");
     }
 
-    /**
-     * Creates a license allowing to define all feature/variable/limitation values (asynchronously)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsDto licenseImportByDetailsDto, final ApiCallback<UUID> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = addLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsDto, _callback);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addOrUpdateCustomerContactAsync
-     * @param isvId  (required)
-     * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addOrUpdateCustomerContactAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/import_csv"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "delimiter";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("delimiter", delimiter));
+    localVarQueryParameterBaseName = "overwrite_existing";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("overwrite_existing", overwriteExisting));
+    localVarQueryParameterBaseName = "resume_on_error";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("resume_on_error", resumeOnError));
 
-        Object localVarPostBody = dataExchangeAddOrUpdateCustomerContactDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addOrUpdateCustomerContactAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addOrUpdateCustomerContactAsync(Async)");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    MultipartEntityBuilder multiPartBuilder = MultipartEntityBuilder.create();
+    boolean hasFiles = false;
+    multiPartBuilder.addBinaryBody("file", _file);
+    hasFiles = true;
+    HttpEntity entity = multiPartBuilder.build();
+    HttpRequest.BodyPublisher formDataPublisher;
+    if (hasFiles) {
+        Pipe pipe;
+        try {
+            pipe = Pipe.open();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        new Thread(() -> {
+            try (OutputStream outputStream = Channels.newOutputStream(pipe.sink())) {
+                entity.writeTo(outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        formDataPublisher = HttpRequest.BodyPublishers.ofInputStream(() -> Channels.newInputStream(pipe.source()));
+    } else {
+        ByteArrayOutputStream formOutputStream = new ByteArrayOutputStream();
+        try {
+            entity.writeTo(formOutputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] formBytes = formOutputStream.toByteArray();
+        formDataPublisher = HttpRequest.BodyPublishers
+            .ofInputStream(() -> new ByteArrayInputStream(formBytes));
+    }
+    localVarRequestBuilder
+        .header("Content-Type", entity.getContentType().getValue())
+        .method("POST", formDataPublisher);
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Imports a csv license file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param delimiter  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @return ImportResultDto
+   * @throws ApiException if fails to make API call
+   */
+  public ImportResultDto importLicensesFromCsv(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file) throws ApiException {
+    return importLicensesFromCsv(isvId, productId, delimiter, resumeOnError, _file, null);
+  }
+
+  /**
+   * Imports a csv license file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param delimiter  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ImportResultDto
+   * @throws ApiException if fails to make API call
+   */
+  public ImportResultDto importLicensesFromCsv(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    ApiResponse<ImportResultDto> localVarResponse = importLicensesFromCsvWithHttpInfo(isvId, productId, delimiter, resumeOnError, _file, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Imports a csv license file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param delimiter  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @return ApiResponse&lt;ImportResultDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ImportResultDto> importLicensesFromCsvWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file) throws ApiException {
+    return importLicensesFromCsvWithHttpInfo(isvId, productId, delimiter, resumeOnError, _file, null);
+  }
+
+  /**
+   * Imports a csv license file
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param delimiter  (optional)
+   * @param resumeOnError  (optional)
+   * @param _file  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ImportResultDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ImportResultDto> importLicensesFromCsvWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = importLicensesFromCsvRequestBuilder(isvId, productId, delimiter, resumeOnError, _file, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("importLicensesFromCsv", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ImportResultDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'dataExchangeAddOrUpdateCustomerContactDto' is set
-        if (dataExchangeAddOrUpdateCustomerContactDto == null) {
-            throw new ApiException("Missing the required parameter 'dataExchangeAddOrUpdateCustomerContactDto' when calling addOrUpdateCustomerContactAsync(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ImportResultDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ImportResultDto>() {});
+        
+
+        return new ApiResponse<ImportResultDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        return addOrUpdateCustomerContactAsyncCall(isvId, dataExchangeAddOrUpdateCustomerContactDto, _callback);
-
+  private HttpRequest.Builder importLicensesFromCsvRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String delimiter, @jakarta.annotation.Nullable Boolean resumeOnError, @jakarta.annotation.Nullable File _file, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling importLicensesFromCsv");
     }
 
-    /**
-     * Creates a customer contact
-     * 
-     * @param isvId  (required)
-     * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
-     * @return CustomerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerContactDto addOrUpdateCustomerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
-        ApiResponse<CustomerContactDto> localVarResp = addOrUpdateCustomerContactAsyncWithHttpInfo(isvId, dataExchangeAddOrUpdateCustomerContactDto);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/import_csv"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "product_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("product_id", productId));
+    localVarQueryParameterBaseName = "delimiter";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("delimiter", delimiter));
+    localVarQueryParameterBaseName = "resume_on_error";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("resume_on_error", resumeOnError));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
     }
 
-    /**
-     * Creates a customer contact
-     * 
-     * @param isvId  (required)
-     * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
-     * @return ApiResponse&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerContactDto> addOrUpdateCustomerContactAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto) throws ApiException {
-        okhttp3.Call localVarCall = addOrUpdateCustomerContactAsyncValidateBeforeCall(isvId, dataExchangeAddOrUpdateCustomerContactDto, null);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    MultipartEntityBuilder multiPartBuilder = MultipartEntityBuilder.create();
+    boolean hasFiles = false;
+    multiPartBuilder.addBinaryBody("file", _file);
+    hasFiles = true;
+    HttpEntity entity = multiPartBuilder.build();
+    HttpRequest.BodyPublisher formDataPublisher;
+    if (hasFiles) {
+        Pipe pipe;
+        try {
+            pipe = Pipe.open();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        new Thread(() -> {
+            try (OutputStream outputStream = Channels.newOutputStream(pipe.sink())) {
+                entity.writeTo(outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        formDataPublisher = HttpRequest.BodyPublishers.ofInputStream(() -> Channels.newInputStream(pipe.source()));
+    } else {
+        ByteArrayOutputStream formOutputStream = new ByteArrayOutputStream();
+        try {
+            entity.writeTo(formOutputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] formBytes = formOutputStream.toByteArray();
+        formDataPublisher = HttpRequest.BodyPublishers
+            .ofInputStream(() -> new ByteArrayInputStream(formBytes));
+    }
+    localVarRequestBuilder
+        .header("Content-Type", entity.getContentType().getValue())
+        .method("POST", formDataPublisher);
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPatchDto  (required)
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID patchLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
+    return patchLicenseByDetailsAsync(isvId, licenseImportByDetailsPatchDto, null);
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPatchDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID patchLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UUID> localVarResponse = patchLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPatchDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPatchDto  (required)
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> patchLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
+    return patchLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPatchDto, null);
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPatchDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> patchLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = patchLicenseByDetailsAsyncRequestBuilder(isvId, licenseImportByDetailsPatchDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("patchLicenseByDetailsAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UUID>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UUID responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UUID>() {});
+        
+
+        return new ApiResponse<UUID>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder patchLicenseByDetailsAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling patchLicenseByDetailsAsync");
+    }
+    // verify the required parameter 'licenseImportByDetailsPatchDto' is set
+    if (licenseImportByDetailsPatchDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseImportByDetailsPatchDto' when calling patchLicenseByDetailsAsync");
     }
 
-    /**
-     * Creates a customer contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param dataExchangeAddOrUpdateCustomerContactDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addOrUpdateCustomerContactAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeAddOrUpdateCustomerContactDto dataExchangeAddOrUpdateCustomerContactDto, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = addOrUpdateCustomerContactAsyncValidateBeforeCall(isvId, dataExchangeAddOrUpdateCustomerContactDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseImportByDetailsPatchDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-    /**
-     * Build call for downloadCustomerCsvTemplate
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call downloadCustomerCsvTemplateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  /**
+   * Updates a customer
+   * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateCustomerDto  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto updateCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
+    return updateCustomerAsync(isvId, dataExchangeUpdateCustomerDto, null);
+  }
+
+  /**
+   * Updates a customer
+   * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto updateCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = updateCustomerAsyncWithHttpInfo(isvId, dataExchangeUpdateCustomerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a customer
+   * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateCustomerDto  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> updateCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
+    return updateCustomerAsyncWithHttpInfo(isvId, dataExchangeUpdateCustomerDto, null);
+  }
+
+  /**
+   * Updates a customer
+   * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> updateCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomerAsyncRequestBuilder(isvId, dataExchangeUpdateCustomerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomerAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = null;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/download_csv"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/octet-stream",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call downloadCustomerCsvTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling downloadCustomerCsvTemplate(Async)");
-        }
-
-        return downloadCustomerCsvTemplateCall(isvId, _callback);
-
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
     }
+  }
 
-    /**
-     * Downloads a csv customer file template
-     * 
-     * @param isvId  (required)
-     * @return File
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public File downloadCustomerCsvTemplate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<File> localVarResp = downloadCustomerCsvTemplateWithHttpInfo(isvId);
-        return localVarResp.getData();
+  private HttpRequest.Builder updateCustomerAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomerAsync");
     }
-
-    /**
-     * Downloads a csv customer file template
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;File&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<File> downloadCustomerCsvTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = downloadCustomerCsvTemplateValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<File>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // verify the required parameter 'dataExchangeUpdateCustomerDto' is set
+    if (dataExchangeUpdateCustomerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'dataExchangeUpdateCustomerDto' when calling updateCustomerAsync");
     }
 
-    /**
-     * Downloads a csv customer file template (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call downloadCustomerCsvTemplateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<File> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = downloadCustomerCsvTemplateValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<File>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(dataExchangeUpdateCustomerDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-    /**
-     * Build call for downloadLicenseCsvTemplate
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call downloadLicenseCsvTemplateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  /**
+   * Updates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateLicenseDto  (required)
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID updateLicenseAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
+    return updateLicenseAsync(isvId, dataExchangeUpdateLicenseDto, null);
+  }
+
+  /**
+   * Updates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID updateLicenseAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UUID> localVarResponse = updateLicenseAsyncWithHttpInfo(isvId, dataExchangeUpdateLicenseDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateLicenseDto  (required)
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> updateLicenseAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
+    return updateLicenseAsyncWithHttpInfo(isvId, dataExchangeUpdateLicenseDto, null);
+  }
+
+  /**
+   * Updates a license based on an edition (template)
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param dataExchangeUpdateLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> updateLicenseAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateLicenseAsyncRequestBuilder(isvId, dataExchangeUpdateLicenseDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateLicenseAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UUID>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = null;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UUID responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UUID>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/download_csv"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/octet-stream",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<UUID>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call downloadLicenseCsvTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling downloadLicenseCsvTemplate(Async)");
-        }
-
-        return downloadLicenseCsvTemplateCall(isvId, _callback);
-
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
     }
+  }
 
-    /**
-     * Downloads a csv license file template
-     * 
-     * @param isvId  (required)
-     * @return File
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public File downloadLicenseCsvTemplate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<File> localVarResp = downloadLicenseCsvTemplateWithHttpInfo(isvId);
-        return localVarResp.getData();
+  private HttpRequest.Builder updateLicenseAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateLicenseAsync");
     }
-
-    /**
-     * Downloads a csv license file template
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;File&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<File> downloadLicenseCsvTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = downloadLicenseCsvTemplateValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<File>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // verify the required parameter 'dataExchangeUpdateLicenseDto' is set
+    if (dataExchangeUpdateLicenseDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'dataExchangeUpdateLicenseDto' when calling updateLicenseAsync");
     }
 
-    /**
-     * Downloads a csv license file template (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call downloadLicenseCsvTemplateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<File> _callback) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        okhttp3.Call localVarCall = downloadLicenseCsvTemplateValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<File>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/by_template"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(dataExchangeUpdateLicenseDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-    /**
-     * Build call for importCustomersFromCsv
-     * @param isvId  (required)
-     * @param delimiter  (optional)
-     * @param overwriteExisting  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call importCustomersFromCsvCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers/import_csv"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (_file != null) {
-            localVarFormParams.put("file", _file);
-        }
-
-        if (delimiter != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("delimiter", delimiter));
-        }
-
-        if (overwriteExisting != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("overwrite_existing", overwriteExisting));
-        }
-
-        if (resumeOnError != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("resume_on_error", resumeOnError));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "multipart/form-data"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call importCustomersFromCsvValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling importCustomersFromCsv(Async)");
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPutDto  (required)
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID updateLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
+    return updateLicenseByDetailsAsync(isvId, licenseImportByDetailsPutDto, null);
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPutDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return UUID
+   * @throws ApiException if fails to make API call
+   */
+  public UUID updateLicenseByDetailsAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UUID> localVarResponse = updateLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPutDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPutDto  (required)
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> updateLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
+    return updateLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPutDto, null);
+  }
+
+  /**
+   * Updates a license allowing to define all feature/variable/limitation values
+   * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
+   * @param isvId  (required)
+   * @param licenseImportByDetailsPutDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UUID&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UUID> updateLicenseByDetailsAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateLicenseByDetailsAsyncRequestBuilder(isvId, licenseImportByDetailsPutDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateLicenseByDetailsAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UUID>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return importCustomersFromCsvCall(isvId, delimiter, overwriteExisting, resumeOnError, _file, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UUID responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UUID>() {});
+        
 
+        return new ApiResponse<UUID>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-    /**
-     * Imports a csv customer file
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param delimiter  (optional)
-     * @param overwriteExisting  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @return ImportResultDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ImportResultDto importCustomersFromCsv(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
-        ApiResponse<ImportResultDto> localVarResp = importCustomersFromCsvWithHttpInfo(isvId, delimiter, overwriteExisting, resumeOnError, _file);
-        return localVarResp.getData();
+  private HttpRequest.Builder updateLicenseByDetailsAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateLicenseByDetailsAsync");
+    }
+    // verify the required parameter 'licenseImportByDetailsPutDto' is set
+    if (licenseImportByDetailsPutDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseImportByDetailsPutDto' when calling updateLicenseByDetailsAsync");
     }
 
-    /**
-     * Imports a csv customer file
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param delimiter  (optional)
-     * @param overwriteExisting  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @return ApiResponse&lt;ImportResultDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ImportResultDto> importCustomersFromCsvWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
-        okhttp3.Call localVarCall = importCustomersFromCsvValidateBeforeCall(isvId, delimiter, overwriteExisting, resumeOnError, _file, null);
-        Type localVarReturnType = new TypeToken<ImportResultDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseImportByDetailsPutDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * Imports a csv customer file (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param delimiter  (optional)
-     * @param overwriteExisting  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call importCustomersFromCsvAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean overwriteExisting, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback<ImportResultDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = importCustomersFromCsvValidateBeforeCall(isvId, delimiter, overwriteExisting, resumeOnError, _file, _callback);
-        Type localVarReturnType = new TypeToken<ImportResultDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-    /**
-     * Build call for importLicensesFromCsv
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param delimiter  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call importLicensesFromCsvCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/import_csv"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (_file != null) {
-            localVarFormParams.put("file", _file);
-        }
-
-        if (productId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("product_id", productId));
-        }
-
-        if (delimiter != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("delimiter", delimiter));
-        }
-
-        if (resumeOnError != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("resume_on_error", resumeOnError));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "multipart/form-data"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call importLicensesFromCsvValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling importLicensesFromCsv(Async)");
-        }
-
-        return importLicensesFromCsvCall(isvId, productId, delimiter, resumeOnError, _file, _callback);
-
-    }
-
-    /**
-     * Imports a csv license file
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param delimiter  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @return ImportResultDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ImportResultDto importLicensesFromCsv(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
-        ApiResponse<ImportResultDto> localVarResp = importLicensesFromCsvWithHttpInfo(isvId, productId, delimiter, resumeOnError, _file);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Imports a csv license file
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param delimiter  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @return ApiResponse&lt;ImportResultDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ImportResultDto> importLicensesFromCsvWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file) throws ApiException {
-        okhttp3.Call localVarCall = importLicensesFromCsvValidateBeforeCall(isvId, productId, delimiter, resumeOnError, _file, null);
-        Type localVarReturnType = new TypeToken<ImportResultDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Imports a csv license file (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param delimiter  (optional)
-     * @param resumeOnError  (optional)
-     * @param _file  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call importLicensesFromCsvAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String delimiter, @javax.annotation.Nullable Boolean resumeOnError, @javax.annotation.Nullable File _file, final ApiCallback<ImportResultDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = importLicensesFromCsvValidateBeforeCall(isvId, productId, delimiter, resumeOnError, _file, _callback);
-        Type localVarReturnType = new TypeToken<ImportResultDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for patchLicenseByDetailsAsync
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPatchDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = licenseImportByDetailsPatchDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call patchLicenseByDetailsAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling patchLicenseByDetailsAsync(Async)");
-        }
-
-        // verify the required parameter 'licenseImportByDetailsPatchDto' is set
-        if (licenseImportByDetailsPatchDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseImportByDetailsPatchDto' when calling patchLicenseByDetailsAsync(Async)");
-        }
-
-        return patchLicenseByDetailsAsyncCall(isvId, licenseImportByDetailsPatchDto, _callback);
-
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPatchDto  (required)
-     * @return UUID
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UUID patchLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
-        ApiResponse<UUID> localVarResp = patchLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPatchDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPatchDto  (required)
-     * @return ApiResponse&lt;UUID&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UUID> patchLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto) throws ApiException {
-        okhttp3.Call localVarCall = patchLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsPatchDto, null);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values (asynchronously)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPatchDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPatchDto licenseImportByDetailsPatchDto, final ApiCallback<UUID> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = patchLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsPatchDto, _callback);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomerAsync
-     * @param isvId  (required)
-     * @param dataExchangeUpdateCustomerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = dataExchangeUpdateCustomerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/customers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomerAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomerAsync(Async)");
-        }
-
-        // verify the required parameter 'dataExchangeUpdateCustomerDto' is set
-        if (dataExchangeUpdateCustomerDto == null) {
-            throw new ApiException("Missing the required parameter 'dataExchangeUpdateCustomerDto' when calling updateCustomerAsync(Async)");
-        }
-
-        return updateCustomerAsyncCall(isvId, dataExchangeUpdateCustomerDto, _callback);
-
-    }
-
-    /**
-     * Updates a customer
-     * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateCustomerDto  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto updateCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = updateCustomerAsyncWithHttpInfo(isvId, dataExchangeUpdateCustomerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a customer
-     * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateCustomerDto  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> updateCustomerAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomerAsyncValidateBeforeCall(isvId, dataExchangeUpdateCustomerDto, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a customer (asynchronously)
-     * Based on customer_number &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateCustomerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateCustomerDto dataExchangeUpdateCustomerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomerAsyncValidateBeforeCall(isvId, dataExchangeUpdateCustomerDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateLicenseAsync
-     * @param isvId  (required)
-     * @param dataExchangeUpdateLicenseDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = dataExchangeUpdateLicenseDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses/by_template"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateLicenseAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateLicenseAsync(Async)");
-        }
-
-        // verify the required parameter 'dataExchangeUpdateLicenseDto' is set
-        if (dataExchangeUpdateLicenseDto == null) {
-            throw new ApiException("Missing the required parameter 'dataExchangeUpdateLicenseDto' when calling updateLicenseAsync(Async)");
-        }
-
-        return updateLicenseAsyncCall(isvId, dataExchangeUpdateLicenseDto, _callback);
-
-    }
-
-    /**
-     * Updates a license based on an edition (template)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateLicenseDto  (required)
-     * @return UUID
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UUID updateLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
-        ApiResponse<UUID> localVarResp = updateLicenseAsyncWithHttpInfo(isvId, dataExchangeUpdateLicenseDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a license based on an edition (template)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateLicenseDto  (required)
-     * @return ApiResponse&lt;UUID&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UUID> updateLicenseAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto) throws ApiException {
-        okhttp3.Call localVarCall = updateLicenseAsyncValidateBeforeCall(isvId, dataExchangeUpdateLicenseDto, null);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a license based on an edition (template) (asynchronously)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM/\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param dataExchangeUpdateLicenseDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull DataExchangeUpdateLicenseDto dataExchangeUpdateLicenseDto, final ApiCallback<UUID> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateLicenseAsyncValidateBeforeCall(isvId, dataExchangeUpdateLicenseDto, _callback);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateLicenseByDetailsAsync
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPutDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseByDetailsAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = licenseImportByDetailsPutDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_exchange/licenses"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateLicenseByDetailsAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateLicenseByDetailsAsync(Async)");
-        }
-
-        // verify the required parameter 'licenseImportByDetailsPutDto' is set
-        if (licenseImportByDetailsPutDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseImportByDetailsPutDto' when calling updateLicenseByDetailsAsync(Async)");
-        }
-
-        return updateLicenseByDetailsAsyncCall(isvId, licenseImportByDetailsPutDto, _callback);
-
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPutDto  (required)
-     * @return UUID
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UUID updateLicenseByDetailsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
-        ApiResponse<UUID> localVarResp = updateLicenseByDetailsAsyncWithHttpInfo(isvId, licenseImportByDetailsPutDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPutDto  (required)
-     * @return ApiResponse&lt;UUID&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UUID> updateLicenseByDetailsAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto) throws ApiException {
-        okhttp3.Call localVarCall = updateLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsPutDto, null);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a license allowing to define all feature/variable/limitation values (asynchronously)
-     * Check the &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150778-IMPORTING-DATA-FROM-YOUR-ERP-CRM\&quot;&gt;documentation&lt;/a&gt; for more details.
-     * @param isvId  (required)
-     * @param licenseImportByDetailsPutDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseByDetailsAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseImportByDetailsPutDto licenseImportByDetailsPutDto, final ApiCallback<UUID> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateLicenseByDetailsAsyncValidateBeforeCall(isvId, licenseImportByDetailsPutDto, _callback);
-        Type localVarReturnType = new TypeToken<UUID>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

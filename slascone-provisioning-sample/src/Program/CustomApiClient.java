@@ -1,7 +1,7 @@
 package Program;
 
 import com.slascone.ApiClient;
-import okhttp3.OkHttpClient;
+import java.net.http.HttpClient;
 
 public class CustomApiClient extends ApiClient {
 
@@ -15,14 +15,20 @@ public class CustomApiClient extends ApiClient {
     
     private void initHttpClientWithCustomInterceptor(FileService fileService) {
 
-        // Create the combined interceptor that handles both signature validation and response storage
-        combinedInterceptor = new CombinedInterceptor(fileService);
+        // Build the real HttpClient from the parent ApiClient's builder
+        HttpClient realClient = super.getHttpClient();
 
-        // Rebuild the OkHttpClient with the combined interceptor and relaxed SSL settings
-        OkHttpClient.Builder builder = httpClient.newBuilder();
-        builder.addInterceptor(combinedInterceptor);
-        
-        httpClient = builder.build();
+        // Wrap it in a CombinedInterceptor that handles signature validation and response storage
+        combinedInterceptor = new CombinedInterceptor(realClient, fileService);
+    }
+
+    /**
+     * Returns the intercepting HttpClient so all generated API classes
+     * route their HTTP calls through signature validation and response storage.
+     */
+    @Override
+    public HttpClient getHttpClient() {
+        return combinedInterceptor;
     }
     
     /**

@@ -13,117 +13,107 @@
 
 package com.slascone.model;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.DateValidity;
 import com.slascone.model.ExpirationMode;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseSubscriptionPlanDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_EXPIRATION_DATE_UTC,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_EXPIRATION_MODE,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_VALID_DAYS_COUNT,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_TRIAL_DAYS_COUNT,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_IS_ACTIVE,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_IS_EXPIRED,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_DATE_VALIDITY,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_IS_VALID,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_IS_SOFTWARE_RELEASE_VALID,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_IS_GROUP_VALID,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_GROUP_COUNT,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_DATE_OF_ISSUE_UTC,
+  LicenseSubscriptionPlanDto.JSON_PROPERTY_START_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseSubscriptionPlanDto {
-  public static final String SERIALIZED_NAME_EXPIRATION_DATE_UTC = "expiration_date_utc";
-  @SerializedName(SERIALIZED_NAME_EXPIRATION_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime expirationDateUtc;
+  public static final String JSON_PROPERTY_EXPIRATION_DATE_UTC = "expiration_date_utc";
+  private JsonNullable<OffsetDateTime> expirationDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_EXPIRATION_MODE = "expiration_mode";
-  @SerializedName(SERIALIZED_NAME_EXPIRATION_MODE)
-  @javax.annotation.Nullable
-  private ExpirationMode expirationMode;
+  public static final String JSON_PROPERTY_EXPIRATION_MODE = "expiration_mode";
+  private JsonNullable<ExpirationMode> expirationMode = JsonNullable.<ExpirationMode>undefined();
 
-  public static final String SERIALIZED_NAME_VALID_DAYS_COUNT = "valid_days_count";
-  @SerializedName(SERIALIZED_NAME_VALID_DAYS_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALID_DAYS_COUNT = "valid_days_count";
+  @jakarta.annotation.Nullable
   private Integer validDaysCount;
 
-  public static final String SERIALIZED_NAME_TRIAL_DAYS_COUNT = "trial_days_count";
-  @SerializedName(SERIALIZED_NAME_TRIAL_DAYS_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TRIAL_DAYS_COUNT = "trial_days_count";
+  @jakarta.annotation.Nullable
   private Integer trialDaysCount;
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_IS_EXPIRED = "is_expired";
-  @SerializedName(SERIALIZED_NAME_IS_EXPIRED)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_EXPIRED = "is_expired";
+  @jakarta.annotation.Nullable
   private Boolean isExpired;
 
-  public static final String SERIALIZED_NAME_DATE_VALIDITY = "date_validity";
-  @SerializedName(SERIALIZED_NAME_DATE_VALIDITY)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DATE_VALIDITY = "date_validity";
+  @jakarta.annotation.Nullable
   private DateValidity dateValidity;
 
-  public static final String SERIALIZED_NAME_IS_VALID = "is_valid";
-  @SerializedName(SERIALIZED_NAME_IS_VALID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_VALID = "is_valid";
+  @jakarta.annotation.Nullable
   private Boolean isValid;
 
-  public static final String SERIALIZED_NAME_IS_SOFTWARE_RELEASE_VALID = "is_software_release_valid";
-  @SerializedName(SERIALIZED_NAME_IS_SOFTWARE_RELEASE_VALID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_SOFTWARE_RELEASE_VALID = "is_software_release_valid";
+  @jakarta.annotation.Nullable
   private Boolean isSoftwareReleaseValid;
 
-  public static final String SERIALIZED_NAME_IS_GROUP_VALID = "is_group_valid";
-  @SerializedName(SERIALIZED_NAME_IS_GROUP_VALID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_GROUP_VALID = "is_group_valid";
+  @jakarta.annotation.Nullable
   private Boolean isGroupValid;
 
-  public static final String SERIALIZED_NAME_GROUP_COUNT = "group_count";
-  @SerializedName(SERIALIZED_NAME_GROUP_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_GROUP_COUNT = "group_count";
+  @jakarta.annotation.Nullable
   private Integer groupCount;
 
-  public static final String SERIALIZED_NAME_DATE_OF_ISSUE_UTC = "date_of_issue_utc";
-  @SerializedName(SERIALIZED_NAME_DATE_OF_ISSUE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DATE_OF_ISSUE_UTC = "date_of_issue_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime dateOfIssueUtc;
 
-  public static final String SERIALIZED_NAME_START_DATE_UTC = "start_date_utc";
-  @SerializedName(SERIALIZED_NAME_START_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime startDateUtc;
+  public static final String JSON_PROPERTY_START_DATE_UTC = "start_date_utc";
+  private JsonNullable<OffsetDateTime> startDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public LicenseSubscriptionPlanDto() {
+  public LicenseSubscriptionPlanDto() { 
   }
 
-  public LicenseSubscriptionPlanDto expirationDateUtc(@javax.annotation.Nullable OffsetDateTime expirationDateUtc) {
-    this.expirationDateUtc = expirationDateUtc;
+  public LicenseSubscriptionPlanDto expirationDateUtc(@jakarta.annotation.Nullable OffsetDateTime expirationDateUtc) {
+    this.expirationDateUtc = JsonNullable.<OffsetDateTime>of(expirationDateUtc);
     return this;
   }
 
@@ -131,18 +121,31 @@ public class LicenseSubscriptionPlanDto {
    * Get expirationDateUtc
    * @return expirationDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getExpirationDateUtc() {
-    return expirationDateUtc;
+        return expirationDateUtc.orElse(null);
   }
 
-  public void setExpirationDateUtc(@javax.annotation.Nullable OffsetDateTime expirationDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getExpirationDateUtc_JsonNullable() {
+    return expirationDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXPIRATION_DATE_UTC)
+  public void setExpirationDateUtc_JsonNullable(JsonNullable<OffsetDateTime> expirationDateUtc) {
     this.expirationDateUtc = expirationDateUtc;
   }
 
+  public void setExpirationDateUtc(@jakarta.annotation.Nullable OffsetDateTime expirationDateUtc) {
+    this.expirationDateUtc = JsonNullable.<OffsetDateTime>of(expirationDateUtc);
+  }
 
-  public LicenseSubscriptionPlanDto expirationMode(@javax.annotation.Nullable ExpirationMode expirationMode) {
-    this.expirationMode = expirationMode;
+
+  public LicenseSubscriptionPlanDto expirationMode(@jakarta.annotation.Nullable ExpirationMode expirationMode) {
+    this.expirationMode = JsonNullable.<ExpirationMode>of(expirationMode);
     return this;
   }
 
@@ -150,17 +153,30 @@ public class LicenseSubscriptionPlanDto {
    * Get expirationMode
    * @return expirationMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ExpirationMode getExpirationMode() {
-    return expirationMode;
+        return expirationMode.orElse(null);
   }
 
-  public void setExpirationMode(@javax.annotation.Nullable ExpirationMode expirationMode) {
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ExpirationMode> getExpirationMode_JsonNullable() {
+    return expirationMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXPIRATION_MODE)
+  public void setExpirationMode_JsonNullable(JsonNullable<ExpirationMode> expirationMode) {
     this.expirationMode = expirationMode;
   }
 
+  public void setExpirationMode(@jakarta.annotation.Nullable ExpirationMode expirationMode) {
+    this.expirationMode = JsonNullable.<ExpirationMode>of(expirationMode);
+  }
 
-  public LicenseSubscriptionPlanDto validDaysCount(@javax.annotation.Nullable Integer validDaysCount) {
+
+  public LicenseSubscriptionPlanDto validDaysCount(@jakarta.annotation.Nullable Integer validDaysCount) {
     this.validDaysCount = validDaysCount;
     return this;
   }
@@ -169,17 +185,22 @@ public class LicenseSubscriptionPlanDto {
    * Get validDaysCount
    * @return validDaysCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALID_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getValidDaysCount() {
     return validDaysCount;
   }
 
-  public void setValidDaysCount(@javax.annotation.Nullable Integer validDaysCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALID_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValidDaysCount(@jakarta.annotation.Nullable Integer validDaysCount) {
     this.validDaysCount = validDaysCount;
   }
 
 
-  public LicenseSubscriptionPlanDto trialDaysCount(@javax.annotation.Nullable Integer trialDaysCount) {
+  public LicenseSubscriptionPlanDto trialDaysCount(@jakarta.annotation.Nullable Integer trialDaysCount) {
     this.trialDaysCount = trialDaysCount;
     return this;
   }
@@ -188,17 +209,22 @@ public class LicenseSubscriptionPlanDto {
    * Get trialDaysCount
    * @return trialDaysCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TRIAL_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getTrialDaysCount() {
     return trialDaysCount;
   }
 
-  public void setTrialDaysCount(@javax.annotation.Nullable Integer trialDaysCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_TRIAL_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTrialDaysCount(@jakarta.annotation.Nullable Integer trialDaysCount) {
     this.trialDaysCount = trialDaysCount;
   }
 
 
-  public LicenseSubscriptionPlanDto isActive(@javax.annotation.Nullable Boolean isActive) {
+  public LicenseSubscriptionPlanDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -207,17 +233,22 @@ public class LicenseSubscriptionPlanDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public LicenseSubscriptionPlanDto isExpired(@javax.annotation.Nullable Boolean isExpired) {
+  public LicenseSubscriptionPlanDto isExpired(@jakarta.annotation.Nullable Boolean isExpired) {
     this.isExpired = isExpired;
     return this;
   }
@@ -226,17 +257,22 @@ public class LicenseSubscriptionPlanDto {
    * Get isExpired
    * @return isExpired
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_EXPIRED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsExpired() {
     return isExpired;
   }
 
-  public void setIsExpired(@javax.annotation.Nullable Boolean isExpired) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_EXPIRED, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsExpired(@jakarta.annotation.Nullable Boolean isExpired) {
     this.isExpired = isExpired;
   }
 
 
-  public LicenseSubscriptionPlanDto dateValidity(@javax.annotation.Nullable DateValidity dateValidity) {
+  public LicenseSubscriptionPlanDto dateValidity(@jakarta.annotation.Nullable DateValidity dateValidity) {
     this.dateValidity = dateValidity;
     return this;
   }
@@ -245,17 +281,22 @@ public class LicenseSubscriptionPlanDto {
    * Get dateValidity
    * @return dateValidity
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DATE_VALIDITY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public DateValidity getDateValidity() {
     return dateValidity;
   }
 
-  public void setDateValidity(@javax.annotation.Nullable DateValidity dateValidity) {
+
+  @JsonProperty(value = JSON_PROPERTY_DATE_VALIDITY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDateValidity(@jakarta.annotation.Nullable DateValidity dateValidity) {
     this.dateValidity = dateValidity;
   }
 
 
-  public LicenseSubscriptionPlanDto isValid(@javax.annotation.Nullable Boolean isValid) {
+  public LicenseSubscriptionPlanDto isValid(@jakarta.annotation.Nullable Boolean isValid) {
     this.isValid = isValid;
     return this;
   }
@@ -264,17 +305,22 @@ public class LicenseSubscriptionPlanDto {
    * Get isValid
    * @return isValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsValid() {
     return isValid;
   }
 
-  public void setIsValid(@javax.annotation.Nullable Boolean isValid) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsValid(@jakarta.annotation.Nullable Boolean isValid) {
     this.isValid = isValid;
   }
 
 
-  public LicenseSubscriptionPlanDto isSoftwareReleaseValid(@javax.annotation.Nullable Boolean isSoftwareReleaseValid) {
+  public LicenseSubscriptionPlanDto isSoftwareReleaseValid(@jakarta.annotation.Nullable Boolean isSoftwareReleaseValid) {
     this.isSoftwareReleaseValid = isSoftwareReleaseValid;
     return this;
   }
@@ -283,17 +329,22 @@ public class LicenseSubscriptionPlanDto {
    * Get isSoftwareReleaseValid
    * @return isSoftwareReleaseValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_SOFTWARE_RELEASE_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsSoftwareReleaseValid() {
     return isSoftwareReleaseValid;
   }
 
-  public void setIsSoftwareReleaseValid(@javax.annotation.Nullable Boolean isSoftwareReleaseValid) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_SOFTWARE_RELEASE_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsSoftwareReleaseValid(@jakarta.annotation.Nullable Boolean isSoftwareReleaseValid) {
     this.isSoftwareReleaseValid = isSoftwareReleaseValid;
   }
 
 
-  public LicenseSubscriptionPlanDto isGroupValid(@javax.annotation.Nullable Boolean isGroupValid) {
+  public LicenseSubscriptionPlanDto isGroupValid(@jakarta.annotation.Nullable Boolean isGroupValid) {
     this.isGroupValid = isGroupValid;
     return this;
   }
@@ -302,17 +353,22 @@ public class LicenseSubscriptionPlanDto {
    * Get isGroupValid
    * @return isGroupValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_GROUP_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsGroupValid() {
     return isGroupValid;
   }
 
-  public void setIsGroupValid(@javax.annotation.Nullable Boolean isGroupValid) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_GROUP_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsGroupValid(@jakarta.annotation.Nullable Boolean isGroupValid) {
     this.isGroupValid = isGroupValid;
   }
 
 
-  public LicenseSubscriptionPlanDto groupCount(@javax.annotation.Nullable Integer groupCount) {
+  public LicenseSubscriptionPlanDto groupCount(@jakarta.annotation.Nullable Integer groupCount) {
     this.groupCount = groupCount;
     return this;
   }
@@ -321,17 +377,22 @@ public class LicenseSubscriptionPlanDto {
    * Get groupCount
    * @return groupCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_GROUP_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getGroupCount() {
     return groupCount;
   }
 
-  public void setGroupCount(@javax.annotation.Nullable Integer groupCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_GROUP_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setGroupCount(@jakarta.annotation.Nullable Integer groupCount) {
     this.groupCount = groupCount;
   }
 
 
-  public LicenseSubscriptionPlanDto dateOfIssueUtc(@javax.annotation.Nullable OffsetDateTime dateOfIssueUtc) {
+  public LicenseSubscriptionPlanDto dateOfIssueUtc(@jakarta.annotation.Nullable OffsetDateTime dateOfIssueUtc) {
     this.dateOfIssueUtc = dateOfIssueUtc;
     return this;
   }
@@ -340,18 +401,23 @@ public class LicenseSubscriptionPlanDto {
    * Get dateOfIssueUtc
    * @return dateOfIssueUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DATE_OF_ISSUE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getDateOfIssueUtc() {
     return dateOfIssueUtc;
   }
 
-  public void setDateOfIssueUtc(@javax.annotation.Nullable OffsetDateTime dateOfIssueUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_DATE_OF_ISSUE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDateOfIssueUtc(@jakarta.annotation.Nullable OffsetDateTime dateOfIssueUtc) {
     this.dateOfIssueUtc = dateOfIssueUtc;
   }
 
 
-  public LicenseSubscriptionPlanDto startDateUtc(@javax.annotation.Nullable OffsetDateTime startDateUtc) {
-    this.startDateUtc = startDateUtc;
+  public LicenseSubscriptionPlanDto startDateUtc(@jakarta.annotation.Nullable OffsetDateTime startDateUtc) {
+    this.startDateUtc = JsonNullable.<OffsetDateTime>of(startDateUtc);
     return this;
   }
 
@@ -359,17 +425,75 @@ public class LicenseSubscriptionPlanDto {
    * Get startDateUtc
    * @return startDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getStartDateUtc() {
-    return startDateUtc;
+        return startDateUtc.orElse(null);
   }
 
-  public void setStartDateUtc(@javax.annotation.Nullable OffsetDateTime startDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_START_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getStartDateUtc_JsonNullable() {
+    return startDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_START_DATE_UTC)
+  public void setStartDateUtc_JsonNullable(JsonNullable<OffsetDateTime> startDateUtc) {
     this.startDateUtc = startDateUtc;
   }
 
+  public void setStartDateUtc(@jakarta.annotation.Nullable OffsetDateTime startDateUtc) {
+    this.startDateUtc = JsonNullable.<OffsetDateTime>of(startDateUtc);
+  }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
 
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   * @param key the name of the property
+   * @param value the value of the property
+   * @return self reference
+   */
+  @JsonAnySetter
+  public LicenseSubscriptionPlanDto putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<String, Object>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) properties.
+   * @return the additional (undeclared) properties
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   * @param key the name of the property
+   * @return the additional (undeclared) property with the specified name
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
+
+  /**
+   * Return true if this LicenseSubscriptionPlanDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -379,8 +503,8 @@ public class LicenseSubscriptionPlanDto {
       return false;
     }
     LicenseSubscriptionPlanDto licenseSubscriptionPlanDto = (LicenseSubscriptionPlanDto) o;
-    return Objects.equals(this.expirationDateUtc, licenseSubscriptionPlanDto.expirationDateUtc) &&
-        Objects.equals(this.expirationMode, licenseSubscriptionPlanDto.expirationMode) &&
+    return equalsNullable(this.expirationDateUtc, licenseSubscriptionPlanDto.expirationDateUtc) &&
+        equalsNullable(this.expirationMode, licenseSubscriptionPlanDto.expirationMode) &&
         Objects.equals(this.validDaysCount, licenseSubscriptionPlanDto.validDaysCount) &&
         Objects.equals(this.trialDaysCount, licenseSubscriptionPlanDto.trialDaysCount) &&
         Objects.equals(this.isActive, licenseSubscriptionPlanDto.isActive) &&
@@ -391,7 +515,8 @@ public class LicenseSubscriptionPlanDto {
         Objects.equals(this.isGroupValid, licenseSubscriptionPlanDto.isGroupValid) &&
         Objects.equals(this.groupCount, licenseSubscriptionPlanDto.groupCount) &&
         Objects.equals(this.dateOfIssueUtc, licenseSubscriptionPlanDto.dateOfIssueUtc) &&
-        Objects.equals(this.startDateUtc, licenseSubscriptionPlanDto.startDateUtc);
+        equalsNullable(this.startDateUtc, licenseSubscriptionPlanDto.startDateUtc)&&
+        Objects.equals(this.additionalProperties, licenseSubscriptionPlanDto.additionalProperties);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -400,7 +525,7 @@ public class LicenseSubscriptionPlanDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDateUtc, expirationMode, validDaysCount, trialDaysCount, isActive, isExpired, dateValidity, isValid, isSoftwareReleaseValid, isGroupValid, groupCount, dateOfIssueUtc, startDateUtc);
+    return Objects.hash(hashCodeNullable(expirationDateUtc), hashCodeNullable(expirationMode), validDaysCount, trialDaysCount, isActive, isExpired, dateValidity, isValid, isSoftwareReleaseValid, isGroupValid, groupCount, dateOfIssueUtc, hashCodeNullable(startDateUtc), additionalProperties);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -427,6 +552,7 @@ public class LicenseSubscriptionPlanDto {
     sb.append("    groupCount: ").append(toIndentedString(groupCount)).append("\n");
     sb.append("    dateOfIssueUtc: ").append(toIndentedString(dateOfIssueUtc)).append("\n");
     sb.append("    startDateUtc: ").append(toIndentedString(startDateUtc)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -442,96 +568,104 @@ public class LicenseSubscriptionPlanDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("expiration_date_utc", "expiration_mode", "valid_days_count", "trial_days_count", "is_active", "is_expired", "date_validity", "is_valid", "is_software_release_valid", "is_group_valid", "group_count", "date_of_issue_utc", "start_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseSubscriptionPlanDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseSubscriptionPlanDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseSubscriptionPlanDto is not found in the empty JSON string", LicenseSubscriptionPlanDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseSubscriptionPlanDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseSubscriptionPlanDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `expiration_mode`
-      if (jsonObj.get("expiration_mode") != null && !jsonObj.get("expiration_mode").isJsonNull()) {
-        ExpirationMode.validateJsonElement(jsonObj.get("expiration_mode"));
-      }
-      // validate the optional field `date_validity`
-      if (jsonObj.get("date_validity") != null && !jsonObj.get("date_validity").isJsonNull()) {
-        DateValidity.validateJsonElement(jsonObj.get("date_validity"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseSubscriptionPlanDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseSubscriptionPlanDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseSubscriptionPlanDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseSubscriptionPlanDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseSubscriptionPlanDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseSubscriptionPlanDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseSubscriptionPlanDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseSubscriptionPlanDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseSubscriptionPlanDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseSubscriptionPlanDto
-   */
-  public static LicenseSubscriptionPlanDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseSubscriptionPlanDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseSubscriptionPlanDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `expiration_date_utc` to the URL query string
+    if (getExpirationDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexpiration_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpirationDateUtc()))));
+    }
+
+    // add `expiration_mode` to the URL query string
+    if (getExpirationMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexpiration_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpirationMode()))));
+    }
+
+    // add `valid_days_count` to the URL query string
+    if (getValidDaysCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalid_days_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValidDaysCount()))));
+    }
+
+    // add `trial_days_count` to the URL query string
+    if (getTrialDaysCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%strial_days_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTrialDaysCount()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `is_expired` to the URL query string
+    if (getIsExpired() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_expired%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsExpired()))));
+    }
+
+    // add `date_validity` to the URL query string
+    if (getDateValidity() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdate_validity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDateValidity()))));
+    }
+
+    // add `is_valid` to the URL query string
+    if (getIsValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsValid()))));
+    }
+
+    // add `is_software_release_valid` to the URL query string
+    if (getIsSoftwareReleaseValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_software_release_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsSoftwareReleaseValid()))));
+    }
+
+    // add `is_group_valid` to the URL query string
+    if (getIsGroupValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_group_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsGroupValid()))));
+    }
+
+    // add `group_count` to the URL query string
+    if (getGroupCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgroup_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGroupCount()))));
+    }
+
+    // add `date_of_issue_utc` to the URL query string
+    if (getDateOfIssueUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdate_of_issue_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDateOfIssueUtc()))));
+    }
+
+    // add `start_date_utc` to the URL query string
+    if (getStartDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstart_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStartDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

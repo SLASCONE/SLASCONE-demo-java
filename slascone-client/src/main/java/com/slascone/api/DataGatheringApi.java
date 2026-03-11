@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.AnalyticalHeartbeatDto;
 import com.slascone.model.AnalyticalHeartbeatResponseErrors;
@@ -41,832 +32,812 @@ import java.util.UUID;
 import com.slascone.model.UsageHeartbeatByFeatureNameResponseErrors;
 import com.slascone.model.UsageHeartbeatResponseErrors;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class DataGatheringApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public DataGatheringApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public DataGatheringApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for addAnalyticalHeartbeat
-     * @param isvId  (required)
-     * @param analyticalHeartbeatDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call addAnalyticalHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  public DataGatheringApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public DataGatheringApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Creates an analytical heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param analyticalHeartbeatDto  (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addAnalyticalHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
+    return addAnalyticalHeartbeat(isvId, analyticalHeartbeatDto, null);
+  }
+
+  /**
+   * Creates an analytical heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param analyticalHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addAnalyticalHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = addAnalyticalHeartbeatWithHttpInfo(isvId, analyticalHeartbeatDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates an analytical heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param analyticalHeartbeatDto  (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addAnalyticalHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
+    return addAnalyticalHeartbeatWithHttpInfo(isvId, analyticalHeartbeatDto, null);
+  }
+
+  /**
+   * Creates an analytical heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param analyticalHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addAnalyticalHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addAnalyticalHeartbeatRequestBuilder(isvId, analyticalHeartbeatDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addAnalyticalHeartbeat", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = analyticalHeartbeatDto;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/analytical_heartbeats"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+  private HttpRequest.Builder addAnalyticalHeartbeatRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addAnalyticalHeartbeat");
+    }
+    // verify the required parameter 'analyticalHeartbeatDto' is set
+    if (analyticalHeartbeatDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'analyticalHeartbeatDto' when calling addAnalyticalHeartbeat");
+    }
 
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/analytical_heartbeats"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(analyticalHeartbeatDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullConsumptionHeartbeatDto  (required)
+   * @return List&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ConsumptionDto> addConsumptionHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
+    return addConsumptionHeartbeat(isvId, fullConsumptionHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullConsumptionHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ConsumptionDto> addConsumptionHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ConsumptionDto>> localVarResponse = addConsumptionHeartbeatWithHttpInfo(isvId, fullConsumptionHeartbeatDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullConsumptionHeartbeatDto  (required)
+   * @return ApiResponse&lt;List&lt;ConsumptionDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ConsumptionDto>> addConsumptionHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
+    return addConsumptionHeartbeatWithHttpInfo(isvId, fullConsumptionHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullConsumptionHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ConsumptionDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ConsumptionDto>> addConsumptionHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addConsumptionHeartbeatRequestBuilder(isvId, fullConsumptionHeartbeatDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addConsumptionHeartbeat", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ConsumptionDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ConsumptionDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ConsumptionDto>>() {});
+        
+
+        return new ApiResponse<List<ConsumptionDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addConsumptionHeartbeatRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addConsumptionHeartbeat");
+    }
+    // verify the required parameter 'fullConsumptionHeartbeatDto' is set
+    if (fullConsumptionHeartbeatDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'fullConsumptionHeartbeatDto' when calling addConsumptionHeartbeat");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/consumption_heartbeats"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(fullConsumptionHeartbeatDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a usage heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatDto  (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addUsageHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
+    return addUsageHeartbeat(isvId, fullUsageHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a usage heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addUsageHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = addUsageHeartbeatWithHttpInfo(isvId, fullUsageHeartbeatDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a usage heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatDto  (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addUsageHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
+    return addUsageHeartbeatWithHttpInfo(isvId, fullUsageHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a usage heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addUsageHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addUsageHeartbeatRequestBuilder(isvId, fullUsageHeartbeatDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addUsageHeartbeat", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addUsageHeartbeatRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addUsageHeartbeat");
+    }
+    // verify the required parameter 'fullUsageHeartbeatDto' is set
+    if (fullUsageHeartbeatDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'fullUsageHeartbeatDto' when calling addUsageHeartbeat");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addAnalyticalHeartbeatValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addAnalyticalHeartbeat(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/usage_heartbeats"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(fullUsageHeartbeatDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatByNameDto  (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addUsageHeartbeatByName(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
+    return addUsageHeartbeatByName(isvId, fullUsageHeartbeatByNameDto, null);
+  }
+
+  /**
+   * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatByNameDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String addUsageHeartbeatByName(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = addUsageHeartbeatByNameWithHttpInfo(isvId, fullUsageHeartbeatByNameDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatByNameDto  (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addUsageHeartbeatByNameWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
+    return addUsageHeartbeatByNameWithHttpInfo(isvId, fullUsageHeartbeatByNameDto, null);
+  }
+
+  /**
+   * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param fullUsageHeartbeatByNameDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> addUsageHeartbeatByNameWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addUsageHeartbeatByNameRequestBuilder(isvId, fullUsageHeartbeatByNameDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addUsageHeartbeatByName", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'analyticalHeartbeatDto' is set
-        if (analyticalHeartbeatDto == null) {
-            throw new ApiException("Missing the required parameter 'analyticalHeartbeatDto' when calling addAnalyticalHeartbeat(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addUsageHeartbeatByNameRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addUsageHeartbeatByName");
+    }
+    // verify the required parameter 'fullUsageHeartbeatByNameDto' is set
+    if (fullUsageHeartbeatByNameDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'fullUsageHeartbeatByNameDto' when calling addUsageHeartbeatByName");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/usage_heartbeats_by_name"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(fullUsageHeartbeatByNameDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Rollbacks a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param consumptionTransactionDto  (required)
+   * @return ConsumptionDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConsumptionDto rollbackConsumptionHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
+    return rollbackConsumptionHeartbeat(isvId, consumptionTransactionDto, null);
+  }
+
+  /**
+   * Rollbacks a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param consumptionTransactionDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ConsumptionDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConsumptionDto rollbackConsumptionHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ConsumptionDto> localVarResponse = rollbackConsumptionHeartbeatWithHttpInfo(isvId, consumptionTransactionDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Rollbacks a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param consumptionTransactionDto  (required)
+   * @return ApiResponse&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConsumptionDto> rollbackConsumptionHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
+    return rollbackConsumptionHeartbeatWithHttpInfo(isvId, consumptionTransactionDto, null);
+  }
+
+  /**
+   * Rollbacks a consumption heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param consumptionTransactionDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConsumptionDto> rollbackConsumptionHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = rollbackConsumptionHeartbeatRequestBuilder(isvId, consumptionTransactionDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("rollbackConsumptionHeartbeat", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ConsumptionDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return addAnalyticalHeartbeatCall(isvId, analyticalHeartbeatDto, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ConsumptionDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ConsumptionDto>() {});
+        
 
-    }
-
-    /**
-     * Creates an analytical heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param analyticalHeartbeatDto  (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String addAnalyticalHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
-        ApiResponse<String> localVarResp = addAnalyticalHeartbeatWithHttpInfo(isvId, analyticalHeartbeatDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates an analytical heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param analyticalHeartbeatDto  (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> addAnalyticalHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto) throws ApiException {
-        okhttp3.Call localVarCall = addAnalyticalHeartbeatValidateBeforeCall(isvId, analyticalHeartbeatDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates an analytical heartbeat (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param analyticalHeartbeatDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addAnalyticalHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AnalyticalHeartbeatDto analyticalHeartbeatDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addAnalyticalHeartbeatValidateBeforeCall(isvId, analyticalHeartbeatDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addConsumptionHeartbeat
-     * @param isvId  (required)
-     * @param fullConsumptionHeartbeatDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addConsumptionHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+        return new ApiResponse<ConsumptionDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        Object localVarPostBody = fullConsumptionHeartbeatDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/consumption_heartbeats"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder rollbackConsumptionHeartbeatRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling rollbackConsumptionHeartbeat");
+    }
+    // verify the required parameter 'consumptionTransactionDto' is set
+    if (consumptionTransactionDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'consumptionTransactionDto' when calling rollbackConsumptionHeartbeat");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addConsumptionHeartbeatValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addConsumptionHeartbeat(Async)");
-        }
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        // verify the required parameter 'fullConsumptionHeartbeatDto' is set
-        if (fullConsumptionHeartbeatDto == null) {
-            throw new ApiException("Missing the required parameter 'fullConsumptionHeartbeatDto' when calling addConsumptionHeartbeat(Async)");
-        }
+    String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/consumption_heartbeats/rollback"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
 
-        return addConsumptionHeartbeatCall(isvId, fullConsumptionHeartbeatDto, _callback);
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(consumptionTransactionDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * Creates a consumption heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullConsumptionHeartbeatDto  (required)
-     * @return List&lt;ConsumptionDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ConsumptionDto> addConsumptionHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
-        ApiResponse<List<ConsumptionDto>> localVarResp = addConsumptionHeartbeatWithHttpInfo(isvId, fullConsumptionHeartbeatDto);
-        return localVarResp.getData();
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * Creates a consumption heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullConsumptionHeartbeatDto  (required)
-     * @return ApiResponse&lt;List&lt;ConsumptionDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ConsumptionDto>> addConsumptionHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto) throws ApiException {
-        okhttp3.Call localVarCall = addConsumptionHeartbeatValidateBeforeCall(isvId, fullConsumptionHeartbeatDto, null);
-        Type localVarReturnType = new TypeToken<List<ConsumptionDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     * Creates a consumption heartbeat (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullConsumptionHeartbeatDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addConsumptionHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto, final ApiCallback<List<ConsumptionDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addConsumptionHeartbeatValidateBeforeCall(isvId, fullConsumptionHeartbeatDto, _callback);
-        Type localVarReturnType = new TypeToken<List<ConsumptionDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addUsageHeartbeat
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addUsageHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = fullUsageHeartbeatDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/usage_heartbeats"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addUsageHeartbeatValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addUsageHeartbeat(Async)");
-        }
-
-        // verify the required parameter 'fullUsageHeartbeatDto' is set
-        if (fullUsageHeartbeatDto == null) {
-            throw new ApiException("Missing the required parameter 'fullUsageHeartbeatDto' when calling addUsageHeartbeat(Async)");
-        }
-
-        return addUsageHeartbeatCall(isvId, fullUsageHeartbeatDto, _callback);
-
-    }
-
-    /**
-     * Creates a usage heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatDto  (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String addUsageHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
-        ApiResponse<String> localVarResp = addUsageHeartbeatWithHttpInfo(isvId, fullUsageHeartbeatDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a usage heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatDto  (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> addUsageHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto) throws ApiException {
-        okhttp3.Call localVarCall = addUsageHeartbeatValidateBeforeCall(isvId, fullUsageHeartbeatDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a usage heartbeat (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addUsageHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatDto fullUsageHeartbeatDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addUsageHeartbeatValidateBeforeCall(isvId, fullUsageHeartbeatDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addUsageHeartbeatByName
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatByNameDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addUsageHeartbeatByNameCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = fullUsageHeartbeatByNameDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/usage_heartbeats_by_name"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addUsageHeartbeatByNameValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addUsageHeartbeatByName(Async)");
-        }
-
-        // verify the required parameter 'fullUsageHeartbeatByNameDto' is set
-        if (fullUsageHeartbeatByNameDto == null) {
-            throw new ApiException("Missing the required parameter 'fullUsageHeartbeatByNameDto' when calling addUsageHeartbeatByName(Async)");
-        }
-
-        return addUsageHeartbeatByNameCall(isvId, fullUsageHeartbeatByNameDto, _callback);
-
-    }
-
-    /**
-     * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatByNameDto  (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String addUsageHeartbeatByName(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
-        ApiResponse<String> localVarResp = addUsageHeartbeatByNameWithHttpInfo(isvId, fullUsageHeartbeatByNameDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatByNameDto  (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> addUsageHeartbeatByNameWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto) throws ApiException {
-        okhttp3.Call localVarCall = addUsageHeartbeatByNameValidateBeforeCall(isvId, fullUsageHeartbeatByNameDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a usage heartbeat (alternative method based on the feature&#39;s name instead of its Id) (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param fullUsageHeartbeatByNameDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addUsageHeartbeatByNameAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull FullUsageHeartbeatByNameDto fullUsageHeartbeatByNameDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addUsageHeartbeatByNameValidateBeforeCall(isvId, fullUsageHeartbeatByNameDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for rollbackConsumptionHeartbeat
-     * @param isvId  (required)
-     * @param consumptionTransactionDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call rollbackConsumptionHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = consumptionTransactionDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/data_gathering/consumption_heartbeats/rollback"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call rollbackConsumptionHeartbeatValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling rollbackConsumptionHeartbeat(Async)");
-        }
-
-        // verify the required parameter 'consumptionTransactionDto' is set
-        if (consumptionTransactionDto == null) {
-            throw new ApiException("Missing the required parameter 'consumptionTransactionDto' when calling rollbackConsumptionHeartbeat(Async)");
-        }
-
-        return rollbackConsumptionHeartbeatCall(isvId, consumptionTransactionDto, _callback);
-
-    }
-
-    /**
-     * Rollbacks a consumption heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param consumptionTransactionDto  (required)
-     * @return ConsumptionDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ConsumptionDto rollbackConsumptionHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
-        ApiResponse<ConsumptionDto> localVarResp = rollbackConsumptionHeartbeatWithHttpInfo(isvId, consumptionTransactionDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Rollbacks a consumption heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param consumptionTransactionDto  (required)
-     * @return ApiResponse&lt;ConsumptionDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ConsumptionDto> rollbackConsumptionHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto) throws ApiException {
-        okhttp3.Call localVarCall = rollbackConsumptionHeartbeatValidateBeforeCall(isvId, consumptionTransactionDto, null);
-        Type localVarReturnType = new TypeToken<ConsumptionDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Rollbacks a consumption heartbeat (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param consumptionTransactionDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Warning </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call rollbackConsumptionHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConsumptionTransactionDto consumptionTransactionDto, final ApiCallback<ConsumptionDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = rollbackConsumptionHeartbeatValidateBeforeCall(isvId, consumptionTransactionDto, _callback);
-        Type localVarReturnType = new TypeToken<ConsumptionDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

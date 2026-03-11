@@ -13,89 +13,74 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * AddHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  AddHeartbeatDto.JSON_PROPERTY_PRODUCT_ID,
+  AddHeartbeatDto.JSON_PROPERTY_CLIENT_ID,
+  AddHeartbeatDto.JSON_PROPERTY_USER_ID,
+  AddHeartbeatDto.JSON_PROPERTY_SOFTWARE_VERSION,
+  AddHeartbeatDto.JSON_PROPERTY_OPERATING_SYSTEM,
+  AddHeartbeatDto.JSON_PROPERTY_TOKEN_KEY,
+  AddHeartbeatDto.JSON_PROPERTY_GROUP_ID,
+  AddHeartbeatDto.JSON_PROPERTY_HEARTBEAT_TYPE_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class AddHeartbeatDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  @jakarta.annotation.Nonnull
   private String clientId;
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_VERSION = "software_version";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_VERSION)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_SOFTWARE_VERSION = "software_version";
+  @jakarta.annotation.Nonnull
   private String softwareVersion;
 
-  public static final String SERIALIZED_NAME_OPERATING_SYSTEM = "operating_system";
-  @SerializedName(SERIALIZED_NAME_OPERATING_SYSTEM)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_OPERATING_SYSTEM = "operating_system";
+  @jakarta.annotation.Nonnull
   private String operatingSystem;
 
-  public static final String SERIALIZED_NAME_TOKEN_KEY = "token_key";
-  @SerializedName(SERIALIZED_NAME_TOKEN_KEY)
-  @javax.annotation.Nullable
-  private UUID tokenKey;
+  public static final String JSON_PROPERTY_TOKEN_KEY = "token_key";
+  private JsonNullable<UUID> tokenKey = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_GROUP_ID = "group_id";
-  @SerializedName(SERIALIZED_NAME_GROUP_ID)
-  @javax.annotation.Nullable
-  private String groupId;
+  public static final String JSON_PROPERTY_GROUP_ID = "group_id";
+  private JsonNullable<String> groupId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_HEARTBEAT_TYPE_ID = "heartbeat_type_id";
-  @SerializedName(SERIALIZED_NAME_HEARTBEAT_TYPE_ID)
-  @javax.annotation.Nullable
-  private UUID heartbeatTypeId;
+  public static final String JSON_PROPERTY_HEARTBEAT_TYPE_ID = "heartbeat_type_id";
+  private JsonNullable<UUID> heartbeatTypeId = JsonNullable.<UUID>undefined();
 
-  public AddHeartbeatDto() {
+  public AddHeartbeatDto() { 
   }
 
-  public AddHeartbeatDto productId(@javax.annotation.Nonnull UUID productId) {
+  public AddHeartbeatDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -104,17 +89,22 @@ public class AddHeartbeatDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public AddHeartbeatDto clientId(@javax.annotation.Nonnull String clientId) {
+  public AddHeartbeatDto clientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
     return this;
   }
@@ -123,18 +113,23 @@ public class AddHeartbeatDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getClientId() {
     return clientId;
   }
 
-  public void setClientId(@javax.annotation.Nonnull String clientId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setClientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
   }
 
 
-  public AddHeartbeatDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+  public AddHeartbeatDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -142,17 +137,30 @@ public class AddHeartbeatDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public AddHeartbeatDto softwareVersion(@javax.annotation.Nonnull String softwareVersion) {
+
+  public AddHeartbeatDto softwareVersion(@jakarta.annotation.Nonnull String softwareVersion) {
     this.softwareVersion = softwareVersion;
     return this;
   }
@@ -161,17 +169,22 @@ public class AddHeartbeatDto {
    * Get softwareVersion
    * @return softwareVersion
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getSoftwareVersion() {
     return softwareVersion;
   }
 
-  public void setSoftwareVersion(@javax.annotation.Nonnull String softwareVersion) {
+
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setSoftwareVersion(@jakarta.annotation.Nonnull String softwareVersion) {
     this.softwareVersion = softwareVersion;
   }
 
 
-  public AddHeartbeatDto operatingSystem(@javax.annotation.Nonnull String operatingSystem) {
+  public AddHeartbeatDto operatingSystem(@jakarta.annotation.Nonnull String operatingSystem) {
     this.operatingSystem = operatingSystem;
     return this;
   }
@@ -180,18 +193,23 @@ public class AddHeartbeatDto {
    * Get operatingSystem
    * @return operatingSystem
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_OPERATING_SYSTEM, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getOperatingSystem() {
     return operatingSystem;
   }
 
-  public void setOperatingSystem(@javax.annotation.Nonnull String operatingSystem) {
+
+  @JsonProperty(value = JSON_PROPERTY_OPERATING_SYSTEM, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setOperatingSystem(@jakarta.annotation.Nonnull String operatingSystem) {
     this.operatingSystem = operatingSystem;
   }
 
 
-  public AddHeartbeatDto tokenKey(@javax.annotation.Nullable UUID tokenKey) {
-    this.tokenKey = tokenKey;
+  public AddHeartbeatDto tokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
     return this;
   }
 
@@ -199,18 +217,31 @@ public class AddHeartbeatDto {
    * Get tokenKey
    * @return tokenKey
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getTokenKey() {
-    return tokenKey;
+        return tokenKey.orElse(null);
   }
 
-  public void setTokenKey(@javax.annotation.Nullable UUID tokenKey) {
+  @JsonProperty(value = JSON_PROPERTY_TOKEN_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getTokenKey_JsonNullable() {
+    return tokenKey;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TOKEN_KEY)
+  public void setTokenKey_JsonNullable(JsonNullable<UUID> tokenKey) {
     this.tokenKey = tokenKey;
   }
 
+  public void setTokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
+  }
 
-  public AddHeartbeatDto groupId(@javax.annotation.Nullable String groupId) {
-    this.groupId = groupId;
+
+  public AddHeartbeatDto groupId(@jakarta.annotation.Nullable String groupId) {
+    this.groupId = JsonNullable.<String>of(groupId);
     return this;
   }
 
@@ -218,18 +249,31 @@ public class AddHeartbeatDto {
    * Get groupId
    * @return groupId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getGroupId() {
-    return groupId;
+        return groupId.orElse(null);
   }
 
-  public void setGroupId(@javax.annotation.Nullable String groupId) {
+  @JsonProperty(value = JSON_PROPERTY_GROUP_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getGroupId_JsonNullable() {
+    return groupId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GROUP_ID)
+  public void setGroupId_JsonNullable(JsonNullable<String> groupId) {
     this.groupId = groupId;
   }
 
+  public void setGroupId(@jakarta.annotation.Nullable String groupId) {
+    this.groupId = JsonNullable.<String>of(groupId);
+  }
 
-  public AddHeartbeatDto heartbeatTypeId(@javax.annotation.Nullable UUID heartbeatTypeId) {
-    this.heartbeatTypeId = heartbeatTypeId;
+
+  public AddHeartbeatDto heartbeatTypeId(@jakarta.annotation.Nullable UUID heartbeatTypeId) {
+    this.heartbeatTypeId = JsonNullable.<UUID>of(heartbeatTypeId);
     return this;
   }
 
@@ -237,17 +281,32 @@ public class AddHeartbeatDto {
    * Get heartbeatTypeId
    * @return heartbeatTypeId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getHeartbeatTypeId() {
-    return heartbeatTypeId;
+        return heartbeatTypeId.orElse(null);
   }
 
-  public void setHeartbeatTypeId(@javax.annotation.Nullable UUID heartbeatTypeId) {
+  @JsonProperty(value = JSON_PROPERTY_HEARTBEAT_TYPE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getHeartbeatTypeId_JsonNullable() {
+    return heartbeatTypeId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_HEARTBEAT_TYPE_ID)
+  public void setHeartbeatTypeId_JsonNullable(JsonNullable<UUID> heartbeatTypeId) {
     this.heartbeatTypeId = heartbeatTypeId;
   }
 
+  public void setHeartbeatTypeId(@jakarta.annotation.Nullable UUID heartbeatTypeId) {
+    this.heartbeatTypeId = JsonNullable.<UUID>of(heartbeatTypeId);
+  }
 
 
+  /**
+   * Return true if this AddHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -259,12 +318,12 @@ public class AddHeartbeatDto {
     AddHeartbeatDto addHeartbeatDto = (AddHeartbeatDto) o;
     return Objects.equals(this.productId, addHeartbeatDto.productId) &&
         Objects.equals(this.clientId, addHeartbeatDto.clientId) &&
-        Objects.equals(this.userId, addHeartbeatDto.userId) &&
+        equalsNullable(this.userId, addHeartbeatDto.userId) &&
         Objects.equals(this.softwareVersion, addHeartbeatDto.softwareVersion) &&
         Objects.equals(this.operatingSystem, addHeartbeatDto.operatingSystem) &&
-        Objects.equals(this.tokenKey, addHeartbeatDto.tokenKey) &&
-        Objects.equals(this.groupId, addHeartbeatDto.groupId) &&
-        Objects.equals(this.heartbeatTypeId, addHeartbeatDto.heartbeatTypeId);
+        equalsNullable(this.tokenKey, addHeartbeatDto.tokenKey) &&
+        equalsNullable(this.groupId, addHeartbeatDto.groupId) &&
+        equalsNullable(this.heartbeatTypeId, addHeartbeatDto.heartbeatTypeId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -273,7 +332,7 @@ public class AddHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, clientId, userId, softwareVersion, operatingSystem, tokenKey, groupId, heartbeatTypeId);
+    return Objects.hash(productId, clientId, hashCodeNullable(userId), softwareVersion, operatingSystem, hashCodeNullable(tokenKey), hashCodeNullable(groupId), hashCodeNullable(heartbeatTypeId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -310,119 +369,79 @@ public class AddHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "client_id", "user_id", "software_version", "operating_system", "token_key", "group_id", "heartbeat_type_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "client_id", "software_version", "operating_system"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to AddHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!AddHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AddHeartbeatDto is not found in the empty JSON string", AddHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!AddHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AddHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AddHeartbeatDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      if (!jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
-      }
-      if (!jsonObj.get("operating_system").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`", jsonObj.get("operating_system").toString()));
-      }
-      if ((jsonObj.get("token_key") != null && !jsonObj.get("token_key").isJsonNull()) && !jsonObj.get("token_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_key").toString()));
-      }
-      if ((jsonObj.get("group_id") != null && !jsonObj.get("group_id").isJsonNull()) && !jsonObj.get("group_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `group_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_id").toString()));
-      }
-      if ((jsonObj.get("heartbeat_type_id") != null && !jsonObj.get("heartbeat_type_id").isJsonNull()) && !jsonObj.get("heartbeat_type_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `heartbeat_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("heartbeat_type_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AddHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AddHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AddHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AddHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<AddHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, AddHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public AddHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of AddHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of AddHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to AddHeartbeatDto
-   */
-  public static AddHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AddHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of AddHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `software_version` to the URL query string
+    if (getSoftwareVersion() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_version%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSoftwareVersion()))));
+    }
+
+    // add `operating_system` to the URL query string
+    if (getOperatingSystem() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soperating_system%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOperatingSystem()))));
+    }
+
+    // add `token_key` to the URL query string
+    if (getTokenKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stoken_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTokenKey()))));
+    }
+
+    // add `group_id` to the URL query string
+    if (getGroupId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgroup_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGroupId()))));
+    }
+
+    // add `heartbeat_type_id` to the URL query string
+    if (getHeartbeatTypeId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sheartbeat_type_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHeartbeatTypeId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

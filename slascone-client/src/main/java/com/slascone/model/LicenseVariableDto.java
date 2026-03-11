@@ -13,74 +13,60 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseVariableDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseVariableDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseVariableDto.JSON_PROPERTY_VARIABLE_ID,
+  LicenseVariableDto.JSON_PROPERTY_VARIABLE_NAME,
+  LicenseVariableDto.JSON_PROPERTY_VARIABLE_DESCRIPTION,
+  LicenseVariableDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseVariableDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_VARIABLE_ID = "variable_id";
-  @SerializedName(SERIALIZED_NAME_VARIABLE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_VARIABLE_ID = "variable_id";
+  @jakarta.annotation.Nonnull
   private UUID variableId;
 
-  public static final String SERIALIZED_NAME_VARIABLE_NAME = "variable_name";
-  @SerializedName(SERIALIZED_NAME_VARIABLE_NAME)
-  @javax.annotation.Nullable
-  private String variableName;
+  public static final String JSON_PROPERTY_VARIABLE_NAME = "variable_name";
+  private JsonNullable<String> variableName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VARIABLE_DESCRIPTION = "variable_description";
-  @SerializedName(SERIALIZED_NAME_VARIABLE_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String variableDescription;
+  public static final String JSON_PROPERTY_VARIABLE_DESCRIPTION = "variable_description";
+  private JsonNullable<String> variableDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
-  private String value;
+  public static final String JSON_PROPERTY_VALUE = "value";
+  private JsonNullable<String> value = JsonNullable.<String>undefined();
 
-  public LicenseVariableDto() {
+  public LicenseVariableDto() { 
   }
 
-  public LicenseVariableDto productId(@javax.annotation.Nonnull UUID productId) {
+  public LicenseVariableDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -89,17 +75,22 @@ public class LicenseVariableDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseVariableDto variableId(@javax.annotation.Nonnull UUID variableId) {
+  public LicenseVariableDto variableId(@jakarta.annotation.Nonnull UUID variableId) {
     this.variableId = variableId;
     return this;
   }
@@ -108,18 +99,23 @@ public class LicenseVariableDto {
    * Get variableId
    * @return variableId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_VARIABLE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getVariableId() {
     return variableId;
   }
 
-  public void setVariableId(@javax.annotation.Nonnull UUID variableId) {
+
+  @JsonProperty(value = JSON_PROPERTY_VARIABLE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setVariableId(@jakarta.annotation.Nonnull UUID variableId) {
     this.variableId = variableId;
   }
 
 
-  public LicenseVariableDto variableName(@javax.annotation.Nullable String variableName) {
-    this.variableName = variableName;
+  public LicenseVariableDto variableName(@jakarta.annotation.Nullable String variableName) {
+    this.variableName = JsonNullable.<String>of(variableName);
     return this;
   }
 
@@ -127,18 +123,31 @@ public class LicenseVariableDto {
    * Get variableName
    * @return variableName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getVariableName() {
-    return variableName;
+        return variableName.orElse(null);
   }
 
-  public void setVariableName(@javax.annotation.Nullable String variableName) {
+  @JsonProperty(value = JSON_PROPERTY_VARIABLE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getVariableName_JsonNullable() {
+    return variableName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VARIABLE_NAME)
+  public void setVariableName_JsonNullable(JsonNullable<String> variableName) {
     this.variableName = variableName;
   }
 
+  public void setVariableName(@jakarta.annotation.Nullable String variableName) {
+    this.variableName = JsonNullable.<String>of(variableName);
+  }
 
-  public LicenseVariableDto variableDescription(@javax.annotation.Nullable String variableDescription) {
-    this.variableDescription = variableDescription;
+
+  public LicenseVariableDto variableDescription(@jakarta.annotation.Nullable String variableDescription) {
+    this.variableDescription = JsonNullable.<String>of(variableDescription);
     return this;
   }
 
@@ -146,18 +155,31 @@ public class LicenseVariableDto {
    * Get variableDescription
    * @return variableDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getVariableDescription() {
-    return variableDescription;
+        return variableDescription.orElse(null);
   }
 
-  public void setVariableDescription(@javax.annotation.Nullable String variableDescription) {
+  @JsonProperty(value = JSON_PROPERTY_VARIABLE_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getVariableDescription_JsonNullable() {
+    return variableDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VARIABLE_DESCRIPTION)
+  public void setVariableDescription_JsonNullable(JsonNullable<String> variableDescription) {
     this.variableDescription = variableDescription;
   }
 
+  public void setVariableDescription(@jakarta.annotation.Nullable String variableDescription) {
+    this.variableDescription = JsonNullable.<String>of(variableDescription);
+  }
 
-  public LicenseVariableDto value(@javax.annotation.Nullable String value) {
-    this.value = value;
+
+  public LicenseVariableDto value(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
     return this;
   }
 
@@ -165,17 +187,32 @@ public class LicenseVariableDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getValue() {
-    return value;
+        return value.orElse(null);
   }
 
-  public void setValue(@javax.annotation.Nullable String value) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getValue_JsonNullable() {
+    return value;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  public void setValue_JsonNullable(JsonNullable<String> value) {
     this.value = value;
   }
 
+  public void setValue(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
+  }
 
 
+  /**
+   * Return true if this LicenseVariableDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -187,9 +224,9 @@ public class LicenseVariableDto {
     LicenseVariableDto licenseVariableDto = (LicenseVariableDto) o;
     return Objects.equals(this.productId, licenseVariableDto.productId) &&
         Objects.equals(this.variableId, licenseVariableDto.variableId) &&
-        Objects.equals(this.variableName, licenseVariableDto.variableName) &&
-        Objects.equals(this.variableDescription, licenseVariableDto.variableDescription) &&
-        Objects.equals(this.value, licenseVariableDto.value);
+        equalsNullable(this.variableName, licenseVariableDto.variableName) &&
+        equalsNullable(this.variableDescription, licenseVariableDto.variableDescription) &&
+        equalsNullable(this.value, licenseVariableDto.value);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -198,7 +235,7 @@ public class LicenseVariableDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, variableId, variableName, variableDescription, value);
+    return Objects.hash(productId, variableId, hashCodeNullable(variableName), hashCodeNullable(variableDescription), hashCodeNullable(value));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -232,110 +269,64 @@ public class LicenseVariableDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "variable_id", "variable_name", "variable_description", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "variable_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseVariableDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseVariableDto is not found in the empty JSON string", LicenseVariableDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseVariableDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("variable_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_id").toString()));
-      }
-      if ((jsonObj.get("variable_name") != null && !jsonObj.get("variable_name").isJsonNull()) && !jsonObj.get("variable_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_name").toString()));
-      }
-      if ((jsonObj.get("variable_description") != null && !jsonObj.get("variable_description").isJsonNull()) && !jsonObj.get("variable_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable_description").toString()));
-      }
-      if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseVariableDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseVariableDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseVariableDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseVariableDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseVariableDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseVariableDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseVariableDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseVariableDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseVariableDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseVariableDto
-   */
-  public static LicenseVariableDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseVariableDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseVariableDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `variable_id` to the URL query string
+    if (getVariableId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svariable_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVariableId()))));
+    }
+
+    // add `variable_name` to the URL query string
+    if (getVariableName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svariable_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVariableName()))));
+    }
+
+    // add `variable_description` to the URL query string
+    if (getVariableDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svariable_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVariableDescription()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

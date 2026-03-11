@@ -13,579 +13,252 @@
 
 package com.slascone;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import com.google.gson.JsonElement;
-import io.gsonfire.GsonFireBuilder;
-import io.gsonfire.TypeSelector;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import org.openapitools.jackson.nullable.JsonNullableModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.slascone.model.*;
 
-import okio.ByteString;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-/*
- * A JSON utility class
- *
- * NOTE: in the future, this class may be converted to static, which may break
- *       backward-compatibility
- */
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class JSON {
-    private static Gson gson;
-    private static boolean isLenientOnJson = false;
-    private static DateTypeAdapter dateTypeAdapter = new DateTypeAdapter();
-    private static SqlDateTypeAdapter sqlDateTypeAdapter = new SqlDateTypeAdapter();
-    private static OffsetDateTimeTypeAdapter offsetDateTimeTypeAdapter = new OffsetDateTimeTypeAdapter();
-    private static LocalDateTypeAdapter localDateTypeAdapter = new LocalDateTypeAdapter();
-    private static ByteArrayAdapter byteArrayAdapter = new ByteArrayAdapter();
+  private ObjectMapper mapper;
 
-    @SuppressWarnings("unchecked")
-    public static GsonBuilder createGson() {
-        GsonFireBuilder fireBuilder = new GsonFireBuilder()
-        ;
-        GsonBuilder builder = fireBuilder.createGsonBuilder();
-        return builder;
+  public JSON() {
+    mapper = JsonMapper.builder()
+        .serializationInclusion(JsonInclude.Include.NON_NULL)
+        .disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .enable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE)
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING)
+        .enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING)
+        .defaultDateFormat(new RFC3339DateFormat())
+        .addModule(new JavaTimeModule())
+        .build();
+    JsonNullableModule jnm = new JsonNullableModule();
+    mapper.registerModule(jnm);
+  }
+
+  /**
+   * Set the date format for JSON (de)serialization with Date properties.
+   *
+   * @param dateFormat Date format
+   */
+  public void setDateFormat(DateFormat dateFormat) {
+    mapper.setDateFormat(dateFormat);
+  }
+
+  /**
+   * Get the object mapper
+   *
+   * @return object mapper
+   */
+  public ObjectMapper getMapper() { return mapper; }
+
+  /**
+   * Returns the target model class that should be used to deserialize the input data.
+   * The discriminator mappings are used to determine the target model class.
+   *
+   * @param node The input data.
+   * @param modelClass The class that contains the discriminator mappings.
+   *
+   * @return the target model class.
+   */
+  public static Class<?> getClassForElement(JsonNode node, Class<?> modelClass) {
+    ClassDiscriminatorMapping cdm = modelDiscriminators.get(modelClass);
+    if (cdm != null) {
+      return cdm.getClassForElement(node, new HashSet<Class<?>>());
+    }
+    return null;
+  }
+
+  /**
+   * Helper class to register the discriminator mappings.
+   */
+  @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
+  private static class ClassDiscriminatorMapping {
+    // The model class name.
+    Class<?> modelClass;
+    // The name of the discriminator property.
+    String discriminatorName;
+    // The discriminator mappings for a model class.
+    Map<String, Class<?>> discriminatorMappings;
+
+    // Constructs a new class discriminator.
+    ClassDiscriminatorMapping(Class<?> cls, String propertyName, Map<String, Class<?>> mappings) {
+      modelClass = cls;
+      discriminatorName = propertyName;
+      discriminatorMappings = new HashMap<String, Class<?>>();
+      if (mappings != null) {
+        discriminatorMappings.putAll(mappings);
+      }
     }
 
-    private static String getDiscriminatorValue(JsonElement readElement, String discriminatorField) {
-        JsonElement element = readElement.getAsJsonObject().get(discriminatorField);
-        if (null == element) {
-            throw new IllegalArgumentException("missing discriminator field: <" + discriminatorField + ">");
+    // Return the name of the discriminator property for this model class.
+    String getDiscriminatorPropertyName() {
+      return discriminatorName;
+    }
+
+    // Return the discriminator value or null if the discriminator is not
+    // present in the payload.
+    String getDiscriminatorValue(JsonNode node) {
+      // Determine the value of the discriminator property in the input data.
+      if (discriminatorName != null) {
+        // Get the value of the discriminator property, if present in the input payload.
+        node = node.get(discriminatorName);
+        if (node != null && node.isValueNode()) {
+          String discrValue = node.asText();
+          if (discrValue != null) {
+            return discrValue;
+          }
         }
-        return element.getAsString();
+      }
+      return null;
     }
 
     /**
-     * Returns the Java class that implements the OpenAPI schema for the specified discriminator value.
+     * Returns the target model class that should be used to deserialize the input data.
+     * This function can be invoked for anyOf/oneOf composed models with discriminator mappings.
+     * The discriminator mappings are used to determine the target model class.
      *
-     * @param classByDiscriminatorValue The map of discriminator values to Java classes.
-     * @param discriminatorValue The value of the OpenAPI discriminator in the input data.
-     * @return The Java class that implements the OpenAPI schema
+     * @param node The input data.
+     * @param visitedClasses The set of classes that have already been visited.
+     *
+     * @return the target model class.
      */
-    private static Class getClassByDiscriminator(Map classByDiscriminatorValue, String discriminatorValue) {
-        Class clazz = (Class) classByDiscriminatorValue.get(discriminatorValue);
-        if (null == clazz) {
-            throw new IllegalArgumentException("cannot determine model class of name: <" + discriminatorValue + ">");
+    Class<?> getClassForElement(JsonNode node, Set<Class<?>> visitedClasses) {
+      if (visitedClasses.contains(modelClass)) {
+        // Class has already been visited.
+        return null;
+      }
+      // Determine the value of the discriminator property in the input data.
+      String discrValue = getDiscriminatorValue(node);
+      if (discrValue == null) {
+        return null;
+      }
+      Class<?> cls = discriminatorMappings.get(discrValue);
+      // It may not be sufficient to return this cls directly because that target class
+      // may itself be a composed schema, possibly with its own discriminator.
+      visitedClasses.add(modelClass);
+      for (Class<?> childClass : discriminatorMappings.values()) {
+        ClassDiscriminatorMapping childCdm = modelDiscriminators.get(childClass);
+        if (childCdm == null) {
+          continue;
         }
-        return clazz;
-    }
-
-    static {
-        GsonBuilder gsonBuilder = createGson();
-        gsonBuilder.registerTypeAdapter(Date.class, dateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(java.sql.Date.class, sqlDateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter);
-        gsonBuilder.registerTypeAdapter(LocalDate.class, localDateTypeAdapter);
-        gsonBuilder.registerTypeAdapter(byte[].class, byteArrayAdapter);
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AbstractEmailTemplateDtoOfEmailTemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AbstractEmailTemplateDtoOfUserEmailTemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ActivateClientDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ActivateLicenseResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AddHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AddLicenseUserErrorExamples.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AddOrUpdateLicenseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AlertDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AnalyticalFieldDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AnalyticalFieldFilterDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AnalyticalFieldValueDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AnalyticalHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.AnalyticalHeartbeatResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.BackupStorageDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.BackupStorageResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.BackupStorageSasTokenCredentialsError.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.BaseErrorResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.BulkDeleteUserResultDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CloseAllSessionsRequestDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CloseSessionErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CommonErrorResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConfigurationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConstrainedVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionBalanceDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionHeartbeatLazyLoadDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionHeartbeatResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionHeartbeatValueDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionRollbackResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ConsumptionTransactionDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomListDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomListElementDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomListResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerAccountDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerContactDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerFilterDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerLazyLoadDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerLightDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerPortalRoleDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.CustomerTypeDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddCustomerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddCustomerResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddLicenseByDetailsResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddLicenseDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddLicenseResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddOrUpdateCustomerContactDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeAddOrUpdateCustomerContactErrorResponse.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeUpdateCustomerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeUpdateCustomerResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeUpdateLicenseByDetailsResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeUpdateLicenseDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DataExchangeUpdateLicenseResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DeactivateDeviceLicenseResponseError.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DeviceAnalyticalHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DeviceHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.DeviceLicenseAssignmentDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.EmailConfigurationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.EmailTemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ErrorResultObjects.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.FeatureDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.FullConsumptionHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.FullProductDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.FullUsageHeartbeatByNameDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.FullUsageHeartbeatDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetAssignmentsErrorExamples.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetConsumptionStatusErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetLicenseUsersErrorExamples.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetLicensesByCustomerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetLicensesByLicenseKeyDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.GetLicensesByUserDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.HeartbeatResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.HeartbeatTypeDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.HistoryDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ImportResultDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.IsvUserRolesDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ItemTagAssignmentDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseBundleAssignmentDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseBundleDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseConstrainedVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseFeatureDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseFeatureExceptionDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseFeatureExceptionsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseFilterDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportByDetailsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportByDetailsPatchDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportByDetailsPutDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportConstrainedVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportLimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseImportVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseInfoDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseLazyLoadDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseLimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseMailDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseStateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseSubscriptionPlanDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseTreeDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseTypeDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseUserDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseUserGroupDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicenseVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicensesByCustomerErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicensesByKeyErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LicensesByUserErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LookupCustomerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LookupDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.LookupProductDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.MailLogDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.OmittedDataSet.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.OpenSessionErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProblemDetails.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProductDetailsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProductDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProductSoftwareShipmentPropertyDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProvisioningConstrainedVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProvisioningFeatureDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProvisioningLimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ProvisioningVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.RemoveLicenseUsersErrorExamples.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerContactDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerFilterDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerLazyLoadDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerLightDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerPortalRoleDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerPortalSettingsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerSettingsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerTemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResellerTypeDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ResourceDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SessionDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SessionRequestDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SessionStatusDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SlasconeLicenseInfoDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SoftwareReleaseLimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SoftwareShipmentDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SoftwareShipmentPropertyDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.SubscriptionPlanDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TagAssignmentDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateConstrainedVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateFeatureDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateLimitationAlertDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateLimitationDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.TemplateVariableDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ToggleLicenseStateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ToggleLicenseStateErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UnassignDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UpdateLicenseUserErrorExamples.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UpdateTemplateResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageFeatureDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageFeatureNameDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageHeartbeatByFeatureNameResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageHeartbeatResponseErrors.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageHeartbeatValueDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UsageModuleDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UserEmailTemplateDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UserRoleContextDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.UserRolesDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ValidateAssignmentsDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ValidateConsumptionStatusDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.ValidateLicenseDto.CustomTypeAdapterFactory());
-        gsonBuilder.registerTypeAdapterFactory(new com.slascone.model.VariableDto.CustomTypeAdapterFactory());
-        gson = gsonBuilder.create();
-    }
-
-    /**
-     * Get Gson.
-     *
-     * @return Gson
-     */
-    public static Gson getGson() {
-        return gson;
-    }
-
-    /**
-     * Set Gson.
-     *
-     * @param gson Gson
-     */
-    public static void setGson(Gson gson) {
-        JSON.gson = gson;
-    }
-
-    public static void setLenientOnJson(boolean lenientOnJson) {
-        isLenientOnJson = lenientOnJson;
-    }
-
-    /**
-     * Serialize the given Java object into JSON string.
-     *
-     * @param obj Object
-     * @return String representation of the JSON
-     */
-    public static String serialize(Object obj) {
-        return gson.toJson(obj);
-    }
-
-    /**
-     * Deserialize the given JSON string to Java object.
-     *
-     * @param <T>        Type
-     * @param body       The JSON string
-     * @param returnType The type to deserialize into
-     * @return The deserialized Java object
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T deserialize(String body, Type returnType) {
-        try {
-            if (isLenientOnJson) {
-                JsonReader jsonReader = new JsonReader(new StringReader(body));
-                // see https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/stream/JsonReader.html#setLenient(boolean)
-                jsonReader.setLenient(true);
-                return gson.fromJson(jsonReader, returnType);
-            } else {
-                return gson.fromJson(body, returnType);
-            }
-        } catch (JsonParseException e) {
-            // Fallback processing when failed to parse JSON form response body:
-            // return the response body string directly for the String return type;
-            if (returnType.equals(String.class)) {
-                return (T) body;
-            } else {
-                throw (e);
-            }
+        if (!discriminatorName.equals(childCdm.discriminatorName)) {
+          discrValue = getDiscriminatorValue(node);
+          if (discrValue == null) {
+            continue;
+          }
         }
+        if (childCdm != null) {
+          // Recursively traverse the discriminator mappings.
+          Class<?> childDiscr = childCdm.getClassForElement(node, visitedClasses);
+          if (childDiscr != null) {
+            return childDiscr;
+          }
+        }
+      }
+      return cls;
     }
+  }
 
-    /**
-    * Deserialize the given JSON InputStream to a Java object.
+  /**
+   * Returns true if inst is an instance of modelClass in the OpenAPI model hierarchy.
+   *
+   * The Java class hierarchy is not implemented the same way as the OpenAPI model hierarchy,
+   * so it's not possible to use the instanceof keyword.
+   *
+   * @param modelClass A OpenAPI model class.
+   * @param inst The instance object.
+   * @param visitedClasses The set of classes that have already been visited.
+   *
+   * @return true if inst is an instance of modelClass in the OpenAPI model hierarchy.
+   */
+  public static boolean isInstanceOf(Class<?> modelClass, Object inst, Set<Class<?>> visitedClasses) {
+    if (modelClass.isInstance(inst)) {
+      // This handles the 'allOf' use case with single parent inheritance.
+      return true;
+    }
+    if (visitedClasses.contains(modelClass)) {
+      // This is to prevent infinite recursion when the composed schemas have
+      // a circular dependency.
+      return false;
+    }
+    visitedClasses.add(modelClass);
+
+    // Traverse the oneOf/anyOf composed schemas.
+    Map<String, Class<?>> descendants = modelDescendants.get(modelClass);
+    if (descendants != null) {
+      for (Class<?> childType : descendants.values()) {
+        if (isInstanceOf(childType, inst, visitedClasses)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * A map of discriminators for all model classes.
+   */
+  private static Map<Class<?>, ClassDiscriminatorMapping> modelDiscriminators = new HashMap<>();
+
+  /**
+   * A map of oneOf/anyOf descendants for each model class.
+   */
+  private static Map<Class<?>, Map<String, Class<?>>> modelDescendants = new HashMap<>();
+
+  /**
+    * Register a model class discriminator.
     *
-    * @param <T>         Type
-    * @param inputStream The JSON InputStream
-    * @param returnType  The type to deserialize into
-    * @return The deserialized Java object
+    * @param modelClass the model class
+    * @param discriminatorPropertyName the name of the discriminator property
+    * @param mappings a map with the discriminator mappings.
     */
-    @SuppressWarnings("unchecked")
-    public static <T> T deserialize(InputStream inputStream, Type returnType) throws IOException {
-        try (InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-        if (isLenientOnJson) {
-            // see https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/stream/JsonReader.html#setLenient(boolean)
-            JsonReader jsonReader = new JsonReader(reader);
-            jsonReader.setLenient(true);
-            return gson.fromJson(jsonReader, returnType);
-            } else {
-                return gson.fromJson(reader, returnType);
-            }
-        }
-    }
+  public static void registerDiscriminator(Class<?> modelClass, String discriminatorPropertyName, Map<String, Class<?>> mappings) {
+    ClassDiscriminatorMapping m = new ClassDiscriminatorMapping(modelClass, discriminatorPropertyName, mappings);
+    modelDiscriminators.put(modelClass, m);
+  }
 
-    /**
-     * Gson TypeAdapter for Byte Array type
-     */
-    public static class ByteArrayAdapter extends TypeAdapter<byte[]> {
+  /**
+    * Register the oneOf/anyOf descendants of the modelClass.
+    *
+    * @param modelClass the model class
+    * @param descendants a map of oneOf/anyOf descendants.
+    */
+  public static void registerDescendants(Class<?> modelClass, Map<String, Class<?>> descendants) {
+    modelDescendants.put(modelClass, descendants);
+  }
 
-        @Override
-        public void write(JsonWriter out, byte[] value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-            } else {
-                out.value(ByteString.of(value).base64());
-            }
-        }
+  private static JSON json;
 
-        @Override
-        public byte[] read(JsonReader in) throws IOException {
-            switch (in.peek()) {
-                case NULL:
-                    in.nextNull();
-                    return null;
-                default:
-                    String bytesAsBase64 = in.nextString();
-                    ByteString byteString = ByteString.decodeBase64(bytesAsBase64);
-                    return byteString.toByteArray();
-            }
-        }
-    }
+  static {
+    json = new JSON();
+  }
 
-    /**
-     * Gson TypeAdapter for JSR310 OffsetDateTime type
-     */
-    public static class OffsetDateTimeTypeAdapter extends TypeAdapter<OffsetDateTime> {
+  /**
+    * Get the default JSON instance.
+    *
+    * @return the default JSON instance
+    */
+  public static JSON getDefault() {
+    return json;
+  }
 
-        private DateTimeFormatter formatter;
-
-        public OffsetDateTimeTypeAdapter() {
-            this(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        }
-
-        public OffsetDateTimeTypeAdapter(DateTimeFormatter formatter) {
-            this.formatter = formatter;
-        }
-
-        public void setFormat(DateTimeFormatter dateFormat) {
-            this.formatter = dateFormat;
-        }
-
-        @Override
-        public void write(JsonWriter out, OffsetDateTime date) throws IOException {
-            if (date == null) {
-                out.nullValue();
-            } else {
-                out.value(formatter.format(date));
-            }
-        }
-
-        @Override
-        public OffsetDateTime read(JsonReader in) throws IOException {
-            switch (in.peek()) {
-                case NULL:
-                    in.nextNull();
-                    return null;
-                default:
-                    String date = in.nextString();
-                    if (date.endsWith("+0000")) {
-                        date = date.substring(0, date.length()-5) + "Z";
-                    }
-                    return OffsetDateTime.parse(date, formatter);
-            }
-        }
-    }
-
-    /**
-     * Gson TypeAdapter for JSR310 LocalDate type
-     */
-    public static class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
-
-        private DateTimeFormatter formatter;
-
-        public LocalDateTypeAdapter() {
-            this(DateTimeFormatter.ISO_LOCAL_DATE);
-        }
-
-        public LocalDateTypeAdapter(DateTimeFormatter formatter) {
-            this.formatter = formatter;
-        }
-
-        public void setFormat(DateTimeFormatter dateFormat) {
-            this.formatter = dateFormat;
-        }
-
-        @Override
-        public void write(JsonWriter out, LocalDate date) throws IOException {
-            if (date == null) {
-                out.nullValue();
-            } else {
-                out.value(formatter.format(date));
-            }
-        }
-
-        @Override
-        public LocalDate read(JsonReader in) throws IOException {
-            switch (in.peek()) {
-                case NULL:
-                    in.nextNull();
-                    return null;
-                default:
-                    String date = in.nextString();
-                    return LocalDate.parse(date, formatter);
-            }
-        }
-    }
-
-    public static void setOffsetDateTimeFormat(DateTimeFormatter dateFormat) {
-        offsetDateTimeTypeAdapter.setFormat(dateFormat);
-    }
-
-    public static void setLocalDateFormat(DateTimeFormatter dateFormat) {
-        localDateTypeAdapter.setFormat(dateFormat);
-    }
-
-    /**
-     * Gson TypeAdapter for java.sql.Date type
-     * If the dateFormat is null, a simple "yyyy-MM-dd" format will be used
-     * (more efficient than SimpleDateFormat).
-     */
-    public static class SqlDateTypeAdapter extends TypeAdapter<java.sql.Date> {
-
-        private DateFormat dateFormat;
-
-        public SqlDateTypeAdapter() {}
-
-        public SqlDateTypeAdapter(DateFormat dateFormat) {
-            this.dateFormat = dateFormat;
-        }
-
-        public void setFormat(DateFormat dateFormat) {
-            this.dateFormat = dateFormat;
-        }
-
-        @Override
-        public void write(JsonWriter out, java.sql.Date date) throws IOException {
-            if (date == null) {
-                out.nullValue();
-            } else {
-                String value;
-                if (dateFormat != null) {
-                    value = dateFormat.format(date);
-                } else {
-                    value = date.toString();
-                }
-                out.value(value);
-            }
-        }
-
-        @Override
-        public java.sql.Date read(JsonReader in) throws IOException {
-            switch (in.peek()) {
-                case NULL:
-                    in.nextNull();
-                    return null;
-                default:
-                    String date = in.nextString();
-                    try {
-                        if (dateFormat != null) {
-                            return new java.sql.Date(dateFormat.parse(date).getTime());
-                        }
-                        return new java.sql.Date(ISO8601Utils.parse(date, new ParsePosition(0)).getTime());
-                    } catch (ParseException e) {
-                        throw new JsonParseException(e);
-                    }
-            }
-        }
-    }
-
-    /**
-     * Gson TypeAdapter for java.util.Date type
-     * If the dateFormat is null, ISO8601Utils will be used.
-     */
-    public static class DateTypeAdapter extends TypeAdapter<Date> {
-
-        private DateFormat dateFormat;
-
-        public DateTypeAdapter() {}
-
-        public DateTypeAdapter(DateFormat dateFormat) {
-            this.dateFormat = dateFormat;
-        }
-
-        public void setFormat(DateFormat dateFormat) {
-            this.dateFormat = dateFormat;
-        }
-
-        @Override
-        public void write(JsonWriter out, Date date) throws IOException {
-            if (date == null) {
-                out.nullValue();
-            } else {
-                String value;
-                if (dateFormat != null) {
-                    value = dateFormat.format(date);
-                } else {
-                    value = ISO8601Utils.format(date, true);
-                }
-                out.value(value);
-            }
-        }
-
-        @Override
-        public Date read(JsonReader in) throws IOException {
-            try {
-                switch (in.peek()) {
-                    case NULL:
-                        in.nextNull();
-                        return null;
-                    default:
-                        String date = in.nextString();
-                        try {
-                            if (dateFormat != null) {
-                                return dateFormat.parse(date);
-                            }
-                            return ISO8601Utils.parse(date, new ParsePosition(0));
-                        } catch (ParseException e) {
-                            throw new JsonParseException(e);
-                        }
-                }
-            } catch (IllegalArgumentException e) {
-                throw new JsonParseException(e);
-            }
-        }
-    }
-
-    public static void setDateFormat(DateFormat dateFormat) {
-        dateTypeAdapter.setFormat(dateFormat);
-    }
-
-    public static void setSqlDateFormat(DateFormat dateFormat) {
-        sqlDateTypeAdapter.setFormat(dateFormat);
-    }
+  /**
+    * Set the default JSON instance.
+    *
+    * @param json JSON instance to be used
+    */
+  public static void setDefault(JSON json) {
+    JSON.json = json;
+  }
 }

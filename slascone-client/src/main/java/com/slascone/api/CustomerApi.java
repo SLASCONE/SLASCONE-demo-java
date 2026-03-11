@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.CustomerContactDto;
@@ -38,3953 +29,3308 @@ import com.slascone.model.ItemTagAssignmentDto;
 import com.slascone.model.ProblemDetails;
 import java.util.UUID;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomerApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
+    /**
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
+     */
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
+
+  public CustomerApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public CustomerApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Creates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto addCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto) throws ApiException {
+    return addCustomer(isvId, customerDto, null);
+  }
+
+  /**
+   * Creates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto addCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = addCustomerWithHttpInfo(isvId, customerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> addCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto) throws ApiException {
+    return addCustomerWithHttpInfo(isvId, customerDto, null);
+  }
+
+  /**
+   * Creates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> addCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addCustomerRequestBuilder(isvId, customerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addCustomer", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addCustomerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addCustomer");
+    }
+    // verify the required parameter 'customerDto' is set
+    if (customerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerDto' when calling addCustomer");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a customer contact
+   * Sends also an invitation email to the contact address
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto addCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
+    return addCustomerContact(isvId, customerId, customerContactDto, null);
+  }
+
+  /**
+   * Creates a customer contact
+   * Sends also an invitation email to the contact address
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto addCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerContactDto> localVarResponse = addCustomerContactWithHttpInfo(isvId, customerId, customerContactDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a customer contact
+   * Sends also an invitation email to the contact address
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> addCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
+    return addCustomerContactWithHttpInfo(isvId, customerId, customerContactDto, null);
+  }
+
+  /**
+   * Creates a customer contact
+   * Sends also an invitation email to the contact address
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> addCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addCustomerContactRequestBuilder(isvId, customerId, customerContactDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addCustomerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerContactDto>() {});
+        
+
+        return new ApiResponse<CustomerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addCustomerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addCustomerContact");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling addCustomerContact");
+    }
+    // verify the required parameter 'customerContactDto' is set
+    if (customerContactDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerContactDto' when calling addCustomerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerContactDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto addCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
+    return addCustomerType(isvId, customerTypeDto, null);
+  }
+
+  /**
+   * Creates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto addCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerTypeDto> localVarResponse = addCustomerTypeWithHttpInfo(isvId, customerTypeDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> addCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
+    return addCustomerTypeWithHttpInfo(isvId, customerTypeDto, null);
+  }
+
+  /**
+   * Creates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> addCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addCustomerTypeRequestBuilder(isvId, customerTypeDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addCustomerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerTypeDto>() {});
+        
+
+        return new ApiResponse<CustomerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addCustomerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addCustomerType");
+    }
+    // verify the required parameter 'customerTypeDto' is set
+    if (customerTypeDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerTypeDto' when calling addCustomerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerTypeDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public CustomerDto customerGetCustomerByCustomerNumberDeprecated(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String customerNumber) throws ApiException {
+    return customerGetCustomerByCustomerNumberDeprecated(isvId, customerNumber, null);
+  }
+
+  /**
+   * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public CustomerDto customerGetCustomerByCustomerNumberDeprecated(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String customerNumber, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(isvId, customerNumber, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ApiResponse<CustomerDto> customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String customerNumber) throws ApiException {
+    return customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(isvId, customerNumber, null);
+  }
+
+  /**
+   * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ApiResponse<CustomerDto> customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String customerNumber, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = customerGetCustomerByCustomerNumberDeprecatedRequestBuilder(isvId, customerNumber, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("customerGetCustomerByCustomerNumberDeprecated", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder customerGetCustomerByCustomerNumberDeprecatedRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String customerNumber, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling customerGetCustomerByCustomerNumberDeprecated");
+    }
+    // verify the required parameter 'customerNumber' is set
+    if (customerNumber == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerNumber' when calling customerGetCustomerByCustomerNumberDeprecated");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/number/{customer_number}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_number}", ApiClient.urlEncode(customerNumber.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto deleteCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return deleteCustomer(isvId, customerId, null);
+  }
+
+  /**
+   * Deletes a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto deleteCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = deleteCustomerWithHttpInfo(isvId, customerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> deleteCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return deleteCustomerWithHttpInfo(isvId, customerId, null);
+  }
+
+  /**
+   * Deletes a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> deleteCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteCustomerRequestBuilder(isvId, customerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteCustomer", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteCustomerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteCustomer");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling deleteCustomer");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto deleteCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity) throws ApiException {
+    return deleteCustomerContact(isvId, customerId, contactId, removeIdentity, null);
+  }
+
+  /**
+   * Deletes a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @param headers Optional headers to include in the request
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto deleteCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerContactDto> localVarResponse = deleteCustomerContactWithHttpInfo(isvId, customerId, contactId, removeIdentity, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> deleteCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity) throws ApiException {
+    return deleteCustomerContactWithHttpInfo(isvId, customerId, contactId, removeIdentity, null);
+  }
+
+  /**
+   * Deletes a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> deleteCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteCustomerContactRequestBuilder(isvId, customerId, contactId, removeIdentity, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteCustomerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerContactDto>() {});
+        
+
+        return new ApiResponse<CustomerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteCustomerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteCustomerContact");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling deleteCustomerContact");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling deleteCustomerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "remove_identity";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("remove_identity", removeIdentity));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all customers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return List&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerDto> getAllCustomers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getAllCustomers(isvId, name, null);
+  }
+
+  /**
+   * Returns all customers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerDto> getAllCustomers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomerDto>> localVarResponse = getAllCustomersWithHttpInfo(isvId, name, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all customers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return ApiResponse&lt;List&lt;CustomerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerDto>> getAllCustomersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getAllCustomersWithHttpInfo(isvId, name, null);
+  }
+
+  /**
+   * Returns all customers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerDto>> getAllCustomersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllCustomersRequestBuilder(isvId, name, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllCustomers", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomerDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomerDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomerDto>>() {});
+        
+
+        return new ApiResponse<List<CustomerDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllCustomersRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllCustomers");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("name", name));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all customers with reduced information
+   * Returns only Id, Name, CustomerNumber, and Email address.
+   * @param isvId  (required)
+   * @return List&lt;CustomerLightDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerLightDto> getAllCustomersLight(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllCustomersLight(isvId, null);
+  }
+
+  /**
+   * Returns all customers with reduced information
+   * Returns only Id, Name, CustomerNumber, and Email address.
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomerLightDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerLightDto> getAllCustomersLight(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomerLightDto>> localVarResponse = getAllCustomersLightWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all customers with reduced information
+   * Returns only Id, Name, CustomerNumber, and Email address.
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;CustomerLightDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerLightDto>> getAllCustomersLightWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllCustomersLightWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns all customers with reduced information
+   * Returns only Id, Name, CustomerNumber, and Email address.
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomerLightDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerLightDto>> getAllCustomersLightWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllCustomersLightRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllCustomersLight", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomerLightDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomerLightDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomerLightDto>>() {});
+        
+
+        return new ApiResponse<List<CustomerLightDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllCustomersLightRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllCustomersLight");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/light"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto getCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomer(isvId, customerId, null);
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto getCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = getCustomerWithHttpInfo(isvId, customerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> getCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomerWithHttpInfo(isvId, customerId, null);
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> getCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerRequestBuilder(isvId, customerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomer", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomer");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling getCustomer");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto getCustomerByNumber(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerNumber) throws ApiException {
+    return getCustomerByNumber(isvId, customerNumber, null);
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto getCustomerByNumber(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerNumber, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = getCustomerByNumberWithHttpInfo(isvId, customerNumber, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> getCustomerByNumberWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerNumber) throws ApiException {
+    return getCustomerByNumberWithHttpInfo(isvId, customerNumber, null);
+  }
+
+  /**
+   * Returns a specific customer
+   * 
+   * @param isvId  (required)
+   * @param customerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> getCustomerByNumberWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerNumber, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerByNumberRequestBuilder(isvId, customerNumber, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerByNumber", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerByNumberRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerNumber, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerByNumber");
+    }
+    // verify the required parameter 'customerNumber' is set
+    if (customerNumber == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerNumber' when calling getCustomerByNumber");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/by_number"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "customer_number";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("customer_number", customerNumber));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns the customer contact matching the id of the logged in user
+   * 
+   * @param isvId  (required)
+   * @return List&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerContactDto> getCustomerContactByUserId(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerContactByUserId(isvId, null);
+  }
+
+  /**
+   * Returns the customer contact matching the id of the logged in user
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerContactDto> getCustomerContactByUserId(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomerContactDto>> localVarResponse = getCustomerContactByUserIdWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns the customer contact matching the id of the logged in user
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerContactDto>> getCustomerContactByUserIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerContactByUserIdWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns the customer contact matching the id of the logged in user
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerContactDto>> getCustomerContactByUserIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerContactByUserIdRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerContactByUserId", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomerContactDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomerContactDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomerContactDto>>() {});
+        
+
+        return new ApiResponse<List<CustomerContactDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerContactByUserIdRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerContactByUserId");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/contacts/by_user"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns the available customer contact languages
+   * 
+   * @param isvId  (required)
+   * @return List&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<String> getCustomerContactLanguages(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerContactLanguages(isvId, null);
+  }
+
+  /**
+   * Returns the available customer contact languages
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<String> getCustomerContactLanguages(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<String>> localVarResponse = getCustomerContactLanguagesWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns the available customer contact languages
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;String&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<String>> getCustomerContactLanguagesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerContactLanguagesWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns the available customer contact languages
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;String&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<String>> getCustomerContactLanguagesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerContactLanguagesRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerContactLanguages", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<String>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<String> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<String>>() {});
+        
+
+        return new ApiResponse<List<String>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerContactLanguagesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerContactLanguages");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/contacts/language"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a customer&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return List&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerContactDto> getCustomerContacts(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomerContacts(isvId, customerId, null);
+  }
+
+  /**
+   * Returns a customer&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerContactDto> getCustomerContacts(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomerContactDto>> localVarResponse = getCustomerContactsWithHttpInfo(isvId, customerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a customer&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerContactDto>> getCustomerContactsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomerContactsWithHttpInfo(isvId, customerId, null);
+  }
+
+  /**
+   * Returns a customer&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerContactDto>> getCustomerContactsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerContactsRequestBuilder(isvId, customerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerContacts", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomerContactDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomerContactDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomerContactDto>>() {});
+        
+
+        return new ApiResponse<List<CustomerContactDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerContactsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerContacts");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling getCustomerContacts");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns the number of customers
+   * 
+   * @param isvId  (required)
+   * @return List&lt;Object&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<Object> getCustomerCount(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerCount(isvId, null);
+  }
+
+  /**
+   * Returns the number of customers
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;Object&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<Object> getCustomerCount(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<Object>> localVarResponse = getCustomerCountWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns the number of customers
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;Object&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<Object>> getCustomerCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getCustomerCountWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns the number of customers
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;Object&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<Object>> getCustomerCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerCountRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerCount", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<Object>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<Object> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<Object>>() {});
+        
+
+        return new ApiResponse<List<Object>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerCountRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerCount");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/count"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return List&lt;ItemTagAssignmentDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ItemTagAssignmentDto> getCustomerTagAssignments(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomerTagAssignments(isvId, customerId, null);
+  }
+
+  /**
+   * Returns all tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ItemTagAssignmentDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ItemTagAssignmentDto> getCustomerTagAssignments(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ItemTagAssignmentDto>> localVarResponse = getCustomerTagAssignmentsWithHttpInfo(isvId, customerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ItemTagAssignmentDto>> getCustomerTagAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId) throws ApiException {
+    return getCustomerTagAssignmentsWithHttpInfo(isvId, customerId, null);
+  }
+
+  /**
+   * Returns all tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ItemTagAssignmentDto>> getCustomerTagAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerTagAssignmentsRequestBuilder(isvId, customerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerTagAssignments", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ItemTagAssignmentDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ItemTagAssignmentDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ItemTagAssignmentDto>>() {});
+        
+
+        return new ApiResponse<List<ItemTagAssignmentDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerTagAssignmentsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerTagAssignments");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling getCustomerTagAssignments");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/tags"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all customer types
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return List&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerTypeDto> getCustomerTypes(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getCustomerTypes(isvId, name, null);
+  }
+
+  /**
+   * Returns all customer types
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomerTypeDto> getCustomerTypes(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomerTypeDto>> localVarResponse = getCustomerTypesWithHttpInfo(isvId, name, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all customer types
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return ApiResponse&lt;List&lt;CustomerTypeDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerTypeDto>> getCustomerTypesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getCustomerTypesWithHttpInfo(isvId, name, null);
+  }
+
+  /**
+   * Returns all customer types
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomerTypeDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomerTypeDto>> getCustomerTypesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomerTypesRequestBuilder(isvId, name, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomerTypes", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomerTypeDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomerTypeDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomerTypeDto>>() {});
+        
+
+        return new ApiResponse<List<CustomerTypeDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomerTypesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomerTypes");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("name", name));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all customers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param customerFilterDto  (required)
+   * @return CustomerLazyLoadDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerLazyLoadDto getFilteredCustomers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerFilterDto customerFilterDto) throws ApiException {
+    return getFilteredCustomers(isvId, customerFilterDto, null);
+  }
+
+  /**
+   * Returns all customers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param customerFilterDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerLazyLoadDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerLazyLoadDto getFilteredCustomers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerFilterDto customerFilterDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerLazyLoadDto> localVarResponse = getFilteredCustomersWithHttpInfo(isvId, customerFilterDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all customers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param customerFilterDto  (required)
+   * @return ApiResponse&lt;CustomerLazyLoadDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerLazyLoadDto> getFilteredCustomersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerFilterDto customerFilterDto) throws ApiException {
+    return getFilteredCustomersWithHttpInfo(isvId, customerFilterDto, null);
+  }
+
+  /**
+   * Returns all customers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param customerFilterDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerLazyLoadDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerLazyLoadDto> getFilteredCustomersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerFilterDto customerFilterDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getFilteredCustomersRequestBuilder(isvId, customerFilterDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getFilteredCustomers", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerLazyLoadDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerLazyLoadDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerLazyLoadDto>() {});
+        
+
+        return new ApiResponse<CustomerLazyLoadDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getFilteredCustomersRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerFilterDto customerFilterDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getFilteredCustomers");
+    }
+    // verify the required parameter 'customerFilterDto' is set
+    if (customerFilterDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerFilterDto' when calling getFilteredCustomers");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/filtered"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerFilterDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto removeCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId) throws ApiException {
+    return removeCustomerType(isvId, typeId, newTypeId, null);
+  }
+
+  /**
+   * Deletes a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto removeCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerTypeDto> localVarResponse = removeCustomerTypeWithHttpInfo(isvId, typeId, newTypeId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> removeCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId) throws ApiException {
+    return removeCustomerTypeWithHttpInfo(isvId, typeId, newTypeId, null);
+  }
+
+  /**
+   * Deletes a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> removeCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = removeCustomerTypeRequestBuilder(isvId, typeId, newTypeId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("removeCustomerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerTypeDto>() {});
+        
+
+        return new ApiResponse<CustomerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder removeCustomerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling removeCustomerType");
+    }
+    // verify the required parameter 'typeId' is set
+    if (typeId == null) {
+      throw new ApiException(400, "Missing the required parameter 'typeId' when calling removeCustomerType");
+    }
+    // verify the required parameter 'newTypeId' is set
+    if (newTypeId == null) {
+      throw new ApiException(400, "Missing the required parameter 'newTypeId' when calling removeCustomerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/types/{type_id}/new_type/{new_type_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{type_id}", ApiClient.urlEncode(typeId.toString()))
+        .replace("{new_type_id}", ApiClient.urlEncode(newTypeId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Sends a new invitation email to a customer contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void resendCustomerContactInvitation(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    resendCustomerContactInvitation(isvId, customerId, contactId, null);
+  }
+
+  /**
+   * Sends a new invitation email to a customer contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void resendCustomerContactInvitation(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    resendCustomerContactInvitationWithHttpInfo(isvId, customerId, contactId, headers);
+  }
+
+  /**
+   * Sends a new invitation email to a customer contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> resendCustomerContactInvitationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return resendCustomerContactInvitationWithHttpInfo(isvId, customerId, contactId, null);
+  }
+
+  /**
+   * Sends a new invitation email to a customer contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> resendCustomerContactInvitationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = resendCustomerContactInvitationRequestBuilder(isvId, customerId, contactId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("resendCustomerContactInvitation", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder resendCustomerContactInvitationRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling resendCustomerContactInvitation");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling resendCustomerContactInvitation");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling resendCustomerContactInvitation");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/email/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Toggles a customer contact state
+   * Toggles &#39;isActive&#39; state of a customer contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto toggleCustomerContactState(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return toggleCustomerContactState(isvId, customerId, contactId, null);
+  }
+
+  /**
+   * Toggles a customer contact state
+   * Toggles &#39;isActive&#39; state of a customer contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto toggleCustomerContactState(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerContactDto> localVarResponse = toggleCustomerContactStateWithHttpInfo(isvId, customerId, contactId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Toggles a customer contact state
+   * Toggles &#39;isActive&#39; state of a customer contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> toggleCustomerContactStateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return toggleCustomerContactStateWithHttpInfo(isvId, customerId, contactId, null);
+  }
+
+  /**
+   * Toggles a customer contact state
+   * Toggles &#39;isActive&#39; state of a customer contact
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> toggleCustomerContactStateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = toggleCustomerContactStateRequestBuilder(isvId, customerId, contactId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("toggleCustomerContactState", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerContactDto>() {});
+        
+
+        return new ApiResponse<CustomerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder toggleCustomerContactStateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling toggleCustomerContactState");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling toggleCustomerContactState");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling toggleCustomerContactState");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto updateCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto) throws ApiException {
+    return updateCustomer(isvId, customerDto, null);
+  }
+
+  /**
+   * Updates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerDto updateCustomer(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerDto> localVarResponse = updateCustomerWithHttpInfo(isvId, customerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> updateCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto) throws ApiException {
+    return updateCustomerWithHttpInfo(isvId, customerDto, null);
+  }
+
+  /**
+   * Updates a customer
+   * 
+   * @param isvId  (required)
+   * @param customerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerDto> updateCustomerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomerRequestBuilder(isvId, customerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomer", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerDto>() {});
+        
+
+        return new ApiResponse<CustomerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateCustomerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerDto customerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomer");
+    }
+    // verify the required parameter 'customerDto' is set
+    if (customerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerDto' when calling updateCustomer");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto updateCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
+    return updateCustomerContact(isvId, customerId, customerContactDto, null);
+  }
+
+  /**
+   * Updates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerContactDto updateCustomerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerContactDto> localVarResponse = updateCustomerContactWithHttpInfo(isvId, customerId, customerContactDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> updateCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
+    return updateCustomerContactWithHttpInfo(isvId, customerId, customerContactDto, null);
+  }
+
+  /**
+   * Updates a customer contact
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param customerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerContactDto> updateCustomerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomerContactRequestBuilder(isvId, customerId, customerContactDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerContactDto>() {});
+        
+
+        return new ApiResponse<CustomerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateCustomerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull CustomerContactDto customerContactDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomerContact");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling updateCustomerContact");
+    }
+    // verify the required parameter 'customerContactDto' is set
+    if (customerContactDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerContactDto' when calling updateCustomerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerContactDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates the tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param itemTagAssignmentDto  (required)
+   * @return List&lt;ItemTagAssignmentDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ItemTagAssignmentDto> updateCustomerTagAssignments(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
+    return updateCustomerTagAssignments(isvId, customerId, itemTagAssignmentDto, null);
+  }
+
+  /**
+   * Updates the tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param itemTagAssignmentDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ItemTagAssignmentDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ItemTagAssignmentDto> updateCustomerTagAssignments(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ItemTagAssignmentDto>> localVarResponse = updateCustomerTagAssignmentsWithHttpInfo(isvId, customerId, itemTagAssignmentDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates the tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param itemTagAssignmentDto  (required)
+   * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ItemTagAssignmentDto>> updateCustomerTagAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
+    return updateCustomerTagAssignmentsWithHttpInfo(isvId, customerId, itemTagAssignmentDto, null);
+  }
+
+  /**
+   * Updates the tags of a customer
+   * 
+   * @param isvId  (required)
+   * @param customerId  (required)
+   * @param itemTagAssignmentDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ItemTagAssignmentDto>> updateCustomerTagAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomerTagAssignmentsRequestBuilder(isvId, customerId, itemTagAssignmentDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomerTagAssignments", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ItemTagAssignmentDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ItemTagAssignmentDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ItemTagAssignmentDto>>() {});
+        
+
+        return new ApiResponse<List<ItemTagAssignmentDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateCustomerTagAssignmentsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customerId, @jakarta.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomerTagAssignments");
+    }
+    // verify the required parameter 'customerId' is set
+    if (customerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerId' when calling updateCustomerTagAssignments");
+    }
+    // verify the required parameter 'itemTagAssignmentDto' is set
+    if (itemTagAssignmentDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'itemTagAssignmentDto' when calling updateCustomerTagAssignments");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/tags"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{customer_id}", ApiClient.urlEncode(customerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(itemTagAssignmentDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto updateCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
+    return updateCustomerType(isvId, customerTypeDto, null);
+  }
+
+  /**
+   * Updates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomerTypeDto updateCustomerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomerTypeDto> localVarResponse = updateCustomerTypeWithHttpInfo(isvId, customerTypeDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> updateCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
+    return updateCustomerTypeWithHttpInfo(isvId, customerTypeDto, null);
+  }
+
+  /**
+   * Updates a customer type
+   * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param customerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomerTypeDto> updateCustomerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomerTypeRequestBuilder(isvId, customerTypeDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomerTypeDto>() {});
+        
+
+        return new ApiResponse<CustomerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateCustomerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomerTypeDto customerTypeDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomerType");
+    }
+    // verify the required parameter 'customerTypeDto' is set
+    if (customerTypeDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customerTypeDto' when calling updateCustomerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customerTypeDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-    public CustomerApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public CustomerApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
-    /**
-     * Build call for addCustomer
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addCustomerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addCustomer(Async)");
-        }
-
-        // verify the required parameter 'customerDto' is set
-        if (customerDto == null) {
-            throw new ApiException("Missing the required parameter 'customerDto' when calling addCustomer(Async)");
-        }
-
-        return addCustomerCall(isvId, customerDto, _callback);
-
-    }
-
-    /**
-     * Creates a customer
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto addCustomer(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = addCustomerWithHttpInfo(isvId, customerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a customer
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> addCustomerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto) throws ApiException {
-        okhttp3.Call localVarCall = addCustomerValidateBeforeCall(isvId, customerDto, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addCustomerValidateBeforeCall(isvId, customerDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addCustomerContact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerContactDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addCustomerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling addCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'customerContactDto' is set
-        if (customerContactDto == null) {
-            throw new ApiException("Missing the required parameter 'customerContactDto' when calling addCustomerContact(Async)");
-        }
-
-        return addCustomerContactCall(isvId, customerId, customerContactDto, _callback);
-
-    }
-
-    /**
-     * Creates a customer contact
-     * Sends also an invitation email to the contact address
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @return CustomerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerContactDto addCustomerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
-        ApiResponse<CustomerContactDto> localVarResp = addCustomerContactWithHttpInfo(isvId, customerId, customerContactDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a customer contact
-     * Sends also an invitation email to the contact address
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @return ApiResponse&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerContactDto> addCustomerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
-        okhttp3.Call localVarCall = addCustomerContactValidateBeforeCall(isvId, customerId, customerContactDto, null);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a customer contact (asynchronously)
-     * Sends also an invitation email to the contact address
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addCustomerContactValidateBeforeCall(isvId, customerId, customerContactDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addCustomerType
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerTypeDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addCustomerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addCustomerType(Async)");
-        }
-
-        // verify the required parameter 'customerTypeDto' is set
-        if (customerTypeDto == null) {
-            throw new ApiException("Missing the required parameter 'customerTypeDto' when calling addCustomerType(Async)");
-        }
-
-        return addCustomerTypeCall(isvId, customerTypeDto, _callback);
-
-    }
-
-    /**
-     * Creates a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @return CustomerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerTypeDto addCustomerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
-        ApiResponse<CustomerTypeDto> localVarResp = addCustomerTypeWithHttpInfo(isvId, customerTypeDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @return ApiResponse&lt;CustomerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerTypeDto> addCustomerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
-        okhttp3.Call localVarCall = addCustomerTypeValidateBeforeCall(isvId, customerTypeDto, null);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a customer type (asynchronously)
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback<CustomerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addCustomerTypeValidateBeforeCall(isvId, customerTypeDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for customerGetCustomerByCustomerNumberDeprecated
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public okhttp3.Call customerGetCustomerByCustomerNumberDeprecatedCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String customerNumber, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/number/{customer_number}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_number" + "}", localVarApiClient.escapeString(customerNumber.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @Deprecated
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call customerGetCustomerByCustomerNumberDeprecatedValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String customerNumber, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling customerGetCustomerByCustomerNumberDeprecated(Async)");
-        }
-
-        // verify the required parameter 'customerNumber' is set
-        if (customerNumber == null) {
-            throw new ApiException("Missing the required parameter 'customerNumber' when calling customerGetCustomerByCustomerNumberDeprecated(Async)");
-        }
-
-        return customerGetCustomerByCustomerNumberDeprecatedCall(isvId, customerNumber, _callback);
-
-    }
-
-    /**
-     * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public CustomerDto customerGetCustomerByCustomerNumberDeprecated(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String customerNumber) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(isvId, customerNumber);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead)
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public ApiResponse<CustomerDto> customerGetCustomerByCustomerNumberDeprecatedWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String customerNumber) throws ApiException {
-        okhttp3.Call localVarCall = customerGetCustomerByCustomerNumberDeprecatedValidateBeforeCall(isvId, customerNumber, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a specific customer (deprecated; use api/v2/isv/{isv_id}/customers/by_number instead) (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public okhttp3.Call customerGetCustomerByCustomerNumberDeprecatedAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String customerNumber, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = customerGetCustomerByCustomerNumberDeprecatedValidateBeforeCall(isvId, customerNumber, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteCustomer
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteCustomerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteCustomer(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling deleteCustomer(Async)");
-        }
-
-        return deleteCustomerCall(isvId, customerId, _callback);
-
-    }
-
-    /**
-     * Deletes a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto deleteCustomer(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = deleteCustomerWithHttpInfo(isvId, customerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> deleteCustomerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        okhttp3.Call localVarCall = deleteCustomerValidateBeforeCall(isvId, customerId, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteCustomerValidateBeforeCall(isvId, customerId, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteCustomerContact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (removeIdentity != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("remove_identity", removeIdentity));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteCustomerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling deleteCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling deleteCustomerContact(Async)");
-        }
-
-        return deleteCustomerContactCall(isvId, customerId, contactId, removeIdentity, _callback);
-
-    }
-
-    /**
-     * Deletes a customer contact
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @return CustomerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerContactDto deleteCustomerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity) throws ApiException {
-        ApiResponse<CustomerContactDto> localVarResp = deleteCustomerContactWithHttpInfo(isvId, customerId, contactId, removeIdentity);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a customer contact
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @return ApiResponse&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerContactDto> deleteCustomerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity) throws ApiException {
-        okhttp3.Call localVarCall = deleteCustomerContactValidateBeforeCall(isvId, customerId, contactId, removeIdentity, null);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a customer contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteCustomerContactValidateBeforeCall(isvId, customerId, contactId, removeIdentity, _callback);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllCustomers
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomersCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (name != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("name", name));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllCustomersValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllCustomers(Async)");
-        }
-
-        return getAllCustomersCall(isvId, name, _callback);
-
-    }
-
-    /**
-     * Returns all customers
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return List&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomerDto> getAllCustomers(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        ApiResponse<List<CustomerDto>> localVarResp = getAllCustomersWithHttpInfo(isvId, name);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all customers
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return ApiResponse&lt;List&lt;CustomerDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomerDto>> getAllCustomersWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        okhttp3.Call localVarCall = getAllCustomersValidateBeforeCall(isvId, name, null);
-        Type localVarReturnType = new TypeToken<List<CustomerDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all customers (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback<List<CustomerDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllCustomersValidateBeforeCall(isvId, name, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomerDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllCustomersLight
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomersLightCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/light"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllCustomersLightValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllCustomersLight(Async)");
-        }
-
-        return getAllCustomersLightCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns all customers with reduced information
-     * Returns only Id, Name, CustomerNumber, and Email address.
-     * @param isvId  (required)
-     * @return List&lt;CustomerLightDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomerLightDto> getAllCustomersLight(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<CustomerLightDto>> localVarResp = getAllCustomersLightWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all customers with reduced information
-     * Returns only Id, Name, CustomerNumber, and Email address.
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;CustomerLightDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomerLightDto>> getAllCustomersLightWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getAllCustomersLightValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<CustomerLightDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all customers with reduced information (asynchronously)
-     * Returns only Id, Name, CustomerNumber, and Email address.
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomersLightAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<CustomerLightDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllCustomersLightValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomerLightDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomer
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomer(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling getCustomer(Async)");
-        }
-
-        return getCustomerCall(isvId, customerId, _callback);
-
-    }
-
-    /**
-     * Returns a specific customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto getCustomer(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = getCustomerWithHttpInfo(isvId, customerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a specific customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> getCustomerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerValidateBeforeCall(isvId, customerId, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a specific customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerValidateBeforeCall(isvId, customerId, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerByNumber
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerByNumberCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerNumber, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/by_number"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (customerNumber != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("customer_number", customerNumber));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerByNumberValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerNumber, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerByNumber(Async)");
-        }
-
-        // verify the required parameter 'customerNumber' is set
-        if (customerNumber == null) {
-            throw new ApiException("Missing the required parameter 'customerNumber' when calling getCustomerByNumber(Async)");
-        }
-
-        return getCustomerByNumberCall(isvId, customerNumber, _callback);
-
-    }
-
-    /**
-     * Returns a specific customer
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto getCustomerByNumber(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerNumber) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = getCustomerByNumberWithHttpInfo(isvId, customerNumber);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a specific customer
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> getCustomerByNumberWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerNumber) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerByNumberValidateBeforeCall(isvId, customerNumber, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a specific customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerNumber  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerByNumberAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerNumber, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerByNumberValidateBeforeCall(isvId, customerNumber, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerContactByUserId
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactByUserIdCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/contacts/by_user"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerContactByUserIdValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerContactByUserId(Async)");
-        }
-
-        return getCustomerContactByUserIdCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns the customer contact matching the id of the logged in user
-     * 
-     * @param isvId  (required)
-     * @return List&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomerContactDto> getCustomerContactByUserId(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<CustomerContactDto>> localVarResp = getCustomerContactByUserIdWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the customer contact matching the id of the logged in user
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomerContactDto>> getCustomerContactByUserIdWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerContactByUserIdValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<CustomerContactDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the customer contact matching the id of the logged in user (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactByUserIdAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<CustomerContactDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerContactByUserIdValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomerContactDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerContactLanguages
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactLanguagesCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/contacts/language"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerContactLanguagesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerContactLanguages(Async)");
-        }
-
-        return getCustomerContactLanguagesCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns the available customer contact languages
-     * 
-     * @param isvId  (required)
-     * @return List&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<String> getCustomerContactLanguages(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<String>> localVarResp = getCustomerContactLanguagesWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the available customer contact languages
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;String&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<String>> getCustomerContactLanguagesWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerContactLanguagesValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<String>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the available customer contact languages (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactLanguagesAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<String>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerContactLanguagesValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<String>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerContacts
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerContactsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerContacts(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling getCustomerContacts(Async)");
-        }
-
-        return getCustomerContactsCall(isvId, customerId, _callback);
-
-    }
-
-    /**
-     * Returns a customer&#39;s contacts
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return List&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomerContactDto> getCustomerContacts(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        ApiResponse<List<CustomerContactDto>> localVarResp = getCustomerContactsWithHttpInfo(isvId, customerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a customer&#39;s contacts
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return ApiResponse&lt;List&lt;CustomerContactDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomerContactDto>> getCustomerContactsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerContactsValidateBeforeCall(isvId, customerId, null);
-        Type localVarReturnType = new TypeToken<List<CustomerContactDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a customer&#39;s contacts (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerContactsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback<List<CustomerContactDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerContactsValidateBeforeCall(isvId, customerId, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomerContactDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerCount
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerCountCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/count"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerCountValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerCount(Async)");
-        }
-
-        return getCustomerCountCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns the number of customers
-     * 
-     * @param isvId  (required)
-     * @return List&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<Object> getCustomerCount(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<Object>> localVarResp = getCustomerCountWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the number of customers
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;Object&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<Object>> getCustomerCountWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerCountValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the number of customers (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerCountAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<Object>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerCountValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerTagAssignments
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerTagAssignmentsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/tags"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerTagAssignmentsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerTagAssignments(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling getCustomerTagAssignments(Async)");
-        }
-
-        return getCustomerTagAssignmentsCall(isvId, customerId, _callback);
-
-    }
-
-    /**
-     * Returns all tags of a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return List&lt;ItemTagAssignmentDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ItemTagAssignmentDto> getCustomerTagAssignments(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        ApiResponse<List<ItemTagAssignmentDto>> localVarResp = getCustomerTagAssignmentsWithHttpInfo(isvId, customerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all tags of a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ItemTagAssignmentDto>> getCustomerTagAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerTagAssignmentsValidateBeforeCall(isvId, customerId, null);
-        Type localVarReturnType = new TypeToken<List<ItemTagAssignmentDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all tags of a customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerTagAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, final ApiCallback<List<ItemTagAssignmentDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerTagAssignmentsValidateBeforeCall(isvId, customerId, _callback);
-        Type localVarReturnType = new TypeToken<List<ItemTagAssignmentDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomerTypes
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerTypesCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (name != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("name", name));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomerTypesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomerTypes(Async)");
-        }
-
-        return getCustomerTypesCall(isvId, name, _callback);
-
-    }
-
-    /**
-     * Returns all customer types
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return List&lt;CustomerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomerTypeDto> getCustomerTypes(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        ApiResponse<List<CustomerTypeDto>> localVarResp = getCustomerTypesWithHttpInfo(isvId, name);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all customer types
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return ApiResponse&lt;List&lt;CustomerTypeDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomerTypeDto>> getCustomerTypesWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        okhttp3.Call localVarCall = getCustomerTypesValidateBeforeCall(isvId, name, null);
-        Type localVarReturnType = new TypeToken<List<CustomerTypeDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all customer types (asynchronously)
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomerTypesAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback<List<CustomerTypeDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomerTypesValidateBeforeCall(isvId, name, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomerTypeDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getFilteredCustomers
-     * @param isvId  (required)
-     * @param customerFilterDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getFilteredCustomersCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerFilterDto customerFilterDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerFilterDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/filtered"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getFilteredCustomersValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerFilterDto customerFilterDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getFilteredCustomers(Async)");
-        }
-
-        // verify the required parameter 'customerFilterDto' is set
-        if (customerFilterDto == null) {
-            throw new ApiException("Missing the required parameter 'customerFilterDto' when calling getFilteredCustomers(Async)");
-        }
-
-        return getFilteredCustomersCall(isvId, customerFilterDto, _callback);
-
-    }
-
-    /**
-     * Returns all customers matching a filter
-     * 
-     * @param isvId  (required)
-     * @param customerFilterDto  (required)
-     * @return CustomerLazyLoadDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerLazyLoadDto getFilteredCustomers(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerFilterDto customerFilterDto) throws ApiException {
-        ApiResponse<CustomerLazyLoadDto> localVarResp = getFilteredCustomersWithHttpInfo(isvId, customerFilterDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all customers matching a filter
-     * 
-     * @param isvId  (required)
-     * @param customerFilterDto  (required)
-     * @return ApiResponse&lt;CustomerLazyLoadDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerLazyLoadDto> getFilteredCustomersWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerFilterDto customerFilterDto) throws ApiException {
-        okhttp3.Call localVarCall = getFilteredCustomersValidateBeforeCall(isvId, customerFilterDto, null);
-        Type localVarReturnType = new TypeToken<CustomerLazyLoadDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all customers matching a filter (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerFilterDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getFilteredCustomersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerFilterDto customerFilterDto, final ApiCallback<CustomerLazyLoadDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getFilteredCustomersValidateBeforeCall(isvId, customerFilterDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerLazyLoadDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for removeCustomerType
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call removeCustomerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/types/{type_id}/new_type/{new_type_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "type_id" + "}", localVarApiClient.escapeString(typeId.toString()))
-            .replace("{" + "new_type_id" + "}", localVarApiClient.escapeString(newTypeId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call removeCustomerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling removeCustomerType(Async)");
-        }
-
-        // verify the required parameter 'typeId' is set
-        if (typeId == null) {
-            throw new ApiException("Missing the required parameter 'typeId' when calling removeCustomerType(Async)");
-        }
-
-        // verify the required parameter 'newTypeId' is set
-        if (newTypeId == null) {
-            throw new ApiException("Missing the required parameter 'newTypeId' when calling removeCustomerType(Async)");
-        }
-
-        return removeCustomerTypeCall(isvId, typeId, newTypeId, _callback);
-
-    }
-
-    /**
-     * Deletes a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @return CustomerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerTypeDto removeCustomerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
-        ApiResponse<CustomerTypeDto> localVarResp = removeCustomerTypeWithHttpInfo(isvId, typeId, newTypeId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @return ApiResponse&lt;CustomerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerTypeDto> removeCustomerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
-        okhttp3.Call localVarCall = removeCustomerTypeValidateBeforeCall(isvId, typeId, newTypeId, null);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a customer type (asynchronously)
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call removeCustomerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback<CustomerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = removeCustomerTypeValidateBeforeCall(isvId, typeId, newTypeId, _callback);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for resendCustomerContactInvitation
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call resendCustomerContactInvitationCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/email/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call resendCustomerContactInvitationValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling resendCustomerContactInvitation(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling resendCustomerContactInvitation(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling resendCustomerContactInvitation(Async)");
-        }
-
-        return resendCustomerContactInvitationCall(isvId, customerId, contactId, _callback);
-
-    }
-
-    /**
-     * Sends a new invitation email to a customer contact
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void resendCustomerContactInvitation(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        resendCustomerContactInvitationWithHttpInfo(isvId, customerId, contactId);
-    }
-
-    /**
-     * Sends a new invitation email to a customer contact
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> resendCustomerContactInvitationWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        okhttp3.Call localVarCall = resendCustomerContactInvitationValidateBeforeCall(isvId, customerId, contactId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Sends a new invitation email to a customer contact (asynchronously)
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call resendCustomerContactInvitationAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = resendCustomerContactInvitationValidateBeforeCall(isvId, customerId, contactId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for toggleCustomerContactState
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toggleCustomerContactStateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call toggleCustomerContactStateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling toggleCustomerContactState(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling toggleCustomerContactState(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling toggleCustomerContactState(Async)");
-        }
-
-        return toggleCustomerContactStateCall(isvId, customerId, contactId, _callback);
-
-    }
-
-    /**
-     * Toggles a customer contact state
-     * Toggles &#39;isActive&#39; state of a customer contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @return CustomerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerContactDto toggleCustomerContactState(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        ApiResponse<CustomerContactDto> localVarResp = toggleCustomerContactStateWithHttpInfo(isvId, customerId, contactId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Toggles a customer contact state
-     * Toggles &#39;isActive&#39; state of a customer contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @return ApiResponse&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerContactDto> toggleCustomerContactStateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        okhttp3.Call localVarCall = toggleCustomerContactStateValidateBeforeCall(isvId, customerId, contactId, null);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Toggles a customer contact state (asynchronously)
-     * Toggles &#39;isActive&#39; state of a customer contact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param contactId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toggleCustomerContactStateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = toggleCustomerContactStateValidateBeforeCall(isvId, customerId, contactId, _callback);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomer
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomer(Async)");
-        }
-
-        // verify the required parameter 'customerDto' is set
-        if (customerDto == null) {
-            throw new ApiException("Missing the required parameter 'customerDto' when calling updateCustomer(Async)");
-        }
-
-        return updateCustomerCall(isvId, customerDto, _callback);
-
-    }
-
-    /**
-     * Updates a customer
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @return CustomerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerDto updateCustomer(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto) throws ApiException {
-        ApiResponse<CustomerDto> localVarResp = updateCustomerWithHttpInfo(isvId, customerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a customer
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @return ApiResponse&lt;CustomerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerDto> updateCustomerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomerValidateBeforeCall(isvId, customerDto, null);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerDto customerDto, final ApiCallback<CustomerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomerValidateBeforeCall(isvId, customerDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomerContact
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerContactDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling updateCustomerContact(Async)");
-        }
-
-        // verify the required parameter 'customerContactDto' is set
-        if (customerContactDto == null) {
-            throw new ApiException("Missing the required parameter 'customerContactDto' when calling updateCustomerContact(Async)");
-        }
-
-        return updateCustomerContactCall(isvId, customerId, customerContactDto, _callback);
-
-    }
-
-    /**
-     * Updates a customer contact
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @return CustomerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerContactDto updateCustomerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
-        ApiResponse<CustomerContactDto> localVarResp = updateCustomerContactWithHttpInfo(isvId, customerId, customerContactDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a customer contact
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @return ApiResponse&lt;CustomerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerContactDto> updateCustomerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomerContactValidateBeforeCall(isvId, customerId, customerContactDto, null);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a customer contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param customerContactDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull CustomerContactDto customerContactDto, final ApiCallback<CustomerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomerContactValidateBeforeCall(isvId, customerId, customerContactDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomerTagAssignments
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param itemTagAssignmentDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerTagAssignmentsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = itemTagAssignmentDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/{customer_id}/tags"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "customer_id" + "}", localVarApiClient.escapeString(customerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomerTagAssignmentsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomerTagAssignments(Async)");
-        }
-
-        // verify the required parameter 'customerId' is set
-        if (customerId == null) {
-            throw new ApiException("Missing the required parameter 'customerId' when calling updateCustomerTagAssignments(Async)");
-        }
-
-        // verify the required parameter 'itemTagAssignmentDto' is set
-        if (itemTagAssignmentDto == null) {
-            throw new ApiException("Missing the required parameter 'itemTagAssignmentDto' when calling updateCustomerTagAssignments(Async)");
-        }
-
-        return updateCustomerTagAssignmentsCall(isvId, customerId, itemTagAssignmentDto, _callback);
-
-    }
-
-    /**
-     * Updates the tags of a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param itemTagAssignmentDto  (required)
-     * @return List&lt;ItemTagAssignmentDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ItemTagAssignmentDto> updateCustomerTagAssignments(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
-        ApiResponse<List<ItemTagAssignmentDto>> localVarResp = updateCustomerTagAssignmentsWithHttpInfo(isvId, customerId, itemTagAssignmentDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates the tags of a customer
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param itemTagAssignmentDto  (required)
-     * @return ApiResponse&lt;List&lt;ItemTagAssignmentDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ItemTagAssignmentDto>> updateCustomerTagAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomerTagAssignmentsValidateBeforeCall(isvId, customerId, itemTagAssignmentDto, null);
-        Type localVarReturnType = new TypeToken<List<ItemTagAssignmentDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates the tags of a customer (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (required)
-     * @param itemTagAssignmentDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerTagAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customerId, @javax.annotation.Nonnull List<ItemTagAssignmentDto> itemTagAssignmentDto, final ApiCallback<List<ItemTagAssignmentDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomerTagAssignmentsValidateBeforeCall(isvId, customerId, itemTagAssignmentDto, _callback);
-        Type localVarReturnType = new TypeToken<List<ItemTagAssignmentDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomerType
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customerTypeDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/customers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomerType(Async)");
-        }
-
-        // verify the required parameter 'customerTypeDto' is set
-        if (customerTypeDto == null) {
-            throw new ApiException("Missing the required parameter 'customerTypeDto' when calling updateCustomerType(Async)");
-        }
-
-        return updateCustomerTypeCall(isvId, customerTypeDto, _callback);
-
-    }
-
-    /**
-     * Updates a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @return CustomerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomerTypeDto updateCustomerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
-        ApiResponse<CustomerTypeDto> localVarResp = updateCustomerTypeWithHttpInfo(isvId, customerTypeDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a customer type
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @return ApiResponse&lt;CustomerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomerTypeDto> updateCustomerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomerTypeValidateBeforeCall(isvId, customerTypeDto, null);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a customer type (asynchronously)
-     * More information about &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016150318-CUSTOM-TYPES-AND-TAGS\&quot;&gt;custom types and tags&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param customerTypeDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomerTypeDto customerTypeDto, final ApiCallback<CustomerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomerTypeValidateBeforeCall(isvId, customerTypeDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

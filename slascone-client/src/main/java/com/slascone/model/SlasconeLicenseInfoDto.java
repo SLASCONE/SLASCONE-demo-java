@@ -13,65 +13,52 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SlasconeLicensingState;
-import java.io.IOException;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * SlasconeLicenseInfoDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  SlasconeLicenseInfoDto.JSON_PROPERTY_SLASCONE_LICENSING_STATE,
+  SlasconeLicenseInfoDto.JSON_PROPERTY_ERROR_MESSAGE,
+  SlasconeLicenseInfoDto.JSON_PROPERTY_SLASCONE_LICENSE_INFO
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class SlasconeLicenseInfoDto {
-  public static final String SERIALIZED_NAME_SLASCONE_LICENSING_STATE = "slascone_licensing_state";
-  @SerializedName(SERIALIZED_NAME_SLASCONE_LICENSING_STATE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_SLASCONE_LICENSING_STATE = "slascone_licensing_state";
+  @jakarta.annotation.Nullable
   private SlasconeLicensingState slasconeLicensingState;
 
-  public static final String SERIALIZED_NAME_ERROR_MESSAGE = "error_message";
-  @SerializedName(SERIALIZED_NAME_ERROR_MESSAGE)
-  @javax.annotation.Nullable
-  private String errorMessage;
+  public static final String JSON_PROPERTY_ERROR_MESSAGE = "error_message";
+  private JsonNullable<String> errorMessage = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SLASCONE_LICENSE_INFO = "slascone_license_info";
-  @SerializedName(SERIALIZED_NAME_SLASCONE_LICENSE_INFO)
-  @javax.annotation.Nullable
-  private LicenseInfoDto slasconeLicenseInfo;
+  public static final String JSON_PROPERTY_SLASCONE_LICENSE_INFO = "slascone_license_info";
+  private JsonNullable<LicenseInfoDto> slasconeLicenseInfo = JsonNullable.<LicenseInfoDto>undefined();
 
-  public SlasconeLicenseInfoDto() {
+  public SlasconeLicenseInfoDto() { 
   }
 
-  public SlasconeLicenseInfoDto slasconeLicensingState(@javax.annotation.Nullable SlasconeLicensingState slasconeLicensingState) {
+  public SlasconeLicenseInfoDto slasconeLicensingState(@jakarta.annotation.Nullable SlasconeLicensingState slasconeLicensingState) {
     this.slasconeLicensingState = slasconeLicensingState;
     return this;
   }
@@ -80,18 +67,23 @@ public class SlasconeLicenseInfoDto {
    * Get slasconeLicensingState
    * @return slasconeLicensingState
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SLASCONE_LICENSING_STATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public SlasconeLicensingState getSlasconeLicensingState() {
     return slasconeLicensingState;
   }
 
-  public void setSlasconeLicensingState(@javax.annotation.Nullable SlasconeLicensingState slasconeLicensingState) {
+
+  @JsonProperty(value = JSON_PROPERTY_SLASCONE_LICENSING_STATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSlasconeLicensingState(@jakarta.annotation.Nullable SlasconeLicensingState slasconeLicensingState) {
     this.slasconeLicensingState = slasconeLicensingState;
   }
 
 
-  public SlasconeLicenseInfoDto errorMessage(@javax.annotation.Nullable String errorMessage) {
-    this.errorMessage = errorMessage;
+  public SlasconeLicenseInfoDto errorMessage(@jakarta.annotation.Nullable String errorMessage) {
+    this.errorMessage = JsonNullable.<String>of(errorMessage);
     return this;
   }
 
@@ -99,18 +91,31 @@ public class SlasconeLicenseInfoDto {
    * Get errorMessage
    * @return errorMessage
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getErrorMessage() {
-    return errorMessage;
+        return errorMessage.orElse(null);
   }
 
-  public void setErrorMessage(@javax.annotation.Nullable String errorMessage) {
+  @JsonProperty(value = JSON_PROPERTY_ERROR_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getErrorMessage_JsonNullable() {
+    return errorMessage;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ERROR_MESSAGE)
+  public void setErrorMessage_JsonNullable(JsonNullable<String> errorMessage) {
     this.errorMessage = errorMessage;
   }
 
+  public void setErrorMessage(@jakarta.annotation.Nullable String errorMessage) {
+    this.errorMessage = JsonNullable.<String>of(errorMessage);
+  }
 
-  public SlasconeLicenseInfoDto slasconeLicenseInfo(@javax.annotation.Nullable LicenseInfoDto slasconeLicenseInfo) {
-    this.slasconeLicenseInfo = slasconeLicenseInfo;
+
+  public SlasconeLicenseInfoDto slasconeLicenseInfo(@jakarta.annotation.Nullable LicenseInfoDto slasconeLicenseInfo) {
+    this.slasconeLicenseInfo = JsonNullable.<LicenseInfoDto>of(slasconeLicenseInfo);
     return this;
   }
 
@@ -118,17 +123,32 @@ public class SlasconeLicenseInfoDto {
    * Get slasconeLicenseInfo
    * @return slasconeLicenseInfo
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LicenseInfoDto getSlasconeLicenseInfo() {
-    return slasconeLicenseInfo;
+        return slasconeLicenseInfo.orElse(null);
   }
 
-  public void setSlasconeLicenseInfo(@javax.annotation.Nullable LicenseInfoDto slasconeLicenseInfo) {
+  @JsonProperty(value = JSON_PROPERTY_SLASCONE_LICENSE_INFO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LicenseInfoDto> getSlasconeLicenseInfo_JsonNullable() {
+    return slasconeLicenseInfo;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SLASCONE_LICENSE_INFO)
+  public void setSlasconeLicenseInfo_JsonNullable(JsonNullable<LicenseInfoDto> slasconeLicenseInfo) {
     this.slasconeLicenseInfo = slasconeLicenseInfo;
   }
 
+  public void setSlasconeLicenseInfo(@jakarta.annotation.Nullable LicenseInfoDto slasconeLicenseInfo) {
+    this.slasconeLicenseInfo = JsonNullable.<LicenseInfoDto>of(slasconeLicenseInfo);
+  }
 
 
+  /**
+   * Return true if this SlasconeLicenseInfoDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -139,8 +159,8 @@ public class SlasconeLicenseInfoDto {
     }
     SlasconeLicenseInfoDto slasconeLicenseInfoDto = (SlasconeLicenseInfoDto) o;
     return Objects.equals(this.slasconeLicensingState, slasconeLicenseInfoDto.slasconeLicensingState) &&
-        Objects.equals(this.errorMessage, slasconeLicenseInfoDto.errorMessage) &&
-        Objects.equals(this.slasconeLicenseInfo, slasconeLicenseInfoDto.slasconeLicenseInfo);
+        equalsNullable(this.errorMessage, slasconeLicenseInfoDto.errorMessage) &&
+        equalsNullable(this.slasconeLicenseInfo, slasconeLicenseInfoDto.slasconeLicenseInfo);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -149,7 +169,7 @@ public class SlasconeLicenseInfoDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(slasconeLicensingState, errorMessage, slasconeLicenseInfo);
+    return Objects.hash(slasconeLicensingState, hashCodeNullable(errorMessage), hashCodeNullable(slasconeLicenseInfo));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -181,99 +201,54 @@ public class SlasconeLicenseInfoDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("slascone_licensing_state", "error_message", "slascone_license_info"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to SlasconeLicenseInfoDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!SlasconeLicenseInfoDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in SlasconeLicenseInfoDto is not found in the empty JSON string", SlasconeLicenseInfoDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!SlasconeLicenseInfoDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SlasconeLicenseInfoDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `slascone_licensing_state`
-      if (jsonObj.get("slascone_licensing_state") != null && !jsonObj.get("slascone_licensing_state").isJsonNull()) {
-        SlasconeLicensingState.validateJsonElement(jsonObj.get("slascone_licensing_state"));
-      }
-      if ((jsonObj.get("error_message") != null && !jsonObj.get("error_message").isJsonNull()) && !jsonObj.get("error_message").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `error_message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("error_message").toString()));
-      }
-      // validate the optional field `slascone_license_info`
-      if (jsonObj.get("slascone_license_info") != null && !jsonObj.get("slascone_license_info").isJsonNull()) {
-        LicenseInfoDto.validateJsonElement(jsonObj.get("slascone_license_info"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!SlasconeLicenseInfoDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'SlasconeLicenseInfoDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<SlasconeLicenseInfoDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(SlasconeLicenseInfoDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<SlasconeLicenseInfoDto>() {
-           @Override
-           public void write(JsonWriter out, SlasconeLicenseInfoDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public SlasconeLicenseInfoDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of SlasconeLicenseInfoDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of SlasconeLicenseInfoDto
-   * @throws IOException if the JSON string is invalid with respect to SlasconeLicenseInfoDto
-   */
-  public static SlasconeLicenseInfoDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, SlasconeLicenseInfoDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of SlasconeLicenseInfoDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `slascone_licensing_state` to the URL query string
+    if (getSlasconeLicensingState() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sslascone_licensing_state%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSlasconeLicensingState()))));
+    }
+
+    // add `error_message` to the URL query string
+    if (getErrorMessage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%serror_message%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getErrorMessage()))));
+    }
+
+    // add `slascone_license_info` to the URL query string
+    if (getSlasconeLicenseInfo() != null) {
+      joiner.add(getSlasconeLicenseInfo().toUrlQueryString(prefix + "slascone_license_info" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

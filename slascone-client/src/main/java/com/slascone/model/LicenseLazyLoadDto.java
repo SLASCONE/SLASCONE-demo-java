@@ -13,75 +13,67 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.LicenseTreeDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseLazyLoadDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseLazyLoadDto.JSON_PROPERTY_LICENSES,
+  LicenseLazyLoadDto.JSON_PROPERTY_MAX_COUNT,
+  LicenseLazyLoadDto.JSON_PROPERTY_CUSTOMER_COUNT
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseLazyLoadDto {
-  public static final String SERIALIZED_NAME_LICENSES = "licenses";
-  @SerializedName(SERIALIZED_NAME_LICENSES)
-  @javax.annotation.Nullable
-  private List<LicenseTreeDto> licenses;
+  public static final String JSON_PROPERTY_LICENSES = "licenses";
+  private JsonNullable<List<LicenseTreeDto>> licenses = JsonNullable.<List<LicenseTreeDto>>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_COUNT = "max_count";
-  @SerializedName(SERIALIZED_NAME_MAX_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_COUNT = "max_count";
+  @jakarta.annotation.Nullable
   private Integer maxCount;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_COUNT = "customer_count";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CUSTOMER_COUNT = "customer_count";
+  @jakarta.annotation.Nullable
   private Integer customerCount;
 
-  public LicenseLazyLoadDto() {
+  public LicenseLazyLoadDto() { 
   }
 
-  public LicenseLazyLoadDto licenses(@javax.annotation.Nullable List<LicenseTreeDto> licenses) {
-    this.licenses = licenses;
+  public LicenseLazyLoadDto licenses(@jakarta.annotation.Nullable List<LicenseTreeDto> licenses) {
+    this.licenses = JsonNullable.<List<LicenseTreeDto>>of(licenses);
     return this;
   }
 
   public LicenseLazyLoadDto addLicensesItem(LicenseTreeDto licensesItem) {
-    if (this.licenses == null) {
-      this.licenses = new ArrayList<>();
+    if (this.licenses == null || !this.licenses.isPresent()) {
+      this.licenses = JsonNullable.<List<LicenseTreeDto>>of(new ArrayList<>());
     }
-    this.licenses.add(licensesItem);
+    try {
+      this.licenses.get().add(licensesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -89,17 +81,30 @@ public class LicenseLazyLoadDto {
    * Get licenses
    * @return licenses
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<LicenseTreeDto> getLicenses() {
-    return licenses;
+        return licenses.orElse(null);
   }
 
-  public void setLicenses(@javax.annotation.Nullable List<LicenseTreeDto> licenses) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<LicenseTreeDto>> getLicenses_JsonNullable() {
+    return licenses;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSES)
+  public void setLicenses_JsonNullable(JsonNullable<List<LicenseTreeDto>> licenses) {
     this.licenses = licenses;
   }
 
+  public void setLicenses(@jakarta.annotation.Nullable List<LicenseTreeDto> licenses) {
+    this.licenses = JsonNullable.<List<LicenseTreeDto>>of(licenses);
+  }
 
-  public LicenseLazyLoadDto maxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  public LicenseLazyLoadDto maxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
@@ -108,17 +113,22 @@ public class LicenseLazyLoadDto {
    * Get maxCount
    * @return maxCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxCount() {
     return maxCount;
   }
 
-  public void setMaxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
   }
 
 
-  public LicenseLazyLoadDto customerCount(@javax.annotation.Nullable Integer customerCount) {
+  public LicenseLazyLoadDto customerCount(@jakarta.annotation.Nullable Integer customerCount) {
     this.customerCount = customerCount;
     return this;
   }
@@ -127,17 +137,24 @@ public class LicenseLazyLoadDto {
    * Get customerCount
    * @return customerCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getCustomerCount() {
     return customerCount;
   }
 
-  public void setCustomerCount(@javax.annotation.Nullable Integer customerCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomerCount(@jakarta.annotation.Nullable Integer customerCount) {
     this.customerCount = customerCount;
   }
 
 
-
+  /**
+   * Return true if this LicenseLazyLoadDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -147,7 +164,7 @@ public class LicenseLazyLoadDto {
       return false;
     }
     LicenseLazyLoadDto licenseLazyLoadDto = (LicenseLazyLoadDto) o;
-    return Objects.equals(this.licenses, licenseLazyLoadDto.licenses) &&
+    return equalsNullable(this.licenses, licenseLazyLoadDto.licenses) &&
         Objects.equals(this.maxCount, licenseLazyLoadDto.maxCount) &&
         Objects.equals(this.customerCount, licenseLazyLoadDto.customerCount);
   }
@@ -158,7 +175,7 @@ public class LicenseLazyLoadDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(licenses, maxCount, customerCount);
+    return Objects.hash(hashCodeNullable(licenses), maxCount, customerCount);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -190,102 +207,59 @@ public class LicenseLazyLoadDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("licenses", "max_count", "customer_count"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseLazyLoadDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseLazyLoadDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseLazyLoadDto is not found in the empty JSON string", LicenseLazyLoadDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseLazyLoadDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseLazyLoadDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (jsonObj.get("licenses") != null && !jsonObj.get("licenses").isJsonNull()) {
-        JsonArray jsonArraylicenses = jsonObj.getAsJsonArray("licenses");
-        if (jsonArraylicenses != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("licenses").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `licenses` to be an array in the JSON string but got `%s`", jsonObj.get("licenses").toString()));
-          }
-
-          // validate the optional field `licenses` (array)
-          for (int i = 0; i < jsonArraylicenses.size(); i++) {
-            LicenseTreeDto.validateJsonElement(jsonArraylicenses.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseLazyLoadDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseLazyLoadDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseLazyLoadDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseLazyLoadDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseLazyLoadDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseLazyLoadDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseLazyLoadDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseLazyLoadDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseLazyLoadDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseLazyLoadDto
-   */
-  public static LicenseLazyLoadDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseLazyLoadDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseLazyLoadDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `licenses` to the URL query string
+    if (getLicenses() != null) {
+      for (int i = 0; i < getLicenses().size(); i++) {
+        if (getLicenses().get(i) != null) {
+          joiner.add(getLicenses().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%slicenses%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `max_count` to the URL query string
+    if (getMaxCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxCount()))));
+    }
+
+    // add `customer_count` to the URL query string
+    if (getCustomerCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerCount()))));
+    }
+
+    return joiner.toString();
   }
 }
 

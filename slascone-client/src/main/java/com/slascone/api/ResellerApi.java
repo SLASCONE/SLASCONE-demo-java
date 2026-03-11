@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.ProblemDetails;
@@ -38,4275 +29,3573 @@ import com.slascone.model.ResellerTemplateDto;
 import com.slascone.model.ResellerTypeDto;
 import java.util.UUID;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
+    /**
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
+     */
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
+
+  public ResellerApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public ResellerApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Creates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto addReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
+    return addReseller(isvId, resellerDto, null);
+  }
+
+  /**
+   * Creates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto addReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = addResellerWithHttpInfo(isvId, resellerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> addResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
+    return addResellerWithHttpInfo(isvId, resellerDto, null);
+  }
+
+  /**
+   * Creates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> addResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addResellerRequestBuilder(isvId, resellerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addReseller", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addResellerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addReseller");
+    }
+    // verify the required parameter 'resellerDto' is set
+    if (resellerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerDto' when calling addReseller");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto addResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
+    return addResellerContact(isvId, resellerId, resellerContactDto, null);
+  }
+
+  /**
+   * Creates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto addResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerContactDto> localVarResponse = addResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> addResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
+    return addResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto, null);
+  }
+
+  /**
+   * Creates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> addResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addResellerContactRequestBuilder(isvId, resellerId, resellerContactDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addResellerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerContactDto>() {});
+        
+
+        return new ApiResponse<ResellerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addResellerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addResellerContact");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling addResellerContact");
+    }
+    // verify the required parameter 'resellerContactDto' is set
+    if (resellerContactDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerContactDto' when calling addResellerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerContactDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Grants access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto addResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
+    return addResellerTemplate(isvId, resellerTemplateDto, null);
+  }
+
+  /**
+   * Grants access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto addResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTemplateDto> localVarResponse = addResellerTemplateWithHttpInfo(isvId, resellerTemplateDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Grants access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> addResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
+    return addResellerTemplateWithHttpInfo(isvId, resellerTemplateDto, null);
+  }
+
+  /**
+   * Grants access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> addResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addResellerTemplateRequestBuilder(isvId, resellerTemplateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addResellerTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTemplateDto>() {});
+        
+
+        return new ApiResponse<ResellerTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addResellerTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addResellerTemplate");
+    }
+    // verify the required parameter 'resellerTemplateDto' is set
+    if (resellerTemplateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerTemplateDto' when calling addResellerTemplate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/templates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerTemplateDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto addResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
+    return addResellerType(isvId, resellerTypeDto, null);
+  }
+
+  /**
+   * Creates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto addResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTypeDto> localVarResponse = addResellerTypeWithHttpInfo(isvId, resellerTypeDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> addResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
+    return addResellerTypeWithHttpInfo(isvId, resellerTypeDto, null);
+  }
+
+  /**
+   * Creates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> addResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addResellerTypeRequestBuilder(isvId, resellerTypeDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addResellerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTypeDto>() {});
+        
+
+        return new ApiResponse<ResellerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addResellerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addResellerType");
+    }
+    // verify the required parameter 'resellerTypeDto' is set
+    if (resellerTypeDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerTypeDto' when calling addResellerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerTypeDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return List&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerDto> deleteReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return deleteReseller(isvId, resellerId, null);
+  }
+
+  /**
+   * Deletes a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerDto> deleteReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerDto>> localVarResponse = deleteResellerWithHttpInfo(isvId, resellerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerDto>> deleteResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return deleteResellerWithHttpInfo(isvId, resellerId, null);
+  }
+
+  /**
+   * Deletes a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerDto>> deleteResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteResellerRequestBuilder(isvId, resellerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteReseller", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteResellerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteReseller");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling deleteReseller");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto deleteResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity) throws ApiException {
+    return deleteResellerContact(isvId, resellerId, contactId, removeIdentity, null);
+  }
+
+  /**
+   * Deletes a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @param headers Optional headers to include in the request
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto deleteResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerContactDto> localVarResponse = deleteResellerContactWithHttpInfo(isvId, resellerId, contactId, removeIdentity, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> deleteResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity) throws ApiException {
+    return deleteResellerContactWithHttpInfo(isvId, resellerId, contactId, removeIdentity, null);
+  }
+
+  /**
+   * Deletes a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param removeIdentity  (optional, default to true)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> deleteResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteResellerContactRequestBuilder(isvId, resellerId, contactId, removeIdentity, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteResellerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerContactDto>() {});
+        
+
+        return new ApiResponse<ResellerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteResellerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, @jakarta.annotation.Nullable Boolean removeIdentity, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteResellerContact");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling deleteResellerContact");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling deleteResellerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "remove_identity";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("remove_identity", removeIdentity));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Revokes access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param templateId  (required)
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto deleteResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID templateId) throws ApiException {
+    return deleteResellerTemplate(isvId, resellerId, templateId, null);
+  }
+
+  /**
+   * Revokes access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param templateId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto deleteResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID templateId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTemplateDto> localVarResponse = deleteResellerTemplateWithHttpInfo(isvId, resellerId, templateId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Revokes access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param templateId  (required)
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> deleteResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID templateId) throws ApiException {
+    return deleteResellerTemplateWithHttpInfo(isvId, resellerId, templateId, null);
+  }
+
+  /**
+   * Revokes access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param templateId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> deleteResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID templateId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteResellerTemplateRequestBuilder(isvId, resellerId, templateId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteResellerTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTemplateDto>() {});
+        
+
+        return new ApiResponse<ResellerTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteResellerTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID templateId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteResellerTemplate");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling deleteResellerTemplate");
+    }
+    // verify the required parameter 'templateId' is set
+    if (templateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'templateId' when calling deleteResellerTemplate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/templates/{template_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()))
+        .replace("{template_id}", ApiClient.urlEncode(templateId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all resellers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return List&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerDto> getAllResellers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getAllResellers(isvId, name, null);
+  }
+
+  /**
+   * Returns all resellers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerDto> getAllResellers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerDto>> localVarResponse = getAllResellersWithHttpInfo(isvId, name, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all resellers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerDto>> getAllResellersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getAllResellersWithHttpInfo(isvId, name, null);
+  }
+
+  /**
+   * Returns all resellers
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerDto>> getAllResellersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllResellersRequestBuilder(isvId, name, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllResellers", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllResellersRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllResellers");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("name", name));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all resellers with reduced information
+   * 
+   * @param isvId  (required)
+   * @return List&lt;ResellerLightDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerLightDto> getAllResellersLight(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllResellersLight(isvId, null);
+  }
+
+  /**
+   * Returns all resellers with reduced information
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerLightDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerLightDto> getAllResellersLight(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerLightDto>> localVarResponse = getAllResellersLightWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all resellers with reduced information
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;ResellerLightDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerLightDto>> getAllResellersLightWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllResellersLightWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns all resellers with reduced information
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerLightDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerLightDto>> getAllResellersLightWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllResellersLightRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllResellersLight", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerLightDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerLightDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerLightDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerLightDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllResellersLightRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllResellersLight");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/light"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all resellers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param resellerFilterDto  (required)
+   * @return ResellerLazyLoadDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerLazyLoadDto getFilteredResellers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerFilterDto resellerFilterDto) throws ApiException {
+    return getFilteredResellers(isvId, resellerFilterDto, null);
+  }
+
+  /**
+   * Returns all resellers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param resellerFilterDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerLazyLoadDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerLazyLoadDto getFilteredResellers(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerFilterDto resellerFilterDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerLazyLoadDto> localVarResponse = getFilteredResellersWithHttpInfo(isvId, resellerFilterDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all resellers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param resellerFilterDto  (required)
+   * @return ApiResponse&lt;ResellerLazyLoadDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerLazyLoadDto> getFilteredResellersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerFilterDto resellerFilterDto) throws ApiException {
+    return getFilteredResellersWithHttpInfo(isvId, resellerFilterDto, null);
+  }
+
+  /**
+   * Returns all resellers matching a filter
+   * 
+   * @param isvId  (required)
+   * @param resellerFilterDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerLazyLoadDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerLazyLoadDto> getFilteredResellersWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerFilterDto resellerFilterDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getFilteredResellersRequestBuilder(isvId, resellerFilterDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getFilteredResellers", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerLazyLoadDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerLazyLoadDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerLazyLoadDto>() {});
+        
+
+        return new ApiResponse<ResellerLazyLoadDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getFilteredResellersRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerFilterDto resellerFilterDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getFilteredResellers");
+    }
+    // verify the required parameter 'resellerFilterDto' is set
+    if (resellerFilterDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerFilterDto' when calling getFilteredResellers");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/filtered"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerFilterDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getReseller(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = getResellerWithHttpInfo(isvId, resellerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getResellerWithHttpInfo(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerRequestBuilder(isvId, resellerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getReseller", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getReseller");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling getReseller");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getResellerByNumber(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String resellerNumber) throws ApiException {
+    return getResellerByNumber(isvId, resellerNumber, null);
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getResellerByNumber(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String resellerNumber, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = getResellerByNumberWithHttpInfo(isvId, resellerNumber, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerByNumberWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String resellerNumber) throws ApiException {
+    return getResellerByNumberWithHttpInfo(isvId, resellerNumber, null);
+  }
+
+  /**
+   * Returns a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerByNumberWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String resellerNumber, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerByNumberRequestBuilder(isvId, resellerNumber, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerByNumber", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerByNumberRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String resellerNumber, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerByNumber");
+    }
+    // verify the required parameter 'resellerNumber' is set
+    if (resellerNumber == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerNumber' when calling getResellerByNumber");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/by_number"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "reseller_number";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("reseller_number", resellerNumber));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all resellers of the logged in user
+   * 
+   * @param isvId  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getResellerByUser(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerByUser(isvId, null);
+  }
+
+  /**
+   * Returns all resellers of the logged in user
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto getResellerByUser(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = getResellerByUserWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all resellers of the logged in user
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerByUserWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerByUserWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns all resellers of the logged in user
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> getResellerByUserWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerByUserRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerByUser", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerByUserRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerByUser");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/by_user"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a reseller contact
+   * 
+   * @param isvId  (required)
+   * @return List&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerContactDto> getResellerContactByUserId(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerContactByUserId(isvId, null);
+  }
+
+  /**
+   * Returns a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerContactDto> getResellerContactByUserId(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerContactDto>> localVarResponse = getResellerContactByUserIdWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a reseller contact
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerContactDto>> getResellerContactByUserIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerContactByUserIdWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerContactDto>> getResellerContactByUserIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerContactByUserIdRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerContactByUserId", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerContactDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerContactDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerContactDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerContactDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerContactByUserIdRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerContactByUserId");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a reseller&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return List&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerContactDto> getResellerContacts(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getResellerContacts(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns a reseller&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerContactDto> getResellerContacts(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerContactDto>> localVarResponse = getResellerContactsWithHttpInfo(isvId, resellerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a reseller&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerContactDto>> getResellerContactsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getResellerContactsWithHttpInfo(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns a reseller&#39;s contacts
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerContactDto>> getResellerContactsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerContactsRequestBuilder(isvId, resellerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerContacts", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerContactDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerContactDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerContactDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerContactDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerContactsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerContacts");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling getResellerContacts");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns the number of all resellers
+   * 
+   * @param isvId  (required)
+   * @return List&lt;Object&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<Object> getResellerCount(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerCount(isvId, null);
+  }
+
+  /**
+   * Returns the number of all resellers
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;Object&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<Object> getResellerCount(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<Object>> localVarResponse = getResellerCountWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns the number of all resellers
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;Object&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<Object>> getResellerCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getResellerCountWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Returns the number of all resellers
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;Object&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<Object>> getResellerCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerCountRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerCount", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<Object>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<Object> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<Object>>() {});
+        
+
+        return new ApiResponse<List<Object>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerCountRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerCount");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/count"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all available product templates (editions) for a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return List&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerTemplateDto> getResellerTemplates(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getResellerTemplates(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns all available product templates (editions) for a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerTemplateDto> getResellerTemplates(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerTemplateDto>> localVarResponse = getResellerTemplatesWithHttpInfo(isvId, resellerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all available product templates (editions) for a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @return ApiResponse&lt;List&lt;ResellerTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerTemplateDto>> getResellerTemplatesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId) throws ApiException {
+    return getResellerTemplatesWithHttpInfo(isvId, resellerId, null);
+  }
+
+  /**
+   * Returns all available product templates (editions) for a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerTemplateDto>> getResellerTemplatesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerTemplatesRequestBuilder(isvId, resellerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerTemplates", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerTemplateDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerTemplateDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerTemplateDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerTemplateDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerTemplatesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerTemplates");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling getResellerTemplates");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/templates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all reseller types
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return List&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerTypeDto> getResellerTypes(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getResellerTypes(isvId, name, null);
+  }
+
+  /**
+   * Returns all reseller types
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<ResellerTypeDto> getResellerTypes(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<ResellerTypeDto>> localVarResponse = getResellerTypesWithHttpInfo(isvId, name, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all reseller types
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @return ApiResponse&lt;List&lt;ResellerTypeDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerTypeDto>> getResellerTypesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name) throws ApiException {
+    return getResellerTypesWithHttpInfo(isvId, name, null);
+  }
+
+  /**
+   * Returns all reseller types
+   * 
+   * @param isvId  (required)
+   * @param name  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;ResellerTypeDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<ResellerTypeDto>> getResellerTypesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getResellerTypesRequestBuilder(isvId, name, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getResellerTypes", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<ResellerTypeDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<ResellerTypeDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<ResellerTypeDto>>() {});
+        
+
+        return new ApiResponse<List<ResellerTypeDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getResellerTypesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String name, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getResellerTypes");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("name", name));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a reseller type
+   * 
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto removeResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId) throws ApiException {
+    return removeResellerType(isvId, typeId, newTypeId, null);
+  }
+
+  /**
+   * Deletes a reseller type
+   * 
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto removeResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTypeDto> localVarResponse = removeResellerTypeWithHttpInfo(isvId, typeId, newTypeId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Deletes a reseller type
+   * 
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> removeResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId) throws ApiException {
+    return removeResellerTypeWithHttpInfo(isvId, typeId, newTypeId, null);
+  }
+
+  /**
+   * Deletes a reseller type
+   * 
+   * @param isvId  (required)
+   * @param typeId  (required)
+   * @param newTypeId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> removeResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = removeResellerTypeRequestBuilder(isvId, typeId, newTypeId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("removeResellerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTypeDto>() {});
+        
+
+        return new ApiResponse<ResellerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder removeResellerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID typeId, @jakarta.annotation.Nonnull UUID newTypeId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling removeResellerType");
+    }
+    // verify the required parameter 'typeId' is set
+    if (typeId == null) {
+      throw new ApiException(400, "Missing the required parameter 'typeId' when calling removeResellerType");
+    }
+    // verify the required parameter 'newTypeId' is set
+    if (newTypeId == null) {
+      throw new ApiException(400, "Missing the required parameter 'newTypeId' when calling removeResellerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/types/{type_id}/new_type/{new_type_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{type_id}", ApiClient.urlEncode(typeId.toString()))
+        .replace("{new_type_id}", ApiClient.urlEncode(newTypeId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ResellerDto resellerGetResellerByResellerNumberDeprecated(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String resellerNumber) throws ApiException {
+    return resellerGetResellerByResellerNumberDeprecated(isvId, resellerNumber, null);
+  }
+
+  /**
+   * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ResellerDto resellerGetResellerByResellerNumberDeprecated(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String resellerNumber, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(isvId, resellerNumber, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ApiResponse<ResellerDto> resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String resellerNumber) throws ApiException {
+    return resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(isvId, resellerNumber, null);
+  }
+
+  /**
+   * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
+   * 
+   * @param isvId  (required)
+   * @param resellerNumber  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   * @deprecated
+   */
+  @Deprecated
+  public ApiResponse<ResellerDto> resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String resellerNumber, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = resellerGetResellerByResellerNumberDeprecatedRequestBuilder(isvId, resellerNumber, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("resellerGetResellerByResellerNumberDeprecated", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder resellerGetResellerByResellerNumberDeprecatedRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String resellerNumber, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling resellerGetResellerByResellerNumberDeprecated");
+    }
+    // verify the required parameter 'resellerNumber' is set
+    if (resellerNumber == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerNumber' when calling resellerGetResellerByResellerNumberDeprecated");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/number/{reseller_number}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_number}", ApiClient.urlEncode(resellerNumber.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Sends a new invitation email to a reseller contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void resendResellerContactInvitation(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    resendResellerContactInvitation(isvId, resellerId, contactId, null);
+  }
+
+  /**
+   * Sends a new invitation email to a reseller contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void resendResellerContactInvitation(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    resendResellerContactInvitationWithHttpInfo(isvId, resellerId, contactId, headers);
+  }
+
+  /**
+   * Sends a new invitation email to a reseller contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> resendResellerContactInvitationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return resendResellerContactInvitationWithHttpInfo(isvId, resellerId, contactId, null);
+  }
+
+  /**
+   * Sends a new invitation email to a reseller contact
+   * A first invitation is send during creation of a contact
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> resendResellerContactInvitationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = resendResellerContactInvitationRequestBuilder(isvId, resellerId, contactId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("resendResellerContactInvitation", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder resendResellerContactInvitationRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling resendResellerContactInvitation");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling resendResellerContactInvitation");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling resendResellerContactInvitation");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/email/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Toggles a reseller contact state
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto toggleResellerContactState(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return toggleResellerContactState(isvId, resellerId, contactId, null);
+  }
+
+  /**
+   * Toggles a reseller contact state
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto toggleResellerContactState(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerContactDto> localVarResponse = toggleResellerContactStateWithHttpInfo(isvId, resellerId, contactId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Toggles a reseller contact state
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> toggleResellerContactStateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId) throws ApiException {
+    return toggleResellerContactStateWithHttpInfo(isvId, resellerId, contactId, null);
+  }
+
+  /**
+   * Toggles a reseller contact state
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param contactId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> toggleResellerContactStateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = toggleResellerContactStateRequestBuilder(isvId, resellerId, contactId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("toggleResellerContactState", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerContactDto>() {});
+        
+
+        return new ApiResponse<ResellerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder toggleResellerContactStateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull UUID contactId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling toggleResellerContactState");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling toggleResellerContactState");
+    }
+    // verify the required parameter 'contactId' is set
+    if (contactId == null) {
+      throw new ApiException(400, "Missing the required parameter 'contactId' when calling toggleResellerContactState");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/{contact_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()))
+        .replace("{contact_id}", ApiClient.urlEncode(contactId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto updateReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
+    return updateReseller(isvId, resellerDto, null);
+  }
+
+  /**
+   * Updates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerDto updateReseller(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerDto> localVarResponse = updateResellerWithHttpInfo(isvId, resellerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> updateResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
+    return updateResellerWithHttpInfo(isvId, resellerDto, null);
+  }
+
+  /**
+   * Updates a reseller
+   * 
+   * @param isvId  (required)
+   * @param resellerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerDto> updateResellerWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateResellerRequestBuilder(isvId, resellerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateReseller", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerDto>() {});
+        
+
+        return new ApiResponse<ResellerDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateResellerRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerDto resellerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateReseller");
+    }
+    // verify the required parameter 'resellerDto' is set
+    if (resellerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerDto' when calling updateReseller");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto updateResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
+    return updateResellerContact(isvId, resellerId, resellerContactDto, null);
+  }
+
+  /**
+   * Updates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerContactDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerContactDto updateResellerContact(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerContactDto> localVarResponse = updateResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> updateResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
+    return updateResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto, null);
+  }
+
+  /**
+   * Updates a reseller contact
+   * 
+   * @param isvId  (required)
+   * @param resellerId  (required)
+   * @param resellerContactDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerContactDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerContactDto> updateResellerContactWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateResellerContactRequestBuilder(isvId, resellerId, resellerContactDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateResellerContact", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerContactDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerContactDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerContactDto>() {});
+        
+
+        return new ApiResponse<ResellerContactDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateResellerContactRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID resellerId, @jakarta.annotation.Nonnull ResellerContactDto resellerContactDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateResellerContact");
+    }
+    // verify the required parameter 'resellerId' is set
+    if (resellerId == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerId' when calling updateResellerContact");
+    }
+    // verify the required parameter 'resellerContactDto' is set
+    if (resellerContactDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerContactDto' when calling updateResellerContact");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{reseller_id}", ApiClient.urlEncode(resellerId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerContactDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto updateResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
+    return updateResellerTemplate(isvId, resellerTemplateDto, null);
+  }
+
+  /**
+   * Updates access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTemplateDto updateResellerTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTemplateDto> localVarResponse = updateResellerTemplateWithHttpInfo(isvId, resellerTemplateDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> updateResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
+    return updateResellerTemplateWithHttpInfo(isvId, resellerTemplateDto, null);
+  }
+
+  /**
+   * Updates access to a product templates (edition)
+   * 
+   * @param isvId  (required)
+   * @param resellerTemplateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTemplateDto> updateResellerTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateResellerTemplateRequestBuilder(isvId, resellerTemplateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateResellerTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTemplateDto>() {});
+        
+
+        return new ApiResponse<ResellerTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateResellerTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateResellerTemplate");
+    }
+    // verify the required parameter 'resellerTemplateDto' is set
+    if (resellerTemplateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerTemplateDto' when calling updateResellerTemplate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/templates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerTemplateDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto updateResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
+    return updateResellerType(isvId, resellerTypeDto, null);
+  }
+
+  /**
+   * Updates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ResellerTypeDto
+   * @throws ApiException if fails to make API call
+   */
+  public ResellerTypeDto updateResellerType(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ResellerTypeDto> localVarResponse = updateResellerTypeWithHttpInfo(isvId, resellerTypeDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> updateResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
+    return updateResellerTypeWithHttpInfo(isvId, resellerTypeDto, null);
+  }
+
+  /**
+   * Updates a reseller type
+   * 
+   * @param isvId  (required)
+   * @param resellerTypeDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ResellerTypeDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ResellerTypeDto> updateResellerTypeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateResellerTypeRequestBuilder(isvId, resellerTypeDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateResellerType", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ResellerTypeDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ResellerTypeDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ResellerTypeDto>() {});
+        
+
+        return new ApiResponse<ResellerTypeDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateResellerTypeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ResellerTypeDto resellerTypeDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateResellerType");
+    }
+    // verify the required parameter 'resellerTypeDto' is set
+    if (resellerTypeDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'resellerTypeDto' when calling updateResellerType");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(resellerTypeDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-    public ResellerApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public ResellerApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
-    /**
-     * Build call for addReseller
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addResellerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addReseller(Async)");
-        }
-
-        // verify the required parameter 'resellerDto' is set
-        if (resellerDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerDto' when calling addReseller(Async)");
-        }
-
-        return addResellerCall(isvId, resellerDto, _callback);
-
-    }
-
-    /**
-     * Creates a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerDto addReseller(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = addResellerWithHttpInfo(isvId, resellerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerDto> addResellerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
-        okhttp3.Call localVarCall = addResellerValidateBeforeCall(isvId, resellerDto, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addResellerValidateBeforeCall(isvId, resellerDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addResellerContact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerContactDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addResellerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addResellerContact(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling addResellerContact(Async)");
-        }
-
-        // verify the required parameter 'resellerContactDto' is set
-        if (resellerContactDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerContactDto' when calling addResellerContact(Async)");
-        }
-
-        return addResellerContactCall(isvId, resellerId, resellerContactDto, _callback);
-
-    }
-
-    /**
-     * Creates a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @return ResellerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerContactDto addResellerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
-        ApiResponse<ResellerContactDto> localVarResp = addResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @return ApiResponse&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerContactDto> addResellerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
-        okhttp3.Call localVarCall = addResellerContactValidateBeforeCall(isvId, resellerId, resellerContactDto, null);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a reseller contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback<ResellerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addResellerContactValidateBeforeCall(isvId, resellerId, resellerContactDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addResellerTemplate
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerTemplateDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/templates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addResellerTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addResellerTemplate(Async)");
-        }
-
-        // verify the required parameter 'resellerTemplateDto' is set
-        if (resellerTemplateDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerTemplateDto' when calling addResellerTemplate(Async)");
-        }
-
-        return addResellerTemplateCall(isvId, resellerTemplateDto, _callback);
-
-    }
-
-    /**
-     * Grants access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @return ResellerTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTemplateDto addResellerTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
-        ApiResponse<ResellerTemplateDto> localVarResp = addResellerTemplateWithHttpInfo(isvId, resellerTemplateDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Grants access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @return ApiResponse&lt;ResellerTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTemplateDto> addResellerTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
-        okhttp3.Call localVarCall = addResellerTemplateValidateBeforeCall(isvId, resellerTemplateDto, null);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Grants access to a product templates (edition) (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback<ResellerTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addResellerTemplateValidateBeforeCall(isvId, resellerTemplateDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addResellerType
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerTypeDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addResellerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addResellerType(Async)");
-        }
-
-        // verify the required parameter 'resellerTypeDto' is set
-        if (resellerTypeDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerTypeDto' when calling addResellerType(Async)");
-        }
-
-        return addResellerTypeCall(isvId, resellerTypeDto, _callback);
-
-    }
-
-    /**
-     * Creates a reseller type
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @return ResellerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTypeDto addResellerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
-        ApiResponse<ResellerTypeDto> localVarResp = addResellerTypeWithHttpInfo(isvId, resellerTypeDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a reseller type
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @return ApiResponse&lt;ResellerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTypeDto> addResellerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
-        okhttp3.Call localVarCall = addResellerTypeValidateBeforeCall(isvId, resellerTypeDto, null);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a reseller type (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addResellerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback<ResellerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addResellerTypeValidateBeforeCall(isvId, resellerTypeDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteReseller
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteResellerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteReseller(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling deleteReseller(Async)");
-        }
-
-        return deleteResellerCall(isvId, resellerId, _callback);
-
-    }
-
-    /**
-     * Deletes a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return List&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerDto> deleteReseller(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        ApiResponse<List<ResellerDto>> localVarResp = deleteResellerWithHttpInfo(isvId, resellerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerDto>> deleteResellerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        okhttp3.Call localVarCall = deleteResellerValidateBeforeCall(isvId, resellerId, null);
-        Type localVarReturnType = new TypeToken<List<ResellerDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback<List<ResellerDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteResellerValidateBeforeCall(isvId, resellerId, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteResellerContact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (removeIdentity != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("remove_identity", removeIdentity));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteResellerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteResellerContact(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling deleteResellerContact(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling deleteResellerContact(Async)");
-        }
-
-        return deleteResellerContactCall(isvId, resellerId, contactId, removeIdentity, _callback);
-
-    }
-
-    /**
-     * Deletes a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @return ResellerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerContactDto deleteResellerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity) throws ApiException {
-        ApiResponse<ResellerContactDto> localVarResp = deleteResellerContactWithHttpInfo(isvId, resellerId, contactId, removeIdentity);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @return ApiResponse&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerContactDto> deleteResellerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity) throws ApiException {
-        okhttp3.Call localVarCall = deleteResellerContactValidateBeforeCall(isvId, resellerId, contactId, removeIdentity, null);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a reseller contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param removeIdentity  (optional, default to true)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, @javax.annotation.Nullable Boolean removeIdentity, final ApiCallback<ResellerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteResellerContactValidateBeforeCall(isvId, resellerId, contactId, removeIdentity, _callback);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteResellerTemplate
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param templateId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID templateId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/templates/{template_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()))
-            .replace("{" + "template_id" + "}", localVarApiClient.escapeString(templateId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteResellerTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID templateId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteResellerTemplate(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling deleteResellerTemplate(Async)");
-        }
-
-        // verify the required parameter 'templateId' is set
-        if (templateId == null) {
-            throw new ApiException("Missing the required parameter 'templateId' when calling deleteResellerTemplate(Async)");
-        }
-
-        return deleteResellerTemplateCall(isvId, resellerId, templateId, _callback);
-
-    }
-
-    /**
-     * Revokes access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param templateId  (required)
-     * @return ResellerTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTemplateDto deleteResellerTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID templateId) throws ApiException {
-        ApiResponse<ResellerTemplateDto> localVarResp = deleteResellerTemplateWithHttpInfo(isvId, resellerId, templateId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Revokes access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param templateId  (required)
-     * @return ApiResponse&lt;ResellerTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTemplateDto> deleteResellerTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID templateId) throws ApiException {
-        okhttp3.Call localVarCall = deleteResellerTemplateValidateBeforeCall(isvId, resellerId, templateId, null);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Revokes access to a product templates (edition) (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param templateId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteResellerTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID templateId, final ApiCallback<ResellerTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteResellerTemplateValidateBeforeCall(isvId, resellerId, templateId, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllResellers
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllResellersCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (name != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("name", name));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllResellersValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllResellers(Async)");
-        }
-
-        return getAllResellersCall(isvId, name, _callback);
-
-    }
-
-    /**
-     * Returns all resellers
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return List&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerDto> getAllResellers(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        ApiResponse<List<ResellerDto>> localVarResp = getAllResellersWithHttpInfo(isvId, name);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all resellers
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return ApiResponse&lt;List&lt;ResellerDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerDto>> getAllResellersWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        okhttp3.Call localVarCall = getAllResellersValidateBeforeCall(isvId, name, null);
-        Type localVarReturnType = new TypeToken<List<ResellerDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all resellers (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllResellersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback<List<ResellerDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllResellersValidateBeforeCall(isvId, name, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllResellersLight
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllResellersLightCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/light"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllResellersLightValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllResellersLight(Async)");
-        }
-
-        return getAllResellersLightCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns all resellers with reduced information
-     * 
-     * @param isvId  (required)
-     * @return List&lt;ResellerLightDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerLightDto> getAllResellersLight(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<ResellerLightDto>> localVarResp = getAllResellersLightWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all resellers with reduced information
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;ResellerLightDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerLightDto>> getAllResellersLightWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getAllResellersLightValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<ResellerLightDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all resellers with reduced information (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllResellersLightAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<ResellerLightDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllResellersLightValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerLightDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getFilteredResellers
-     * @param isvId  (required)
-     * @param resellerFilterDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getFilteredResellersCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerFilterDto resellerFilterDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerFilterDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/filtered"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getFilteredResellersValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerFilterDto resellerFilterDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getFilteredResellers(Async)");
-        }
-
-        // verify the required parameter 'resellerFilterDto' is set
-        if (resellerFilterDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerFilterDto' when calling getFilteredResellers(Async)");
-        }
-
-        return getFilteredResellersCall(isvId, resellerFilterDto, _callback);
-
-    }
-
-    /**
-     * Returns all resellers matching a filter
-     * 
-     * @param isvId  (required)
-     * @param resellerFilterDto  (required)
-     * @return ResellerLazyLoadDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerLazyLoadDto getFilteredResellers(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerFilterDto resellerFilterDto) throws ApiException {
-        ApiResponse<ResellerLazyLoadDto> localVarResp = getFilteredResellersWithHttpInfo(isvId, resellerFilterDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all resellers matching a filter
-     * 
-     * @param isvId  (required)
-     * @param resellerFilterDto  (required)
-     * @return ApiResponse&lt;ResellerLazyLoadDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerLazyLoadDto> getFilteredResellersWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerFilterDto resellerFilterDto) throws ApiException {
-        okhttp3.Call localVarCall = getFilteredResellersValidateBeforeCall(isvId, resellerFilterDto, null);
-        Type localVarReturnType = new TypeToken<ResellerLazyLoadDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all resellers matching a filter (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerFilterDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getFilteredResellersAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerFilterDto resellerFilterDto, final ApiCallback<ResellerLazyLoadDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getFilteredResellersValidateBeforeCall(isvId, resellerFilterDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerLazyLoadDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getReseller
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getReseller(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling getReseller(Async)");
-        }
-
-        return getResellerCall(isvId, resellerId, _callback);
-
-    }
-
-    /**
-     * Returns a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerDto getReseller(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = getResellerWithHttpInfo(isvId, resellerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerDto> getResellerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerValidateBeforeCall(isvId, resellerId, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerValidateBeforeCall(isvId, resellerId, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerByNumber
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerByNumberCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String resellerNumber, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/by_number"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (resellerNumber != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("reseller_number", resellerNumber));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerByNumberValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String resellerNumber, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerByNumber(Async)");
-        }
-
-        // verify the required parameter 'resellerNumber' is set
-        if (resellerNumber == null) {
-            throw new ApiException("Missing the required parameter 'resellerNumber' when calling getResellerByNumber(Async)");
-        }
-
-        return getResellerByNumberCall(isvId, resellerNumber, _callback);
-
-    }
-
-    /**
-     * Returns a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerDto getResellerByNumber(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String resellerNumber) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = getResellerByNumberWithHttpInfo(isvId, resellerNumber);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerDto> getResellerByNumberWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String resellerNumber) throws ApiException {
-        okhttp3.Call localVarCall = getResellerByNumberValidateBeforeCall(isvId, resellerNumber, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerByNumberAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String resellerNumber, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerByNumberValidateBeforeCall(isvId, resellerNumber, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerByUser
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerByUserCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/by_user"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerByUserValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerByUser(Async)");
-        }
-
-        return getResellerByUserCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns all resellers of the logged in user
-     * 
-     * @param isvId  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerDto getResellerByUser(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = getResellerByUserWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all resellers of the logged in user
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerDto> getResellerByUserWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerByUserValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all resellers of the logged in user (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerByUserAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerByUserValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerContactByUserId
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerContactByUserIdCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerContactByUserIdValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerContactByUserId(Async)");
-        }
-
-        return getResellerContactByUserIdCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns a reseller contact
-     * 
-     * @param isvId  (required)
-     * @return List&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerContactDto> getResellerContactByUserId(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<ResellerContactDto>> localVarResp = getResellerContactByUserIdWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a reseller contact
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerContactDto>> getResellerContactByUserIdWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerContactByUserIdValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<ResellerContactDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a reseller contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerContactByUserIdAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<ResellerContactDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerContactByUserIdValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerContactDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerContacts
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerContactsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerContactsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerContacts(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling getResellerContacts(Async)");
-        }
-
-        return getResellerContactsCall(isvId, resellerId, _callback);
-
-    }
-
-    /**
-     * Returns a reseller&#39;s contacts
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return List&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerContactDto> getResellerContacts(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        ApiResponse<List<ResellerContactDto>> localVarResp = getResellerContactsWithHttpInfo(isvId, resellerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a reseller&#39;s contacts
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return ApiResponse&lt;List&lt;ResellerContactDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerContactDto>> getResellerContactsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerContactsValidateBeforeCall(isvId, resellerId, null);
-        Type localVarReturnType = new TypeToken<List<ResellerContactDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a reseller&#39;s contacts (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerContactsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback<List<ResellerContactDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerContactsValidateBeforeCall(isvId, resellerId, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerContactDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerCount
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerCountCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/count"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerCountValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerCount(Async)");
-        }
-
-        return getResellerCountCall(isvId, _callback);
-
-    }
-
-    /**
-     * Returns the number of all resellers
-     * 
-     * @param isvId  (required)
-     * @return List&lt;Object&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<Object> getResellerCount(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<Object>> localVarResp = getResellerCountWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the number of all resellers
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;Object&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<Object>> getResellerCountWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerCountValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<Object>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the number of all resellers (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerCountAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<Object>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerCountValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<Object>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerTemplates
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerTemplatesCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/templates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerTemplatesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerTemplates(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling getResellerTemplates(Async)");
-        }
-
-        return getResellerTemplatesCall(isvId, resellerId, _callback);
-
-    }
-
-    /**
-     * Returns all available product templates (editions) for a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return List&lt;ResellerTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerTemplateDto> getResellerTemplates(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        ApiResponse<List<ResellerTemplateDto>> localVarResp = getResellerTemplatesWithHttpInfo(isvId, resellerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all available product templates (editions) for a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @return ApiResponse&lt;List&lt;ResellerTemplateDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerTemplateDto>> getResellerTemplatesWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId) throws ApiException {
-        okhttp3.Call localVarCall = getResellerTemplatesValidateBeforeCall(isvId, resellerId, null);
-        Type localVarReturnType = new TypeToken<List<ResellerTemplateDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all available product templates (editions) for a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerTemplatesAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, final ApiCallback<List<ResellerTemplateDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerTemplatesValidateBeforeCall(isvId, resellerId, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerTemplateDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getResellerTypes
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerTypesCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (name != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("name", name));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getResellerTypesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getResellerTypes(Async)");
-        }
-
-        return getResellerTypesCall(isvId, name, _callback);
-
-    }
-
-    /**
-     * Returns all reseller types
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return List&lt;ResellerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<ResellerTypeDto> getResellerTypes(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        ApiResponse<List<ResellerTypeDto>> localVarResp = getResellerTypesWithHttpInfo(isvId, name);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all reseller types
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @return ApiResponse&lt;List&lt;ResellerTypeDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<ResellerTypeDto>> getResellerTypesWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name) throws ApiException {
-        okhttp3.Call localVarCall = getResellerTypesValidateBeforeCall(isvId, name, null);
-        Type localVarReturnType = new TypeToken<List<ResellerTypeDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all reseller types (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param name  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getResellerTypesAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String name, final ApiCallback<List<ResellerTypeDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getResellerTypesValidateBeforeCall(isvId, name, _callback);
-        Type localVarReturnType = new TypeToken<List<ResellerTypeDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for removeResellerType
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call removeResellerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/types/{type_id}/new_type/{new_type_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "type_id" + "}", localVarApiClient.escapeString(typeId.toString()))
-            .replace("{" + "new_type_id" + "}", localVarApiClient.escapeString(newTypeId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call removeResellerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling removeResellerType(Async)");
-        }
-
-        // verify the required parameter 'typeId' is set
-        if (typeId == null) {
-            throw new ApiException("Missing the required parameter 'typeId' when calling removeResellerType(Async)");
-        }
-
-        // verify the required parameter 'newTypeId' is set
-        if (newTypeId == null) {
-            throw new ApiException("Missing the required parameter 'newTypeId' when calling removeResellerType(Async)");
-        }
-
-        return removeResellerTypeCall(isvId, typeId, newTypeId, _callback);
-
-    }
-
-    /**
-     * Deletes a reseller type
-     * 
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @return ResellerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTypeDto removeResellerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
-        ApiResponse<ResellerTypeDto> localVarResp = removeResellerTypeWithHttpInfo(isvId, typeId, newTypeId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Deletes a reseller type
-     * 
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @return ApiResponse&lt;ResellerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTypeDto> removeResellerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId) throws ApiException {
-        okhttp3.Call localVarCall = removeResellerTypeValidateBeforeCall(isvId, typeId, newTypeId, null);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Deletes a reseller type (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param typeId  (required)
-     * @param newTypeId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call removeResellerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID typeId, @javax.annotation.Nonnull UUID newTypeId, final ApiCallback<ResellerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = removeResellerTypeValidateBeforeCall(isvId, typeId, newTypeId, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for resellerGetResellerByResellerNumberDeprecated
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public okhttp3.Call resellerGetResellerByResellerNumberDeprecatedCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String resellerNumber, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/number/{reseller_number}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_number" + "}", localVarApiClient.escapeString(resellerNumber.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @Deprecated
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call resellerGetResellerByResellerNumberDeprecatedValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String resellerNumber, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling resellerGetResellerByResellerNumberDeprecated(Async)");
-        }
-
-        // verify the required parameter 'resellerNumber' is set
-        if (resellerNumber == null) {
-            throw new ApiException("Missing the required parameter 'resellerNumber' when calling resellerGetResellerByResellerNumberDeprecated(Async)");
-        }
-
-        return resellerGetResellerByResellerNumberDeprecatedCall(isvId, resellerNumber, _callback);
-
-    }
-
-    /**
-     * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public ResellerDto resellerGetResellerByResellerNumberDeprecated(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String resellerNumber) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(isvId, resellerNumber);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead)
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public ApiResponse<ResellerDto> resellerGetResellerByResellerNumberDeprecatedWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String resellerNumber) throws ApiException {
-        okhttp3.Call localVarCall = resellerGetResellerByResellerNumberDeprecatedValidateBeforeCall(isvId, resellerNumber, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a reseller (deprecated; use api/v{version:apiVersion}/isv/{isv_id}/resellers/by_number instead) (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerNumber  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     * @deprecated
-     */
-    @Deprecated
-    public okhttp3.Call resellerGetResellerByResellerNumberDeprecatedAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String resellerNumber, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = resellerGetResellerByResellerNumberDeprecatedValidateBeforeCall(isvId, resellerNumber, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for resendResellerContactInvitation
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call resendResellerContactInvitationCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/email/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call resendResellerContactInvitationValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling resendResellerContactInvitation(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling resendResellerContactInvitation(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling resendResellerContactInvitation(Async)");
-        }
-
-        return resendResellerContactInvitationCall(isvId, resellerId, contactId, _callback);
-
-    }
-
-    /**
-     * Sends a new invitation email to a reseller contact
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void resendResellerContactInvitation(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        resendResellerContactInvitationWithHttpInfo(isvId, resellerId, contactId);
-    }
-
-    /**
-     * Sends a new invitation email to a reseller contact
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> resendResellerContactInvitationWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        okhttp3.Call localVarCall = resendResellerContactInvitationValidateBeforeCall(isvId, resellerId, contactId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Sends a new invitation email to a reseller contact (asynchronously)
-     * A first invitation is send during creation of a contact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call resendResellerContactInvitationAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = resendResellerContactInvitationValidateBeforeCall(isvId, resellerId, contactId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for toggleResellerContactState
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toggleResellerContactStateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts/{contact_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()))
-            .replace("{" + "contact_id" + "}", localVarApiClient.escapeString(contactId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call toggleResellerContactStateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling toggleResellerContactState(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling toggleResellerContactState(Async)");
-        }
-
-        // verify the required parameter 'contactId' is set
-        if (contactId == null) {
-            throw new ApiException("Missing the required parameter 'contactId' when calling toggleResellerContactState(Async)");
-        }
-
-        return toggleResellerContactStateCall(isvId, resellerId, contactId, _callback);
-
-    }
-
-    /**
-     * Toggles a reseller contact state
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @return ResellerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerContactDto toggleResellerContactState(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        ApiResponse<ResellerContactDto> localVarResp = toggleResellerContactStateWithHttpInfo(isvId, resellerId, contactId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Toggles a reseller contact state
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @return ApiResponse&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerContactDto> toggleResellerContactStateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId) throws ApiException {
-        okhttp3.Call localVarCall = toggleResellerContactStateValidateBeforeCall(isvId, resellerId, contactId, null);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Toggles a reseller contact state (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param contactId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toggleResellerContactStateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull UUID contactId, final ApiCallback<ResellerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = toggleResellerContactStateValidateBeforeCall(isvId, resellerId, contactId, _callback);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateReseller
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateResellerValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateReseller(Async)");
-        }
-
-        // verify the required parameter 'resellerDto' is set
-        if (resellerDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerDto' when calling updateReseller(Async)");
-        }
-
-        return updateResellerCall(isvId, resellerDto, _callback);
-
-    }
-
-    /**
-     * Updates a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @return ResellerDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerDto updateReseller(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
-        ApiResponse<ResellerDto> localVarResp = updateResellerWithHttpInfo(isvId, resellerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a reseller
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @return ApiResponse&lt;ResellerDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerDto> updateResellerWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto) throws ApiException {
-        okhttp3.Call localVarCall = updateResellerValidateBeforeCall(isvId, resellerDto, null);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a reseller (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerDto resellerDto, final ApiCallback<ResellerDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateResellerValidateBeforeCall(isvId, resellerDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateResellerContact
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerContactCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerContactDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/{reseller_id}/contacts"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "reseller_id" + "}", localVarApiClient.escapeString(resellerId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateResellerContactValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateResellerContact(Async)");
-        }
-
-        // verify the required parameter 'resellerId' is set
-        if (resellerId == null) {
-            throw new ApiException("Missing the required parameter 'resellerId' when calling updateResellerContact(Async)");
-        }
-
-        // verify the required parameter 'resellerContactDto' is set
-        if (resellerContactDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerContactDto' when calling updateResellerContact(Async)");
-        }
-
-        return updateResellerContactCall(isvId, resellerId, resellerContactDto, _callback);
-
-    }
-
-    /**
-     * Updates a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @return ResellerContactDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerContactDto updateResellerContact(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
-        ApiResponse<ResellerContactDto> localVarResp = updateResellerContactWithHttpInfo(isvId, resellerId, resellerContactDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a reseller contact
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @return ApiResponse&lt;ResellerContactDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerContactDto> updateResellerContactWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto) throws ApiException {
-        okhttp3.Call localVarCall = updateResellerContactValidateBeforeCall(isvId, resellerId, resellerContactDto, null);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a reseller contact (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerId  (required)
-     * @param resellerContactDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerContactAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID resellerId, @javax.annotation.Nonnull ResellerContactDto resellerContactDto, final ApiCallback<ResellerContactDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateResellerContactValidateBeforeCall(isvId, resellerId, resellerContactDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerContactDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateResellerTemplate
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerTemplateDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/templates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateResellerTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateResellerTemplate(Async)");
-        }
-
-        // verify the required parameter 'resellerTemplateDto' is set
-        if (resellerTemplateDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerTemplateDto' when calling updateResellerTemplate(Async)");
-        }
-
-        return updateResellerTemplateCall(isvId, resellerTemplateDto, _callback);
-
-    }
-
-    /**
-     * Updates access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @return ResellerTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTemplateDto updateResellerTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
-        ApiResponse<ResellerTemplateDto> localVarResp = updateResellerTemplateWithHttpInfo(isvId, resellerTemplateDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates access to a product templates (edition)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @return ApiResponse&lt;ResellerTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTemplateDto> updateResellerTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto) throws ApiException {
-        okhttp3.Call localVarCall = updateResellerTemplateValidateBeforeCall(isvId, resellerTemplateDto, null);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates access to a product templates (edition) (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerTemplateDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTemplateDto resellerTemplateDto, final ApiCallback<ResellerTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateResellerTemplateValidateBeforeCall(isvId, resellerTemplateDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateResellerType
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerTypeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = resellerTypeDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/resellers/types"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateResellerTypeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateResellerType(Async)");
-        }
-
-        // verify the required parameter 'resellerTypeDto' is set
-        if (resellerTypeDto == null) {
-            throw new ApiException("Missing the required parameter 'resellerTypeDto' when calling updateResellerType(Async)");
-        }
-
-        return updateResellerTypeCall(isvId, resellerTypeDto, _callback);
-
-    }
-
-    /**
-     * Updates a reseller type
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @return ResellerTypeDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ResellerTypeDto updateResellerType(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
-        ApiResponse<ResellerTypeDto> localVarResp = updateResellerTypeWithHttpInfo(isvId, resellerTypeDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates a reseller type
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @return ApiResponse&lt;ResellerTypeDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ResellerTypeDto> updateResellerTypeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto) throws ApiException {
-        okhttp3.Call localVarCall = updateResellerTypeValidateBeforeCall(isvId, resellerTypeDto, null);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates a reseller type (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param resellerTypeDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateResellerTypeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ResellerTypeDto resellerTypeDto, final ApiCallback<ResellerTypeDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateResellerTypeValidateBeforeCall(isvId, resellerTypeDto, _callback);
-        Type localVarReturnType = new TypeToken<ResellerTypeDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

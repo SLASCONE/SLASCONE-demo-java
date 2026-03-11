@@ -13,103 +13,87 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.AlertMode;
 import com.slascone.model.EmailTemplateDto;
 import com.slascone.model.TemplateDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * AlertDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  AlertDto.JSON_PROPERTY_ID,
+  AlertDto.JSON_PROPERTY_NAME,
+  AlertDto.JSON_PROPERTY_IS_ACTIVE,
+  AlertDto.JSON_PROPERTY_ALERT_DAYS,
+  AlertDto.JSON_PROPERTY_MODE,
+  AlertDto.JSON_PROPERTY_TEMPLATE_ID,
+  AlertDto.JSON_PROPERTY_TEMPLATE,
+  AlertDto.JSON_PROPERTY_EMAIL_TEMPLATE_ID,
+  AlertDto.JSON_PROPERTY_EMAIL_TEMPLATE,
+  AlertDto.JSON_PROPERTY_CREATED_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class AlertDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_ALERT_DAYS = "alert_days";
-  @SerializedName(SERIALIZED_NAME_ALERT_DAYS)
-  @javax.annotation.Nullable
-  private Integer alertDays;
+  public static final String JSON_PROPERTY_ALERT_DAYS = "alert_days";
+  private JsonNullable<Integer> alertDays = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_MODE = "mode";
-  @SerializedName(SERIALIZED_NAME_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MODE = "mode";
+  @jakarta.annotation.Nullable
   private AlertMode mode;
 
-  public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
-  @javax.annotation.Nullable
-  private UUID templateId;
+  public static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
+  private JsonNullable<UUID> templateId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_TEMPLATE = "template";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  @javax.annotation.Nullable
-  private TemplateDto template;
+  public static final String JSON_PROPERTY_TEMPLATE = "template";
+  private JsonNullable<TemplateDto> template = JsonNullable.<TemplateDto>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATE_ID = "email_template_id";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATE_ID = "email_template_id";
+  @jakarta.annotation.Nullable
   private UUID emailTemplateId;
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATE = "email_template";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATE)
-  @javax.annotation.Nullable
-  private EmailTemplateDto emailTemplate;
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATE = "email_template";
+  private JsonNullable<EmailTemplateDto> emailTemplate = JsonNullable.<EmailTemplateDto>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public AlertDto() {
+  public AlertDto() { 
   }
 
-  public AlertDto id(@javax.annotation.Nullable UUID id) {
+  public AlertDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -118,18 +102,23 @@ public class AlertDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public AlertDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public AlertDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -137,17 +126,30 @@ public class AlertDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public AlertDto isActive(@javax.annotation.Nullable Boolean isActive) {
+
+  public AlertDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -156,18 +158,23 @@ public class AlertDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public AlertDto alertDays(@javax.annotation.Nullable Integer alertDays) {
-    this.alertDays = alertDays;
+  public AlertDto alertDays(@jakarta.annotation.Nullable Integer alertDays) {
+    this.alertDays = JsonNullable.<Integer>of(alertDays);
     return this;
   }
 
@@ -175,17 +182,30 @@ public class AlertDto {
    * Get alertDays
    * @return alertDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getAlertDays() {
-    return alertDays;
+        return alertDays.orElse(null);
   }
 
-  public void setAlertDays(@javax.annotation.Nullable Integer alertDays) {
+  @JsonProperty(value = JSON_PROPERTY_ALERT_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getAlertDays_JsonNullable() {
+    return alertDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ALERT_DAYS)
+  public void setAlertDays_JsonNullable(JsonNullable<Integer> alertDays) {
     this.alertDays = alertDays;
   }
 
+  public void setAlertDays(@jakarta.annotation.Nullable Integer alertDays) {
+    this.alertDays = JsonNullable.<Integer>of(alertDays);
+  }
 
-  public AlertDto mode(@javax.annotation.Nullable AlertMode mode) {
+
+  public AlertDto mode(@jakarta.annotation.Nullable AlertMode mode) {
     this.mode = mode;
     return this;
   }
@@ -194,18 +214,23 @@ public class AlertDto {
    * Get mode
    * @return mode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public AlertMode getMode() {
     return mode;
   }
 
-  public void setMode(@javax.annotation.Nullable AlertMode mode) {
+
+  @JsonProperty(value = JSON_PROPERTY_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMode(@jakarta.annotation.Nullable AlertMode mode) {
     this.mode = mode;
   }
 
 
-  public AlertDto templateId(@javax.annotation.Nullable UUID templateId) {
-    this.templateId = templateId;
+  public AlertDto templateId(@jakarta.annotation.Nullable UUID templateId) {
+    this.templateId = JsonNullable.<UUID>of(templateId);
     return this;
   }
 
@@ -213,18 +238,31 @@ public class AlertDto {
    * Get templateId
    * @return templateId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getTemplateId() {
-    return templateId;
+        return templateId.orElse(null);
   }
 
-  public void setTemplateId(@javax.annotation.Nullable UUID templateId) {
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getTemplateId_JsonNullable() {
+    return templateId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_ID)
+  public void setTemplateId_JsonNullable(JsonNullable<UUID> templateId) {
     this.templateId = templateId;
   }
 
+  public void setTemplateId(@jakarta.annotation.Nullable UUID templateId) {
+    this.templateId = JsonNullable.<UUID>of(templateId);
+  }
 
-  public AlertDto template(@javax.annotation.Nullable TemplateDto template) {
-    this.template = template;
+
+  public AlertDto template(@jakarta.annotation.Nullable TemplateDto template) {
+    this.template = JsonNullable.<TemplateDto>of(template);
     return this;
   }
 
@@ -232,17 +270,30 @@ public class AlertDto {
    * Get template
    * @return template
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public TemplateDto getTemplate() {
-    return template;
+        return template.orElse(null);
   }
 
-  public void setTemplate(@javax.annotation.Nullable TemplateDto template) {
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<TemplateDto> getTemplate_JsonNullable() {
+    return template;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  public void setTemplate_JsonNullable(JsonNullable<TemplateDto> template) {
     this.template = template;
   }
 
+  public void setTemplate(@jakarta.annotation.Nullable TemplateDto template) {
+    this.template = JsonNullable.<TemplateDto>of(template);
+  }
 
-  public AlertDto emailTemplateId(@javax.annotation.Nullable UUID emailTemplateId) {
+
+  public AlertDto emailTemplateId(@jakarta.annotation.Nullable UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
     return this;
   }
@@ -251,18 +302,23 @@ public class AlertDto {
    * Get emailTemplateId
    * @return emailTemplateId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getEmailTemplateId() {
     return emailTemplateId;
   }
 
-  public void setEmailTemplateId(@javax.annotation.Nullable UUID emailTemplateId) {
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEmailTemplateId(@jakarta.annotation.Nullable UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
   }
 
 
-  public AlertDto emailTemplate(@javax.annotation.Nullable EmailTemplateDto emailTemplate) {
-    this.emailTemplate = emailTemplate;
+  public AlertDto emailTemplate(@jakarta.annotation.Nullable EmailTemplateDto emailTemplate) {
+    this.emailTemplate = JsonNullable.<EmailTemplateDto>of(emailTemplate);
     return this;
   }
 
@@ -270,17 +326,30 @@ public class AlertDto {
    * Get emailTemplate
    * @return emailTemplate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public EmailTemplateDto getEmailTemplate() {
-    return emailTemplate;
+        return emailTemplate.orElse(null);
   }
 
-  public void setEmailTemplate(@javax.annotation.Nullable EmailTemplateDto emailTemplate) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<EmailTemplateDto> getEmailTemplate_JsonNullable() {
+    return emailTemplate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL_TEMPLATE)
+  public void setEmailTemplate_JsonNullable(JsonNullable<EmailTemplateDto> emailTemplate) {
     this.emailTemplate = emailTemplate;
   }
 
+  public void setEmailTemplate(@jakarta.annotation.Nullable EmailTemplateDto emailTemplate) {
+    this.emailTemplate = JsonNullable.<EmailTemplateDto>of(emailTemplate);
+  }
 
-  public AlertDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public AlertDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -289,17 +358,24 @@ public class AlertDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-
+  /**
+   * Return true if this AlertDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -310,14 +386,14 @@ public class AlertDto {
     }
     AlertDto alertDto = (AlertDto) o;
     return Objects.equals(this.id, alertDto.id) &&
-        Objects.equals(this.name, alertDto.name) &&
+        equalsNullable(this.name, alertDto.name) &&
         Objects.equals(this.isActive, alertDto.isActive) &&
-        Objects.equals(this.alertDays, alertDto.alertDays) &&
+        equalsNullable(this.alertDays, alertDto.alertDays) &&
         Objects.equals(this.mode, alertDto.mode) &&
-        Objects.equals(this.templateId, alertDto.templateId) &&
-        Objects.equals(this.template, alertDto.template) &&
+        equalsNullable(this.templateId, alertDto.templateId) &&
+        equalsNullable(this.template, alertDto.template) &&
         Objects.equals(this.emailTemplateId, alertDto.emailTemplateId) &&
-        Objects.equals(this.emailTemplate, alertDto.emailTemplate) &&
+        equalsNullable(this.emailTemplate, alertDto.emailTemplate) &&
         Objects.equals(this.createdDateUtc, alertDto.createdDateUtc);
   }
 
@@ -327,7 +403,7 @@ public class AlertDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, isActive, alertDays, mode, templateId, template, emailTemplateId, emailTemplate, createdDateUtc);
+    return Objects.hash(id, hashCodeNullable(name), isActive, hashCodeNullable(alertDays), mode, hashCodeNullable(templateId), hashCodeNullable(template), emailTemplateId, hashCodeNullable(emailTemplate), createdDateUtc);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -366,112 +442,89 @@ public class AlertDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "is_active", "alert_days", "mode", "template_id", "template", "email_template_id", "email_template", "created_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to AlertDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!AlertDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AlertDto is not found in the empty JSON string", AlertDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!AlertDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AlertDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      // validate the optional field `mode`
-      if (jsonObj.get("mode") != null && !jsonObj.get("mode").isJsonNull()) {
-        AlertMode.validateJsonElement(jsonObj.get("mode"));
-      }
-      if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
-      }
-      // validate the optional field `template`
-      if (jsonObj.get("template") != null && !jsonObj.get("template").isJsonNull()) {
-        TemplateDto.validateJsonElement(jsonObj.get("template"));
-      }
-      if ((jsonObj.get("email_template_id") != null && !jsonObj.get("email_template_id").isJsonNull()) && !jsonObj.get("email_template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email_template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email_template_id").toString()));
-      }
-      // validate the optional field `email_template`
-      if (jsonObj.get("email_template") != null && !jsonObj.get("email_template").isJsonNull()) {
-        EmailTemplateDto.validateJsonElement(jsonObj.get("email_template"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AlertDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AlertDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AlertDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AlertDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<AlertDto>() {
-           @Override
-           public void write(JsonWriter out, AlertDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public AlertDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of AlertDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of AlertDto
-   * @throws IOException if the JSON string is invalid with respect to AlertDto
-   */
-  public static AlertDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AlertDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of AlertDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `alert_days` to the URL query string
+    if (getAlertDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%salert_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAlertDays()))));
+    }
+
+    // add `mode` to the URL query string
+    if (getMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMode()))));
+    }
+
+    // add `template_id` to the URL query string
+    if (getTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemplate_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemplateId()))));
+    }
+
+    // add `template` to the URL query string
+    if (getTemplate() != null) {
+      joiner.add(getTemplate().toUrlQueryString(prefix + "template" + suffix));
+    }
+
+    // add `email_template_id` to the URL query string
+    if (getEmailTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail_template_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmailTemplateId()))));
+    }
+
+    // add `email_template` to the URL query string
+    if (getEmailTemplate() != null) {
+      joiner.add(getEmailTemplate().toUrlQueryString(prefix + "email_template" + suffix));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

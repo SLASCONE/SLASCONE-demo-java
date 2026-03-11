@@ -62,7 +62,8 @@ public class ErrorHandlingHelper {
 
                 if (409 == ex.getCode()) {
 
-                    var errorResult = ErrorResultObjects.fromJson(ex.getResponseBody());
+                    var mapper = com.slascone.ApiClient.createDefaultObjectMapper();
+                    var errorResult = mapper.readValue(ex.getResponseBody(), ErrorResultObjects.class);
 
                     return new ResultWithError<>(errorResult);
 
@@ -97,6 +98,13 @@ public class ErrorHandlingHelper {
 
                 // For non-transient exceptions, return immediately
                 if (!isTransientNetworkException(ex)) {
+
+                    // Output stack trace on console
+                    StackTraceElement[] stackTrace = ex.getStackTrace();
+                    System.err.println("Exception in " + callerMethodName + ": " + ex.getClass().getSimpleName() + " - " + ex.getMessage());
+                    for (StackTraceElement element : stackTrace) {
+                        System.err.println("\tat " + element.toString());
+                    }
 
                     return new ResultWithError<>(callerMethodName + " threw an exception: " + 
                         ex.getClass().getSimpleName() + " - " + ex.getMessage(), ErrorType.NETWORK);

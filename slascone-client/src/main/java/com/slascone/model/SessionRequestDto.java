@@ -13,74 +13,60 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * SessionRequestDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  SessionRequestDto.JSON_PROPERTY_LICENSE_ID,
+  SessionRequestDto.JSON_PROPERTY_CLIENT_ID,
+  SessionRequestDto.JSON_PROPERTY_SESSION_ID,
+  SessionRequestDto.JSON_PROPERTY_USER_ID,
+  SessionRequestDto.JSON_PROPERTY_CHECKOUT_PERIOD
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class SessionRequestDto {
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nonnull
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  @jakarta.annotation.Nonnull
   private String clientId;
 
-  public static final String SERIALIZED_NAME_SESSION_ID = "session_id";
-  @SerializedName(SERIALIZED_NAME_SESSION_ID)
-  @javax.annotation.Nullable
-  private UUID sessionId;
+  public static final String JSON_PROPERTY_SESSION_ID = "session_id";
+  private JsonNullable<UUID> sessionId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CHECKOUT_PERIOD = "checkout_period";
-  @SerializedName(SERIALIZED_NAME_CHECKOUT_PERIOD)
-  @javax.annotation.Nullable
-  private Double checkoutPeriod;
+  public static final String JSON_PROPERTY_CHECKOUT_PERIOD = "checkout_period";
+  private JsonNullable<Double> checkoutPeriod = JsonNullable.<Double>undefined();
 
-  public SessionRequestDto() {
+  public SessionRequestDto() { 
   }
 
-  public SessionRequestDto licenseId(@javax.annotation.Nonnull UUID licenseId) {
+  public SessionRequestDto licenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -89,17 +75,22 @@ public class SessionRequestDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nonnull UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public SessionRequestDto clientId(@javax.annotation.Nonnull String clientId) {
+  public SessionRequestDto clientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
     return this;
   }
@@ -108,18 +99,23 @@ public class SessionRequestDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getClientId() {
     return clientId;
   }
 
-  public void setClientId(@javax.annotation.Nonnull String clientId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setClientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
   }
 
 
-  public SessionRequestDto sessionId(@javax.annotation.Nullable UUID sessionId) {
-    this.sessionId = sessionId;
+  public SessionRequestDto sessionId(@jakarta.annotation.Nullable UUID sessionId) {
+    this.sessionId = JsonNullable.<UUID>of(sessionId);
     return this;
   }
 
@@ -127,18 +123,31 @@ public class SessionRequestDto {
    * Get sessionId
    * @return sessionId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getSessionId() {
-    return sessionId;
+        return sessionId.orElse(null);
   }
 
-  public void setSessionId(@javax.annotation.Nullable UUID sessionId) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getSessionId_JsonNullable() {
+    return sessionId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_ID)
+  public void setSessionId_JsonNullable(JsonNullable<UUID> sessionId) {
     this.sessionId = sessionId;
   }
 
+  public void setSessionId(@jakarta.annotation.Nullable UUID sessionId) {
+    this.sessionId = JsonNullable.<UUID>of(sessionId);
+  }
 
-  public SessionRequestDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+
+  public SessionRequestDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -146,18 +155,31 @@ public class SessionRequestDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public SessionRequestDto checkoutPeriod(@javax.annotation.Nullable Double checkoutPeriod) {
-    this.checkoutPeriod = checkoutPeriod;
+
+  public SessionRequestDto checkoutPeriod(@jakarta.annotation.Nullable Double checkoutPeriod) {
+    this.checkoutPeriod = JsonNullable.<Double>of(checkoutPeriod);
     return this;
   }
 
@@ -165,17 +187,32 @@ public class SessionRequestDto {
    * Get checkoutPeriod
    * @return checkoutPeriod
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Double getCheckoutPeriod() {
-    return checkoutPeriod;
+        return checkoutPeriod.orElse(null);
   }
 
-  public void setCheckoutPeriod(@javax.annotation.Nullable Double checkoutPeriod) {
+  @JsonProperty(value = JSON_PROPERTY_CHECKOUT_PERIOD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Double> getCheckoutPeriod_JsonNullable() {
+    return checkoutPeriod;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CHECKOUT_PERIOD)
+  public void setCheckoutPeriod_JsonNullable(JsonNullable<Double> checkoutPeriod) {
     this.checkoutPeriod = checkoutPeriod;
   }
 
+  public void setCheckoutPeriod(@jakarta.annotation.Nullable Double checkoutPeriod) {
+    this.checkoutPeriod = JsonNullable.<Double>of(checkoutPeriod);
+  }
 
 
+  /**
+   * Return true if this SessionRequestDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -187,9 +224,9 @@ public class SessionRequestDto {
     SessionRequestDto sessionRequestDto = (SessionRequestDto) o;
     return Objects.equals(this.licenseId, sessionRequestDto.licenseId) &&
         Objects.equals(this.clientId, sessionRequestDto.clientId) &&
-        Objects.equals(this.sessionId, sessionRequestDto.sessionId) &&
-        Objects.equals(this.userId, sessionRequestDto.userId) &&
-        Objects.equals(this.checkoutPeriod, sessionRequestDto.checkoutPeriod);
+        equalsNullable(this.sessionId, sessionRequestDto.sessionId) &&
+        equalsNullable(this.userId, sessionRequestDto.userId) &&
+        equalsNullable(this.checkoutPeriod, sessionRequestDto.checkoutPeriod);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -198,7 +235,7 @@ public class SessionRequestDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(licenseId, clientId, sessionId, userId, checkoutPeriod);
+    return Objects.hash(licenseId, clientId, hashCodeNullable(sessionId), hashCodeNullable(userId), hashCodeNullable(checkoutPeriod));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -232,107 +269,64 @@ public class SessionRequestDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("license_id", "client_id", "session_id", "user_id", "checkout_period"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("license_id", "client_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to SessionRequestDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!SessionRequestDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in SessionRequestDto is not found in the empty JSON string", SessionRequestDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!SessionRequestDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SessionRequestDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : SessionRequestDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if (!jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("session_id") != null && !jsonObj.get("session_id").isJsonNull()) && !jsonObj.get("session_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `session_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("session_id").toString()));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!SessionRequestDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'SessionRequestDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<SessionRequestDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(SessionRequestDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<SessionRequestDto>() {
-           @Override
-           public void write(JsonWriter out, SessionRequestDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public SessionRequestDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of SessionRequestDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of SessionRequestDto
-   * @throws IOException if the JSON string is invalid with respect to SessionRequestDto
-   */
-  public static SessionRequestDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, SessionRequestDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of SessionRequestDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `session_id` to the URL query string
+    if (getSessionId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionId()))));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `checkout_period` to the URL query string
+    if (getCheckoutPeriod() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scheckout_period%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCheckoutPeriod()))));
+    }
+
+    return joiner.toString();
   }
 }
 

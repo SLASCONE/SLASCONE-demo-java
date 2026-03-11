@@ -13,64 +13,51 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * CustomerAccountDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  CustomerAccountDto.JSON_PROPERTY_CUSTOMER_ID,
+  CustomerAccountDto.JSON_PROPERTY_COMPANY_NAME,
+  CustomerAccountDto.JSON_PROPERTY_CUSTOMER_NUMBER
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomerAccountDto {
-  public static final String SERIALIZED_NAME_CUSTOMER_ID = "customer_id";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CUSTOMER_ID = "customer_id";
+  @jakarta.annotation.Nullable
   private UUID customerId;
 
-  public static final String SERIALIZED_NAME_COMPANY_NAME = "company_name";
-  @SerializedName(SERIALIZED_NAME_COMPANY_NAME)
-  @javax.annotation.Nullable
-  private String companyName;
+  public static final String JSON_PROPERTY_COMPANY_NAME = "company_name";
+  private JsonNullable<String> companyName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER = "customer_number";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER)
-  @javax.annotation.Nullable
-  private String customerNumber;
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER = "customer_number";
+  private JsonNullable<String> customerNumber = JsonNullable.<String>undefined();
 
-  public CustomerAccountDto() {
+  public CustomerAccountDto() { 
   }
 
-  public CustomerAccountDto customerId(@javax.annotation.Nullable UUID customerId) {
+  public CustomerAccountDto customerId(@jakarta.annotation.Nullable UUID customerId) {
     this.customerId = customerId;
     return this;
   }
@@ -79,18 +66,23 @@ public class CustomerAccountDto {
    * Get customerId
    * @return customerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getCustomerId() {
     return customerId;
   }
 
-  public void setCustomerId(@javax.annotation.Nullable UUID customerId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomerId(@jakarta.annotation.Nullable UUID customerId) {
     this.customerId = customerId;
   }
 
 
-  public CustomerAccountDto companyName(@javax.annotation.Nullable String companyName) {
-    this.companyName = companyName;
+  public CustomerAccountDto companyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
     return this;
   }
 
@@ -98,18 +90,31 @@ public class CustomerAccountDto {
    * Get companyName
    * @return companyName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCompanyName() {
-    return companyName;
+        return companyName.orElse(null);
   }
 
-  public void setCompanyName(@javax.annotation.Nullable String companyName) {
+  @JsonProperty(value = JSON_PROPERTY_COMPANY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCompanyName_JsonNullable() {
+    return companyName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COMPANY_NAME)
+  public void setCompanyName_JsonNullable(JsonNullable<String> companyName) {
     this.companyName = companyName;
   }
 
+  public void setCompanyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
+  }
 
-  public CustomerAccountDto customerNumber(@javax.annotation.Nullable String customerNumber) {
-    this.customerNumber = customerNumber;
+
+  public CustomerAccountDto customerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
     return this;
   }
 
@@ -117,17 +122,32 @@ public class CustomerAccountDto {
    * Get customerNumber
    * @return customerNumber
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomerNumber() {
-    return customerNumber;
+        return customerNumber.orElse(null);
   }
 
-  public void setCustomerNumber(@javax.annotation.Nullable String customerNumber) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomerNumber_JsonNullable() {
+    return customerNumber;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_NUMBER)
+  public void setCustomerNumber_JsonNullable(JsonNullable<String> customerNumber) {
     this.customerNumber = customerNumber;
   }
 
+  public void setCustomerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
+  }
 
 
+  /**
+   * Return true if this CustomerAccountDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -138,8 +158,8 @@ public class CustomerAccountDto {
     }
     CustomerAccountDto customerAccountDto = (CustomerAccountDto) o;
     return Objects.equals(this.customerId, customerAccountDto.customerId) &&
-        Objects.equals(this.companyName, customerAccountDto.companyName) &&
-        Objects.equals(this.customerNumber, customerAccountDto.customerNumber);
+        equalsNullable(this.companyName, customerAccountDto.companyName) &&
+        equalsNullable(this.customerNumber, customerAccountDto.customerNumber);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -148,7 +168,7 @@ public class CustomerAccountDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(customerId, companyName, customerNumber);
+    return Objects.hash(customerId, hashCodeNullable(companyName), hashCodeNullable(customerNumber));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -180,97 +200,54 @@ public class CustomerAccountDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("customer_id", "company_name", "customer_number"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CustomerAccountDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!CustomerAccountDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomerAccountDto is not found in the empty JSON string", CustomerAccountDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CustomerAccountDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomerAccountDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("customer_id") != null && !jsonObj.get("customer_id").isJsonNull()) && !jsonObj.get("customer_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_id").toString()));
-      }
-      if ((jsonObj.get("company_name") != null && !jsonObj.get("company_name").isJsonNull()) && !jsonObj.get("company_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `company_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("company_name").toString()));
-      }
-      if ((jsonObj.get("customer_number") != null && !jsonObj.get("customer_number").isJsonNull()) && !jsonObj.get("customer_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_number").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CustomerAccountDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CustomerAccountDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CustomerAccountDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CustomerAccountDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<CustomerAccountDto>() {
-           @Override
-           public void write(JsonWriter out, CustomerAccountDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public CustomerAccountDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of CustomerAccountDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of CustomerAccountDto
-   * @throws IOException if the JSON string is invalid with respect to CustomerAccountDto
-   */
-  public static CustomerAccountDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CustomerAccountDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of CustomerAccountDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `customer_id` to the URL query string
+    if (getCustomerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerId()))));
+    }
+
+    // add `company_name` to the URL query string
+    if (getCompanyName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scompany_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCompanyName()))));
+    }
+
+    // add `customer_number` to the URL query string
+    if (getCustomerNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumber()))));
+    }
+
+    return joiner.toString();
   }
 }
 

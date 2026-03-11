@@ -13,120 +13,99 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResellerContactDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerContactDto.JSON_PROPERTY_ID,
+  ResellerContactDto.JSON_PROPERTY_NAME,
+  ResellerContactDto.JSON_PROPERTY_SURNAME,
+  ResellerContactDto.JSON_PROPERTY_EMAIL,
+  ResellerContactDto.JSON_PROPERTY_PHONE,
+  ResellerContactDto.JSON_PROPERTY_MOBILE,
+  ResellerContactDto.JSON_PROPERTY_USER_ID,
+  ResellerContactDto.JSON_PROPERTY_IS_ACTIVE,
+  ResellerContactDto.JSON_PROPERTY_IS_RESELLER_PORTAL_USER,
+  ResellerContactDto.JSON_PROPERTY_LANGUAGE,
+  ResellerContactDto.JSON_PROPERTY_RESELLER_ID,
+  ResellerContactDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  ResellerContactDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  ResellerContactDto.JSON_PROPERTY_LAST_MODIFIED_BY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerContactDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SURNAME = "surname";
-  @SerializedName(SERIALIZED_NAME_SURNAME)
-  @javax.annotation.Nullable
-  private String surname;
+  public static final String JSON_PROPERTY_SURNAME = "surname";
+  private JsonNullable<String> surname = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  @javax.annotation.Nullable
-  private String email;
+  public static final String JSON_PROPERTY_EMAIL = "email";
+  private JsonNullable<String> email = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PHONE = "phone";
-  @SerializedName(SERIALIZED_NAME_PHONE)
-  @javax.annotation.Nullable
-  private String phone;
+  public static final String JSON_PROPERTY_PHONE = "phone";
+  private JsonNullable<String> phone = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MOBILE = "mobile";
-  @SerializedName(SERIALIZED_NAME_MOBILE)
-  @javax.annotation.Nullable
-  private String mobile;
+  public static final String JSON_PROPERTY_MOBILE = "mobile";
+  private JsonNullable<String> mobile = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private UUID userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<UUID> userId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_IS_RESELLER_PORTAL_USER = "is_reseller_portal_user";
-  @SerializedName(SERIALIZED_NAME_IS_RESELLER_PORTAL_USER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_RESELLER_PORTAL_USER = "is_reseller_portal_user";
+  @jakarta.annotation.Nullable
   private Boolean isResellerPortalUser;
 
-  public static final String SERIALIZED_NAME_LANGUAGE = "language";
-  @SerializedName(SERIALIZED_NAME_LANGUAGE)
-  @javax.annotation.Nullable
-  private String language;
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  private JsonNullable<String> language = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_ID = "reseller_id";
-  @SerializedName(SERIALIZED_NAME_RESELLER_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESELLER_ID = "reseller_id";
+  @jakarta.annotation.Nullable
   private UUID resellerId;
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public ResellerContactDto() {
+  public ResellerContactDto() { 
   }
 
-  public ResellerContactDto id(@javax.annotation.Nullable UUID id) {
+  public ResellerContactDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -135,18 +114,23 @@ public class ResellerContactDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public ResellerContactDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public ResellerContactDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -154,18 +138,31 @@ public class ResellerContactDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public ResellerContactDto surname(@javax.annotation.Nullable String surname) {
-    this.surname = surname;
+
+  public ResellerContactDto surname(@jakarta.annotation.Nullable String surname) {
+    this.surname = JsonNullable.<String>of(surname);
     return this;
   }
 
@@ -173,18 +170,31 @@ public class ResellerContactDto {
    * Get surname
    * @return surname
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSurname() {
-    return surname;
+        return surname.orElse(null);
   }
 
-  public void setSurname(@javax.annotation.Nullable String surname) {
+  @JsonProperty(value = JSON_PROPERTY_SURNAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSurname_JsonNullable() {
+    return surname;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SURNAME)
+  public void setSurname_JsonNullable(JsonNullable<String> surname) {
     this.surname = surname;
   }
 
+  public void setSurname(@jakarta.annotation.Nullable String surname) {
+    this.surname = JsonNullable.<String>of(surname);
+  }
 
-  public ResellerContactDto email(@javax.annotation.Nullable String email) {
-    this.email = email;
+
+  public ResellerContactDto email(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
     return this;
   }
 
@@ -192,18 +202,31 @@ public class ResellerContactDto {
    * Get email
    * @return email
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getEmail() {
-    return email;
+        return email.orElse(null);
   }
 
-  public void setEmail(@javax.annotation.Nullable String email) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmail_JsonNullable() {
+    return email;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL)
+  public void setEmail_JsonNullable(JsonNullable<String> email) {
     this.email = email;
   }
 
+  public void setEmail(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
+  }
 
-  public ResellerContactDto phone(@javax.annotation.Nullable String phone) {
-    this.phone = phone;
+
+  public ResellerContactDto phone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
     return this;
   }
 
@@ -211,18 +234,31 @@ public class ResellerContactDto {
    * Get phone
    * @return phone
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getPhone() {
-    return phone;
+        return phone.orElse(null);
   }
 
-  public void setPhone(@javax.annotation.Nullable String phone) {
+  @JsonProperty(value = JSON_PROPERTY_PHONE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getPhone_JsonNullable() {
+    return phone;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PHONE)
+  public void setPhone_JsonNullable(JsonNullable<String> phone) {
     this.phone = phone;
   }
 
+  public void setPhone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
+  }
 
-  public ResellerContactDto mobile(@javax.annotation.Nullable String mobile) {
-    this.mobile = mobile;
+
+  public ResellerContactDto mobile(@jakarta.annotation.Nullable String mobile) {
+    this.mobile = JsonNullable.<String>of(mobile);
     return this;
   }
 
@@ -230,18 +266,31 @@ public class ResellerContactDto {
    * Get mobile
    * @return mobile
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getMobile() {
-    return mobile;
+        return mobile.orElse(null);
   }
 
-  public void setMobile(@javax.annotation.Nullable String mobile) {
+  @JsonProperty(value = JSON_PROPERTY_MOBILE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getMobile_JsonNullable() {
+    return mobile;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MOBILE)
+  public void setMobile_JsonNullable(JsonNullable<String> mobile) {
     this.mobile = mobile;
   }
 
+  public void setMobile(@jakarta.annotation.Nullable String mobile) {
+    this.mobile = JsonNullable.<String>of(mobile);
+  }
 
-  public ResellerContactDto userId(@javax.annotation.Nullable UUID userId) {
-    this.userId = userId;
+
+  public ResellerContactDto userId(@jakarta.annotation.Nullable UUID userId) {
+    this.userId = JsonNullable.<UUID>of(userId);
     return this;
   }
 
@@ -249,17 +298,30 @@ public class ResellerContactDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable UUID userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<UUID> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable UUID userId) {
+    this.userId = JsonNullable.<UUID>of(userId);
+  }
 
-  public ResellerContactDto isActive(@javax.annotation.Nullable Boolean isActive) {
+
+  public ResellerContactDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -268,17 +330,22 @@ public class ResellerContactDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public ResellerContactDto isResellerPortalUser(@javax.annotation.Nullable Boolean isResellerPortalUser) {
+  public ResellerContactDto isResellerPortalUser(@jakarta.annotation.Nullable Boolean isResellerPortalUser) {
     this.isResellerPortalUser = isResellerPortalUser;
     return this;
   }
@@ -287,18 +354,23 @@ public class ResellerContactDto {
    * Get isResellerPortalUser
    * @return isResellerPortalUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_RESELLER_PORTAL_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsResellerPortalUser() {
     return isResellerPortalUser;
   }
 
-  public void setIsResellerPortalUser(@javax.annotation.Nullable Boolean isResellerPortalUser) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_RESELLER_PORTAL_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsResellerPortalUser(@jakarta.annotation.Nullable Boolean isResellerPortalUser) {
     this.isResellerPortalUser = isResellerPortalUser;
   }
 
 
-  public ResellerContactDto language(@javax.annotation.Nullable String language) {
-    this.language = language;
+  public ResellerContactDto language(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
     return this;
   }
 
@@ -306,17 +378,30 @@ public class ResellerContactDto {
    * Get language
    * @return language
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLanguage() {
-    return language;
+        return language.orElse(null);
   }
 
-  public void setLanguage(@javax.annotation.Nullable String language) {
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLanguage_JsonNullable() {
+    return language;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  public void setLanguage_JsonNullable(JsonNullable<String> language) {
     this.language = language;
   }
 
+  public void setLanguage(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
+  }
 
-  public ResellerContactDto resellerId(@javax.annotation.Nullable UUID resellerId) {
+
+  public ResellerContactDto resellerId(@jakarta.annotation.Nullable UUID resellerId) {
     this.resellerId = resellerId;
     return this;
   }
@@ -325,18 +410,23 @@ public class ResellerContactDto {
    * Get resellerId
    * @return resellerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getResellerId() {
     return resellerId;
   }
 
-  public void setResellerId(@javax.annotation.Nullable UUID resellerId) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResellerId(@jakarta.annotation.Nullable UUID resellerId) {
     this.resellerId = resellerId;
   }
 
 
-  public ResellerContactDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+  public ResellerContactDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -344,18 +434,31 @@ public class ResellerContactDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public ResellerContactDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public ResellerContactDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -363,18 +466,31 @@ public class ResellerContactDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public ResellerContactDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public ResellerContactDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -382,17 +498,32 @@ public class ResellerContactDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
 
+  /**
+   * Return true if this ResellerContactDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -403,19 +534,19 @@ public class ResellerContactDto {
     }
     ResellerContactDto resellerContactDto = (ResellerContactDto) o;
     return Objects.equals(this.id, resellerContactDto.id) &&
-        Objects.equals(this.name, resellerContactDto.name) &&
-        Objects.equals(this.surname, resellerContactDto.surname) &&
-        Objects.equals(this.email, resellerContactDto.email) &&
-        Objects.equals(this.phone, resellerContactDto.phone) &&
-        Objects.equals(this.mobile, resellerContactDto.mobile) &&
-        Objects.equals(this.userId, resellerContactDto.userId) &&
+        equalsNullable(this.name, resellerContactDto.name) &&
+        equalsNullable(this.surname, resellerContactDto.surname) &&
+        equalsNullable(this.email, resellerContactDto.email) &&
+        equalsNullable(this.phone, resellerContactDto.phone) &&
+        equalsNullable(this.mobile, resellerContactDto.mobile) &&
+        equalsNullable(this.userId, resellerContactDto.userId) &&
         Objects.equals(this.isActive, resellerContactDto.isActive) &&
         Objects.equals(this.isResellerPortalUser, resellerContactDto.isResellerPortalUser) &&
-        Objects.equals(this.language, resellerContactDto.language) &&
+        equalsNullable(this.language, resellerContactDto.language) &&
         Objects.equals(this.resellerId, resellerContactDto.resellerId) &&
-        Objects.equals(this.createdDateUtc, resellerContactDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, resellerContactDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, resellerContactDto.lastModifiedBy);
+        equalsNullable(this.createdDateUtc, resellerContactDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, resellerContactDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, resellerContactDto.lastModifiedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -424,7 +555,7 @@ public class ResellerContactDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, surname, email, phone, mobile, userId, isActive, isResellerPortalUser, language, resellerId, createdDateUtc, modifiedDateUtc, lastModifiedBy);
+    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(surname), hashCodeNullable(email), hashCodeNullable(phone), hashCodeNullable(mobile), hashCodeNullable(userId), isActive, isResellerPortalUser, hashCodeNullable(language), resellerId, hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -467,118 +598,109 @@ public class ResellerContactDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "surname", "email", "phone", "mobile", "user_id", "is_active", "is_reseller_portal_user", "language", "reseller_id", "created_date_utc", "modified_date_utc", "last_modified_by"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerContactDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerContactDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerContactDto is not found in the empty JSON string", ResellerContactDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerContactDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerContactDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("surname") != null && !jsonObj.get("surname").isJsonNull()) && !jsonObj.get("surname").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `surname` to be a primitive type in the JSON string but got `%s`", jsonObj.get("surname").toString()));
-      }
-      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
-      }
-      if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
-      }
-      if ((jsonObj.get("mobile") != null && !jsonObj.get("mobile").isJsonNull()) && !jsonObj.get("mobile").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `mobile` to be a primitive type in the JSON string but got `%s`", jsonObj.get("mobile").toString()));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
-      }
-      if ((jsonObj.get("reseller_id") != null && !jsonObj.get("reseller_id").isJsonNull()) && !jsonObj.get("reseller_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("reseller_id").toString()));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerContactDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerContactDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerContactDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerContactDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerContactDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerContactDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerContactDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerContactDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerContactDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerContactDto
-   */
-  public static ResellerContactDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerContactDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerContactDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `surname` to the URL query string
+    if (getSurname() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssurname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSurname()))));
+    }
+
+    // add `email` to the URL query string
+    if (getEmail() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmail()))));
+    }
+
+    // add `phone` to the URL query string
+    if (getPhone() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sphone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPhone()))));
+    }
+
+    // add `mobile` to the URL query string
+    if (getMobile() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smobile%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMobile()))));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `is_reseller_portal_user` to the URL query string
+    if (getIsResellerPortalUser() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_reseller_portal_user%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsResellerPortalUser()))));
+    }
+
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
+    }
+
+    // add `reseller_id` to the URL query string
+    if (getResellerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerId()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    return joiner.toString();
   }
 }
 

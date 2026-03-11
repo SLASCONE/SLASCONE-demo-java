@@ -13,92 +13,76 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ActivateClientDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ActivateClientDto.JSON_PROPERTY_PRODUCT_ID,
+  ActivateClientDto.JSON_PROPERTY_LICENSE_KEY,
+  ActivateClientDto.JSON_PROPERTY_CLIENT_ID,
+  ActivateClientDto.JSON_PROPERTY_CLIENT_NAME,
+  ActivateClientDto.JSON_PROPERTY_CLIENT_DESCRIPTION,
+  ActivateClientDto.JSON_PROPERTY_SOFTWARE_VERSION,
+  ActivateClientDto.JSON_PROPERTY_TIMESTAMP_UTC,
+  ActivateClientDto.JSON_PROPERTY_TAGS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ActivateClientDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_LICENSE_KEY = "license_key";
-  @SerializedName(SERIALIZED_NAME_LICENSE_KEY)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_KEY = "license_key";
+  @jakarta.annotation.Nonnull
   private String licenseKey;
 
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  @jakarta.annotation.Nonnull
   private String clientId;
 
-  public static final String SERIALIZED_NAME_CLIENT_NAME = "client_name";
-  @SerializedName(SERIALIZED_NAME_CLIENT_NAME)
-  @javax.annotation.Nullable
-  private String clientName;
+  public static final String JSON_PROPERTY_CLIENT_NAME = "client_name";
+  private JsonNullable<String> clientName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CLIENT_DESCRIPTION = "client_description";
-  @SerializedName(SERIALIZED_NAME_CLIENT_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String clientDescription;
+  public static final String JSON_PROPERTY_CLIENT_DESCRIPTION = "client_description";
+  private JsonNullable<String> clientDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_VERSION = "software_version";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_VERSION)
-  @javax.annotation.Nullable
-  private String softwareVersion;
+  public static final String JSON_PROPERTY_SOFTWARE_VERSION = "software_version";
+  private JsonNullable<String> softwareVersion = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TIMESTAMP_UTC = "timestamp_utc";
-  @SerializedName(SERIALIZED_NAME_TIMESTAMP_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime timestampUtc;
+  public static final String JSON_PROPERTY_TIMESTAMP_UTC = "timestamp_utc";
+  private JsonNullable<OffsetDateTime> timestampUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_TAGS = "tags";
-  @SerializedName(SERIALIZED_NAME_TAGS)
-  @javax.annotation.Nullable
-  private List<String> tags;
+  public static final String JSON_PROPERTY_TAGS = "tags";
+  private JsonNullable<List<String>> tags = JsonNullable.<List<String>>undefined();
 
-  public ActivateClientDto() {
+  public ActivateClientDto() { 
   }
 
-  public ActivateClientDto productId(@javax.annotation.Nonnull UUID productId) {
+  public ActivateClientDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -107,17 +91,22 @@ public class ActivateClientDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public ActivateClientDto licenseKey(@javax.annotation.Nonnull String licenseKey) {
+  public ActivateClientDto licenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
     return this;
   }
@@ -126,17 +115,22 @@ public class ActivateClientDto {
    * Get licenseKey
    * @return licenseKey
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getLicenseKey() {
     return licenseKey;
   }
 
-  public void setLicenseKey(@javax.annotation.Nonnull String licenseKey) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
   }
 
 
-  public ActivateClientDto clientId(@javax.annotation.Nonnull String clientId) {
+  public ActivateClientDto clientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
     return this;
   }
@@ -145,18 +139,23 @@ public class ActivateClientDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getClientId() {
     return clientId;
   }
 
-  public void setClientId(@javax.annotation.Nonnull String clientId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setClientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
   }
 
 
-  public ActivateClientDto clientName(@javax.annotation.Nullable String clientName) {
-    this.clientName = clientName;
+  public ActivateClientDto clientName(@jakarta.annotation.Nullable String clientName) {
+    this.clientName = JsonNullable.<String>of(clientName);
     return this;
   }
 
@@ -164,18 +163,31 @@ public class ActivateClientDto {
    * Get clientName
    * @return clientName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getClientName() {
-    return clientName;
+        return clientName.orElse(null);
   }
 
-  public void setClientName(@javax.annotation.Nullable String clientName) {
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getClientName_JsonNullable() {
+    return clientName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CLIENT_NAME)
+  public void setClientName_JsonNullable(JsonNullable<String> clientName) {
     this.clientName = clientName;
   }
 
+  public void setClientName(@jakarta.annotation.Nullable String clientName) {
+    this.clientName = JsonNullable.<String>of(clientName);
+  }
 
-  public ActivateClientDto clientDescription(@javax.annotation.Nullable String clientDescription) {
-    this.clientDescription = clientDescription;
+
+  public ActivateClientDto clientDescription(@jakarta.annotation.Nullable String clientDescription) {
+    this.clientDescription = JsonNullable.<String>of(clientDescription);
     return this;
   }
 
@@ -183,18 +195,31 @@ public class ActivateClientDto {
    * Get clientDescription
    * @return clientDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getClientDescription() {
-    return clientDescription;
+        return clientDescription.orElse(null);
   }
 
-  public void setClientDescription(@javax.annotation.Nullable String clientDescription) {
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getClientDescription_JsonNullable() {
+    return clientDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CLIENT_DESCRIPTION)
+  public void setClientDescription_JsonNullable(JsonNullable<String> clientDescription) {
     this.clientDescription = clientDescription;
   }
 
+  public void setClientDescription(@jakarta.annotation.Nullable String clientDescription) {
+    this.clientDescription = JsonNullable.<String>of(clientDescription);
+  }
 
-  public ActivateClientDto softwareVersion(@javax.annotation.Nullable String softwareVersion) {
-    this.softwareVersion = softwareVersion;
+
+  public ActivateClientDto softwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
     return this;
   }
 
@@ -202,18 +227,31 @@ public class ActivateClientDto {
    * Get softwareVersion
    * @return softwareVersion
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSoftwareVersion() {
-    return softwareVersion;
+        return softwareVersion.orElse(null);
   }
 
-  public void setSoftwareVersion(@javax.annotation.Nullable String softwareVersion) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSoftwareVersion_JsonNullable() {
+    return softwareVersion;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_VERSION)
+  public void setSoftwareVersion_JsonNullable(JsonNullable<String> softwareVersion) {
     this.softwareVersion = softwareVersion;
   }
 
+  public void setSoftwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
+  }
 
-  public ActivateClientDto timestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
-    this.timestampUtc = timestampUtc;
+
+  public ActivateClientDto timestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
     return this;
   }
 
@@ -221,26 +259,43 @@ public class ActivateClientDto {
    * Get timestampUtc
    * @return timestampUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getTimestampUtc() {
-    return timestampUtc;
+        return timestampUtc.orElse(null);
   }
 
-  public void setTimestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
+  @JsonProperty(value = JSON_PROPERTY_TIMESTAMP_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getTimestampUtc_JsonNullable() {
+    return timestampUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TIMESTAMP_UTC)
+  public void setTimestampUtc_JsonNullable(JsonNullable<OffsetDateTime> timestampUtc) {
     this.timestampUtc = timestampUtc;
   }
 
+  public void setTimestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
+  }
 
-  public ActivateClientDto tags(@javax.annotation.Nullable List<String> tags) {
-    this.tags = tags;
+
+  public ActivateClientDto tags(@jakarta.annotation.Nullable List<String> tags) {
+    this.tags = JsonNullable.<List<String>>of(tags);
     return this;
   }
 
   public ActivateClientDto addTagsItem(String tagsItem) {
-    if (this.tags == null) {
-      this.tags = new ArrayList<>();
+    if (this.tags == null || !this.tags.isPresent()) {
+      this.tags = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.tags.add(tagsItem);
+    try {
+      this.tags.get().add(tagsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -248,17 +303,32 @@ public class ActivateClientDto {
    * Get tags
    * @return tags
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getTags() {
-    return tags;
+        return tags.orElse(null);
   }
 
-  public void setTags(@javax.annotation.Nullable List<String> tags) {
+  @JsonProperty(value = JSON_PROPERTY_TAGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getTags_JsonNullable() {
+    return tags;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TAGS)
+  public void setTags_JsonNullable(JsonNullable<List<String>> tags) {
     this.tags = tags;
   }
 
+  public void setTags(@jakarta.annotation.Nullable List<String> tags) {
+    this.tags = JsonNullable.<List<String>>of(tags);
+  }
 
 
+  /**
+   * Return true if this ActivateClientDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -271,11 +341,11 @@ public class ActivateClientDto {
     return Objects.equals(this.productId, activateClientDto.productId) &&
         Objects.equals(this.licenseKey, activateClientDto.licenseKey) &&
         Objects.equals(this.clientId, activateClientDto.clientId) &&
-        Objects.equals(this.clientName, activateClientDto.clientName) &&
-        Objects.equals(this.clientDescription, activateClientDto.clientDescription) &&
-        Objects.equals(this.softwareVersion, activateClientDto.softwareVersion) &&
-        Objects.equals(this.timestampUtc, activateClientDto.timestampUtc) &&
-        Objects.equals(this.tags, activateClientDto.tags);
+        equalsNullable(this.clientName, activateClientDto.clientName) &&
+        equalsNullable(this.clientDescription, activateClientDto.clientDescription) &&
+        equalsNullable(this.softwareVersion, activateClientDto.softwareVersion) &&
+        equalsNullable(this.timestampUtc, activateClientDto.timestampUtc) &&
+        equalsNullable(this.tags, activateClientDto.tags);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -284,7 +354,7 @@ public class ActivateClientDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, timestampUtc, tags);
+    return Objects.hash(productId, licenseKey, clientId, hashCodeNullable(clientName), hashCodeNullable(clientDescription), hashCodeNullable(softwareVersion), hashCodeNullable(timestampUtc), hashCodeNullable(tags));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -321,117 +391,83 @@ public class ActivateClientDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "license_key", "client_id", "client_name", "client_description", "software_version", "timestamp_utc", "tags"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "license_key", "client_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ActivateClientDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ActivateClientDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ActivateClientDto is not found in the empty JSON string", ActivateClientDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ActivateClientDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ActivateClientDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ActivateClientDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_key").toString()));
-      }
-      if (!jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("client_name") != null && !jsonObj.get("client_name").isJsonNull()) && !jsonObj.get("client_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_name").toString()));
-      }
-      if ((jsonObj.get("client_description") != null && !jsonObj.get("client_description").isJsonNull()) && !jsonObj.get("client_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_description").toString()));
-      }
-      if ((jsonObj.get("software_version") != null && !jsonObj.get("software_version").isJsonNull()) && !jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("tags") != null && !jsonObj.get("tags").isJsonNull() && !jsonObj.get("tags").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `tags` to be an array in the JSON string but got `%s`", jsonObj.get("tags").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ActivateClientDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ActivateClientDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ActivateClientDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ActivateClientDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ActivateClientDto>() {
-           @Override
-           public void write(JsonWriter out, ActivateClientDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ActivateClientDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ActivateClientDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ActivateClientDto
-   * @throws IOException if the JSON string is invalid with respect to ActivateClientDto
-   */
-  public static ActivateClientDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ActivateClientDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ActivateClientDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `license_key` to the URL query string
+    if (getLicenseKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseKey()))));
+    }
+
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `client_name` to the URL query string
+    if (getClientName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientName()))));
+    }
+
+    // add `client_description` to the URL query string
+    if (getClientDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientDescription()))));
+    }
+
+    // add `software_version` to the URL query string
+    if (getSoftwareVersion() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_version%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSoftwareVersion()))));
+    }
+
+    // add `timestamp_utc` to the URL query string
+    if (getTimestampUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stimestamp_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTimestampUtc()))));
+    }
+
+    // add `tags` to the URL query string
+    if (getTags() != null) {
+      for (int i = 0; i < getTags().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%stags%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getTags().get(i)))));
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

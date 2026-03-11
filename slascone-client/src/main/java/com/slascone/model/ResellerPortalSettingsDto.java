@@ -13,69 +13,56 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ResellerEmailConfigurationMode;
-import java.io.IOException;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResellerPortalSettingsDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerPortalSettingsDto.JSON_PROPERTY_CUSTOMER_MANAGEMENT,
+  ResellerPortalSettingsDto.JSON_PROPERTY_LICENSE_MANAGEMENT,
+  ResellerPortalSettingsDto.JSON_PROPERTY_FORCE_EMAIL_CONFIGURATION,
+  ResellerPortalSettingsDto.JSON_PROPERTY_EMAIL_CONFIGURATION_MODE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerPortalSettingsDto {
-  public static final String SERIALIZED_NAME_CUSTOMER_MANAGEMENT = "customer_management";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_MANAGEMENT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CUSTOMER_MANAGEMENT = "customer_management";
+  @jakarta.annotation.Nullable
   private Boolean customerManagement;
 
-  public static final String SERIALIZED_NAME_LICENSE_MANAGEMENT = "license_management";
-  @SerializedName(SERIALIZED_NAME_LICENSE_MANAGEMENT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LICENSE_MANAGEMENT = "license_management";
+  @jakarta.annotation.Nullable
   private Boolean licenseManagement;
 
-  public static final String SERIALIZED_NAME_FORCE_EMAIL_CONFIGURATION = "force_email_configuration";
-  @SerializedName(SERIALIZED_NAME_FORCE_EMAIL_CONFIGURATION)
-  @javax.annotation.Nullable
-  private Boolean forceEmailConfiguration;
+  public static final String JSON_PROPERTY_FORCE_EMAIL_CONFIGURATION = "force_email_configuration";
+  private JsonNullable<Boolean> forceEmailConfiguration = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL_CONFIGURATION_MODE = "email_configuration_mode";
-  @SerializedName(SERIALIZED_NAME_EMAIL_CONFIGURATION_MODE)
-  @javax.annotation.Nullable
-  private ResellerEmailConfigurationMode emailConfigurationMode;
+  public static final String JSON_PROPERTY_EMAIL_CONFIGURATION_MODE = "email_configuration_mode";
+  private JsonNullable<ResellerEmailConfigurationMode> emailConfigurationMode = JsonNullable.<ResellerEmailConfigurationMode>undefined();
 
-  public ResellerPortalSettingsDto() {
+  public ResellerPortalSettingsDto() { 
   }
 
-  public ResellerPortalSettingsDto customerManagement(@javax.annotation.Nullable Boolean customerManagement) {
+  public ResellerPortalSettingsDto customerManagement(@jakarta.annotation.Nullable Boolean customerManagement) {
     this.customerManagement = customerManagement;
     return this;
   }
@@ -84,17 +71,22 @@ public class ResellerPortalSettingsDto {
    * Get customerManagement
    * @return customerManagement
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_MANAGEMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getCustomerManagement() {
     return customerManagement;
   }
 
-  public void setCustomerManagement(@javax.annotation.Nullable Boolean customerManagement) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_MANAGEMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomerManagement(@jakarta.annotation.Nullable Boolean customerManagement) {
     this.customerManagement = customerManagement;
   }
 
 
-  public ResellerPortalSettingsDto licenseManagement(@javax.annotation.Nullable Boolean licenseManagement) {
+  public ResellerPortalSettingsDto licenseManagement(@jakarta.annotation.Nullable Boolean licenseManagement) {
     this.licenseManagement = licenseManagement;
     return this;
   }
@@ -103,18 +95,23 @@ public class ResellerPortalSettingsDto {
    * Get licenseManagement
    * @return licenseManagement
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_MANAGEMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getLicenseManagement() {
     return licenseManagement;
   }
 
-  public void setLicenseManagement(@javax.annotation.Nullable Boolean licenseManagement) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_MANAGEMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLicenseManagement(@jakarta.annotation.Nullable Boolean licenseManagement) {
     this.licenseManagement = licenseManagement;
   }
 
 
-  public ResellerPortalSettingsDto forceEmailConfiguration(@javax.annotation.Nullable Boolean forceEmailConfiguration) {
-    this.forceEmailConfiguration = forceEmailConfiguration;
+  public ResellerPortalSettingsDto forceEmailConfiguration(@jakarta.annotation.Nullable Boolean forceEmailConfiguration) {
+    this.forceEmailConfiguration = JsonNullable.<Boolean>of(forceEmailConfiguration);
     return this;
   }
 
@@ -122,18 +119,31 @@ public class ResellerPortalSettingsDto {
    * Get forceEmailConfiguration
    * @return forceEmailConfiguration
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getForceEmailConfiguration() {
-    return forceEmailConfiguration;
+        return forceEmailConfiguration.orElse(null);
   }
 
-  public void setForceEmailConfiguration(@javax.annotation.Nullable Boolean forceEmailConfiguration) {
+  @JsonProperty(value = JSON_PROPERTY_FORCE_EMAIL_CONFIGURATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getForceEmailConfiguration_JsonNullable() {
+    return forceEmailConfiguration;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FORCE_EMAIL_CONFIGURATION)
+  public void setForceEmailConfiguration_JsonNullable(JsonNullable<Boolean> forceEmailConfiguration) {
     this.forceEmailConfiguration = forceEmailConfiguration;
   }
 
+  public void setForceEmailConfiguration(@jakarta.annotation.Nullable Boolean forceEmailConfiguration) {
+    this.forceEmailConfiguration = JsonNullable.<Boolean>of(forceEmailConfiguration);
+  }
 
-  public ResellerPortalSettingsDto emailConfigurationMode(@javax.annotation.Nullable ResellerEmailConfigurationMode emailConfigurationMode) {
-    this.emailConfigurationMode = emailConfigurationMode;
+
+  public ResellerPortalSettingsDto emailConfigurationMode(@jakarta.annotation.Nullable ResellerEmailConfigurationMode emailConfigurationMode) {
+    this.emailConfigurationMode = JsonNullable.<ResellerEmailConfigurationMode>of(emailConfigurationMode);
     return this;
   }
 
@@ -141,17 +151,32 @@ public class ResellerPortalSettingsDto {
    * Get emailConfigurationMode
    * @return emailConfigurationMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ResellerEmailConfigurationMode getEmailConfigurationMode() {
-    return emailConfigurationMode;
+        return emailConfigurationMode.orElse(null);
   }
 
-  public void setEmailConfigurationMode(@javax.annotation.Nullable ResellerEmailConfigurationMode emailConfigurationMode) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_CONFIGURATION_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ResellerEmailConfigurationMode> getEmailConfigurationMode_JsonNullable() {
+    return emailConfigurationMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL_CONFIGURATION_MODE)
+  public void setEmailConfigurationMode_JsonNullable(JsonNullable<ResellerEmailConfigurationMode> emailConfigurationMode) {
     this.emailConfigurationMode = emailConfigurationMode;
   }
 
+  public void setEmailConfigurationMode(@jakarta.annotation.Nullable ResellerEmailConfigurationMode emailConfigurationMode) {
+    this.emailConfigurationMode = JsonNullable.<ResellerEmailConfigurationMode>of(emailConfigurationMode);
+  }
 
 
+  /**
+   * Return true if this ResellerPortalSettingsDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -163,8 +188,8 @@ public class ResellerPortalSettingsDto {
     ResellerPortalSettingsDto resellerPortalSettingsDto = (ResellerPortalSettingsDto) o;
     return Objects.equals(this.customerManagement, resellerPortalSettingsDto.customerManagement) &&
         Objects.equals(this.licenseManagement, resellerPortalSettingsDto.licenseManagement) &&
-        Objects.equals(this.forceEmailConfiguration, resellerPortalSettingsDto.forceEmailConfiguration) &&
-        Objects.equals(this.emailConfigurationMode, resellerPortalSettingsDto.emailConfigurationMode);
+        equalsNullable(this.forceEmailConfiguration, resellerPortalSettingsDto.forceEmailConfiguration) &&
+        equalsNullable(this.emailConfigurationMode, resellerPortalSettingsDto.emailConfigurationMode);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -173,7 +198,7 @@ public class ResellerPortalSettingsDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(customerManagement, licenseManagement, forceEmailConfiguration, emailConfigurationMode);
+    return Objects.hash(customerManagement, licenseManagement, hashCodeNullable(forceEmailConfiguration), hashCodeNullable(emailConfigurationMode));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -206,92 +231,59 @@ public class ResellerPortalSettingsDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("customer_management", "license_management", "force_email_configuration", "email_configuration_mode"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerPortalSettingsDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerPortalSettingsDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerPortalSettingsDto is not found in the empty JSON string", ResellerPortalSettingsDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerPortalSettingsDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerPortalSettingsDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `email_configuration_mode`
-      if (jsonObj.get("email_configuration_mode") != null && !jsonObj.get("email_configuration_mode").isJsonNull()) {
-        ResellerEmailConfigurationMode.validateJsonElement(jsonObj.get("email_configuration_mode"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerPortalSettingsDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerPortalSettingsDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerPortalSettingsDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerPortalSettingsDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerPortalSettingsDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerPortalSettingsDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerPortalSettingsDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerPortalSettingsDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerPortalSettingsDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerPortalSettingsDto
-   */
-  public static ResellerPortalSettingsDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerPortalSettingsDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerPortalSettingsDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `customer_management` to the URL query string
+    if (getCustomerManagement() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_management%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerManagement()))));
+    }
+
+    // add `license_management` to the URL query string
+    if (getLicenseManagement() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_management%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseManagement()))));
+    }
+
+    // add `force_email_configuration` to the URL query string
+    if (getForceEmailConfiguration() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sforce_email_configuration%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getForceEmailConfiguration()))));
+    }
+
+    // add `email_configuration_mode` to the URL query string
+    if (getEmailConfigurationMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail_configuration_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmailConfigurationMode()))));
+    }
+
+    return joiner.toString();
   }
 }
 

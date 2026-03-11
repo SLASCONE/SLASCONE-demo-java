@@ -13,79 +13,65 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * SessionStatusDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  SessionStatusDto.JSON_PROPERTY_IS_SESSION_VALID,
+  SessionStatusDto.JSON_PROPERTY_SESSION_VALID_UNTIL,
+  SessionStatusDto.JSON_PROPERTY_SESSION_CREATED_DATE,
+  SessionStatusDto.JSON_PROPERTY_SESSION_MODIFIED_DATE,
+  SessionStatusDto.JSON_PROPERTY_MAX_OPEN_SESSION_COUNT,
+  SessionStatusDto.JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class SessionStatusDto {
-  public static final String SERIALIZED_NAME_IS_SESSION_VALID = "is_session_valid";
-  @SerializedName(SERIALIZED_NAME_IS_SESSION_VALID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_SESSION_VALID = "is_session_valid";
+  @jakarta.annotation.Nullable
   private Boolean isSessionValid;
 
-  public static final String SERIALIZED_NAME_SESSION_VALID_UNTIL = "session_valid_until";
-  @SerializedName(SERIALIZED_NAME_SESSION_VALID_UNTIL)
-  @javax.annotation.Nullable
-  private OffsetDateTime sessionValidUntil;
+  public static final String JSON_PROPERTY_SESSION_VALID_UNTIL = "session_valid_until";
+  private JsonNullable<OffsetDateTime> sessionValidUntil = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_SESSION_CREATED_DATE = "session_created_date";
-  @SerializedName(SERIALIZED_NAME_SESSION_CREATED_DATE)
-  @javax.annotation.Nullable
-  private OffsetDateTime sessionCreatedDate;
+  public static final String JSON_PROPERTY_SESSION_CREATED_DATE = "session_created_date";
+  private JsonNullable<OffsetDateTime> sessionCreatedDate = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_SESSION_MODIFIED_DATE = "session_modified_date";
-  @SerializedName(SERIALIZED_NAME_SESSION_MODIFIED_DATE)
-  @javax.annotation.Nullable
-  private OffsetDateTime sessionModifiedDate;
+  public static final String JSON_PROPERTY_SESSION_MODIFIED_DATE = "session_modified_date";
+  private JsonNullable<OffsetDateTime> sessionModifiedDate = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_OPEN_SESSION_COUNT = "max_open_session_count";
-  @SerializedName(SERIALIZED_NAME_MAX_OPEN_SESSION_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_OPEN_SESSION_COUNT = "max_open_session_count";
+  @jakarta.annotation.Nullable
   private Integer maxOpenSessionCount;
 
-  public static final String SERIALIZED_NAME_MAX_ACTIVE_CLIENT_COUNT = "max_active_client_count";
-  @SerializedName(SERIALIZED_NAME_MAX_ACTIVE_CLIENT_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT = "max_active_client_count";
+  @jakarta.annotation.Nullable
   private Integer maxActiveClientCount;
 
-  public SessionStatusDto() {
+  public SessionStatusDto() { 
   }
 
-  public SessionStatusDto isSessionValid(@javax.annotation.Nullable Boolean isSessionValid) {
+  public SessionStatusDto isSessionValid(@jakarta.annotation.Nullable Boolean isSessionValid) {
     this.isSessionValid = isSessionValid;
     return this;
   }
@@ -94,18 +80,23 @@ public class SessionStatusDto {
    * Get isSessionValid
    * @return isSessionValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_SESSION_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsSessionValid() {
     return isSessionValid;
   }
 
-  public void setIsSessionValid(@javax.annotation.Nullable Boolean isSessionValid) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_SESSION_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsSessionValid(@jakarta.annotation.Nullable Boolean isSessionValid) {
     this.isSessionValid = isSessionValid;
   }
 
 
-  public SessionStatusDto sessionValidUntil(@javax.annotation.Nullable OffsetDateTime sessionValidUntil) {
-    this.sessionValidUntil = sessionValidUntil;
+  public SessionStatusDto sessionValidUntil(@jakarta.annotation.Nullable OffsetDateTime sessionValidUntil) {
+    this.sessionValidUntil = JsonNullable.<OffsetDateTime>of(sessionValidUntil);
     return this;
   }
 
@@ -113,18 +104,31 @@ public class SessionStatusDto {
    * Get sessionValidUntil
    * @return sessionValidUntil
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getSessionValidUntil() {
-    return sessionValidUntil;
+        return sessionValidUntil.orElse(null);
   }
 
-  public void setSessionValidUntil(@javax.annotation.Nullable OffsetDateTime sessionValidUntil) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getSessionValidUntil_JsonNullable() {
+    return sessionValidUntil;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_VALID_UNTIL)
+  public void setSessionValidUntil_JsonNullable(JsonNullable<OffsetDateTime> sessionValidUntil) {
     this.sessionValidUntil = sessionValidUntil;
   }
 
+  public void setSessionValidUntil(@jakarta.annotation.Nullable OffsetDateTime sessionValidUntil) {
+    this.sessionValidUntil = JsonNullable.<OffsetDateTime>of(sessionValidUntil);
+  }
 
-  public SessionStatusDto sessionCreatedDate(@javax.annotation.Nullable OffsetDateTime sessionCreatedDate) {
-    this.sessionCreatedDate = sessionCreatedDate;
+
+  public SessionStatusDto sessionCreatedDate(@jakarta.annotation.Nullable OffsetDateTime sessionCreatedDate) {
+    this.sessionCreatedDate = JsonNullable.<OffsetDateTime>of(sessionCreatedDate);
     return this;
   }
 
@@ -132,18 +136,31 @@ public class SessionStatusDto {
    * Get sessionCreatedDate
    * @return sessionCreatedDate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getSessionCreatedDate() {
-    return sessionCreatedDate;
+        return sessionCreatedDate.orElse(null);
   }
 
-  public void setSessionCreatedDate(@javax.annotation.Nullable OffsetDateTime sessionCreatedDate) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_CREATED_DATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getSessionCreatedDate_JsonNullable() {
+    return sessionCreatedDate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_CREATED_DATE)
+  public void setSessionCreatedDate_JsonNullable(JsonNullable<OffsetDateTime> sessionCreatedDate) {
     this.sessionCreatedDate = sessionCreatedDate;
   }
 
+  public void setSessionCreatedDate(@jakarta.annotation.Nullable OffsetDateTime sessionCreatedDate) {
+    this.sessionCreatedDate = JsonNullable.<OffsetDateTime>of(sessionCreatedDate);
+  }
 
-  public SessionStatusDto sessionModifiedDate(@javax.annotation.Nullable OffsetDateTime sessionModifiedDate) {
-    this.sessionModifiedDate = sessionModifiedDate;
+
+  public SessionStatusDto sessionModifiedDate(@jakarta.annotation.Nullable OffsetDateTime sessionModifiedDate) {
+    this.sessionModifiedDate = JsonNullable.<OffsetDateTime>of(sessionModifiedDate);
     return this;
   }
 
@@ -151,17 +168,30 @@ public class SessionStatusDto {
    * Get sessionModifiedDate
    * @return sessionModifiedDate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getSessionModifiedDate() {
-    return sessionModifiedDate;
+        return sessionModifiedDate.orElse(null);
   }
 
-  public void setSessionModifiedDate(@javax.annotation.Nullable OffsetDateTime sessionModifiedDate) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_MODIFIED_DATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getSessionModifiedDate_JsonNullable() {
+    return sessionModifiedDate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_MODIFIED_DATE)
+  public void setSessionModifiedDate_JsonNullable(JsonNullable<OffsetDateTime> sessionModifiedDate) {
     this.sessionModifiedDate = sessionModifiedDate;
   }
 
+  public void setSessionModifiedDate(@jakarta.annotation.Nullable OffsetDateTime sessionModifiedDate) {
+    this.sessionModifiedDate = JsonNullable.<OffsetDateTime>of(sessionModifiedDate);
+  }
 
-  public SessionStatusDto maxOpenSessionCount(@javax.annotation.Nullable Integer maxOpenSessionCount) {
+
+  public SessionStatusDto maxOpenSessionCount(@jakarta.annotation.Nullable Integer maxOpenSessionCount) {
     this.maxOpenSessionCount = maxOpenSessionCount;
     return this;
   }
@@ -170,17 +200,22 @@ public class SessionStatusDto {
    * Get maxOpenSessionCount
    * @return maxOpenSessionCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_OPEN_SESSION_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxOpenSessionCount() {
     return maxOpenSessionCount;
   }
 
-  public void setMaxOpenSessionCount(@javax.annotation.Nullable Integer maxOpenSessionCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_OPEN_SESSION_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxOpenSessionCount(@jakarta.annotation.Nullable Integer maxOpenSessionCount) {
     this.maxOpenSessionCount = maxOpenSessionCount;
   }
 
 
-  public SessionStatusDto maxActiveClientCount(@javax.annotation.Nullable Integer maxActiveClientCount) {
+  public SessionStatusDto maxActiveClientCount(@jakarta.annotation.Nullable Integer maxActiveClientCount) {
     this.maxActiveClientCount = maxActiveClientCount;
     return this;
   }
@@ -189,17 +224,24 @@ public class SessionStatusDto {
    * Get maxActiveClientCount
    * @return maxActiveClientCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxActiveClientCount() {
     return maxActiveClientCount;
   }
 
-  public void setMaxActiveClientCount(@javax.annotation.Nullable Integer maxActiveClientCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxActiveClientCount(@jakarta.annotation.Nullable Integer maxActiveClientCount) {
     this.maxActiveClientCount = maxActiveClientCount;
   }
 
 
-
+  /**
+   * Return true if this SessionStatusDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -210,9 +252,9 @@ public class SessionStatusDto {
     }
     SessionStatusDto sessionStatusDto = (SessionStatusDto) o;
     return Objects.equals(this.isSessionValid, sessionStatusDto.isSessionValid) &&
-        Objects.equals(this.sessionValidUntil, sessionStatusDto.sessionValidUntil) &&
-        Objects.equals(this.sessionCreatedDate, sessionStatusDto.sessionCreatedDate) &&
-        Objects.equals(this.sessionModifiedDate, sessionStatusDto.sessionModifiedDate) &&
+        equalsNullable(this.sessionValidUntil, sessionStatusDto.sessionValidUntil) &&
+        equalsNullable(this.sessionCreatedDate, sessionStatusDto.sessionCreatedDate) &&
+        equalsNullable(this.sessionModifiedDate, sessionStatusDto.sessionModifiedDate) &&
         Objects.equals(this.maxOpenSessionCount, sessionStatusDto.maxOpenSessionCount) &&
         Objects.equals(this.maxActiveClientCount, sessionStatusDto.maxActiveClientCount);
   }
@@ -223,7 +265,7 @@ public class SessionStatusDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(isSessionValid, sessionValidUntil, sessionCreatedDate, sessionModifiedDate, maxOpenSessionCount, maxActiveClientCount);
+    return Objects.hash(isSessionValid, hashCodeNullable(sessionValidUntil), hashCodeNullable(sessionCreatedDate), hashCodeNullable(sessionModifiedDate), maxOpenSessionCount, maxActiveClientCount);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -258,88 +300,69 @@ public class SessionStatusDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("is_session_valid", "session_valid_until", "session_created_date", "session_modified_date", "max_open_session_count", "max_active_client_count"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to SessionStatusDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!SessionStatusDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in SessionStatusDto is not found in the empty JSON string", SessionStatusDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!SessionStatusDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SessionStatusDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!SessionStatusDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'SessionStatusDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<SessionStatusDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(SessionStatusDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<SessionStatusDto>() {
-           @Override
-           public void write(JsonWriter out, SessionStatusDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public SessionStatusDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of SessionStatusDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of SessionStatusDto
-   * @throws IOException if the JSON string is invalid with respect to SessionStatusDto
-   */
-  public static SessionStatusDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, SessionStatusDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of SessionStatusDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `is_session_valid` to the URL query string
+    if (getIsSessionValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_session_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsSessionValid()))));
+    }
+
+    // add `session_valid_until` to the URL query string
+    if (getSessionValidUntil() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_valid_until%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionValidUntil()))));
+    }
+
+    // add `session_created_date` to the URL query string
+    if (getSessionCreatedDate() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_created_date%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionCreatedDate()))));
+    }
+
+    // add `session_modified_date` to the URL query string
+    if (getSessionModifiedDate() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_modified_date%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionModifiedDate()))));
+    }
+
+    // add `max_open_session_count` to the URL query string
+    if (getMaxOpenSessionCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_open_session_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxOpenSessionCount()))));
+    }
+
+    // add `max_active_client_count` to the URL query string
+    if (getMaxActiveClientCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_active_client_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxActiveClientCount()))));
+    }
+
+    return joiner.toString();
   }
 }
 

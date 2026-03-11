@@ -13,72 +13,59 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * AnalyticalFieldValueDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  AnalyticalFieldValueDto.JSON_PROPERTY_ANALYTICAL_FIELD_ID,
+  AnalyticalFieldValueDto.JSON_PROPERTY_VALUE,
+  AnalyticalFieldValueDto.JSON_PROPERTY_VALUE_ARRAY,
+  AnalyticalFieldValueDto.JSON_PROPERTY_TIMESTAMP_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class AnalyticalFieldValueDto {
-  public static final String SERIALIZED_NAME_ANALYTICAL_FIELD_ID = "analytical_field_id";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_FIELD_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_ANALYTICAL_FIELD_ID = "analytical_field_id";
+  @jakarta.annotation.Nonnull
   private UUID analyticalFieldId;
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nonnull
   private String value;
 
-  public static final String SERIALIZED_NAME_VALUE_ARRAY = "value_array";
-  @SerializedName(SERIALIZED_NAME_VALUE_ARRAY)
-  @javax.annotation.Nullable
-  private List<String> valueArray;
+  public static final String JSON_PROPERTY_VALUE_ARRAY = "value_array";
+  private JsonNullable<List<String>> valueArray = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_TIMESTAMP_UTC = "timestamp_utc";
-  @SerializedName(SERIALIZED_NAME_TIMESTAMP_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime timestampUtc;
+  public static final String JSON_PROPERTY_TIMESTAMP_UTC = "timestamp_utc";
+  private JsonNullable<OffsetDateTime> timestampUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public AnalyticalFieldValueDto() {
+  public AnalyticalFieldValueDto() { 
   }
 
-  public AnalyticalFieldValueDto analyticalFieldId(@javax.annotation.Nonnull UUID analyticalFieldId) {
+  public AnalyticalFieldValueDto analyticalFieldId(@jakarta.annotation.Nonnull UUID analyticalFieldId) {
     this.analyticalFieldId = analyticalFieldId;
     return this;
   }
@@ -87,17 +74,22 @@ public class AnalyticalFieldValueDto {
    * Get analyticalFieldId
    * @return analyticalFieldId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getAnalyticalFieldId() {
     return analyticalFieldId;
   }
 
-  public void setAnalyticalFieldId(@javax.annotation.Nonnull UUID analyticalFieldId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setAnalyticalFieldId(@jakarta.annotation.Nonnull UUID analyticalFieldId) {
     this.analyticalFieldId = analyticalFieldId;
   }
 
 
-  public AnalyticalFieldValueDto value(@javax.annotation.Nonnull String value) {
+  public AnalyticalFieldValueDto value(@jakarta.annotation.Nonnull String value) {
     this.value = value;
     return this;
   }
@@ -106,26 +98,35 @@ public class AnalyticalFieldValueDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nonnull String value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValue(@jakarta.annotation.Nonnull String value) {
     this.value = value;
   }
 
 
-  public AnalyticalFieldValueDto valueArray(@javax.annotation.Nullable List<String> valueArray) {
-    this.valueArray = valueArray;
+  public AnalyticalFieldValueDto valueArray(@jakarta.annotation.Nullable List<String> valueArray) {
+    this.valueArray = JsonNullable.<List<String>>of(valueArray);
     return this;
   }
 
   public AnalyticalFieldValueDto addValueArrayItem(String valueArrayItem) {
-    if (this.valueArray == null) {
-      this.valueArray = new ArrayList<>();
+    if (this.valueArray == null || !this.valueArray.isPresent()) {
+      this.valueArray = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.valueArray.add(valueArrayItem);
+    try {
+      this.valueArray.get().add(valueArrayItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -133,18 +134,31 @@ public class AnalyticalFieldValueDto {
    * Get valueArray
    * @return valueArray
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getValueArray() {
-    return valueArray;
+        return valueArray.orElse(null);
   }
 
-  public void setValueArray(@javax.annotation.Nullable List<String> valueArray) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE_ARRAY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getValueArray_JsonNullable() {
+    return valueArray;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE_ARRAY)
+  public void setValueArray_JsonNullable(JsonNullable<List<String>> valueArray) {
     this.valueArray = valueArray;
   }
 
+  public void setValueArray(@jakarta.annotation.Nullable List<String> valueArray) {
+    this.valueArray = JsonNullable.<List<String>>of(valueArray);
+  }
 
-  public AnalyticalFieldValueDto timestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
-    this.timestampUtc = timestampUtc;
+
+  public AnalyticalFieldValueDto timestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
     return this;
   }
 
@@ -152,17 +166,32 @@ public class AnalyticalFieldValueDto {
    * Get timestampUtc
    * @return timestampUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getTimestampUtc() {
-    return timestampUtc;
+        return timestampUtc.orElse(null);
   }
 
-  public void setTimestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
+  @JsonProperty(value = JSON_PROPERTY_TIMESTAMP_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getTimestampUtc_JsonNullable() {
+    return timestampUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TIMESTAMP_UTC)
+  public void setTimestampUtc_JsonNullable(JsonNullable<OffsetDateTime> timestampUtc) {
     this.timestampUtc = timestampUtc;
   }
 
+  public void setTimestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
+  }
 
 
+  /**
+   * Return true if this AnalyticalFieldValueDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -174,8 +203,8 @@ public class AnalyticalFieldValueDto {
     AnalyticalFieldValueDto analyticalFieldValueDto = (AnalyticalFieldValueDto) o;
     return Objects.equals(this.analyticalFieldId, analyticalFieldValueDto.analyticalFieldId) &&
         Objects.equals(this.value, analyticalFieldValueDto.value) &&
-        Objects.equals(this.valueArray, analyticalFieldValueDto.valueArray) &&
-        Objects.equals(this.timestampUtc, analyticalFieldValueDto.timestampUtc);
+        equalsNullable(this.valueArray, analyticalFieldValueDto.valueArray) &&
+        equalsNullable(this.timestampUtc, analyticalFieldValueDto.timestampUtc);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -184,7 +213,7 @@ public class AnalyticalFieldValueDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(analyticalFieldId, value, valueArray, timestampUtc);
+    return Objects.hash(analyticalFieldId, value, hashCodeNullable(valueArray), hashCodeNullable(timestampUtc));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -217,105 +246,63 @@ public class AnalyticalFieldValueDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("analytical_field_id", "value", "value_array", "timestamp_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("analytical_field_id", "value"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to AnalyticalFieldValueDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!AnalyticalFieldValueDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AnalyticalFieldValueDto is not found in the empty JSON string", AnalyticalFieldValueDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!AnalyticalFieldValueDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AnalyticalFieldValueDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AnalyticalFieldValueDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("analytical_field_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `analytical_field_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("analytical_field_id").toString()));
-      }
-      if (!jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("value_array") != null && !jsonObj.get("value_array").isJsonNull() && !jsonObj.get("value_array").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value_array` to be an array in the JSON string but got `%s`", jsonObj.get("value_array").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AnalyticalFieldValueDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AnalyticalFieldValueDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AnalyticalFieldValueDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AnalyticalFieldValueDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<AnalyticalFieldValueDto>() {
-           @Override
-           public void write(JsonWriter out, AnalyticalFieldValueDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public AnalyticalFieldValueDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of AnalyticalFieldValueDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of AnalyticalFieldValueDto
-   * @throws IOException if the JSON string is invalid with respect to AnalyticalFieldValueDto
-   */
-  public static AnalyticalFieldValueDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AnalyticalFieldValueDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of AnalyticalFieldValueDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `analytical_field_id` to the URL query string
+    if (getAnalyticalFieldId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sanalytical_field_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAnalyticalFieldId()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    // add `value_array` to the URL query string
+    if (getValueArray() != null) {
+      for (int i = 0; i < getValueArray().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%svalue_array%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getValueArray().get(i)))));
+      }
+    }
+
+    // add `timestamp_utc` to the URL query string
+    if (getTimestampUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stimestamp_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTimestampUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

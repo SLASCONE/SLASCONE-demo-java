@@ -13,87 +13,76 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ConsumptionDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ConsumptionDto.JSON_PROPERTY_TRANSACTION_ID,
+  ConsumptionDto.JSON_PROPERTY_LIMITATION_ID,
+  ConsumptionDto.JSON_PROPERTY_REMAINING,
+  ConsumptionDto.JSON_PROPERTY_BALANCE,
+  ConsumptionDto.JSON_PROPERTY_LIMIT,
+  ConsumptionDto.JSON_PROPERTY_GOODWILL,
+  ConsumptionDto.JSON_PROPERTY_LAST_RESET_DATE_UTC,
+  ConsumptionDto.JSON_PROPERTY_NEXT_RESET_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ConsumptionDto {
-  public static final String SERIALIZED_NAME_TRANSACTION_ID = "transaction_id";
-  @SerializedName(SERIALIZED_NAME_TRANSACTION_ID)
-  @javax.annotation.Nullable
-  private UUID transactionId;
+  public static final String JSON_PROPERTY_TRANSACTION_ID = "transaction_id";
+  private JsonNullable<UUID> transactionId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nullable
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_REMAINING = "remaining";
-  @SerializedName(SERIALIZED_NAME_REMAINING)
-  @javax.annotation.Nullable
-  private BigDecimal remaining;
+  public static final String JSON_PROPERTY_REMAINING = "remaining";
+  private JsonNullable<BigDecimal> remaining = JsonNullable.<BigDecimal>undefined();
 
-  public static final String SERIALIZED_NAME_LIMIT = "limit";
-  @SerializedName(SERIALIZED_NAME_LIMIT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_BALANCE = "balance";
+  private JsonNullable<BigDecimal> balance = JsonNullable.<BigDecimal>undefined();
+
+  public static final String JSON_PROPERTY_LIMIT = "limit";
+  @jakarta.annotation.Nullable
   private BigDecimal limit;
 
-  public static final String SERIALIZED_NAME_GOODWILL = "goodwill";
-  @SerializedName(SERIALIZED_NAME_GOODWILL)
-  @javax.annotation.Nullable
-  private BigDecimal goodwill;
+  public static final String JSON_PROPERTY_GOODWILL = "goodwill";
+  private JsonNullable<BigDecimal> goodwill = JsonNullable.<BigDecimal>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_RESET_DATE_UTC = "last_reset_date_utc";
-  @SerializedName(SERIALIZED_NAME_LAST_RESET_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LAST_RESET_DATE_UTC = "last_reset_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime lastResetDateUtc;
 
-  public static final String SERIALIZED_NAME_NEXT_RESET_DATE_UTC = "next_reset_date_utc";
-  @SerializedName(SERIALIZED_NAME_NEXT_RESET_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime nextResetDateUtc;
+  public static final String JSON_PROPERTY_NEXT_RESET_DATE_UTC = "next_reset_date_utc";
+  private JsonNullable<OffsetDateTime> nextResetDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public ConsumptionDto() {
+  public ConsumptionDto() { 
   }
 
-  public ConsumptionDto transactionId(@javax.annotation.Nullable UUID transactionId) {
-    this.transactionId = transactionId;
+  public ConsumptionDto transactionId(@jakarta.annotation.Nullable UUID transactionId) {
+    this.transactionId = JsonNullable.<UUID>of(transactionId);
     return this;
   }
 
@@ -101,17 +90,30 @@ public class ConsumptionDto {
    * Get transactionId
    * @return transactionId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getTransactionId() {
-    return transactionId;
+        return transactionId.orElse(null);
   }
 
-  public void setTransactionId(@javax.annotation.Nullable UUID transactionId) {
+  @JsonProperty(value = JSON_PROPERTY_TRANSACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getTransactionId_JsonNullable() {
+    return transactionId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TRANSACTION_ID)
+  public void setTransactionId_JsonNullable(JsonNullable<UUID> transactionId) {
     this.transactionId = transactionId;
   }
 
+  public void setTransactionId(@jakarta.annotation.Nullable UUID transactionId) {
+    this.transactionId = JsonNullable.<UUID>of(transactionId);
+  }
 
-  public ConsumptionDto limitationId(@javax.annotation.Nullable UUID limitationId) {
+
+  public ConsumptionDto limitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -120,18 +122,23 @@ public class ConsumptionDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nullable UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLimitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public ConsumptionDto remaining(@javax.annotation.Nullable BigDecimal remaining) {
-    this.remaining = remaining;
+  public ConsumptionDto remaining(@jakarta.annotation.Nullable BigDecimal remaining) {
+    this.remaining = JsonNullable.<BigDecimal>of(remaining);
     return this;
   }
 
@@ -139,17 +146,62 @@ public class ConsumptionDto {
    * Get remaining
    * @return remaining
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public BigDecimal getRemaining() {
-    return remaining;
+        return remaining.orElse(null);
   }
 
-  public void setRemaining(@javax.annotation.Nullable BigDecimal remaining) {
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getRemaining_JsonNullable() {
+    return remaining;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_REMAINING)
+  public void setRemaining_JsonNullable(JsonNullable<BigDecimal> remaining) {
     this.remaining = remaining;
   }
 
+  public void setRemaining(@jakarta.annotation.Nullable BigDecimal remaining) {
+    this.remaining = JsonNullable.<BigDecimal>of(remaining);
+  }
 
-  public ConsumptionDto limit(@javax.annotation.Nullable BigDecimal limit) {
+
+  public ConsumptionDto balance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = JsonNullable.<BigDecimal>of(balance);
+    return this;
+  }
+
+  /**
+   * Get balance
+   * @return balance
+   */
+  @jakarta.annotation.Nullable
+  @JsonIgnore
+  public BigDecimal getBalance() {
+        return balance.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getBalance_JsonNullable() {
+    return balance;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_BALANCE)
+  public void setBalance_JsonNullable(JsonNullable<BigDecimal> balance) {
+    this.balance = balance;
+  }
+
+  public void setBalance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = JsonNullable.<BigDecimal>of(balance);
+  }
+
+
+  public ConsumptionDto limit(@jakarta.annotation.Nullable BigDecimal limit) {
     this.limit = limit;
     return this;
   }
@@ -158,18 +210,23 @@ public class ConsumptionDto {
    * Get limit
    * @return limit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public BigDecimal getLimit() {
     return limit;
   }
 
-  public void setLimit(@javax.annotation.Nullable BigDecimal limit) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLimit(@jakarta.annotation.Nullable BigDecimal limit) {
     this.limit = limit;
   }
 
 
-  public ConsumptionDto goodwill(@javax.annotation.Nullable BigDecimal goodwill) {
-    this.goodwill = goodwill;
+  public ConsumptionDto goodwill(@jakarta.annotation.Nullable BigDecimal goodwill) {
+    this.goodwill = JsonNullable.<BigDecimal>of(goodwill);
     return this;
   }
 
@@ -177,17 +234,30 @@ public class ConsumptionDto {
    * Get goodwill
    * @return goodwill
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public BigDecimal getGoodwill() {
-    return goodwill;
+        return goodwill.orElse(null);
   }
 
-  public void setGoodwill(@javax.annotation.Nullable BigDecimal goodwill) {
+  @JsonProperty(value = JSON_PROPERTY_GOODWILL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getGoodwill_JsonNullable() {
+    return goodwill;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GOODWILL)
+  public void setGoodwill_JsonNullable(JsonNullable<BigDecimal> goodwill) {
     this.goodwill = goodwill;
   }
 
+  public void setGoodwill(@jakarta.annotation.Nullable BigDecimal goodwill) {
+    this.goodwill = JsonNullable.<BigDecimal>of(goodwill);
+  }
 
-  public ConsumptionDto lastResetDateUtc(@javax.annotation.Nullable OffsetDateTime lastResetDateUtc) {
+
+  public ConsumptionDto lastResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime lastResetDateUtc) {
     this.lastResetDateUtc = lastResetDateUtc;
     return this;
   }
@@ -196,18 +266,23 @@ public class ConsumptionDto {
    * Get lastResetDateUtc
    * @return lastResetDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getLastResetDateUtc() {
     return lastResetDateUtc;
   }
 
-  public void setLastResetDateUtc(@javax.annotation.Nullable OffsetDateTime lastResetDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLastResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime lastResetDateUtc) {
     this.lastResetDateUtc = lastResetDateUtc;
   }
 
 
-  public ConsumptionDto nextResetDateUtc(@javax.annotation.Nullable OffsetDateTime nextResetDateUtc) {
-    this.nextResetDateUtc = nextResetDateUtc;
+  public ConsumptionDto nextResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+    this.nextResetDateUtc = JsonNullable.<OffsetDateTime>of(nextResetDateUtc);
     return this;
   }
 
@@ -215,17 +290,32 @@ public class ConsumptionDto {
    * Get nextResetDateUtc
    * @return nextResetDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getNextResetDateUtc() {
-    return nextResetDateUtc;
+        return nextResetDateUtc.orElse(null);
   }
 
-  public void setNextResetDateUtc(@javax.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_NEXT_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getNextResetDateUtc_JsonNullable() {
+    return nextResetDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NEXT_RESET_DATE_UTC)
+  public void setNextResetDateUtc_JsonNullable(JsonNullable<OffsetDateTime> nextResetDateUtc) {
     this.nextResetDateUtc = nextResetDateUtc;
   }
 
+  public void setNextResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+    this.nextResetDateUtc = JsonNullable.<OffsetDateTime>of(nextResetDateUtc);
+  }
 
 
+  /**
+   * Return true if this ConsumptionDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -235,13 +325,14 @@ public class ConsumptionDto {
       return false;
     }
     ConsumptionDto consumptionDto = (ConsumptionDto) o;
-    return Objects.equals(this.transactionId, consumptionDto.transactionId) &&
+    return equalsNullable(this.transactionId, consumptionDto.transactionId) &&
         Objects.equals(this.limitationId, consumptionDto.limitationId) &&
-        Objects.equals(this.remaining, consumptionDto.remaining) &&
+        equalsNullable(this.remaining, consumptionDto.remaining) &&
+        equalsNullable(this.balance, consumptionDto.balance) &&
         Objects.equals(this.limit, consumptionDto.limit) &&
-        Objects.equals(this.goodwill, consumptionDto.goodwill) &&
+        equalsNullable(this.goodwill, consumptionDto.goodwill) &&
         Objects.equals(this.lastResetDateUtc, consumptionDto.lastResetDateUtc) &&
-        Objects.equals(this.nextResetDateUtc, consumptionDto.nextResetDateUtc);
+        equalsNullable(this.nextResetDateUtc, consumptionDto.nextResetDateUtc);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -250,7 +341,7 @@ public class ConsumptionDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(transactionId, limitationId, remaining, limit, goodwill, lastResetDateUtc, nextResetDateUtc);
+    return Objects.hash(hashCodeNullable(transactionId), limitationId, hashCodeNullable(remaining), hashCodeNullable(balance), limit, hashCodeNullable(goodwill), lastResetDateUtc, hashCodeNullable(nextResetDateUtc));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -267,6 +358,7 @@ public class ConsumptionDto {
     sb.append("    transactionId: ").append(toIndentedString(transactionId)).append("\n");
     sb.append("    limitationId: ").append(toIndentedString(limitationId)).append("\n");
     sb.append("    remaining: ").append(toIndentedString(remaining)).append("\n");
+    sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    limit: ").append(toIndentedString(limit)).append("\n");
     sb.append("    goodwill: ").append(toIndentedString(goodwill)).append("\n");
     sb.append("    lastResetDateUtc: ").append(toIndentedString(lastResetDateUtc)).append("\n");
@@ -286,94 +378,79 @@ public class ConsumptionDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("transaction_id", "limitation_id", "remaining", "limit", "goodwill", "last_reset_date_utc", "next_reset_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ConsumptionDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ConsumptionDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionDto is not found in the empty JSON string", ConsumptionDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ConsumptionDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("transaction_id") != null && !jsonObj.get("transaction_id").isJsonNull()) && !jsonObj.get("transaction_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `transaction_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("transaction_id").toString()));
-      }
-      if ((jsonObj.get("limitation_id") != null && !jsonObj.get("limitation_id").isJsonNull()) && !jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ConsumptionDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ConsumptionDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ConsumptionDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ConsumptionDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ConsumptionDto>() {
-           @Override
-           public void write(JsonWriter out, ConsumptionDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ConsumptionDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ConsumptionDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ConsumptionDto
-   * @throws IOException if the JSON string is invalid with respect to ConsumptionDto
-   */
-  public static ConsumptionDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ConsumptionDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ConsumptionDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `transaction_id` to the URL query string
+    if (getTransactionId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stransaction_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTransactionId()))));
+    }
+
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `remaining` to the URL query string
+    if (getRemaining() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sremaining%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRemaining()))));
+    }
+
+    // add `balance` to the URL query string
+    if (getBalance() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalance%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalance()))));
+    }
+
+    // add `limit` to the URL query string
+    if (getLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimit()))));
+    }
+
+    // add `goodwill` to the URL query string
+    if (getGoodwill() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgoodwill%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGoodwill()))));
+    }
+
+    // add `last_reset_date_utc` to the URL query string
+    if (getLastResetDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_reset_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastResetDateUtc()))));
+    }
+
+    // add `next_reset_date_utc` to the URL query string
+    if (getNextResetDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%snext_reset_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getNextResetDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

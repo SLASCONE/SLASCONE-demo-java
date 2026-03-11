@@ -13,86 +13,71 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionResetPeriod;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ProvisioningLimitationDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ProvisioningLimitationDto.JSON_PROPERTY_ID,
+  ProvisioningLimitationDto.JSON_PROPERTY_NAME,
+  ProvisioningLimitationDto.JSON_PROPERTY_DESCRIPTION,
+  ProvisioningLimitationDto.JSON_PROPERTY_VALUE,
+  ProvisioningLimitationDto.JSON_PROPERTY_REMAINING,
+  ProvisioningLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_MODE,
+  ProvisioningLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ProvisioningLimitationDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
-  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String description;
+  public static final String JSON_PROPERTY_DESCRIPTION = "description";
+  private JsonNullable<String> description = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nullable
   private Integer value;
 
-  public static final String SERIALIZED_NAME_REMAINING = "remaining";
-  @SerializedName(SERIALIZED_NAME_REMAINING)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_REMAINING = "remaining";
+  @jakarta.annotation.Nullable
   private BigDecimal remaining;
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_MODE)
-  @javax.annotation.Nullable
-  private ConsumptionResetPeriod consumptionResetMode;
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
+  private JsonNullable<ConsumptionResetPeriod> consumptionResetMode = JsonNullable.<ConsumptionResetPeriod>undefined();
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS)
-  @javax.annotation.Nullable
-  private Integer consumptionResetPeriodDays;
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
+  private JsonNullable<Integer> consumptionResetPeriodDays = JsonNullable.<Integer>undefined();
 
-  public ProvisioningLimitationDto() {
+  public ProvisioningLimitationDto() { 
   }
 
-  public ProvisioningLimitationDto id(@javax.annotation.Nullable UUID id) {
+  public ProvisioningLimitationDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -101,18 +86,23 @@ public class ProvisioningLimitationDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public ProvisioningLimitationDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public ProvisioningLimitationDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -120,18 +110,31 @@ public class ProvisioningLimitationDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public ProvisioningLimitationDto description(@javax.annotation.Nullable String description) {
-    this.description = description;
+
+  public ProvisioningLimitationDto description(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
     return this;
   }
 
@@ -139,17 +142,30 @@ public class ProvisioningLimitationDto {
    * Get description
    * @return description
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getDescription() {
-    return description;
+        return description.orElse(null);
   }
 
-  public void setDescription(@javax.annotation.Nullable String description) {
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getDescription_JsonNullable() {
+    return description;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  public void setDescription_JsonNullable(JsonNullable<String> description) {
     this.description = description;
   }
 
+  public void setDescription(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
+  }
 
-  public ProvisioningLimitationDto value(@javax.annotation.Nullable Integer value) {
+
+  public ProvisioningLimitationDto value(@jakarta.annotation.Nullable Integer value) {
     this.value = value;
     return this;
   }
@@ -158,17 +174,22 @@ public class ProvisioningLimitationDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nullable Integer value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValue(@jakarta.annotation.Nullable Integer value) {
     this.value = value;
   }
 
 
-  public ProvisioningLimitationDto remaining(@javax.annotation.Nullable BigDecimal remaining) {
+  public ProvisioningLimitationDto remaining(@jakarta.annotation.Nullable BigDecimal remaining) {
     this.remaining = remaining;
     return this;
   }
@@ -177,18 +198,23 @@ public class ProvisioningLimitationDto {
    * Get remaining
    * @return remaining
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public BigDecimal getRemaining() {
     return remaining;
   }
 
-  public void setRemaining(@javax.annotation.Nullable BigDecimal remaining) {
+
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRemaining(@jakarta.annotation.Nullable BigDecimal remaining) {
     this.remaining = remaining;
   }
 
 
-  public ProvisioningLimitationDto consumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
-    this.consumptionResetMode = consumptionResetMode;
+  public ProvisioningLimitationDto consumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+    this.consumptionResetMode = JsonNullable.<ConsumptionResetPeriod>of(consumptionResetMode);
     return this;
   }
 
@@ -196,18 +222,31 @@ public class ProvisioningLimitationDto {
    * Get consumptionResetMode
    * @return consumptionResetMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ConsumptionResetPeriod getConsumptionResetMode() {
-    return consumptionResetMode;
+        return consumptionResetMode.orElse(null);
   }
 
-  public void setConsumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ConsumptionResetPeriod> getConsumptionResetMode_JsonNullable() {
+    return consumptionResetMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSUMPTION_RESET_MODE)
+  public void setConsumptionResetMode_JsonNullable(JsonNullable<ConsumptionResetPeriod> consumptionResetMode) {
     this.consumptionResetMode = consumptionResetMode;
   }
 
+  public void setConsumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+    this.consumptionResetMode = JsonNullable.<ConsumptionResetPeriod>of(consumptionResetMode);
+  }
 
-  public ProvisioningLimitationDto consumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
-    this.consumptionResetPeriodDays = consumptionResetPeriodDays;
+
+  public ProvisioningLimitationDto consumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
     return this;
   }
 
@@ -215,17 +254,32 @@ public class ProvisioningLimitationDto {
    * Get consumptionResetPeriodDays
    * @return consumptionResetPeriodDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getConsumptionResetPeriodDays() {
-    return consumptionResetPeriodDays;
+        return consumptionResetPeriodDays.orElse(null);
   }
 
-  public void setConsumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getConsumptionResetPeriodDays_JsonNullable() {
+    return consumptionResetPeriodDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS)
+  public void setConsumptionResetPeriodDays_JsonNullable(JsonNullable<Integer> consumptionResetPeriodDays) {
     this.consumptionResetPeriodDays = consumptionResetPeriodDays;
   }
 
+  public void setConsumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
+  }
 
 
+  /**
+   * Return true if this ProvisioningLimitationDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -236,12 +290,12 @@ public class ProvisioningLimitationDto {
     }
     ProvisioningLimitationDto provisioningLimitationDto = (ProvisioningLimitationDto) o;
     return Objects.equals(this.id, provisioningLimitationDto.id) &&
-        Objects.equals(this.name, provisioningLimitationDto.name) &&
-        Objects.equals(this.description, provisioningLimitationDto.description) &&
+        equalsNullable(this.name, provisioningLimitationDto.name) &&
+        equalsNullable(this.description, provisioningLimitationDto.description) &&
         Objects.equals(this.value, provisioningLimitationDto.value) &&
         Objects.equals(this.remaining, provisioningLimitationDto.remaining) &&
-        Objects.equals(this.consumptionResetMode, provisioningLimitationDto.consumptionResetMode) &&
-        Objects.equals(this.consumptionResetPeriodDays, provisioningLimitationDto.consumptionResetPeriodDays);
+        equalsNullable(this.consumptionResetMode, provisioningLimitationDto.consumptionResetMode) &&
+        equalsNullable(this.consumptionResetPeriodDays, provisioningLimitationDto.consumptionResetPeriodDays);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -250,7 +304,7 @@ public class ProvisioningLimitationDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, value, remaining, consumptionResetMode, consumptionResetPeriodDays);
+    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(description), value, remaining, hashCodeNullable(consumptionResetMode), hashCodeNullable(consumptionResetPeriodDays));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -286,101 +340,74 @@ public class ProvisioningLimitationDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "description", "value", "remaining", "consumption_reset_mode", "consumption_reset_period_days"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ProvisioningLimitationDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ProvisioningLimitationDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ProvisioningLimitationDto is not found in the empty JSON string", ProvisioningLimitationDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ProvisioningLimitationDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ProvisioningLimitationDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      // validate the optional field `consumption_reset_mode`
-      if (jsonObj.get("consumption_reset_mode") != null && !jsonObj.get("consumption_reset_mode").isJsonNull()) {
-        ConsumptionResetPeriod.validateJsonElement(jsonObj.get("consumption_reset_mode"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ProvisioningLimitationDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ProvisioningLimitationDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ProvisioningLimitationDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ProvisioningLimitationDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ProvisioningLimitationDto>() {
-           @Override
-           public void write(JsonWriter out, ProvisioningLimitationDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ProvisioningLimitationDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ProvisioningLimitationDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ProvisioningLimitationDto
-   * @throws IOException if the JSON string is invalid with respect to ProvisioningLimitationDto
-   */
-  public static ProvisioningLimitationDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ProvisioningLimitationDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ProvisioningLimitationDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `description` to the URL query string
+    if (getDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    // add `remaining` to the URL query string
+    if (getRemaining() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sremaining%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRemaining()))));
+    }
+
+    // add `consumption_reset_mode` to the URL query string
+    if (getConsumptionResetMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetMode()))));
+    }
+
+    // add `consumption_reset_period_days` to the URL query string
+    if (getConsumptionResetPeriodDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_period_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetPeriodDays()))));
+    }
+
+    return joiner.toString();
   }
 }
 

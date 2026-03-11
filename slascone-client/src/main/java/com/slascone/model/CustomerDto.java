@@ -13,150 +13,121 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.CustomerTypeDto;
 import com.slascone.model.ResourceDto;
 import com.slascone.model.TagAssignmentDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * CustomerDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  CustomerDto.JSON_PROPERTY_ID,
+  CustomerDto.JSON_PROPERTY_COMPANY_NAME,
+  CustomerDto.JSON_PROPERTY_CUSTOMER_NUMBER,
+  CustomerDto.JSON_PROPERTY_CUSTOMER_TYPE,
+  CustomerDto.JSON_PROPERTY_EMAIL,
+  CustomerDto.JSON_PROPERTY_STREET,
+  CustomerDto.JSON_PROPERTY_CITY,
+  CustomerDto.JSON_PROPERTY_POSTALCODE,
+  CustomerDto.JSON_PROPERTY_COUNTRY,
+  CustomerDto.JSON_PROPERTY_PHONE,
+  CustomerDto.JSON_PROPERTY_PROSPECT_NUMBER,
+  CustomerDto.JSON_PROPERTY_LONGITUDE,
+  CustomerDto.JSON_PROPERTY_LATITUDE,
+  CustomerDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  CustomerDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  CustomerDto.JSON_PROPERTY_LAST_MODIFIED_BY,
+  CustomerDto.JSON_PROPERTY_TAG_ASSIGNMENTS,
+  CustomerDto.JSON_PROPERTY_LOGO,
+  CustomerDto.JSON_PROPERTY_RESELLER_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomerDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nonnull
   private UUID id;
 
-  public static final String SERIALIZED_NAME_COMPANY_NAME = "company_name";
-  @SerializedName(SERIALIZED_NAME_COMPANY_NAME)
-  @javax.annotation.Nullable
-  private String companyName;
+  public static final String JSON_PROPERTY_COMPANY_NAME = "company_name";
+  private JsonNullable<String> companyName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER = "customer_number";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER)
-  @javax.annotation.Nullable
-  private String customerNumber;
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER = "customer_number";
+  private JsonNullable<String> customerNumber = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_TYPE = "customer_type";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_TYPE)
-  @javax.annotation.Nullable
-  private CustomerTypeDto customerType;
+  public static final String JSON_PROPERTY_CUSTOMER_TYPE = "customer_type";
+  private JsonNullable<CustomerTypeDto> customerType = JsonNullable.<CustomerTypeDto>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  @javax.annotation.Nullable
-  private String email;
+  public static final String JSON_PROPERTY_EMAIL = "email";
+  private JsonNullable<String> email = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_STREET = "street";
-  @SerializedName(SERIALIZED_NAME_STREET)
-  @javax.annotation.Nullable
-  private String street;
+  public static final String JSON_PROPERTY_STREET = "street";
+  private JsonNullable<String> street = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CITY = "city";
-  @SerializedName(SERIALIZED_NAME_CITY)
-  @javax.annotation.Nullable
-  private String city;
+  public static final String JSON_PROPERTY_CITY = "city";
+  private JsonNullable<String> city = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_POSTALCODE = "postalcode";
-  @SerializedName(SERIALIZED_NAME_POSTALCODE)
-  @javax.annotation.Nullable
-  private String postalcode;
+  public static final String JSON_PROPERTY_POSTALCODE = "postalcode";
+  private JsonNullable<String> postalcode = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_COUNTRY = "country";
-  @SerializedName(SERIALIZED_NAME_COUNTRY)
-  @javax.annotation.Nullable
-  private String country;
+  public static final String JSON_PROPERTY_COUNTRY = "country";
+  private JsonNullable<String> country = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PHONE = "phone";
-  @SerializedName(SERIALIZED_NAME_PHONE)
-  @javax.annotation.Nullable
-  private String phone;
+  public static final String JSON_PROPERTY_PHONE = "phone";
+  private JsonNullable<String> phone = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PROSPECT_NUMBER = "prospect_number";
-  @SerializedName(SERIALIZED_NAME_PROSPECT_NUMBER)
-  @javax.annotation.Nullable
-  private String prospectNumber;
+  public static final String JSON_PROPERTY_PROSPECT_NUMBER = "prospect_number";
+  private JsonNullable<String> prospectNumber = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LONGITUDE = "longitude";
-  @SerializedName(SERIALIZED_NAME_LONGITUDE)
-  @javax.annotation.Nullable
-  private Double longitude;
+  public static final String JSON_PROPERTY_LONGITUDE = "longitude";
+  private JsonNullable<Double> longitude = JsonNullable.<Double>undefined();
 
-  public static final String SERIALIZED_NAME_LATITUDE = "latitude";
-  @SerializedName(SERIALIZED_NAME_LATITUDE)
-  @javax.annotation.Nullable
-  private Double latitude;
+  public static final String JSON_PROPERTY_LATITUDE = "latitude";
+  private JsonNullable<Double> latitude = JsonNullable.<Double>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TAG_ASSIGNMENTS = "tag_assignments";
-  @SerializedName(SERIALIZED_NAME_TAG_ASSIGNMENTS)
-  @javax.annotation.Nullable
-  private List<TagAssignmentDto> tagAssignments;
+  public static final String JSON_PROPERTY_TAG_ASSIGNMENTS = "tag_assignments";
+  private JsonNullable<List<TagAssignmentDto>> tagAssignments = JsonNullable.<List<TagAssignmentDto>>undefined();
 
-  public static final String SERIALIZED_NAME_LOGO = "logo";
-  @SerializedName(SERIALIZED_NAME_LOGO)
-  @javax.annotation.Nullable
-  private ResourceDto logo;
+  public static final String JSON_PROPERTY_LOGO = "logo";
+  private JsonNullable<ResourceDto> logo = JsonNullable.<ResourceDto>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_ID = "reseller_id";
-  @SerializedName(SERIALIZED_NAME_RESELLER_ID)
-  @javax.annotation.Nullable
-  private UUID resellerId;
+  public static final String JSON_PROPERTY_RESELLER_ID = "reseller_id";
+  private JsonNullable<UUID> resellerId = JsonNullable.<UUID>undefined();
 
-  public CustomerDto() {
+  public CustomerDto() { 
   }
 
-  public CustomerDto id(@javax.annotation.Nonnull UUID id) {
+  public CustomerDto id(@jakarta.annotation.Nonnull UUID id) {
     this.id = id;
     return this;
   }
@@ -165,18 +136,23 @@ public class CustomerDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nonnull UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setId(@jakarta.annotation.Nonnull UUID id) {
     this.id = id;
   }
 
 
-  public CustomerDto companyName(@javax.annotation.Nullable String companyName) {
-    this.companyName = companyName;
+  public CustomerDto companyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
     return this;
   }
 
@@ -184,18 +160,31 @@ public class CustomerDto {
    * Get companyName
    * @return companyName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCompanyName() {
-    return companyName;
+        return companyName.orElse(null);
   }
 
-  public void setCompanyName(@javax.annotation.Nullable String companyName) {
+  @JsonProperty(value = JSON_PROPERTY_COMPANY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCompanyName_JsonNullable() {
+    return companyName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COMPANY_NAME)
+  public void setCompanyName_JsonNullable(JsonNullable<String> companyName) {
     this.companyName = companyName;
   }
 
+  public void setCompanyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
+  }
 
-  public CustomerDto customerNumber(@javax.annotation.Nullable String customerNumber) {
-    this.customerNumber = customerNumber;
+
+  public CustomerDto customerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
     return this;
   }
 
@@ -203,18 +192,31 @@ public class CustomerDto {
    * Get customerNumber
    * @return customerNumber
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomerNumber() {
-    return customerNumber;
+        return customerNumber.orElse(null);
   }
 
-  public void setCustomerNumber(@javax.annotation.Nullable String customerNumber) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomerNumber_JsonNullable() {
+    return customerNumber;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_NUMBER)
+  public void setCustomerNumber_JsonNullable(JsonNullable<String> customerNumber) {
     this.customerNumber = customerNumber;
   }
 
+  public void setCustomerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
+  }
 
-  public CustomerDto customerType(@javax.annotation.Nullable CustomerTypeDto customerType) {
-    this.customerType = customerType;
+
+  public CustomerDto customerType(@jakarta.annotation.Nullable CustomerTypeDto customerType) {
+    this.customerType = JsonNullable.<CustomerTypeDto>of(customerType);
     return this;
   }
 
@@ -222,18 +224,31 @@ public class CustomerDto {
    * Get customerType
    * @return customerType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public CustomerTypeDto getCustomerType() {
-    return customerType;
+        return customerType.orElse(null);
   }
 
-  public void setCustomerType(@javax.annotation.Nullable CustomerTypeDto customerType) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<CustomerTypeDto> getCustomerType_JsonNullable() {
+    return customerType;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_TYPE)
+  public void setCustomerType_JsonNullable(JsonNullable<CustomerTypeDto> customerType) {
     this.customerType = customerType;
   }
 
+  public void setCustomerType(@jakarta.annotation.Nullable CustomerTypeDto customerType) {
+    this.customerType = JsonNullable.<CustomerTypeDto>of(customerType);
+  }
 
-  public CustomerDto email(@javax.annotation.Nullable String email) {
-    this.email = email;
+
+  public CustomerDto email(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
     return this;
   }
 
@@ -241,18 +256,31 @@ public class CustomerDto {
    * Get email
    * @return email
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getEmail() {
-    return email;
+        return email.orElse(null);
   }
 
-  public void setEmail(@javax.annotation.Nullable String email) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmail_JsonNullable() {
+    return email;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL)
+  public void setEmail_JsonNullable(JsonNullable<String> email) {
     this.email = email;
   }
 
+  public void setEmail(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
+  }
 
-  public CustomerDto street(@javax.annotation.Nullable String street) {
-    this.street = street;
+
+  public CustomerDto street(@jakarta.annotation.Nullable String street) {
+    this.street = JsonNullable.<String>of(street);
     return this;
   }
 
@@ -260,18 +288,31 @@ public class CustomerDto {
    * Get street
    * @return street
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getStreet() {
-    return street;
+        return street.orElse(null);
   }
 
-  public void setStreet(@javax.annotation.Nullable String street) {
+  @JsonProperty(value = JSON_PROPERTY_STREET, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getStreet_JsonNullable() {
+    return street;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_STREET)
+  public void setStreet_JsonNullable(JsonNullable<String> street) {
     this.street = street;
   }
 
+  public void setStreet(@jakarta.annotation.Nullable String street) {
+    this.street = JsonNullable.<String>of(street);
+  }
 
-  public CustomerDto city(@javax.annotation.Nullable String city) {
-    this.city = city;
+
+  public CustomerDto city(@jakarta.annotation.Nullable String city) {
+    this.city = JsonNullable.<String>of(city);
     return this;
   }
 
@@ -279,18 +320,31 @@ public class CustomerDto {
    * Get city
    * @return city
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCity() {
-    return city;
+        return city.orElse(null);
   }
 
-  public void setCity(@javax.annotation.Nullable String city) {
+  @JsonProperty(value = JSON_PROPERTY_CITY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCity_JsonNullable() {
+    return city;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CITY)
+  public void setCity_JsonNullable(JsonNullable<String> city) {
     this.city = city;
   }
 
+  public void setCity(@jakarta.annotation.Nullable String city) {
+    this.city = JsonNullable.<String>of(city);
+  }
 
-  public CustomerDto postalcode(@javax.annotation.Nullable String postalcode) {
-    this.postalcode = postalcode;
+
+  public CustomerDto postalcode(@jakarta.annotation.Nullable String postalcode) {
+    this.postalcode = JsonNullable.<String>of(postalcode);
     return this;
   }
 
@@ -298,18 +352,31 @@ public class CustomerDto {
    * Get postalcode
    * @return postalcode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getPostalcode() {
-    return postalcode;
+        return postalcode.orElse(null);
   }
 
-  public void setPostalcode(@javax.annotation.Nullable String postalcode) {
+  @JsonProperty(value = JSON_PROPERTY_POSTALCODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getPostalcode_JsonNullable() {
+    return postalcode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_POSTALCODE)
+  public void setPostalcode_JsonNullable(JsonNullable<String> postalcode) {
     this.postalcode = postalcode;
   }
 
+  public void setPostalcode(@jakarta.annotation.Nullable String postalcode) {
+    this.postalcode = JsonNullable.<String>of(postalcode);
+  }
 
-  public CustomerDto country(@javax.annotation.Nullable String country) {
-    this.country = country;
+
+  public CustomerDto country(@jakarta.annotation.Nullable String country) {
+    this.country = JsonNullable.<String>of(country);
     return this;
   }
 
@@ -317,18 +384,31 @@ public class CustomerDto {
    * Get country
    * @return country
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCountry() {
-    return country;
+        return country.orElse(null);
   }
 
-  public void setCountry(@javax.annotation.Nullable String country) {
+  @JsonProperty(value = JSON_PROPERTY_COUNTRY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCountry_JsonNullable() {
+    return country;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COUNTRY)
+  public void setCountry_JsonNullable(JsonNullable<String> country) {
     this.country = country;
   }
 
+  public void setCountry(@jakarta.annotation.Nullable String country) {
+    this.country = JsonNullable.<String>of(country);
+  }
 
-  public CustomerDto phone(@javax.annotation.Nullable String phone) {
-    this.phone = phone;
+
+  public CustomerDto phone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
     return this;
   }
 
@@ -336,18 +416,31 @@ public class CustomerDto {
    * Get phone
    * @return phone
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getPhone() {
-    return phone;
+        return phone.orElse(null);
   }
 
-  public void setPhone(@javax.annotation.Nullable String phone) {
+  @JsonProperty(value = JSON_PROPERTY_PHONE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getPhone_JsonNullable() {
+    return phone;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PHONE)
+  public void setPhone_JsonNullable(JsonNullable<String> phone) {
     this.phone = phone;
   }
 
+  public void setPhone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
+  }
 
-  public CustomerDto prospectNumber(@javax.annotation.Nullable String prospectNumber) {
-    this.prospectNumber = prospectNumber;
+
+  public CustomerDto prospectNumber(@jakarta.annotation.Nullable String prospectNumber) {
+    this.prospectNumber = JsonNullable.<String>of(prospectNumber);
     return this;
   }
 
@@ -355,18 +448,31 @@ public class CustomerDto {
    * Get prospectNumber
    * @return prospectNumber
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getProspectNumber() {
-    return prospectNumber;
+        return prospectNumber.orElse(null);
   }
 
-  public void setProspectNumber(@javax.annotation.Nullable String prospectNumber) {
+  @JsonProperty(value = JSON_PROPERTY_PROSPECT_NUMBER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getProspectNumber_JsonNullable() {
+    return prospectNumber;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PROSPECT_NUMBER)
+  public void setProspectNumber_JsonNullable(JsonNullable<String> prospectNumber) {
     this.prospectNumber = prospectNumber;
   }
 
+  public void setProspectNumber(@jakarta.annotation.Nullable String prospectNumber) {
+    this.prospectNumber = JsonNullable.<String>of(prospectNumber);
+  }
 
-  public CustomerDto longitude(@javax.annotation.Nullable Double longitude) {
-    this.longitude = longitude;
+
+  public CustomerDto longitude(@jakarta.annotation.Nullable Double longitude) {
+    this.longitude = JsonNullable.<Double>of(longitude);
     return this;
   }
 
@@ -374,18 +480,31 @@ public class CustomerDto {
    * Get longitude
    * @return longitude
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Double getLongitude() {
-    return longitude;
+        return longitude.orElse(null);
   }
 
-  public void setLongitude(@javax.annotation.Nullable Double longitude) {
+  @JsonProperty(value = JSON_PROPERTY_LONGITUDE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Double> getLongitude_JsonNullable() {
+    return longitude;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LONGITUDE)
+  public void setLongitude_JsonNullable(JsonNullable<Double> longitude) {
     this.longitude = longitude;
   }
 
+  public void setLongitude(@jakarta.annotation.Nullable Double longitude) {
+    this.longitude = JsonNullable.<Double>of(longitude);
+  }
 
-  public CustomerDto latitude(@javax.annotation.Nullable Double latitude) {
-    this.latitude = latitude;
+
+  public CustomerDto latitude(@jakarta.annotation.Nullable Double latitude) {
+    this.latitude = JsonNullable.<Double>of(latitude);
     return this;
   }
 
@@ -393,18 +512,31 @@ public class CustomerDto {
    * Get latitude
    * @return latitude
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Double getLatitude() {
-    return latitude;
+        return latitude.orElse(null);
   }
 
-  public void setLatitude(@javax.annotation.Nullable Double latitude) {
+  @JsonProperty(value = JSON_PROPERTY_LATITUDE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Double> getLatitude_JsonNullable() {
+    return latitude;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LATITUDE)
+  public void setLatitude_JsonNullable(JsonNullable<Double> latitude) {
     this.latitude = latitude;
   }
 
+  public void setLatitude(@jakarta.annotation.Nullable Double latitude) {
+    this.latitude = JsonNullable.<Double>of(latitude);
+  }
 
-  public CustomerDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public CustomerDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -412,18 +544,31 @@ public class CustomerDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public CustomerDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public CustomerDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -431,18 +576,31 @@ public class CustomerDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public CustomerDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public CustomerDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -450,26 +608,43 @@ public class CustomerDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
-  public CustomerDto tagAssignments(@javax.annotation.Nullable List<TagAssignmentDto> tagAssignments) {
-    this.tagAssignments = tagAssignments;
+
+  public CustomerDto tagAssignments(@jakarta.annotation.Nullable List<TagAssignmentDto> tagAssignments) {
+    this.tagAssignments = JsonNullable.<List<TagAssignmentDto>>of(tagAssignments);
     return this;
   }
 
   public CustomerDto addTagAssignmentsItem(TagAssignmentDto tagAssignmentsItem) {
-    if (this.tagAssignments == null) {
-      this.tagAssignments = new ArrayList<>();
+    if (this.tagAssignments == null || !this.tagAssignments.isPresent()) {
+      this.tagAssignments = JsonNullable.<List<TagAssignmentDto>>of(new ArrayList<>());
     }
-    this.tagAssignments.add(tagAssignmentsItem);
+    try {
+      this.tagAssignments.get().add(tagAssignmentsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -477,18 +652,31 @@ public class CustomerDto {
    * Get tagAssignments
    * @return tagAssignments
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<TagAssignmentDto> getTagAssignments() {
-    return tagAssignments;
+        return tagAssignments.orElse(null);
   }
 
-  public void setTagAssignments(@javax.annotation.Nullable List<TagAssignmentDto> tagAssignments) {
+  @JsonProperty(value = JSON_PROPERTY_TAG_ASSIGNMENTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<TagAssignmentDto>> getTagAssignments_JsonNullable() {
+    return tagAssignments;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TAG_ASSIGNMENTS)
+  public void setTagAssignments_JsonNullable(JsonNullable<List<TagAssignmentDto>> tagAssignments) {
     this.tagAssignments = tagAssignments;
   }
 
+  public void setTagAssignments(@jakarta.annotation.Nullable List<TagAssignmentDto> tagAssignments) {
+    this.tagAssignments = JsonNullable.<List<TagAssignmentDto>>of(tagAssignments);
+  }
 
-  public CustomerDto logo(@javax.annotation.Nullable ResourceDto logo) {
-    this.logo = logo;
+
+  public CustomerDto logo(@jakarta.annotation.Nullable ResourceDto logo) {
+    this.logo = JsonNullable.<ResourceDto>of(logo);
     return this;
   }
 
@@ -496,18 +684,31 @@ public class CustomerDto {
    * Get logo
    * @return logo
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ResourceDto getLogo() {
-    return logo;
+        return logo.orElse(null);
   }
 
-  public void setLogo(@javax.annotation.Nullable ResourceDto logo) {
+  @JsonProperty(value = JSON_PROPERTY_LOGO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ResourceDto> getLogo_JsonNullable() {
+    return logo;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LOGO)
+  public void setLogo_JsonNullable(JsonNullable<ResourceDto> logo) {
     this.logo = logo;
   }
 
+  public void setLogo(@jakarta.annotation.Nullable ResourceDto logo) {
+    this.logo = JsonNullable.<ResourceDto>of(logo);
+  }
 
-  public CustomerDto resellerId(@javax.annotation.Nullable UUID resellerId) {
-    this.resellerId = resellerId;
+
+  public CustomerDto resellerId(@jakarta.annotation.Nullable UUID resellerId) {
+    this.resellerId = JsonNullable.<UUID>of(resellerId);
     return this;
   }
 
@@ -515,17 +716,32 @@ public class CustomerDto {
    * Get resellerId
    * @return resellerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getResellerId() {
-    return resellerId;
+        return resellerId.orElse(null);
   }
 
-  public void setResellerId(@javax.annotation.Nullable UUID resellerId) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getResellerId_JsonNullable() {
+    return resellerId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_ID)
+  public void setResellerId_JsonNullable(JsonNullable<UUID> resellerId) {
     this.resellerId = resellerId;
   }
 
+  public void setResellerId(@jakarta.annotation.Nullable UUID resellerId) {
+    this.resellerId = JsonNullable.<UUID>of(resellerId);
+  }
 
 
+  /**
+   * Return true if this CustomerDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -536,24 +752,24 @@ public class CustomerDto {
     }
     CustomerDto customerDto = (CustomerDto) o;
     return Objects.equals(this.id, customerDto.id) &&
-        Objects.equals(this.companyName, customerDto.companyName) &&
-        Objects.equals(this.customerNumber, customerDto.customerNumber) &&
-        Objects.equals(this.customerType, customerDto.customerType) &&
-        Objects.equals(this.email, customerDto.email) &&
-        Objects.equals(this.street, customerDto.street) &&
-        Objects.equals(this.city, customerDto.city) &&
-        Objects.equals(this.postalcode, customerDto.postalcode) &&
-        Objects.equals(this.country, customerDto.country) &&
-        Objects.equals(this.phone, customerDto.phone) &&
-        Objects.equals(this.prospectNumber, customerDto.prospectNumber) &&
-        Objects.equals(this.longitude, customerDto.longitude) &&
-        Objects.equals(this.latitude, customerDto.latitude) &&
-        Objects.equals(this.createdDateUtc, customerDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, customerDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, customerDto.lastModifiedBy) &&
-        Objects.equals(this.tagAssignments, customerDto.tagAssignments) &&
-        Objects.equals(this.logo, customerDto.logo) &&
-        Objects.equals(this.resellerId, customerDto.resellerId);
+        equalsNullable(this.companyName, customerDto.companyName) &&
+        equalsNullable(this.customerNumber, customerDto.customerNumber) &&
+        equalsNullable(this.customerType, customerDto.customerType) &&
+        equalsNullable(this.email, customerDto.email) &&
+        equalsNullable(this.street, customerDto.street) &&
+        equalsNullable(this.city, customerDto.city) &&
+        equalsNullable(this.postalcode, customerDto.postalcode) &&
+        equalsNullable(this.country, customerDto.country) &&
+        equalsNullable(this.phone, customerDto.phone) &&
+        equalsNullable(this.prospectNumber, customerDto.prospectNumber) &&
+        equalsNullable(this.longitude, customerDto.longitude) &&
+        equalsNullable(this.latitude, customerDto.latitude) &&
+        equalsNullable(this.createdDateUtc, customerDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, customerDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, customerDto.lastModifiedBy) &&
+        equalsNullable(this.tagAssignments, customerDto.tagAssignments) &&
+        equalsNullable(this.logo, customerDto.logo) &&
+        equalsNullable(this.resellerId, customerDto.resellerId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -562,7 +778,7 @@ public class CustomerDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, companyName, customerNumber, customerType, email, street, city, postalcode, country, phone, prospectNumber, longitude, latitude, createdDateUtc, modifiedDateUtc, lastModifiedBy, tagAssignments, logo, resellerId);
+    return Objects.hash(id, hashCodeNullable(companyName), hashCodeNullable(customerNumber), hashCodeNullable(customerType), hashCodeNullable(email), hashCodeNullable(street), hashCodeNullable(city), hashCodeNullable(postalcode), hashCodeNullable(country), hashCodeNullable(phone), hashCodeNullable(prospectNumber), hashCodeNullable(longitude), hashCodeNullable(latitude), hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy), hashCodeNullable(tagAssignments), hashCodeNullable(logo), hashCodeNullable(resellerId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -610,153 +826,139 @@ public class CustomerDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "company_name", "customer_number", "customer_type", "email", "street", "city", "postalcode", "country", "phone", "prospect_number", "longitude", "latitude", "created_date_utc", "modified_date_utc", "last_modified_by", "tag_assignments", "logo", "reseller_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CustomerDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!CustomerDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomerDto is not found in the empty JSON string", CustomerDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CustomerDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomerDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : CustomerDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("company_name") != null && !jsonObj.get("company_name").isJsonNull()) && !jsonObj.get("company_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `company_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("company_name").toString()));
-      }
-      if ((jsonObj.get("customer_number") != null && !jsonObj.get("customer_number").isJsonNull()) && !jsonObj.get("customer_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_number").toString()));
-      }
-      // validate the optional field `customer_type`
-      if (jsonObj.get("customer_type") != null && !jsonObj.get("customer_type").isJsonNull()) {
-        CustomerTypeDto.validateJsonElement(jsonObj.get("customer_type"));
-      }
-      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
-      }
-      if ((jsonObj.get("street") != null && !jsonObj.get("street").isJsonNull()) && !jsonObj.get("street").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `street` to be a primitive type in the JSON string but got `%s`", jsonObj.get("street").toString()));
-      }
-      if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
-      }
-      if ((jsonObj.get("postalcode") != null && !jsonObj.get("postalcode").isJsonNull()) && !jsonObj.get("postalcode").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `postalcode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("postalcode").toString()));
-      }
-      if ((jsonObj.get("country") != null && !jsonObj.get("country").isJsonNull()) && !jsonObj.get("country").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `country` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country").toString()));
-      }
-      if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
-      }
-      if ((jsonObj.get("prospect_number") != null && !jsonObj.get("prospect_number").isJsonNull()) && !jsonObj.get("prospect_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `prospect_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("prospect_number").toString()));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-      if (jsonObj.get("tag_assignments") != null && !jsonObj.get("tag_assignments").isJsonNull()) {
-        JsonArray jsonArraytagAssignments = jsonObj.getAsJsonArray("tag_assignments");
-        if (jsonArraytagAssignments != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("tag_assignments").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `tag_assignments` to be an array in the JSON string but got `%s`", jsonObj.get("tag_assignments").toString()));
-          }
-
-          // validate the optional field `tag_assignments` (array)
-          for (int i = 0; i < jsonArraytagAssignments.size(); i++) {
-            TagAssignmentDto.validateJsonElement(jsonArraytagAssignments.get(i));
-          };
-        }
-      }
-      // validate the optional field `logo`
-      if (jsonObj.get("logo") != null && !jsonObj.get("logo").isJsonNull()) {
-        ResourceDto.validateJsonElement(jsonObj.get("logo"));
-      }
-      if ((jsonObj.get("reseller_id") != null && !jsonObj.get("reseller_id").isJsonNull()) && !jsonObj.get("reseller_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("reseller_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CustomerDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CustomerDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CustomerDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CustomerDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<CustomerDto>() {
-           @Override
-           public void write(JsonWriter out, CustomerDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public CustomerDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of CustomerDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of CustomerDto
-   * @throws IOException if the JSON string is invalid with respect to CustomerDto
-   */
-  public static CustomerDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CustomerDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of CustomerDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `company_name` to the URL query string
+    if (getCompanyName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scompany_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCompanyName()))));
+    }
+
+    // add `customer_number` to the URL query string
+    if (getCustomerNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumber()))));
+    }
+
+    // add `customer_type` to the URL query string
+    if (getCustomerType() != null) {
+      joiner.add(getCustomerType().toUrlQueryString(prefix + "customer_type" + suffix));
+    }
+
+    // add `email` to the URL query string
+    if (getEmail() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmail()))));
+    }
+
+    // add `street` to the URL query string
+    if (getStreet() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstreet%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStreet()))));
+    }
+
+    // add `city` to the URL query string
+    if (getCity() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCity()))));
+    }
+
+    // add `postalcode` to the URL query string
+    if (getPostalcode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spostalcode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPostalcode()))));
+    }
+
+    // add `country` to the URL query string
+    if (getCountry() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scountry%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCountry()))));
+    }
+
+    // add `phone` to the URL query string
+    if (getPhone() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sphone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPhone()))));
+    }
+
+    // add `prospect_number` to the URL query string
+    if (getProspectNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sprospect_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProspectNumber()))));
+    }
+
+    // add `longitude` to the URL query string
+    if (getLongitude() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slongitude%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLongitude()))));
+    }
+
+    // add `latitude` to the URL query string
+    if (getLatitude() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slatitude%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLatitude()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    // add `tag_assignments` to the URL query string
+    if (getTagAssignments() != null) {
+      for (int i = 0; i < getTagAssignments().size(); i++) {
+        if (getTagAssignments().get(i) != null) {
+          joiner.add(getTagAssignments().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%stag_assignments%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `logo` to the URL query string
+    if (getLogo() != null) {
+      joiner.add(getLogo().toUrlQueryString(prefix + "logo" + suffix));
+    }
+
+    // add `reseller_id` to the URL query string
+    if (getResellerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

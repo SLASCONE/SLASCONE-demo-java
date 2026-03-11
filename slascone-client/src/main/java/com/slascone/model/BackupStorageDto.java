@@ -13,68 +13,54 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * BackupStorageDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  BackupStorageDto.JSON_PROPERTY_USE_STORAGE_ACCOUNT,
+  BackupStorageDto.JSON_PROPERTY_ACCOUNT,
+  BackupStorageDto.JSON_PROPERTY_KEY,
+  BackupStorageDto.JSON_PROPERTY_CONTAINER_NAME
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class BackupStorageDto {
-  public static final String SERIALIZED_NAME_USE_STORAGE_ACCOUNT = "use_storage_account";
-  @SerializedName(SERIALIZED_NAME_USE_STORAGE_ACCOUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_USE_STORAGE_ACCOUNT = "use_storage_account";
+  @jakarta.annotation.Nullable
   private Boolean useStorageAccount;
 
-  public static final String SERIALIZED_NAME_ACCOUNT = "account";
-  @SerializedName(SERIALIZED_NAME_ACCOUNT)
-  @javax.annotation.Nullable
-  private String account;
+  public static final String JSON_PROPERTY_ACCOUNT = "account";
+  private JsonNullable<String> account = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_KEY = "key";
-  @SerializedName(SERIALIZED_NAME_KEY)
-  @javax.annotation.Nullable
-  private String key;
+  public static final String JSON_PROPERTY_KEY = "key";
+  private JsonNullable<String> key = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CONTAINER_NAME = "container_name";
-  @SerializedName(SERIALIZED_NAME_CONTAINER_NAME)
-  @javax.annotation.Nullable
-  private String containerName;
+  public static final String JSON_PROPERTY_CONTAINER_NAME = "container_name";
+  private JsonNullable<String> containerName = JsonNullable.<String>undefined();
 
-  public BackupStorageDto() {
+  public BackupStorageDto() { 
   }
 
-  public BackupStorageDto useStorageAccount(@javax.annotation.Nullable Boolean useStorageAccount) {
+  public BackupStorageDto useStorageAccount(@jakarta.annotation.Nullable Boolean useStorageAccount) {
     this.useStorageAccount = useStorageAccount;
     return this;
   }
@@ -83,18 +69,23 @@ public class BackupStorageDto {
    * Get useStorageAccount
    * @return useStorageAccount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_USE_STORAGE_ACCOUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getUseStorageAccount() {
     return useStorageAccount;
   }
 
-  public void setUseStorageAccount(@javax.annotation.Nullable Boolean useStorageAccount) {
+
+  @JsonProperty(value = JSON_PROPERTY_USE_STORAGE_ACCOUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setUseStorageAccount(@jakarta.annotation.Nullable Boolean useStorageAccount) {
     this.useStorageAccount = useStorageAccount;
   }
 
 
-  public BackupStorageDto account(@javax.annotation.Nullable String account) {
-    this.account = account;
+  public BackupStorageDto account(@jakarta.annotation.Nullable String account) {
+    this.account = JsonNullable.<String>of(account);
     return this;
   }
 
@@ -102,18 +93,31 @@ public class BackupStorageDto {
    * Get account
    * @return account
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getAccount() {
-    return account;
+        return account.orElse(null);
   }
 
-  public void setAccount(@javax.annotation.Nullable String account) {
+  @JsonProperty(value = JSON_PROPERTY_ACCOUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getAccount_JsonNullable() {
+    return account;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ACCOUNT)
+  public void setAccount_JsonNullable(JsonNullable<String> account) {
     this.account = account;
   }
 
+  public void setAccount(@jakarta.annotation.Nullable String account) {
+    this.account = JsonNullable.<String>of(account);
+  }
 
-  public BackupStorageDto key(@javax.annotation.Nullable String key) {
-    this.key = key;
+
+  public BackupStorageDto key(@jakarta.annotation.Nullable String key) {
+    this.key = JsonNullable.<String>of(key);
     return this;
   }
 
@@ -121,18 +125,31 @@ public class BackupStorageDto {
    * Get key
    * @return key
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getKey() {
-    return key;
+        return key.orElse(null);
   }
 
-  public void setKey(@javax.annotation.Nullable String key) {
+  @JsonProperty(value = JSON_PROPERTY_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getKey_JsonNullable() {
+    return key;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_KEY)
+  public void setKey_JsonNullable(JsonNullable<String> key) {
     this.key = key;
   }
 
+  public void setKey(@jakarta.annotation.Nullable String key) {
+    this.key = JsonNullable.<String>of(key);
+  }
 
-  public BackupStorageDto containerName(@javax.annotation.Nullable String containerName) {
-    this.containerName = containerName;
+
+  public BackupStorageDto containerName(@jakarta.annotation.Nullable String containerName) {
+    this.containerName = JsonNullable.<String>of(containerName);
     return this;
   }
 
@@ -140,17 +157,32 @@ public class BackupStorageDto {
    * Get containerName
    * @return containerName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getContainerName() {
-    return containerName;
+        return containerName.orElse(null);
   }
 
-  public void setContainerName(@javax.annotation.Nullable String containerName) {
+  @JsonProperty(value = JSON_PROPERTY_CONTAINER_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getContainerName_JsonNullable() {
+    return containerName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONTAINER_NAME)
+  public void setContainerName_JsonNullable(JsonNullable<String> containerName) {
     this.containerName = containerName;
   }
 
+  public void setContainerName(@jakarta.annotation.Nullable String containerName) {
+    this.containerName = JsonNullable.<String>of(containerName);
+  }
 
 
+  /**
+   * Return true if this BackupStorageDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -161,9 +193,9 @@ public class BackupStorageDto {
     }
     BackupStorageDto backupStorageDto = (BackupStorageDto) o;
     return Objects.equals(this.useStorageAccount, backupStorageDto.useStorageAccount) &&
-        Objects.equals(this.account, backupStorageDto.account) &&
-        Objects.equals(this.key, backupStorageDto.key) &&
-        Objects.equals(this.containerName, backupStorageDto.containerName);
+        equalsNullable(this.account, backupStorageDto.account) &&
+        equalsNullable(this.key, backupStorageDto.key) &&
+        equalsNullable(this.containerName, backupStorageDto.containerName);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -172,7 +204,7 @@ public class BackupStorageDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(useStorageAccount, account, key, containerName);
+    return Objects.hash(useStorageAccount, hashCodeNullable(account), hashCodeNullable(key), hashCodeNullable(containerName));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -205,97 +237,59 @@ public class BackupStorageDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("use_storage_account", "account", "key", "container_name"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to BackupStorageDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!BackupStorageDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in BackupStorageDto is not found in the empty JSON string", BackupStorageDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!BackupStorageDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BackupStorageDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("account") != null && !jsonObj.get("account").isJsonNull()) && !jsonObj.get("account").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `account` to be a primitive type in the JSON string but got `%s`", jsonObj.get("account").toString()));
-      }
-      if ((jsonObj.get("key") != null && !jsonObj.get("key").isJsonNull()) && !jsonObj.get("key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("key").toString()));
-      }
-      if ((jsonObj.get("container_name") != null && !jsonObj.get("container_name").isJsonNull()) && !jsonObj.get("container_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `container_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("container_name").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!BackupStorageDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'BackupStorageDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<BackupStorageDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(BackupStorageDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<BackupStorageDto>() {
-           @Override
-           public void write(JsonWriter out, BackupStorageDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public BackupStorageDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of BackupStorageDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of BackupStorageDto
-   * @throws IOException if the JSON string is invalid with respect to BackupStorageDto
-   */
-  public static BackupStorageDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, BackupStorageDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of BackupStorageDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `use_storage_account` to the URL query string
+    if (getUseStorageAccount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suse_storage_account%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUseStorageAccount()))));
+    }
+
+    // add `account` to the URL query string
+    if (getAccount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%saccount%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAccount()))));
+    }
+
+    // add `key` to the URL query string
+    if (getKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%skey%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getKey()))));
+    }
+
+    // add `container_name` to the URL query string
+    if (getContainerName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scontainer_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getContainerName()))));
+    }
+
+    return joiner.toString();
   }
 }
 

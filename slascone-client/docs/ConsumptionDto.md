@@ -10,6 +10,7 @@
 |**transactionId** | **UUID** |  |  [optional] |
 |**limitationId** | **UUID** |  |  [optional] |
 |**remaining** | **BigDecimal** |  |  [optional] |
+|**balance** | **BigDecimal** |  |  [optional] |
 |**limit** | **BigDecimal** |  |  [optional] |
 |**goodwill** | **BigDecimal** |  |  [optional] |
 |**lastResetDateUtc** | **OffsetDateTime** |  |  [optional] |

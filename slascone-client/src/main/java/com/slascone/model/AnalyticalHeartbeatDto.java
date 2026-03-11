@@ -13,72 +13,59 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.AnalyticalFieldValueDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * AnalyticalHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  AnalyticalHeartbeatDto.JSON_PROPERTY_CLIENT_ID,
+  AnalyticalHeartbeatDto.JSON_PROPERTY_USER_ID,
+  AnalyticalHeartbeatDto.JSON_PROPERTY_ANALYTICAL_HEARTBEAT,
+  AnalyticalHeartbeatDto.JSON_PROPERTY_TOKEN_KEY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class AnalyticalHeartbeatDto {
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  @jakarta.annotation.Nonnull
   private String clientId;
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_ANALYTICAL_HEARTBEAT = "analytical_heartbeat";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_HEARTBEAT)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_ANALYTICAL_HEARTBEAT = "analytical_heartbeat";
+  @jakarta.annotation.Nonnull
   private List<AnalyticalFieldValueDto> analyticalHeartbeat = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_TOKEN_KEY = "token_key";
-  @SerializedName(SERIALIZED_NAME_TOKEN_KEY)
-  @javax.annotation.Nullable
-  private UUID tokenKey;
+  public static final String JSON_PROPERTY_TOKEN_KEY = "token_key";
+  private JsonNullable<UUID> tokenKey = JsonNullable.<UUID>undefined();
 
-  public AnalyticalHeartbeatDto() {
+  public AnalyticalHeartbeatDto() { 
   }
 
-  public AnalyticalHeartbeatDto clientId(@javax.annotation.Nonnull String clientId) {
+  public AnalyticalHeartbeatDto clientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
     return this;
   }
@@ -87,18 +74,23 @@ public class AnalyticalHeartbeatDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getClientId() {
     return clientId;
   }
 
-  public void setClientId(@javax.annotation.Nonnull String clientId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setClientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
   }
 
 
-  public AnalyticalHeartbeatDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+  public AnalyticalHeartbeatDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -106,17 +98,30 @@ public class AnalyticalHeartbeatDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public AnalyticalHeartbeatDto analyticalHeartbeat(@javax.annotation.Nonnull List<AnalyticalFieldValueDto> analyticalHeartbeat) {
+
+  public AnalyticalHeartbeatDto analyticalHeartbeat(@jakarta.annotation.Nonnull List<AnalyticalFieldValueDto> analyticalHeartbeat) {
     this.analyticalHeartbeat = analyticalHeartbeat;
     return this;
   }
@@ -133,18 +138,23 @@ public class AnalyticalHeartbeatDto {
    * Get analyticalHeartbeat
    * @return analyticalHeartbeat
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_HEARTBEAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<AnalyticalFieldValueDto> getAnalyticalHeartbeat() {
     return analyticalHeartbeat;
   }
 
-  public void setAnalyticalHeartbeat(@javax.annotation.Nonnull List<AnalyticalFieldValueDto> analyticalHeartbeat) {
+
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_HEARTBEAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setAnalyticalHeartbeat(@jakarta.annotation.Nonnull List<AnalyticalFieldValueDto> analyticalHeartbeat) {
     this.analyticalHeartbeat = analyticalHeartbeat;
   }
 
 
-  public AnalyticalHeartbeatDto tokenKey(@javax.annotation.Nullable UUID tokenKey) {
-    this.tokenKey = tokenKey;
+  public AnalyticalHeartbeatDto tokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
     return this;
   }
 
@@ -152,17 +162,32 @@ public class AnalyticalHeartbeatDto {
    * Get tokenKey
    * @return tokenKey
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getTokenKey() {
-    return tokenKey;
+        return tokenKey.orElse(null);
   }
 
-  public void setTokenKey(@javax.annotation.Nullable UUID tokenKey) {
+  @JsonProperty(value = JSON_PROPERTY_TOKEN_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getTokenKey_JsonNullable() {
+    return tokenKey;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TOKEN_KEY)
+  public void setTokenKey_JsonNullable(JsonNullable<UUID> tokenKey) {
     this.tokenKey = tokenKey;
   }
 
+  public void setTokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
+  }
 
 
+  /**
+   * Return true if this AnalyticalHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -173,9 +198,9 @@ public class AnalyticalHeartbeatDto {
     }
     AnalyticalHeartbeatDto analyticalHeartbeatDto = (AnalyticalHeartbeatDto) o;
     return Objects.equals(this.clientId, analyticalHeartbeatDto.clientId) &&
-        Objects.equals(this.userId, analyticalHeartbeatDto.userId) &&
+        equalsNullable(this.userId, analyticalHeartbeatDto.userId) &&
         Objects.equals(this.analyticalHeartbeat, analyticalHeartbeatDto.analyticalHeartbeat) &&
-        Objects.equals(this.tokenKey, analyticalHeartbeatDto.tokenKey);
+        equalsNullable(this.tokenKey, analyticalHeartbeatDto.tokenKey);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -184,7 +209,7 @@ public class AnalyticalHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(clientId, userId, analyticalHeartbeat, tokenKey);
+    return Objects.hash(clientId, hashCodeNullable(userId), analyticalHeartbeat, hashCodeNullable(tokenKey));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -217,114 +242,64 @@ public class AnalyticalHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("client_id", "user_id", "analytical_heartbeat", "token_key"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("client_id", "analytical_heartbeat"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to AnalyticalHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!AnalyticalHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in AnalyticalHeartbeatDto is not found in the empty JSON string", AnalyticalHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!AnalyticalHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `AnalyticalHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : AnalyticalHeartbeatDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      // ensure the json data is an array
-      if (!jsonObj.get("analytical_heartbeat").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `analytical_heartbeat` to be an array in the JSON string but got `%s`", jsonObj.get("analytical_heartbeat").toString()));
-      }
-
-      JsonArray jsonArrayanalyticalHeartbeat = jsonObj.getAsJsonArray("analytical_heartbeat");
-      // validate the required field `analytical_heartbeat` (array)
-      for (int i = 0; i < jsonArrayanalyticalHeartbeat.size(); i++) {
-        AnalyticalFieldValueDto.validateJsonElement(jsonArrayanalyticalHeartbeat.get(i));
-      };
-      if ((jsonObj.get("token_key") != null && !jsonObj.get("token_key").isJsonNull()) && !jsonObj.get("token_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_key").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!AnalyticalHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'AnalyticalHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<AnalyticalHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(AnalyticalHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<AnalyticalHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, AnalyticalHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public AnalyticalHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of AnalyticalHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of AnalyticalHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to AnalyticalHeartbeatDto
-   */
-  public static AnalyticalHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, AnalyticalHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of AnalyticalHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `analytical_heartbeat` to the URL query string
+    if (getAnalyticalHeartbeat() != null) {
+      for (int i = 0; i < getAnalyticalHeartbeat().size(); i++) {
+        if (getAnalyticalHeartbeat().get(i) != null) {
+          joiner.add(getAnalyticalHeartbeat().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sanalytical_heartbeat%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `token_key` to the URL query string
+    if (getTokenKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stoken_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTokenKey()))));
+    }
+
+    return joiner.toString();
   }
 }
 

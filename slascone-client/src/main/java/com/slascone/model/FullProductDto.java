@@ -13,12 +13,21 @@
 
 package com.slascone.model;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.AnalyticalFieldDto;
 import com.slascone.model.ClientIdMode;
 import com.slascone.model.ConstrainedVariableDto;
@@ -34,206 +43,169 @@ import com.slascone.model.UsageFeatureDto;
 import com.slascone.model.UsageModuleDto;
 import com.slascone.model.UserIdType;
 import com.slascone.model.VariableDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * FullProductDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  FullProductDto.JSON_PROPERTY_ID,
+  FullProductDto.JSON_PROPERTY_NAME,
+  FullProductDto.JSON_PROPERTY_DESCRIPTION,
+  FullProductDto.JSON_PROPERTY_SHORT_DESCRIPTION,
+  FullProductDto.JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE_ID,
+  FullProductDto.JSON_PROPERTY_SOFTWARE_RELEASE,
+  FullProductDto.JSON_PROPERTY_IS_GOODWILL_VISIBLE,
+  FullProductDto.JSON_PROPERTY_IS_UPGRADE_COMPLIANCE_VISIBLE,
+  FullProductDto.JSON_PROPERTY_IS_GROUP_COMPLIANCE_VISIBLE,
+  FullProductDto.JSON_PROPERTY_IS_TEMPORARY_LICENSE_RULES_VISIBLE,
+  FullProductDto.JSON_PROPERTY_PRIORITIZED_KEY,
+  FullProductDto.JSON_PROPERTY_OFFLINE_LICENSING,
+  FullProductDto.JSON_PROPERTY_LICENSE_FILE_NAME,
+  FullProductDto.JSON_PROPERTY_USER_ID_TYPE,
+  FullProductDto.JSON_PROPERTY_CLIENT_ID_MODE,
+  FullProductDto.JSON_PROPERTY_MAXIMUM_INACTIVE_DAYS,
+  FullProductDto.JSON_PROPERTY_MAX_LICENSES_PER_USER,
+  FullProductDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  FullProductDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  FullProductDto.JSON_PROPERTY_LAST_MODIFIED_BY,
+  FullProductDto.JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE,
+  FullProductDto.JSON_PROPERTY_LOGO,
+  FullProductDto.JSON_PROPERTY_FEATURES,
+  FullProductDto.JSON_PROPERTY_LIMITATIONS,
+  FullProductDto.JSON_PROPERTY_CONSTRAINED_VARIABLES,
+  FullProductDto.JSON_PROPERTY_VARIABLES,
+  FullProductDto.JSON_PROPERTY_ANALYTICAL_FIELDS,
+  FullProductDto.JSON_PROPERTY_SOFTWARE_SHIPMENT_PROPERTIES,
+  FullProductDto.JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATIONS,
+  FullProductDto.JSON_PROPERTY_USAGE_FEATURES,
+  FullProductDto.JSON_PROPERTY_USAGE_MODULES,
+  FullProductDto.JSON_PROPERTY_EMAIL_TEMPLATES
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class FullProductDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_NAME = "name";
+  @jakarta.annotation.Nonnull
   private String name;
 
-  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
-  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String description;
+  public static final String JSON_PROPERTY_DESCRIPTION = "description";
+  private JsonNullable<String> description = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SHORT_DESCRIPTION = "short_description";
-  @SerializedName(SERIALIZED_NAME_SHORT_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String shortDescription;
+  public static final String JSON_PROPERTY_SHORT_DESCRIPTION = "short_description";
+  private JsonNullable<String> shortDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MINIMUM_SOFTWARE_RELEASE_ID = "minimum_software_release_id";
-  @SerializedName(SERIALIZED_NAME_MINIMUM_SOFTWARE_RELEASE_ID)
-  @javax.annotation.Nullable
-  private UUID minimumSoftwareReleaseId;
+  public static final String JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE_ID = "minimum_software_release_id";
+  private JsonNullable<UUID> minimumSoftwareReleaseId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_RELEASE = "software_release";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_RELEASE)
-  @javax.annotation.Nullable
-  private List<SoftwareReleaseLimitationDto> softwareRelease;
+  public static final String JSON_PROPERTY_SOFTWARE_RELEASE = "software_release";
+  private JsonNullable<List<SoftwareReleaseLimitationDto>> softwareRelease = JsonNullable.<List<SoftwareReleaseLimitationDto>>undefined();
 
-  public static final String SERIALIZED_NAME_IS_GOODWILL_VISIBLE = "is_goodwill_visible";
-  @SerializedName(SERIALIZED_NAME_IS_GOODWILL_VISIBLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_GOODWILL_VISIBLE = "is_goodwill_visible";
+  @jakarta.annotation.Nullable
   private Boolean isGoodwillVisible;
 
-  public static final String SERIALIZED_NAME_IS_UPGRADE_COMPLIANCE_VISIBLE = "is_upgrade_compliance_visible";
-  @SerializedName(SERIALIZED_NAME_IS_UPGRADE_COMPLIANCE_VISIBLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_UPGRADE_COMPLIANCE_VISIBLE = "is_upgrade_compliance_visible";
+  @jakarta.annotation.Nullable
   private Boolean isUpgradeComplianceVisible;
 
-  public static final String SERIALIZED_NAME_IS_GROUP_COMPLIANCE_VISIBLE = "is_group_compliance_visible";
-  @SerializedName(SERIALIZED_NAME_IS_GROUP_COMPLIANCE_VISIBLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_GROUP_COMPLIANCE_VISIBLE = "is_group_compliance_visible";
+  @jakarta.annotation.Nullable
   private Boolean isGroupComplianceVisible;
 
-  public static final String SERIALIZED_NAME_IS_TEMPORARY_LICENSE_RULES_VISIBLE = "is_temporary_license_rules_visible";
-  @SerializedName(SERIALIZED_NAME_IS_TEMPORARY_LICENSE_RULES_VISIBLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_TEMPORARY_LICENSE_RULES_VISIBLE = "is_temporary_license_rules_visible";
+  @jakarta.annotation.Nullable
   private Boolean isTemporaryLicenseRulesVisible;
 
-  public static final String SERIALIZED_NAME_PRIORITIZED_KEY = "prioritized_key";
-  @SerializedName(SERIALIZED_NAME_PRIORITIZED_KEY)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRIORITIZED_KEY = "prioritized_key";
+  @jakarta.annotation.Nonnull
   private PrioritizedKeyMode prioritizedKey;
 
-  public static final String SERIALIZED_NAME_OFFLINE_LICENSING = "offline_licensing";
-  @SerializedName(SERIALIZED_NAME_OFFLINE_LICENSING)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_OFFLINE_LICENSING = "offline_licensing";
+  @jakarta.annotation.Nullable
   private OfflineLicensing offlineLicensing;
 
-  public static final String SERIALIZED_NAME_LICENSE_FILE_NAME = "license_file_name";
-  @SerializedName(SERIALIZED_NAME_LICENSE_FILE_NAME)
-  @javax.annotation.Nullable
-  private String licenseFileName;
+  public static final String JSON_PROPERTY_LICENSE_FILE_NAME = "license_file_name";
+  private JsonNullable<String> licenseFileName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID_TYPE = "user_id_type";
-  @SerializedName(SERIALIZED_NAME_USER_ID_TYPE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_USER_ID_TYPE = "user_id_type";
+  @jakarta.annotation.Nullable
   private UserIdType userIdType;
 
-  public static final String SERIALIZED_NAME_CLIENT_ID_MODE = "client_id_mode";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CLIENT_ID_MODE = "client_id_mode";
+  @jakarta.annotation.Nullable
   private ClientIdMode clientIdMode;
 
-  public static final String SERIALIZED_NAME_MAXIMUM_INACTIVE_DAYS = "maximum_inactive_days";
-  @SerializedName(SERIALIZED_NAME_MAXIMUM_INACTIVE_DAYS)
-  @javax.annotation.Nullable
-  private Integer maximumInactiveDays;
+  public static final String JSON_PROPERTY_MAXIMUM_INACTIVE_DAYS = "maximum_inactive_days";
+  private JsonNullable<Integer> maximumInactiveDays = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_LICENSES_PER_USER = "max_licenses_per_user";
-  @SerializedName(SERIALIZED_NAME_MAX_LICENSES_PER_USER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_LICENSES_PER_USER = "max_licenses_per_user";
+  @jakarta.annotation.Nullable
   private Integer maxLicensesPerUser;
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MINIMUM_SOFTWARE_RELEASE = "minimum_software_release";
-  @SerializedName(SERIALIZED_NAME_MINIMUM_SOFTWARE_RELEASE)
-  @javax.annotation.Nullable
-  private SoftwareReleaseLimitationDto minimumSoftwareRelease;
+  public static final String JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE = "minimum_software_release";
+  private JsonNullable<SoftwareReleaseLimitationDto> minimumSoftwareRelease = JsonNullable.<SoftwareReleaseLimitationDto>undefined();
 
-  public static final String SERIALIZED_NAME_LOGO = "logo";
-  @SerializedName(SERIALIZED_NAME_LOGO)
-  @javax.annotation.Nullable
-  private ResourceDto logo;
+  public static final String JSON_PROPERTY_LOGO = "logo";
+  private JsonNullable<ResourceDto> logo = JsonNullable.<ResourceDto>undefined();
 
-  public static final String SERIALIZED_NAME_FEATURES = "features";
-  @SerializedName(SERIALIZED_NAME_FEATURES)
-  @javax.annotation.Nullable
-  private List<FeatureDto> features;
+  public static final String JSON_PROPERTY_FEATURES = "features";
+  private JsonNullable<List<FeatureDto>> features = JsonNullable.<List<FeatureDto>>undefined();
 
-  public static final String SERIALIZED_NAME_LIMITATIONS = "limitations";
-  @SerializedName(SERIALIZED_NAME_LIMITATIONS)
-  @javax.annotation.Nullable
-  private List<LimitationDto> limitations;
+  public static final String JSON_PROPERTY_LIMITATIONS = "limitations";
+  private JsonNullable<List<LimitationDto>> limitations = JsonNullable.<List<LimitationDto>>undefined();
 
-  public static final String SERIALIZED_NAME_CONSTRAINED_VARIABLES = "constrained_variables";
-  @SerializedName(SERIALIZED_NAME_CONSTRAINED_VARIABLES)
-  @javax.annotation.Nullable
-  private List<ConstrainedVariableDto> constrainedVariables;
+  public static final String JSON_PROPERTY_CONSTRAINED_VARIABLES = "constrained_variables";
+  private JsonNullable<List<ConstrainedVariableDto>> constrainedVariables = JsonNullable.<List<ConstrainedVariableDto>>undefined();
 
-  public static final String SERIALIZED_NAME_VARIABLES = "variables";
-  @SerializedName(SERIALIZED_NAME_VARIABLES)
-  @javax.annotation.Nullable
-  private List<VariableDto> variables;
+  public static final String JSON_PROPERTY_VARIABLES = "variables";
+  private JsonNullable<List<VariableDto>> variables = JsonNullable.<List<VariableDto>>undefined();
 
-  public static final String SERIALIZED_NAME_ANALYTICAL_FIELDS = "analytical_fields";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_FIELDS)
-  @javax.annotation.Nullable
-  private List<AnalyticalFieldDto> analyticalFields;
+  public static final String JSON_PROPERTY_ANALYTICAL_FIELDS = "analytical_fields";
+  private JsonNullable<List<AnalyticalFieldDto>> analyticalFields = JsonNullable.<List<AnalyticalFieldDto>>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_SHIPMENT_PROPERTIES = "software_shipment_properties";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_SHIPMENT_PROPERTIES)
-  @javax.annotation.Nullable
-  private List<ProductSoftwareShipmentPropertyDto> softwareShipmentProperties;
+  public static final String JSON_PROPERTY_SOFTWARE_SHIPMENT_PROPERTIES = "software_shipment_properties";
+  private JsonNullable<List<ProductSoftwareShipmentPropertyDto>> softwareShipmentProperties = JsonNullable.<List<ProductSoftwareShipmentPropertyDto>>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_RELEASE_LIMITATIONS = "software_release_limitations";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_RELEASE_LIMITATIONS)
-  @javax.annotation.Nullable
-  private List<SoftwareReleaseLimitationDto> softwareReleaseLimitations;
+  public static final String JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATIONS = "software_release_limitations";
+  private JsonNullable<List<SoftwareReleaseLimitationDto>> softwareReleaseLimitations = JsonNullable.<List<SoftwareReleaseLimitationDto>>undefined();
 
-  public static final String SERIALIZED_NAME_USAGE_FEATURES = "usage_features";
-  @SerializedName(SERIALIZED_NAME_USAGE_FEATURES)
-  @javax.annotation.Nullable
-  private List<UsageFeatureDto> usageFeatures;
+  public static final String JSON_PROPERTY_USAGE_FEATURES = "usage_features";
+  private JsonNullable<List<UsageFeatureDto>> usageFeatures = JsonNullable.<List<UsageFeatureDto>>undefined();
 
-  public static final String SERIALIZED_NAME_USAGE_MODULES = "usage_modules";
-  @SerializedName(SERIALIZED_NAME_USAGE_MODULES)
-  @javax.annotation.Nullable
-  private List<UsageModuleDto> usageModules;
+  public static final String JSON_PROPERTY_USAGE_MODULES = "usage_modules";
+  private JsonNullable<List<UsageModuleDto>> usageModules = JsonNullable.<List<UsageModuleDto>>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATES = "email_templates";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATES)
-  @javax.annotation.Nullable
-  private List<EmailTemplateDto> emailTemplates;
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATES = "email_templates";
+  private JsonNullable<List<EmailTemplateDto>> emailTemplates = JsonNullable.<List<EmailTemplateDto>>undefined();
 
-  public FullProductDto() {
+  public FullProductDto() { 
   }
 
-  public FullProductDto id(@javax.annotation.Nullable UUID id) {
+  public FullProductDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -242,17 +214,22 @@ public class FullProductDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public FullProductDto name(@javax.annotation.Nonnull String name) {
+  public FullProductDto name(@jakarta.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
@@ -261,18 +238,23 @@ public class FullProductDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getName() {
     return name;
   }
 
-  public void setName(@javax.annotation.Nonnull String name) {
+
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setName(@jakarta.annotation.Nonnull String name) {
     this.name = name;
   }
 
 
-  public FullProductDto description(@javax.annotation.Nullable String description) {
-    this.description = description;
+  public FullProductDto description(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
     return this;
   }
 
@@ -280,18 +262,31 @@ public class FullProductDto {
    * Get description
    * @return description
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getDescription() {
-    return description;
+        return description.orElse(null);
   }
 
-  public void setDescription(@javax.annotation.Nullable String description) {
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getDescription_JsonNullable() {
+    return description;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  public void setDescription_JsonNullable(JsonNullable<String> description) {
     this.description = description;
   }
 
+  public void setDescription(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
+  }
 
-  public FullProductDto shortDescription(@javax.annotation.Nullable String shortDescription) {
-    this.shortDescription = shortDescription;
+
+  public FullProductDto shortDescription(@jakarta.annotation.Nullable String shortDescription) {
+    this.shortDescription = JsonNullable.<String>of(shortDescription);
     return this;
   }
 
@@ -299,18 +294,31 @@ public class FullProductDto {
    * Get shortDescription
    * @return shortDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getShortDescription() {
-    return shortDescription;
+        return shortDescription.orElse(null);
   }
 
-  public void setShortDescription(@javax.annotation.Nullable String shortDescription) {
+  @JsonProperty(value = JSON_PROPERTY_SHORT_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getShortDescription_JsonNullable() {
+    return shortDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SHORT_DESCRIPTION)
+  public void setShortDescription_JsonNullable(JsonNullable<String> shortDescription) {
     this.shortDescription = shortDescription;
   }
 
+  public void setShortDescription(@jakarta.annotation.Nullable String shortDescription) {
+    this.shortDescription = JsonNullable.<String>of(shortDescription);
+  }
 
-  public FullProductDto minimumSoftwareReleaseId(@javax.annotation.Nullable UUID minimumSoftwareReleaseId) {
-    this.minimumSoftwareReleaseId = minimumSoftwareReleaseId;
+
+  public FullProductDto minimumSoftwareReleaseId(@jakarta.annotation.Nullable UUID minimumSoftwareReleaseId) {
+    this.minimumSoftwareReleaseId = JsonNullable.<UUID>of(minimumSoftwareReleaseId);
     return this;
   }
 
@@ -318,26 +326,43 @@ public class FullProductDto {
    * Get minimumSoftwareReleaseId
    * @return minimumSoftwareReleaseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getMinimumSoftwareReleaseId() {
-    return minimumSoftwareReleaseId;
+        return minimumSoftwareReleaseId.orElse(null);
   }
 
-  public void setMinimumSoftwareReleaseId(@javax.annotation.Nullable UUID minimumSoftwareReleaseId) {
+  @JsonProperty(value = JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getMinimumSoftwareReleaseId_JsonNullable() {
+    return minimumSoftwareReleaseId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE_ID)
+  public void setMinimumSoftwareReleaseId_JsonNullable(JsonNullable<UUID> minimumSoftwareReleaseId) {
     this.minimumSoftwareReleaseId = minimumSoftwareReleaseId;
   }
 
+  public void setMinimumSoftwareReleaseId(@jakarta.annotation.Nullable UUID minimumSoftwareReleaseId) {
+    this.minimumSoftwareReleaseId = JsonNullable.<UUID>of(minimumSoftwareReleaseId);
+  }
 
-  public FullProductDto softwareRelease(@javax.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareRelease) {
-    this.softwareRelease = softwareRelease;
+
+  public FullProductDto softwareRelease(@jakarta.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareRelease) {
+    this.softwareRelease = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(softwareRelease);
     return this;
   }
 
   public FullProductDto addSoftwareReleaseItem(SoftwareReleaseLimitationDto softwareReleaseItem) {
-    if (this.softwareRelease == null) {
-      this.softwareRelease = new ArrayList<>();
+    if (this.softwareRelease == null || !this.softwareRelease.isPresent()) {
+      this.softwareRelease = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(new ArrayList<>());
     }
-    this.softwareRelease.add(softwareReleaseItem);
+    try {
+      this.softwareRelease.get().add(softwareReleaseItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -345,17 +370,30 @@ public class FullProductDto {
    * Get softwareRelease
    * @return softwareRelease
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<SoftwareReleaseLimitationDto> getSoftwareRelease() {
-    return softwareRelease;
+        return softwareRelease.orElse(null);
   }
 
-  public void setSoftwareRelease(@javax.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareRelease) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_RELEASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<SoftwareReleaseLimitationDto>> getSoftwareRelease_JsonNullable() {
+    return softwareRelease;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_RELEASE)
+  public void setSoftwareRelease_JsonNullable(JsonNullable<List<SoftwareReleaseLimitationDto>> softwareRelease) {
     this.softwareRelease = softwareRelease;
   }
 
+  public void setSoftwareRelease(@jakarta.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareRelease) {
+    this.softwareRelease = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(softwareRelease);
+  }
 
-  public FullProductDto isGoodwillVisible(@javax.annotation.Nullable Boolean isGoodwillVisible) {
+
+  public FullProductDto isGoodwillVisible(@jakarta.annotation.Nullable Boolean isGoodwillVisible) {
     this.isGoodwillVisible = isGoodwillVisible;
     return this;
   }
@@ -364,17 +402,22 @@ public class FullProductDto {
    * Get isGoodwillVisible
    * @return isGoodwillVisible
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_GOODWILL_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsGoodwillVisible() {
     return isGoodwillVisible;
   }
 
-  public void setIsGoodwillVisible(@javax.annotation.Nullable Boolean isGoodwillVisible) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_GOODWILL_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsGoodwillVisible(@jakarta.annotation.Nullable Boolean isGoodwillVisible) {
     this.isGoodwillVisible = isGoodwillVisible;
   }
 
 
-  public FullProductDto isUpgradeComplianceVisible(@javax.annotation.Nullable Boolean isUpgradeComplianceVisible) {
+  public FullProductDto isUpgradeComplianceVisible(@jakarta.annotation.Nullable Boolean isUpgradeComplianceVisible) {
     this.isUpgradeComplianceVisible = isUpgradeComplianceVisible;
     return this;
   }
@@ -383,17 +426,22 @@ public class FullProductDto {
    * Get isUpgradeComplianceVisible
    * @return isUpgradeComplianceVisible
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_UPGRADE_COMPLIANCE_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsUpgradeComplianceVisible() {
     return isUpgradeComplianceVisible;
   }
 
-  public void setIsUpgradeComplianceVisible(@javax.annotation.Nullable Boolean isUpgradeComplianceVisible) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_UPGRADE_COMPLIANCE_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsUpgradeComplianceVisible(@jakarta.annotation.Nullable Boolean isUpgradeComplianceVisible) {
     this.isUpgradeComplianceVisible = isUpgradeComplianceVisible;
   }
 
 
-  public FullProductDto isGroupComplianceVisible(@javax.annotation.Nullable Boolean isGroupComplianceVisible) {
+  public FullProductDto isGroupComplianceVisible(@jakarta.annotation.Nullable Boolean isGroupComplianceVisible) {
     this.isGroupComplianceVisible = isGroupComplianceVisible;
     return this;
   }
@@ -402,17 +450,22 @@ public class FullProductDto {
    * Get isGroupComplianceVisible
    * @return isGroupComplianceVisible
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_GROUP_COMPLIANCE_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsGroupComplianceVisible() {
     return isGroupComplianceVisible;
   }
 
-  public void setIsGroupComplianceVisible(@javax.annotation.Nullable Boolean isGroupComplianceVisible) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_GROUP_COMPLIANCE_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsGroupComplianceVisible(@jakarta.annotation.Nullable Boolean isGroupComplianceVisible) {
     this.isGroupComplianceVisible = isGroupComplianceVisible;
   }
 
 
-  public FullProductDto isTemporaryLicenseRulesVisible(@javax.annotation.Nullable Boolean isTemporaryLicenseRulesVisible) {
+  public FullProductDto isTemporaryLicenseRulesVisible(@jakarta.annotation.Nullable Boolean isTemporaryLicenseRulesVisible) {
     this.isTemporaryLicenseRulesVisible = isTemporaryLicenseRulesVisible;
     return this;
   }
@@ -421,17 +474,22 @@ public class FullProductDto {
    * Get isTemporaryLicenseRulesVisible
    * @return isTemporaryLicenseRulesVisible
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_TEMPORARY_LICENSE_RULES_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsTemporaryLicenseRulesVisible() {
     return isTemporaryLicenseRulesVisible;
   }
 
-  public void setIsTemporaryLicenseRulesVisible(@javax.annotation.Nullable Boolean isTemporaryLicenseRulesVisible) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_TEMPORARY_LICENSE_RULES_VISIBLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsTemporaryLicenseRulesVisible(@jakarta.annotation.Nullable Boolean isTemporaryLicenseRulesVisible) {
     this.isTemporaryLicenseRulesVisible = isTemporaryLicenseRulesVisible;
   }
 
 
-  public FullProductDto prioritizedKey(@javax.annotation.Nonnull PrioritizedKeyMode prioritizedKey) {
+  public FullProductDto prioritizedKey(@jakarta.annotation.Nonnull PrioritizedKeyMode prioritizedKey) {
     this.prioritizedKey = prioritizedKey;
     return this;
   }
@@ -440,17 +498,22 @@ public class FullProductDto {
    * Get prioritizedKey
    * @return prioritizedKey
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRIORITIZED_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public PrioritizedKeyMode getPrioritizedKey() {
     return prioritizedKey;
   }
 
-  public void setPrioritizedKey(@javax.annotation.Nonnull PrioritizedKeyMode prioritizedKey) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRIORITIZED_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setPrioritizedKey(@jakarta.annotation.Nonnull PrioritizedKeyMode prioritizedKey) {
     this.prioritizedKey = prioritizedKey;
   }
 
 
-  public FullProductDto offlineLicensing(@javax.annotation.Nullable OfflineLicensing offlineLicensing) {
+  public FullProductDto offlineLicensing(@jakarta.annotation.Nullable OfflineLicensing offlineLicensing) {
     this.offlineLicensing = offlineLicensing;
     return this;
   }
@@ -459,18 +522,23 @@ public class FullProductDto {
    * Get offlineLicensing
    * @return offlineLicensing
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OFFLINE_LICENSING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OfflineLicensing getOfflineLicensing() {
     return offlineLicensing;
   }
 
-  public void setOfflineLicensing(@javax.annotation.Nullable OfflineLicensing offlineLicensing) {
+
+  @JsonProperty(value = JSON_PROPERTY_OFFLINE_LICENSING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOfflineLicensing(@jakarta.annotation.Nullable OfflineLicensing offlineLicensing) {
     this.offlineLicensing = offlineLicensing;
   }
 
 
-  public FullProductDto licenseFileName(@javax.annotation.Nullable String licenseFileName) {
-    this.licenseFileName = licenseFileName;
+  public FullProductDto licenseFileName(@jakarta.annotation.Nullable String licenseFileName) {
+    this.licenseFileName = JsonNullable.<String>of(licenseFileName);
     return this;
   }
 
@@ -478,17 +546,30 @@ public class FullProductDto {
    * Get licenseFileName
    * @return licenseFileName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLicenseFileName() {
-    return licenseFileName;
+        return licenseFileName.orElse(null);
   }
 
-  public void setLicenseFileName(@javax.annotation.Nullable String licenseFileName) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_FILE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLicenseFileName_JsonNullable() {
+    return licenseFileName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_FILE_NAME)
+  public void setLicenseFileName_JsonNullable(JsonNullable<String> licenseFileName) {
     this.licenseFileName = licenseFileName;
   }
 
+  public void setLicenseFileName(@jakarta.annotation.Nullable String licenseFileName) {
+    this.licenseFileName = JsonNullable.<String>of(licenseFileName);
+  }
 
-  public FullProductDto userIdType(@javax.annotation.Nullable UserIdType userIdType) {
+
+  public FullProductDto userIdType(@jakarta.annotation.Nullable UserIdType userIdType) {
     this.userIdType = userIdType;
     return this;
   }
@@ -497,17 +578,22 @@ public class FullProductDto {
    * Get userIdType
    * @return userIdType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_USER_ID_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UserIdType getUserIdType() {
     return userIdType;
   }
 
-  public void setUserIdType(@javax.annotation.Nullable UserIdType userIdType) {
+
+  @JsonProperty(value = JSON_PROPERTY_USER_ID_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setUserIdType(@jakarta.annotation.Nullable UserIdType userIdType) {
     this.userIdType = userIdType;
   }
 
 
-  public FullProductDto clientIdMode(@javax.annotation.Nullable ClientIdMode clientIdMode) {
+  public FullProductDto clientIdMode(@jakarta.annotation.Nullable ClientIdMode clientIdMode) {
     this.clientIdMode = clientIdMode;
     return this;
   }
@@ -516,18 +602,23 @@ public class FullProductDto {
    * Get clientIdMode
    * @return clientIdMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ClientIdMode getClientIdMode() {
     return clientIdMode;
   }
 
-  public void setClientIdMode(@javax.annotation.Nullable ClientIdMode clientIdMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setClientIdMode(@jakarta.annotation.Nullable ClientIdMode clientIdMode) {
     this.clientIdMode = clientIdMode;
   }
 
 
-  public FullProductDto maximumInactiveDays(@javax.annotation.Nullable Integer maximumInactiveDays) {
-    this.maximumInactiveDays = maximumInactiveDays;
+  public FullProductDto maximumInactiveDays(@jakarta.annotation.Nullable Integer maximumInactiveDays) {
+    this.maximumInactiveDays = JsonNullable.<Integer>of(maximumInactiveDays);
     return this;
   }
 
@@ -535,17 +626,30 @@ public class FullProductDto {
    * Get maximumInactiveDays
    * @return maximumInactiveDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getMaximumInactiveDays() {
-    return maximumInactiveDays;
+        return maximumInactiveDays.orElse(null);
   }
 
-  public void setMaximumInactiveDays(@javax.annotation.Nullable Integer maximumInactiveDays) {
+  @JsonProperty(value = JSON_PROPERTY_MAXIMUM_INACTIVE_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getMaximumInactiveDays_JsonNullable() {
+    return maximumInactiveDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MAXIMUM_INACTIVE_DAYS)
+  public void setMaximumInactiveDays_JsonNullable(JsonNullable<Integer> maximumInactiveDays) {
     this.maximumInactiveDays = maximumInactiveDays;
   }
 
+  public void setMaximumInactiveDays(@jakarta.annotation.Nullable Integer maximumInactiveDays) {
+    this.maximumInactiveDays = JsonNullable.<Integer>of(maximumInactiveDays);
+  }
 
-  public FullProductDto maxLicensesPerUser(@javax.annotation.Nullable Integer maxLicensesPerUser) {
+
+  public FullProductDto maxLicensesPerUser(@jakarta.annotation.Nullable Integer maxLicensesPerUser) {
     this.maxLicensesPerUser = maxLicensesPerUser;
     return this;
   }
@@ -554,18 +658,23 @@ public class FullProductDto {
    * Get maxLicensesPerUser
    * @return maxLicensesPerUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_LICENSES_PER_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxLicensesPerUser() {
     return maxLicensesPerUser;
   }
 
-  public void setMaxLicensesPerUser(@javax.annotation.Nullable Integer maxLicensesPerUser) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_LICENSES_PER_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxLicensesPerUser(@jakarta.annotation.Nullable Integer maxLicensesPerUser) {
     this.maxLicensesPerUser = maxLicensesPerUser;
   }
 
 
-  public FullProductDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+  public FullProductDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -573,18 +682,31 @@ public class FullProductDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public FullProductDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public FullProductDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -592,18 +714,31 @@ public class FullProductDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public FullProductDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public FullProductDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -611,18 +746,31 @@ public class FullProductDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
-  public FullProductDto minimumSoftwareRelease(@javax.annotation.Nullable SoftwareReleaseLimitationDto minimumSoftwareRelease) {
-    this.minimumSoftwareRelease = minimumSoftwareRelease;
+
+  public FullProductDto minimumSoftwareRelease(@jakarta.annotation.Nullable SoftwareReleaseLimitationDto minimumSoftwareRelease) {
+    this.minimumSoftwareRelease = JsonNullable.<SoftwareReleaseLimitationDto>of(minimumSoftwareRelease);
     return this;
   }
 
@@ -630,18 +778,31 @@ public class FullProductDto {
    * Get minimumSoftwareRelease
    * @return minimumSoftwareRelease
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public SoftwareReleaseLimitationDto getMinimumSoftwareRelease() {
-    return minimumSoftwareRelease;
+        return minimumSoftwareRelease.orElse(null);
   }
 
-  public void setMinimumSoftwareRelease(@javax.annotation.Nullable SoftwareReleaseLimitationDto minimumSoftwareRelease) {
+  @JsonProperty(value = JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<SoftwareReleaseLimitationDto> getMinimumSoftwareRelease_JsonNullable() {
+    return minimumSoftwareRelease;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MINIMUM_SOFTWARE_RELEASE)
+  public void setMinimumSoftwareRelease_JsonNullable(JsonNullable<SoftwareReleaseLimitationDto> minimumSoftwareRelease) {
     this.minimumSoftwareRelease = minimumSoftwareRelease;
   }
 
+  public void setMinimumSoftwareRelease(@jakarta.annotation.Nullable SoftwareReleaseLimitationDto minimumSoftwareRelease) {
+    this.minimumSoftwareRelease = JsonNullable.<SoftwareReleaseLimitationDto>of(minimumSoftwareRelease);
+  }
 
-  public FullProductDto logo(@javax.annotation.Nullable ResourceDto logo) {
-    this.logo = logo;
+
+  public FullProductDto logo(@jakarta.annotation.Nullable ResourceDto logo) {
+    this.logo = JsonNullable.<ResourceDto>of(logo);
     return this;
   }
 
@@ -649,26 +810,43 @@ public class FullProductDto {
    * Get logo
    * @return logo
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ResourceDto getLogo() {
-    return logo;
+        return logo.orElse(null);
   }
 
-  public void setLogo(@javax.annotation.Nullable ResourceDto logo) {
+  @JsonProperty(value = JSON_PROPERTY_LOGO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ResourceDto> getLogo_JsonNullable() {
+    return logo;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LOGO)
+  public void setLogo_JsonNullable(JsonNullable<ResourceDto> logo) {
     this.logo = logo;
   }
 
+  public void setLogo(@jakarta.annotation.Nullable ResourceDto logo) {
+    this.logo = JsonNullable.<ResourceDto>of(logo);
+  }
 
-  public FullProductDto features(@javax.annotation.Nullable List<FeatureDto> features) {
-    this.features = features;
+
+  public FullProductDto features(@jakarta.annotation.Nullable List<FeatureDto> features) {
+    this.features = JsonNullable.<List<FeatureDto>>of(features);
     return this;
   }
 
   public FullProductDto addFeaturesItem(FeatureDto featuresItem) {
-    if (this.features == null) {
-      this.features = new ArrayList<>();
+    if (this.features == null || !this.features.isPresent()) {
+      this.features = JsonNullable.<List<FeatureDto>>of(new ArrayList<>());
     }
-    this.features.add(featuresItem);
+    try {
+      this.features.get().add(featuresItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -676,26 +854,43 @@ public class FullProductDto {
    * Get features
    * @return features
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<FeatureDto> getFeatures() {
-    return features;
+        return features.orElse(null);
   }
 
-  public void setFeatures(@javax.annotation.Nullable List<FeatureDto> features) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<FeatureDto>> getFeatures_JsonNullable() {
+    return features;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURES)
+  public void setFeatures_JsonNullable(JsonNullable<List<FeatureDto>> features) {
     this.features = features;
   }
 
+  public void setFeatures(@jakarta.annotation.Nullable List<FeatureDto> features) {
+    this.features = JsonNullable.<List<FeatureDto>>of(features);
+  }
 
-  public FullProductDto limitations(@javax.annotation.Nullable List<LimitationDto> limitations) {
-    this.limitations = limitations;
+
+  public FullProductDto limitations(@jakarta.annotation.Nullable List<LimitationDto> limitations) {
+    this.limitations = JsonNullable.<List<LimitationDto>>of(limitations);
     return this;
   }
 
   public FullProductDto addLimitationsItem(LimitationDto limitationsItem) {
-    if (this.limitations == null) {
-      this.limitations = new ArrayList<>();
+    if (this.limitations == null || !this.limitations.isPresent()) {
+      this.limitations = JsonNullable.<List<LimitationDto>>of(new ArrayList<>());
     }
-    this.limitations.add(limitationsItem);
+    try {
+      this.limitations.get().add(limitationsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -703,26 +898,43 @@ public class FullProductDto {
    * Get limitations
    * @return limitations
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<LimitationDto> getLimitations() {
-    return limitations;
+        return limitations.orElse(null);
   }
 
-  public void setLimitations(@javax.annotation.Nullable List<LimitationDto> limitations) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<LimitationDto>> getLimitations_JsonNullable() {
+    return limitations;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATIONS)
+  public void setLimitations_JsonNullable(JsonNullable<List<LimitationDto>> limitations) {
     this.limitations = limitations;
   }
 
+  public void setLimitations(@jakarta.annotation.Nullable List<LimitationDto> limitations) {
+    this.limitations = JsonNullable.<List<LimitationDto>>of(limitations);
+  }
 
-  public FullProductDto constrainedVariables(@javax.annotation.Nullable List<ConstrainedVariableDto> constrainedVariables) {
-    this.constrainedVariables = constrainedVariables;
+
+  public FullProductDto constrainedVariables(@jakarta.annotation.Nullable List<ConstrainedVariableDto> constrainedVariables) {
+    this.constrainedVariables = JsonNullable.<List<ConstrainedVariableDto>>of(constrainedVariables);
     return this;
   }
 
   public FullProductDto addConstrainedVariablesItem(ConstrainedVariableDto constrainedVariablesItem) {
-    if (this.constrainedVariables == null) {
-      this.constrainedVariables = new ArrayList<>();
+    if (this.constrainedVariables == null || !this.constrainedVariables.isPresent()) {
+      this.constrainedVariables = JsonNullable.<List<ConstrainedVariableDto>>of(new ArrayList<>());
     }
-    this.constrainedVariables.add(constrainedVariablesItem);
+    try {
+      this.constrainedVariables.get().add(constrainedVariablesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -730,26 +942,43 @@ public class FullProductDto {
    * Get constrainedVariables
    * @return constrainedVariables
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<ConstrainedVariableDto> getConstrainedVariables() {
-    return constrainedVariables;
+        return constrainedVariables.orElse(null);
   }
 
-  public void setConstrainedVariables(@javax.annotation.Nullable List<ConstrainedVariableDto> constrainedVariables) {
+  @JsonProperty(value = JSON_PROPERTY_CONSTRAINED_VARIABLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<ConstrainedVariableDto>> getConstrainedVariables_JsonNullable() {
+    return constrainedVariables;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSTRAINED_VARIABLES)
+  public void setConstrainedVariables_JsonNullable(JsonNullable<List<ConstrainedVariableDto>> constrainedVariables) {
     this.constrainedVariables = constrainedVariables;
   }
 
+  public void setConstrainedVariables(@jakarta.annotation.Nullable List<ConstrainedVariableDto> constrainedVariables) {
+    this.constrainedVariables = JsonNullable.<List<ConstrainedVariableDto>>of(constrainedVariables);
+  }
 
-  public FullProductDto variables(@javax.annotation.Nullable List<VariableDto> variables) {
-    this.variables = variables;
+
+  public FullProductDto variables(@jakarta.annotation.Nullable List<VariableDto> variables) {
+    this.variables = JsonNullable.<List<VariableDto>>of(variables);
     return this;
   }
 
   public FullProductDto addVariablesItem(VariableDto variablesItem) {
-    if (this.variables == null) {
-      this.variables = new ArrayList<>();
+    if (this.variables == null || !this.variables.isPresent()) {
+      this.variables = JsonNullable.<List<VariableDto>>of(new ArrayList<>());
     }
-    this.variables.add(variablesItem);
+    try {
+      this.variables.get().add(variablesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -757,26 +986,43 @@ public class FullProductDto {
    * Get variables
    * @return variables
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<VariableDto> getVariables() {
-    return variables;
+        return variables.orElse(null);
   }
 
-  public void setVariables(@javax.annotation.Nullable List<VariableDto> variables) {
+  @JsonProperty(value = JSON_PROPERTY_VARIABLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<VariableDto>> getVariables_JsonNullable() {
+    return variables;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VARIABLES)
+  public void setVariables_JsonNullable(JsonNullable<List<VariableDto>> variables) {
     this.variables = variables;
   }
 
+  public void setVariables(@jakarta.annotation.Nullable List<VariableDto> variables) {
+    this.variables = JsonNullable.<List<VariableDto>>of(variables);
+  }
 
-  public FullProductDto analyticalFields(@javax.annotation.Nullable List<AnalyticalFieldDto> analyticalFields) {
-    this.analyticalFields = analyticalFields;
+
+  public FullProductDto analyticalFields(@jakarta.annotation.Nullable List<AnalyticalFieldDto> analyticalFields) {
+    this.analyticalFields = JsonNullable.<List<AnalyticalFieldDto>>of(analyticalFields);
     return this;
   }
 
   public FullProductDto addAnalyticalFieldsItem(AnalyticalFieldDto analyticalFieldsItem) {
-    if (this.analyticalFields == null) {
-      this.analyticalFields = new ArrayList<>();
+    if (this.analyticalFields == null || !this.analyticalFields.isPresent()) {
+      this.analyticalFields = JsonNullable.<List<AnalyticalFieldDto>>of(new ArrayList<>());
     }
-    this.analyticalFields.add(analyticalFieldsItem);
+    try {
+      this.analyticalFields.get().add(analyticalFieldsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -784,26 +1030,43 @@ public class FullProductDto {
    * Get analyticalFields
    * @return analyticalFields
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<AnalyticalFieldDto> getAnalyticalFields() {
-    return analyticalFields;
+        return analyticalFields.orElse(null);
   }
 
-  public void setAnalyticalFields(@javax.annotation.Nullable List<AnalyticalFieldDto> analyticalFields) {
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<AnalyticalFieldDto>> getAnalyticalFields_JsonNullable() {
+    return analyticalFields;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ANALYTICAL_FIELDS)
+  public void setAnalyticalFields_JsonNullable(JsonNullable<List<AnalyticalFieldDto>> analyticalFields) {
     this.analyticalFields = analyticalFields;
   }
 
+  public void setAnalyticalFields(@jakarta.annotation.Nullable List<AnalyticalFieldDto> analyticalFields) {
+    this.analyticalFields = JsonNullable.<List<AnalyticalFieldDto>>of(analyticalFields);
+  }
 
-  public FullProductDto softwareShipmentProperties(@javax.annotation.Nullable List<ProductSoftwareShipmentPropertyDto> softwareShipmentProperties) {
-    this.softwareShipmentProperties = softwareShipmentProperties;
+
+  public FullProductDto softwareShipmentProperties(@jakarta.annotation.Nullable List<ProductSoftwareShipmentPropertyDto> softwareShipmentProperties) {
+    this.softwareShipmentProperties = JsonNullable.<List<ProductSoftwareShipmentPropertyDto>>of(softwareShipmentProperties);
     return this;
   }
 
   public FullProductDto addSoftwareShipmentPropertiesItem(ProductSoftwareShipmentPropertyDto softwareShipmentPropertiesItem) {
-    if (this.softwareShipmentProperties == null) {
-      this.softwareShipmentProperties = new ArrayList<>();
+    if (this.softwareShipmentProperties == null || !this.softwareShipmentProperties.isPresent()) {
+      this.softwareShipmentProperties = JsonNullable.<List<ProductSoftwareShipmentPropertyDto>>of(new ArrayList<>());
     }
-    this.softwareShipmentProperties.add(softwareShipmentPropertiesItem);
+    try {
+      this.softwareShipmentProperties.get().add(softwareShipmentPropertiesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -811,26 +1074,43 @@ public class FullProductDto {
    * Get softwareShipmentProperties
    * @return softwareShipmentProperties
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<ProductSoftwareShipmentPropertyDto> getSoftwareShipmentProperties() {
-    return softwareShipmentProperties;
+        return softwareShipmentProperties.orElse(null);
   }
 
-  public void setSoftwareShipmentProperties(@javax.annotation.Nullable List<ProductSoftwareShipmentPropertyDto> softwareShipmentProperties) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_SHIPMENT_PROPERTIES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<ProductSoftwareShipmentPropertyDto>> getSoftwareShipmentProperties_JsonNullable() {
+    return softwareShipmentProperties;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_SHIPMENT_PROPERTIES)
+  public void setSoftwareShipmentProperties_JsonNullable(JsonNullable<List<ProductSoftwareShipmentPropertyDto>> softwareShipmentProperties) {
     this.softwareShipmentProperties = softwareShipmentProperties;
   }
 
+  public void setSoftwareShipmentProperties(@jakarta.annotation.Nullable List<ProductSoftwareShipmentPropertyDto> softwareShipmentProperties) {
+    this.softwareShipmentProperties = JsonNullable.<List<ProductSoftwareShipmentPropertyDto>>of(softwareShipmentProperties);
+  }
 
-  public FullProductDto softwareReleaseLimitations(@javax.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareReleaseLimitations) {
-    this.softwareReleaseLimitations = softwareReleaseLimitations;
+
+  public FullProductDto softwareReleaseLimitations(@jakarta.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareReleaseLimitations) {
+    this.softwareReleaseLimitations = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(softwareReleaseLimitations);
     return this;
   }
 
   public FullProductDto addSoftwareReleaseLimitationsItem(SoftwareReleaseLimitationDto softwareReleaseLimitationsItem) {
-    if (this.softwareReleaseLimitations == null) {
-      this.softwareReleaseLimitations = new ArrayList<>();
+    if (this.softwareReleaseLimitations == null || !this.softwareReleaseLimitations.isPresent()) {
+      this.softwareReleaseLimitations = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(new ArrayList<>());
     }
-    this.softwareReleaseLimitations.add(softwareReleaseLimitationsItem);
+    try {
+      this.softwareReleaseLimitations.get().add(softwareReleaseLimitationsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -838,26 +1118,43 @@ public class FullProductDto {
    * Get softwareReleaseLimitations
    * @return softwareReleaseLimitations
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<SoftwareReleaseLimitationDto> getSoftwareReleaseLimitations() {
-    return softwareReleaseLimitations;
+        return softwareReleaseLimitations.orElse(null);
   }
 
-  public void setSoftwareReleaseLimitations(@javax.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareReleaseLimitations) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<SoftwareReleaseLimitationDto>> getSoftwareReleaseLimitations_JsonNullable() {
+    return softwareReleaseLimitations;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATIONS)
+  public void setSoftwareReleaseLimitations_JsonNullable(JsonNullable<List<SoftwareReleaseLimitationDto>> softwareReleaseLimitations) {
     this.softwareReleaseLimitations = softwareReleaseLimitations;
   }
 
+  public void setSoftwareReleaseLimitations(@jakarta.annotation.Nullable List<SoftwareReleaseLimitationDto> softwareReleaseLimitations) {
+    this.softwareReleaseLimitations = JsonNullable.<List<SoftwareReleaseLimitationDto>>of(softwareReleaseLimitations);
+  }
 
-  public FullProductDto usageFeatures(@javax.annotation.Nullable List<UsageFeatureDto> usageFeatures) {
-    this.usageFeatures = usageFeatures;
+
+  public FullProductDto usageFeatures(@jakarta.annotation.Nullable List<UsageFeatureDto> usageFeatures) {
+    this.usageFeatures = JsonNullable.<List<UsageFeatureDto>>of(usageFeatures);
     return this;
   }
 
   public FullProductDto addUsageFeaturesItem(UsageFeatureDto usageFeaturesItem) {
-    if (this.usageFeatures == null) {
-      this.usageFeatures = new ArrayList<>();
+    if (this.usageFeatures == null || !this.usageFeatures.isPresent()) {
+      this.usageFeatures = JsonNullable.<List<UsageFeatureDto>>of(new ArrayList<>());
     }
-    this.usageFeatures.add(usageFeaturesItem);
+    try {
+      this.usageFeatures.get().add(usageFeaturesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -865,26 +1162,43 @@ public class FullProductDto {
    * Get usageFeatures
    * @return usageFeatures
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UsageFeatureDto> getUsageFeatures() {
-    return usageFeatures;
+        return usageFeatures.orElse(null);
   }
 
-  public void setUsageFeatures(@javax.annotation.Nullable List<UsageFeatureDto> usageFeatures) {
+  @JsonProperty(value = JSON_PROPERTY_USAGE_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UsageFeatureDto>> getUsageFeatures_JsonNullable() {
+    return usageFeatures;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USAGE_FEATURES)
+  public void setUsageFeatures_JsonNullable(JsonNullable<List<UsageFeatureDto>> usageFeatures) {
     this.usageFeatures = usageFeatures;
   }
 
+  public void setUsageFeatures(@jakarta.annotation.Nullable List<UsageFeatureDto> usageFeatures) {
+    this.usageFeatures = JsonNullable.<List<UsageFeatureDto>>of(usageFeatures);
+  }
 
-  public FullProductDto usageModules(@javax.annotation.Nullable List<UsageModuleDto> usageModules) {
-    this.usageModules = usageModules;
+
+  public FullProductDto usageModules(@jakarta.annotation.Nullable List<UsageModuleDto> usageModules) {
+    this.usageModules = JsonNullable.<List<UsageModuleDto>>of(usageModules);
     return this;
   }
 
   public FullProductDto addUsageModulesItem(UsageModuleDto usageModulesItem) {
-    if (this.usageModules == null) {
-      this.usageModules = new ArrayList<>();
+    if (this.usageModules == null || !this.usageModules.isPresent()) {
+      this.usageModules = JsonNullable.<List<UsageModuleDto>>of(new ArrayList<>());
     }
-    this.usageModules.add(usageModulesItem);
+    try {
+      this.usageModules.get().add(usageModulesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -892,26 +1206,43 @@ public class FullProductDto {
    * Get usageModules
    * @return usageModules
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UsageModuleDto> getUsageModules() {
-    return usageModules;
+        return usageModules.orElse(null);
   }
 
-  public void setUsageModules(@javax.annotation.Nullable List<UsageModuleDto> usageModules) {
+  @JsonProperty(value = JSON_PROPERTY_USAGE_MODULES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UsageModuleDto>> getUsageModules_JsonNullable() {
+    return usageModules;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USAGE_MODULES)
+  public void setUsageModules_JsonNullable(JsonNullable<List<UsageModuleDto>> usageModules) {
     this.usageModules = usageModules;
   }
 
+  public void setUsageModules(@jakarta.annotation.Nullable List<UsageModuleDto> usageModules) {
+    this.usageModules = JsonNullable.<List<UsageModuleDto>>of(usageModules);
+  }
 
-  public FullProductDto emailTemplates(@javax.annotation.Nullable List<EmailTemplateDto> emailTemplates) {
-    this.emailTemplates = emailTemplates;
+
+  public FullProductDto emailTemplates(@jakarta.annotation.Nullable List<EmailTemplateDto> emailTemplates) {
+    this.emailTemplates = JsonNullable.<List<EmailTemplateDto>>of(emailTemplates);
     return this;
   }
 
   public FullProductDto addEmailTemplatesItem(EmailTemplateDto emailTemplatesItem) {
-    if (this.emailTemplates == null) {
-      this.emailTemplates = new ArrayList<>();
+    if (this.emailTemplates == null || !this.emailTemplates.isPresent()) {
+      this.emailTemplates = JsonNullable.<List<EmailTemplateDto>>of(new ArrayList<>());
     }
-    this.emailTemplates.add(emailTemplatesItem);
+    try {
+      this.emailTemplates.get().add(emailTemplatesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -919,17 +1250,75 @@ public class FullProductDto {
    * Get emailTemplates
    * @return emailTemplates
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<EmailTemplateDto> getEmailTemplates() {
-    return emailTemplates;
+        return emailTemplates.orElse(null);
   }
 
-  public void setEmailTemplates(@javax.annotation.Nullable List<EmailTemplateDto> emailTemplates) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<EmailTemplateDto>> getEmailTemplates_JsonNullable() {
+    return emailTemplates;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL_TEMPLATES)
+  public void setEmailTemplates_JsonNullable(JsonNullable<List<EmailTemplateDto>> emailTemplates) {
     this.emailTemplates = emailTemplates;
   }
 
+  public void setEmailTemplates(@jakarta.annotation.Nullable List<EmailTemplateDto> emailTemplates) {
+    this.emailTemplates = JsonNullable.<List<EmailTemplateDto>>of(emailTemplates);
+  }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
 
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   * @param key the name of the property
+   * @param value the value of the property
+   * @return self reference
+   */
+  @JsonAnySetter
+  public FullProductDto putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<String, Object>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
+
+  /**
+   * Return the additional (undeclared) properties.
+   * @return the additional (undeclared) properties
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   * @param key the name of the property
+   * @return the additional (undeclared) property with the specified name
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
+
+  /**
+   * Return true if this FullProductDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -941,36 +1330,37 @@ public class FullProductDto {
     FullProductDto fullProductDto = (FullProductDto) o;
     return Objects.equals(this.id, fullProductDto.id) &&
         Objects.equals(this.name, fullProductDto.name) &&
-        Objects.equals(this.description, fullProductDto.description) &&
-        Objects.equals(this.shortDescription, fullProductDto.shortDescription) &&
-        Objects.equals(this.minimumSoftwareReleaseId, fullProductDto.minimumSoftwareReleaseId) &&
-        Objects.equals(this.softwareRelease, fullProductDto.softwareRelease) &&
+        equalsNullable(this.description, fullProductDto.description) &&
+        equalsNullable(this.shortDescription, fullProductDto.shortDescription) &&
+        equalsNullable(this.minimumSoftwareReleaseId, fullProductDto.minimumSoftwareReleaseId) &&
+        equalsNullable(this.softwareRelease, fullProductDto.softwareRelease) &&
         Objects.equals(this.isGoodwillVisible, fullProductDto.isGoodwillVisible) &&
         Objects.equals(this.isUpgradeComplianceVisible, fullProductDto.isUpgradeComplianceVisible) &&
         Objects.equals(this.isGroupComplianceVisible, fullProductDto.isGroupComplianceVisible) &&
         Objects.equals(this.isTemporaryLicenseRulesVisible, fullProductDto.isTemporaryLicenseRulesVisible) &&
         Objects.equals(this.prioritizedKey, fullProductDto.prioritizedKey) &&
         Objects.equals(this.offlineLicensing, fullProductDto.offlineLicensing) &&
-        Objects.equals(this.licenseFileName, fullProductDto.licenseFileName) &&
+        equalsNullable(this.licenseFileName, fullProductDto.licenseFileName) &&
         Objects.equals(this.userIdType, fullProductDto.userIdType) &&
         Objects.equals(this.clientIdMode, fullProductDto.clientIdMode) &&
-        Objects.equals(this.maximumInactiveDays, fullProductDto.maximumInactiveDays) &&
+        equalsNullable(this.maximumInactiveDays, fullProductDto.maximumInactiveDays) &&
         Objects.equals(this.maxLicensesPerUser, fullProductDto.maxLicensesPerUser) &&
-        Objects.equals(this.createdDateUtc, fullProductDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, fullProductDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, fullProductDto.lastModifiedBy) &&
-        Objects.equals(this.minimumSoftwareRelease, fullProductDto.minimumSoftwareRelease) &&
-        Objects.equals(this.logo, fullProductDto.logo) &&
-        Objects.equals(this.features, fullProductDto.features) &&
-        Objects.equals(this.limitations, fullProductDto.limitations) &&
-        Objects.equals(this.constrainedVariables, fullProductDto.constrainedVariables) &&
-        Objects.equals(this.variables, fullProductDto.variables) &&
-        Objects.equals(this.analyticalFields, fullProductDto.analyticalFields) &&
-        Objects.equals(this.softwareShipmentProperties, fullProductDto.softwareShipmentProperties) &&
-        Objects.equals(this.softwareReleaseLimitations, fullProductDto.softwareReleaseLimitations) &&
-        Objects.equals(this.usageFeatures, fullProductDto.usageFeatures) &&
-        Objects.equals(this.usageModules, fullProductDto.usageModules) &&
-        Objects.equals(this.emailTemplates, fullProductDto.emailTemplates);
+        equalsNullable(this.createdDateUtc, fullProductDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, fullProductDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, fullProductDto.lastModifiedBy) &&
+        equalsNullable(this.minimumSoftwareRelease, fullProductDto.minimumSoftwareRelease) &&
+        equalsNullable(this.logo, fullProductDto.logo) &&
+        equalsNullable(this.features, fullProductDto.features) &&
+        equalsNullable(this.limitations, fullProductDto.limitations) &&
+        equalsNullable(this.constrainedVariables, fullProductDto.constrainedVariables) &&
+        equalsNullable(this.variables, fullProductDto.variables) &&
+        equalsNullable(this.analyticalFields, fullProductDto.analyticalFields) &&
+        equalsNullable(this.softwareShipmentProperties, fullProductDto.softwareShipmentProperties) &&
+        equalsNullable(this.softwareReleaseLimitations, fullProductDto.softwareReleaseLimitations) &&
+        equalsNullable(this.usageFeatures, fullProductDto.usageFeatures) &&
+        equalsNullable(this.usageModules, fullProductDto.usageModules) &&
+        equalsNullable(this.emailTemplates, fullProductDto.emailTemplates)&&
+        Objects.equals(this.additionalProperties, fullProductDto.additionalProperties);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -979,7 +1369,7 @@ public class FullProductDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, shortDescription, minimumSoftwareReleaseId, softwareRelease, isGoodwillVisible, isUpgradeComplianceVisible, isGroupComplianceVisible, isTemporaryLicenseRulesVisible, prioritizedKey, offlineLicensing, licenseFileName, userIdType, clientIdMode, maximumInactiveDays, maxLicensesPerUser, createdDateUtc, modifiedDateUtc, lastModifiedBy, minimumSoftwareRelease, logo, features, limitations, constrainedVariables, variables, analyticalFields, softwareShipmentProperties, softwareReleaseLimitations, usageFeatures, usageModules, emailTemplates);
+    return Objects.hash(id, name, hashCodeNullable(description), hashCodeNullable(shortDescription), hashCodeNullable(minimumSoftwareReleaseId), hashCodeNullable(softwareRelease), isGoodwillVisible, isUpgradeComplianceVisible, isGroupComplianceVisible, isTemporaryLicenseRulesVisible, prioritizedKey, offlineLicensing, hashCodeNullable(licenseFileName), userIdType, clientIdMode, hashCodeNullable(maximumInactiveDays), maxLicensesPerUser, hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy), hashCodeNullable(minimumSoftwareRelease), hashCodeNullable(logo), hashCodeNullable(features), hashCodeNullable(limitations), hashCodeNullable(constrainedVariables), hashCodeNullable(variables), hashCodeNullable(analyticalFields), hashCodeNullable(softwareShipmentProperties), hashCodeNullable(softwareReleaseLimitations), hashCodeNullable(usageFeatures), hashCodeNullable(usageModules), hashCodeNullable(emailTemplates), additionalProperties);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1025,6 +1415,7 @@ public class FullProductDto {
     sb.append("    usageFeatures: ").append(toIndentedString(usageFeatures)).append("\n");
     sb.append("    usageModules: ").append(toIndentedString(usageModules)).append("\n");
     sb.append("    emailTemplates: ").append(toIndentedString(emailTemplates)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -1040,292 +1431,254 @@ public class FullProductDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "description", "short_description", "minimum_software_release_id", "software_release", "is_goodwill_visible", "is_upgrade_compliance_visible", "is_group_compliance_visible", "is_temporary_license_rules_visible", "prioritized_key", "offline_licensing", "license_file_name", "user_id_type", "client_id_mode", "maximum_inactive_days", "max_licenses_per_user", "created_date_utc", "modified_date_utc", "last_modified_by", "minimum_software_release", "logo", "features", "limitations", "constrained_variables", "variables", "analytical_fields", "software_shipment_properties", "software_release_limitations", "usage_features", "usage_modules", "email_templates"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("name", "prioritized_key"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to FullProductDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!FullProductDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in FullProductDto is not found in the empty JSON string", FullProductDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!FullProductDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `FullProductDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : FullProductDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if (!jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      if ((jsonObj.get("short_description") != null && !jsonObj.get("short_description").isJsonNull()) && !jsonObj.get("short_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `short_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("short_description").toString()));
-      }
-      if ((jsonObj.get("minimum_software_release_id") != null && !jsonObj.get("minimum_software_release_id").isJsonNull()) && !jsonObj.get("minimum_software_release_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `minimum_software_release_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("minimum_software_release_id").toString()));
-      }
-      if (jsonObj.get("software_release") != null && !jsonObj.get("software_release").isJsonNull()) {
-        JsonArray jsonArraysoftwareRelease = jsonObj.getAsJsonArray("software_release");
-        if (jsonArraysoftwareRelease != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("software_release").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_release` to be an array in the JSON string but got `%s`", jsonObj.get("software_release").toString()));
-          }
-
-          // validate the optional field `software_release` (array)
-          for (int i = 0; i < jsonArraysoftwareRelease.size(); i++) {
-            SoftwareReleaseLimitationDto.validateJsonElement(jsonArraysoftwareRelease.get(i));
-          };
-        }
-      }
-      // validate the required field `prioritized_key`
-      PrioritizedKeyMode.validateJsonElement(jsonObj.get("prioritized_key"));
-      // validate the optional field `offline_licensing`
-      if (jsonObj.get("offline_licensing") != null && !jsonObj.get("offline_licensing").isJsonNull()) {
-        OfflineLicensing.validateJsonElement(jsonObj.get("offline_licensing"));
-      }
-      if ((jsonObj.get("license_file_name") != null && !jsonObj.get("license_file_name").isJsonNull()) && !jsonObj.get("license_file_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_file_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_file_name").toString()));
-      }
-      // validate the optional field `user_id_type`
-      if (jsonObj.get("user_id_type") != null && !jsonObj.get("user_id_type").isJsonNull()) {
-        UserIdType.validateJsonElement(jsonObj.get("user_id_type"));
-      }
-      // validate the optional field `client_id_mode`
-      if (jsonObj.get("client_id_mode") != null && !jsonObj.get("client_id_mode").isJsonNull()) {
-        ClientIdMode.validateJsonElement(jsonObj.get("client_id_mode"));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-      // validate the optional field `minimum_software_release`
-      if (jsonObj.get("minimum_software_release") != null && !jsonObj.get("minimum_software_release").isJsonNull()) {
-        SoftwareReleaseLimitationDto.validateJsonElement(jsonObj.get("minimum_software_release"));
-      }
-      // validate the optional field `logo`
-      if (jsonObj.get("logo") != null && !jsonObj.get("logo").isJsonNull()) {
-        ResourceDto.validateJsonElement(jsonObj.get("logo"));
-      }
-      if (jsonObj.get("features") != null && !jsonObj.get("features").isJsonNull()) {
-        JsonArray jsonArrayfeatures = jsonObj.getAsJsonArray("features");
-        if (jsonArrayfeatures != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("features").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `features` to be an array in the JSON string but got `%s`", jsonObj.get("features").toString()));
-          }
-
-          // validate the optional field `features` (array)
-          for (int i = 0; i < jsonArrayfeatures.size(); i++) {
-            FeatureDto.validateJsonElement(jsonArrayfeatures.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("limitations") != null && !jsonObj.get("limitations").isJsonNull()) {
-        JsonArray jsonArraylimitations = jsonObj.getAsJsonArray("limitations");
-        if (jsonArraylimitations != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `limitations` to be an array in the JSON string but got `%s`", jsonObj.get("limitations").toString()));
-          }
-
-          // validate the optional field `limitations` (array)
-          for (int i = 0; i < jsonArraylimitations.size(); i++) {
-            LimitationDto.validateJsonElement(jsonArraylimitations.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("constrained_variables") != null && !jsonObj.get("constrained_variables").isJsonNull()) {
-        JsonArray jsonArrayconstrainedVariables = jsonObj.getAsJsonArray("constrained_variables");
-        if (jsonArrayconstrainedVariables != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("constrained_variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `constrained_variables` to be an array in the JSON string but got `%s`", jsonObj.get("constrained_variables").toString()));
-          }
-
-          // validate the optional field `constrained_variables` (array)
-          for (int i = 0; i < jsonArrayconstrainedVariables.size(); i++) {
-            ConstrainedVariableDto.validateJsonElement(jsonArrayconstrainedVariables.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("variables") != null && !jsonObj.get("variables").isJsonNull()) {
-        JsonArray jsonArrayvariables = jsonObj.getAsJsonArray("variables");
-        if (jsonArrayvariables != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `variables` to be an array in the JSON string but got `%s`", jsonObj.get("variables").toString()));
-          }
-
-          // validate the optional field `variables` (array)
-          for (int i = 0; i < jsonArrayvariables.size(); i++) {
-            VariableDto.validateJsonElement(jsonArrayvariables.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("analytical_fields") != null && !jsonObj.get("analytical_fields").isJsonNull()) {
-        JsonArray jsonArrayanalyticalFields = jsonObj.getAsJsonArray("analytical_fields");
-        if (jsonArrayanalyticalFields != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("analytical_fields").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `analytical_fields` to be an array in the JSON string but got `%s`", jsonObj.get("analytical_fields").toString()));
-          }
-
-          // validate the optional field `analytical_fields` (array)
-          for (int i = 0; i < jsonArrayanalyticalFields.size(); i++) {
-            AnalyticalFieldDto.validateJsonElement(jsonArrayanalyticalFields.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("software_shipment_properties") != null && !jsonObj.get("software_shipment_properties").isJsonNull()) {
-        JsonArray jsonArraysoftwareShipmentProperties = jsonObj.getAsJsonArray("software_shipment_properties");
-        if (jsonArraysoftwareShipmentProperties != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("software_shipment_properties").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_shipment_properties` to be an array in the JSON string but got `%s`", jsonObj.get("software_shipment_properties").toString()));
-          }
-
-          // validate the optional field `software_shipment_properties` (array)
-          for (int i = 0; i < jsonArraysoftwareShipmentProperties.size(); i++) {
-            ProductSoftwareShipmentPropertyDto.validateJsonElement(jsonArraysoftwareShipmentProperties.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("software_release_limitations") != null && !jsonObj.get("software_release_limitations").isJsonNull()) {
-        JsonArray jsonArraysoftwareReleaseLimitations = jsonObj.getAsJsonArray("software_release_limitations");
-        if (jsonArraysoftwareReleaseLimitations != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("software_release_limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `software_release_limitations` to be an array in the JSON string but got `%s`", jsonObj.get("software_release_limitations").toString()));
-          }
-
-          // validate the optional field `software_release_limitations` (array)
-          for (int i = 0; i < jsonArraysoftwareReleaseLimitations.size(); i++) {
-            SoftwareReleaseLimitationDto.validateJsonElement(jsonArraysoftwareReleaseLimitations.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("usage_features") != null && !jsonObj.get("usage_features").isJsonNull()) {
-        JsonArray jsonArrayusageFeatures = jsonObj.getAsJsonArray("usage_features");
-        if (jsonArrayusageFeatures != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("usage_features").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `usage_features` to be an array in the JSON string but got `%s`", jsonObj.get("usage_features").toString()));
-          }
-
-          // validate the optional field `usage_features` (array)
-          for (int i = 0; i < jsonArrayusageFeatures.size(); i++) {
-            UsageFeatureDto.validateJsonElement(jsonArrayusageFeatures.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("usage_modules") != null && !jsonObj.get("usage_modules").isJsonNull()) {
-        JsonArray jsonArrayusageModules = jsonObj.getAsJsonArray("usage_modules");
-        if (jsonArrayusageModules != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("usage_modules").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `usage_modules` to be an array in the JSON string but got `%s`", jsonObj.get("usage_modules").toString()));
-          }
-
-          // validate the optional field `usage_modules` (array)
-          for (int i = 0; i < jsonArrayusageModules.size(); i++) {
-            UsageModuleDto.validateJsonElement(jsonArrayusageModules.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("email_templates") != null && !jsonObj.get("email_templates").isJsonNull()) {
-        JsonArray jsonArrayemailTemplates = jsonObj.getAsJsonArray("email_templates");
-        if (jsonArrayemailTemplates != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("email_templates").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `email_templates` to be an array in the JSON string but got `%s`", jsonObj.get("email_templates").toString()));
-          }
-
-          // validate the optional field `email_templates` (array)
-          for (int i = 0; i < jsonArrayemailTemplates.size(); i++) {
-            EmailTemplateDto.validateJsonElement(jsonArrayemailTemplates.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!FullProductDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'FullProductDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<FullProductDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(FullProductDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<FullProductDto>() {
-           @Override
-           public void write(JsonWriter out, FullProductDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public FullProductDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of FullProductDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of FullProductDto
-   * @throws IOException if the JSON string is invalid with respect to FullProductDto
-   */
-  public static FullProductDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, FullProductDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of FullProductDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `description` to the URL query string
+    if (getDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
+    }
+
+    // add `short_description` to the URL query string
+    if (getShortDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sshort_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getShortDescription()))));
+    }
+
+    // add `minimum_software_release_id` to the URL query string
+    if (getMinimumSoftwareReleaseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sminimum_software_release_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMinimumSoftwareReleaseId()))));
+    }
+
+    // add `software_release` to the URL query string
+    if (getSoftwareRelease() != null) {
+      for (int i = 0; i < getSoftwareRelease().size(); i++) {
+        if (getSoftwareRelease().get(i) != null) {
+          joiner.add(getSoftwareRelease().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%ssoftware_release%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `is_goodwill_visible` to the URL query string
+    if (getIsGoodwillVisible() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_goodwill_visible%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsGoodwillVisible()))));
+    }
+
+    // add `is_upgrade_compliance_visible` to the URL query string
+    if (getIsUpgradeComplianceVisible() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_upgrade_compliance_visible%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsUpgradeComplianceVisible()))));
+    }
+
+    // add `is_group_compliance_visible` to the URL query string
+    if (getIsGroupComplianceVisible() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_group_compliance_visible%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsGroupComplianceVisible()))));
+    }
+
+    // add `is_temporary_license_rules_visible` to the URL query string
+    if (getIsTemporaryLicenseRulesVisible() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_temporary_license_rules_visible%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsTemporaryLicenseRulesVisible()))));
+    }
+
+    // add `prioritized_key` to the URL query string
+    if (getPrioritizedKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sprioritized_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPrioritizedKey()))));
+    }
+
+    // add `offline_licensing` to the URL query string
+    if (getOfflineLicensing() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soffline_licensing%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOfflineLicensing()))));
+    }
+
+    // add `license_file_name` to the URL query string
+    if (getLicenseFileName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_file_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseFileName()))));
+    }
+
+    // add `user_id_type` to the URL query string
+    if (getUserIdType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserIdType()))));
+    }
+
+    // add `client_id_mode` to the URL query string
+    if (getClientIdMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientIdMode()))));
+    }
+
+    // add `maximum_inactive_days` to the URL query string
+    if (getMaximumInactiveDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smaximum_inactive_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaximumInactiveDays()))));
+    }
+
+    // add `max_licenses_per_user` to the URL query string
+    if (getMaxLicensesPerUser() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_licenses_per_user%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxLicensesPerUser()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    // add `minimum_software_release` to the URL query string
+    if (getMinimumSoftwareRelease() != null) {
+      joiner.add(getMinimumSoftwareRelease().toUrlQueryString(prefix + "minimum_software_release" + suffix));
+    }
+
+    // add `logo` to the URL query string
+    if (getLogo() != null) {
+      joiner.add(getLogo().toUrlQueryString(prefix + "logo" + suffix));
+    }
+
+    // add `features` to the URL query string
+    if (getFeatures() != null) {
+      for (int i = 0; i < getFeatures().size(); i++) {
+        if (getFeatures().get(i) != null) {
+          joiner.add(getFeatures().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sfeatures%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `limitations` to the URL query string
+    if (getLimitations() != null) {
+      for (int i = 0; i < getLimitations().size(); i++) {
+        if (getLimitations().get(i) != null) {
+          joiner.add(getLimitations().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%slimitations%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `constrained_variables` to the URL query string
+    if (getConstrainedVariables() != null) {
+      for (int i = 0; i < getConstrainedVariables().size(); i++) {
+        if (getConstrainedVariables().get(i) != null) {
+          joiner.add(getConstrainedVariables().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sconstrained_variables%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `variables` to the URL query string
+    if (getVariables() != null) {
+      for (int i = 0; i < getVariables().size(); i++) {
+        if (getVariables().get(i) != null) {
+          joiner.add(getVariables().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%svariables%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `analytical_fields` to the URL query string
+    if (getAnalyticalFields() != null) {
+      for (int i = 0; i < getAnalyticalFields().size(); i++) {
+        if (getAnalyticalFields().get(i) != null) {
+          joiner.add(getAnalyticalFields().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sanalytical_fields%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `software_shipment_properties` to the URL query string
+    if (getSoftwareShipmentProperties() != null) {
+      for (int i = 0; i < getSoftwareShipmentProperties().size(); i++) {
+        if (getSoftwareShipmentProperties().get(i) != null) {
+          joiner.add(getSoftwareShipmentProperties().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%ssoftware_shipment_properties%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `software_release_limitations` to the URL query string
+    if (getSoftwareReleaseLimitations() != null) {
+      for (int i = 0; i < getSoftwareReleaseLimitations().size(); i++) {
+        if (getSoftwareReleaseLimitations().get(i) != null) {
+          joiner.add(getSoftwareReleaseLimitations().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%ssoftware_release_limitations%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `usage_features` to the URL query string
+    if (getUsageFeatures() != null) {
+      for (int i = 0; i < getUsageFeatures().size(); i++) {
+        if (getUsageFeatures().get(i) != null) {
+          joiner.add(getUsageFeatures().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%susage_features%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `usage_modules` to the URL query string
+    if (getUsageModules() != null) {
+      for (int i = 0; i < getUsageModules().size(); i++) {
+        if (getUsageModules().get(i) != null) {
+          joiner.add(getUsageModules().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%susage_modules%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `email_templates` to the URL query string
+    if (getEmailTemplates() != null) {
+      for (int i = 0; i < getEmailTemplates().size(); i++) {
+        if (getEmailTemplates().get(i) != null) {
+          joiner.add(getEmailTemplates().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%semail_templates%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

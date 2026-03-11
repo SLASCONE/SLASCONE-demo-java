@@ -12,7 +12,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.slascone.ApiClient;
-import com.slascone.auth.ApiKeyAuth;
 import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SessionStatusDto;
 

@@ -9,7 +9,6 @@ import java.util.UUID;
 import com.slascone.ApiClient;
 import com.slascone.api.DataGatheringApi;
 import com.slascone.api.ProvisioningApi;
-import com.slascone.auth.ApiKeyAuth;
 import com.slascone.model.ActivateClientDto;
 import com.slascone.model.AddHeartbeatDto;
 import com.slascone.model.AnalyticalFieldValueDto;
@@ -56,11 +55,12 @@ public class LicensingService {
         apiClient = new CustomApiClient(fileService);
 
         // Initialize the API client with the base path
-        apiClient.setBasePath(Settings.API_BASE_URL);
+        apiClient.updateBaseUri(Settings.API_BASE_URL);
         
-        // Set the provisioning key for authentication
-        ApiKeyAuth provisioningKey = (ApiKeyAuth) apiClient.getAuthentication("ProvisioningKey");
-        provisioningKey.setApiKey(Settings.PROVISIONING_KEY);
+        // Set the provisioning key for authentication via request interceptor
+        apiClient.setRequestInterceptor(builder ->
+            builder.header("ProvisioningKey", Settings.PROVISIONING_KEY)
+        );
         
         // Initialize the Provisioning and DataGathering APIs with the custom client
         provisioningApi = new ProvisioningApi(apiClient);

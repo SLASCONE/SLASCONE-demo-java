@@ -13,83 +13,69 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.CustomerPortalRoleDto;
 import com.slascone.model.ResellerPortalRoleDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * IsvUserRolesDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  IsvUserRolesDto.JSON_PROPERTY_ISV_ID,
+  IsvUserRolesDto.JSON_PROPERTY_ISV_NAME,
+  IsvUserRolesDto.JSON_PROPERTY_USER_ID,
+  IsvUserRolesDto.JSON_PROPERTY_VENDOR_ROLE_ID,
+  IsvUserRolesDto.JSON_PROPERTY_RESELLER_PORTAL_ROLES,
+  IsvUserRolesDto.JSON_PROPERTY_CUSTOMER_PORTAL_ROLES
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class IsvUserRolesDto {
-  public static final String SERIALIZED_NAME_ISV_ID = "isvId";
-  @SerializedName(SERIALIZED_NAME_ISV_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ISV_ID = "isvId";
+  @jakarta.annotation.Nullable
   private UUID isvId;
 
-  public static final String SERIALIZED_NAME_ISV_NAME = "isvName";
-  @SerializedName(SERIALIZED_NAME_ISV_NAME)
-  @javax.annotation.Nullable
-  private String isvName;
+  public static final String JSON_PROPERTY_ISV_NAME = "isvName";
+  private JsonNullable<String> isvName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "userId";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_USER_ID = "userId";
+  @jakarta.annotation.Nullable
   private UUID userId;
 
-  public static final String SERIALIZED_NAME_VENDOR_ROLE_ID = "vendorRoleId";
-  @SerializedName(SERIALIZED_NAME_VENDOR_ROLE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VENDOR_ROLE_ID = "vendorRoleId";
+  @jakarta.annotation.Nullable
   private UUID vendorRoleId;
 
-  public static final String SERIALIZED_NAME_RESELLER_PORTAL_ROLES = "resellerPortalRoles";
-  @SerializedName(SERIALIZED_NAME_RESELLER_PORTAL_ROLES)
-  @javax.annotation.Nullable
-  private List<ResellerPortalRoleDto> resellerPortalRoles;
+  public static final String JSON_PROPERTY_RESELLER_PORTAL_ROLES = "resellerPortalRoles";
+  private JsonNullable<List<ResellerPortalRoleDto>> resellerPortalRoles = JsonNullable.<List<ResellerPortalRoleDto>>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_PORTAL_ROLES = "customerPortalRoles";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_PORTAL_ROLES)
-  @javax.annotation.Nullable
-  private List<CustomerPortalRoleDto> customerPortalRoles;
+  public static final String JSON_PROPERTY_CUSTOMER_PORTAL_ROLES = "customerPortalRoles";
+  private JsonNullable<List<CustomerPortalRoleDto>> customerPortalRoles = JsonNullable.<List<CustomerPortalRoleDto>>undefined();
 
-  public IsvUserRolesDto() {
+  public IsvUserRolesDto() { 
   }
 
-  public IsvUserRolesDto isvId(@javax.annotation.Nullable UUID isvId) {
+  public IsvUserRolesDto isvId(@jakarta.annotation.Nullable UUID isvId) {
     this.isvId = isvId;
     return this;
   }
@@ -98,18 +84,23 @@ public class IsvUserRolesDto {
    * Get isvId
    * @return isvId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ISV_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getIsvId() {
     return isvId;
   }
 
-  public void setIsvId(@javax.annotation.Nullable UUID isvId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ISV_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsvId(@jakarta.annotation.Nullable UUID isvId) {
     this.isvId = isvId;
   }
 
 
-  public IsvUserRolesDto isvName(@javax.annotation.Nullable String isvName) {
-    this.isvName = isvName;
+  public IsvUserRolesDto isvName(@jakarta.annotation.Nullable String isvName) {
+    this.isvName = JsonNullable.<String>of(isvName);
     return this;
   }
 
@@ -117,17 +108,30 @@ public class IsvUserRolesDto {
    * Get isvName
    * @return isvName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getIsvName() {
-    return isvName;
+        return isvName.orElse(null);
   }
 
-  public void setIsvName(@javax.annotation.Nullable String isvName) {
+  @JsonProperty(value = JSON_PROPERTY_ISV_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getIsvName_JsonNullable() {
+    return isvName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ISV_NAME)
+  public void setIsvName_JsonNullable(JsonNullable<String> isvName) {
     this.isvName = isvName;
   }
 
+  public void setIsvName(@jakarta.annotation.Nullable String isvName) {
+    this.isvName = JsonNullable.<String>of(isvName);
+  }
 
-  public IsvUserRolesDto userId(@javax.annotation.Nullable UUID userId) {
+
+  public IsvUserRolesDto userId(@jakarta.annotation.Nullable UUID userId) {
     this.userId = userId;
     return this;
   }
@@ -136,17 +140,22 @@ public class IsvUserRolesDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getUserId() {
     return userId;
   }
 
-  public void setUserId(@javax.annotation.Nullable UUID userId) {
+
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setUserId(@jakarta.annotation.Nullable UUID userId) {
     this.userId = userId;
   }
 
 
-  public IsvUserRolesDto vendorRoleId(@javax.annotation.Nullable UUID vendorRoleId) {
+  public IsvUserRolesDto vendorRoleId(@jakarta.annotation.Nullable UUID vendorRoleId) {
     this.vendorRoleId = vendorRoleId;
     return this;
   }
@@ -155,26 +164,35 @@ public class IsvUserRolesDto {
    * Get vendorRoleId
    * @return vendorRoleId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VENDOR_ROLE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getVendorRoleId() {
     return vendorRoleId;
   }
 
-  public void setVendorRoleId(@javax.annotation.Nullable UUID vendorRoleId) {
+
+  @JsonProperty(value = JSON_PROPERTY_VENDOR_ROLE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setVendorRoleId(@jakarta.annotation.Nullable UUID vendorRoleId) {
     this.vendorRoleId = vendorRoleId;
   }
 
 
-  public IsvUserRolesDto resellerPortalRoles(@javax.annotation.Nullable List<ResellerPortalRoleDto> resellerPortalRoles) {
-    this.resellerPortalRoles = resellerPortalRoles;
+  public IsvUserRolesDto resellerPortalRoles(@jakarta.annotation.Nullable List<ResellerPortalRoleDto> resellerPortalRoles) {
+    this.resellerPortalRoles = JsonNullable.<List<ResellerPortalRoleDto>>of(resellerPortalRoles);
     return this;
   }
 
   public IsvUserRolesDto addResellerPortalRolesItem(ResellerPortalRoleDto resellerPortalRolesItem) {
-    if (this.resellerPortalRoles == null) {
-      this.resellerPortalRoles = new ArrayList<>();
+    if (this.resellerPortalRoles == null || !this.resellerPortalRoles.isPresent()) {
+      this.resellerPortalRoles = JsonNullable.<List<ResellerPortalRoleDto>>of(new ArrayList<>());
     }
-    this.resellerPortalRoles.add(resellerPortalRolesItem);
+    try {
+      this.resellerPortalRoles.get().add(resellerPortalRolesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -182,26 +200,43 @@ public class IsvUserRolesDto {
    * Get resellerPortalRoles
    * @return resellerPortalRoles
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<ResellerPortalRoleDto> getResellerPortalRoles() {
-    return resellerPortalRoles;
+        return resellerPortalRoles.orElse(null);
   }
 
-  public void setResellerPortalRoles(@javax.annotation.Nullable List<ResellerPortalRoleDto> resellerPortalRoles) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_PORTAL_ROLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<ResellerPortalRoleDto>> getResellerPortalRoles_JsonNullable() {
+    return resellerPortalRoles;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_PORTAL_ROLES)
+  public void setResellerPortalRoles_JsonNullable(JsonNullable<List<ResellerPortalRoleDto>> resellerPortalRoles) {
     this.resellerPortalRoles = resellerPortalRoles;
   }
 
+  public void setResellerPortalRoles(@jakarta.annotation.Nullable List<ResellerPortalRoleDto> resellerPortalRoles) {
+    this.resellerPortalRoles = JsonNullable.<List<ResellerPortalRoleDto>>of(resellerPortalRoles);
+  }
 
-  public IsvUserRolesDto customerPortalRoles(@javax.annotation.Nullable List<CustomerPortalRoleDto> customerPortalRoles) {
-    this.customerPortalRoles = customerPortalRoles;
+
+  public IsvUserRolesDto customerPortalRoles(@jakarta.annotation.Nullable List<CustomerPortalRoleDto> customerPortalRoles) {
+    this.customerPortalRoles = JsonNullable.<List<CustomerPortalRoleDto>>of(customerPortalRoles);
     return this;
   }
 
   public IsvUserRolesDto addCustomerPortalRolesItem(CustomerPortalRoleDto customerPortalRolesItem) {
-    if (this.customerPortalRoles == null) {
-      this.customerPortalRoles = new ArrayList<>();
+    if (this.customerPortalRoles == null || !this.customerPortalRoles.isPresent()) {
+      this.customerPortalRoles = JsonNullable.<List<CustomerPortalRoleDto>>of(new ArrayList<>());
     }
-    this.customerPortalRoles.add(customerPortalRolesItem);
+    try {
+      this.customerPortalRoles.get().add(customerPortalRolesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -209,17 +244,32 @@ public class IsvUserRolesDto {
    * Get customerPortalRoles
    * @return customerPortalRoles
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<CustomerPortalRoleDto> getCustomerPortalRoles() {
-    return customerPortalRoles;
+        return customerPortalRoles.orElse(null);
   }
 
-  public void setCustomerPortalRoles(@javax.annotation.Nullable List<CustomerPortalRoleDto> customerPortalRoles) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_PORTAL_ROLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<CustomerPortalRoleDto>> getCustomerPortalRoles_JsonNullable() {
+    return customerPortalRoles;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_PORTAL_ROLES)
+  public void setCustomerPortalRoles_JsonNullable(JsonNullable<List<CustomerPortalRoleDto>> customerPortalRoles) {
     this.customerPortalRoles = customerPortalRoles;
   }
 
+  public void setCustomerPortalRoles(@jakarta.annotation.Nullable List<CustomerPortalRoleDto> customerPortalRoles) {
+    this.customerPortalRoles = JsonNullable.<List<CustomerPortalRoleDto>>of(customerPortalRoles);
+  }
 
 
+  /**
+   * Return true if this IsvUserRolesDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -230,11 +280,11 @@ public class IsvUserRolesDto {
     }
     IsvUserRolesDto isvUserRolesDto = (IsvUserRolesDto) o;
     return Objects.equals(this.isvId, isvUserRolesDto.isvId) &&
-        Objects.equals(this.isvName, isvUserRolesDto.isvName) &&
+        equalsNullable(this.isvName, isvUserRolesDto.isvName) &&
         Objects.equals(this.userId, isvUserRolesDto.userId) &&
         Objects.equals(this.vendorRoleId, isvUserRolesDto.vendorRoleId) &&
-        Objects.equals(this.resellerPortalRoles, isvUserRolesDto.resellerPortalRoles) &&
-        Objects.equals(this.customerPortalRoles, isvUserRolesDto.customerPortalRoles);
+        equalsNullable(this.resellerPortalRoles, isvUserRolesDto.resellerPortalRoles) &&
+        equalsNullable(this.customerPortalRoles, isvUserRolesDto.customerPortalRoles);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -243,7 +293,7 @@ public class IsvUserRolesDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(isvId, isvName, userId, vendorRoleId, resellerPortalRoles, customerPortalRoles);
+    return Objects.hash(isvId, hashCodeNullable(isvName), userId, vendorRoleId, hashCodeNullable(resellerPortalRoles), hashCodeNullable(customerPortalRoles));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -278,128 +328,79 @@ public class IsvUserRolesDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("isvId", "isvName", "userId", "vendorRoleId", "resellerPortalRoles", "customerPortalRoles"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to IsvUserRolesDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!IsvUserRolesDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in IsvUserRolesDto is not found in the empty JSON string", IsvUserRolesDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!IsvUserRolesDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `IsvUserRolesDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("isvId") != null && !jsonObj.get("isvId").isJsonNull()) && !jsonObj.get("isvId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `isvId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("isvId").toString()));
-      }
-      if ((jsonObj.get("isvName") != null && !jsonObj.get("isvName").isJsonNull()) && !jsonObj.get("isvName").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `isvName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("isvName").toString()));
-      }
-      if ((jsonObj.get("userId") != null && !jsonObj.get("userId").isJsonNull()) && !jsonObj.get("userId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `userId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("userId").toString()));
-      }
-      if ((jsonObj.get("vendorRoleId") != null && !jsonObj.get("vendorRoleId").isJsonNull()) && !jsonObj.get("vendorRoleId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `vendorRoleId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("vendorRoleId").toString()));
-      }
-      if (jsonObj.get("resellerPortalRoles") != null && !jsonObj.get("resellerPortalRoles").isJsonNull()) {
-        JsonArray jsonArrayresellerPortalRoles = jsonObj.getAsJsonArray("resellerPortalRoles");
-        if (jsonArrayresellerPortalRoles != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("resellerPortalRoles").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `resellerPortalRoles` to be an array in the JSON string but got `%s`", jsonObj.get("resellerPortalRoles").toString()));
-          }
-
-          // validate the optional field `resellerPortalRoles` (array)
-          for (int i = 0; i < jsonArrayresellerPortalRoles.size(); i++) {
-            ResellerPortalRoleDto.validateJsonElement(jsonArrayresellerPortalRoles.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("customerPortalRoles") != null && !jsonObj.get("customerPortalRoles").isJsonNull()) {
-        JsonArray jsonArraycustomerPortalRoles = jsonObj.getAsJsonArray("customerPortalRoles");
-        if (jsonArraycustomerPortalRoles != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("customerPortalRoles").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `customerPortalRoles` to be an array in the JSON string but got `%s`", jsonObj.get("customerPortalRoles").toString()));
-          }
-
-          // validate the optional field `customerPortalRoles` (array)
-          for (int i = 0; i < jsonArraycustomerPortalRoles.size(); i++) {
-            CustomerPortalRoleDto.validateJsonElement(jsonArraycustomerPortalRoles.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!IsvUserRolesDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'IsvUserRolesDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<IsvUserRolesDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(IsvUserRolesDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<IsvUserRolesDto>() {
-           @Override
-           public void write(JsonWriter out, IsvUserRolesDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public IsvUserRolesDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of IsvUserRolesDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of IsvUserRolesDto
-   * @throws IOException if the JSON string is invalid with respect to IsvUserRolesDto
-   */
-  public static IsvUserRolesDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, IsvUserRolesDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of IsvUserRolesDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `isvId` to the URL query string
+    if (getIsvId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sisvId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsvId()))));
+    }
+
+    // add `isvName` to the URL query string
+    if (getIsvName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sisvName%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsvName()))));
+    }
+
+    // add `userId` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suserId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `vendorRoleId` to the URL query string
+    if (getVendorRoleId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svendorRoleId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVendorRoleId()))));
+    }
+
+    // add `resellerPortalRoles` to the URL query string
+    if (getResellerPortalRoles() != null) {
+      for (int i = 0; i < getResellerPortalRoles().size(); i++) {
+        if (getResellerPortalRoles().get(i) != null) {
+          joiner.add(getResellerPortalRoles().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sresellerPortalRoles%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `customerPortalRoles` to the URL query string
+    if (getCustomerPortalRoles() != null) {
+      for (int i = 0; i < getCustomerPortalRoles().size(); i++) {
+        if (getCustomerPortalRoles().get(i) != null) {
+          joiner.add(getCustomerPortalRoles().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%scustomerPortalRoles%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    return joiner.toString();
   }
 }
 
