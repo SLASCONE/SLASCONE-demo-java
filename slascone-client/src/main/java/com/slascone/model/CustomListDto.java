@@ -13,83 +13,67 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.CustomListElementDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * CustomListDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  CustomListDto.JSON_PROPERTY_ID,
+  CustomListDto.JSON_PROPERTY_CUSTOM_LIST_NAME,
+  CustomListDto.JSON_PROPERTY_ELEMENTS,
+  CustomListDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  CustomListDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  CustomListDto.JSON_PROPERTY_LAST_MODIFIED_BY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomListDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_CUSTOM_LIST_NAME = "custom_list_name";
-  @SerializedName(SERIALIZED_NAME_CUSTOM_LIST_NAME)
-  @javax.annotation.Nullable
-  private String customListName;
+  public static final String JSON_PROPERTY_CUSTOM_LIST_NAME = "custom_list_name";
+  private JsonNullable<String> customListName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_ELEMENTS = "elements";
-  @SerializedName(SERIALIZED_NAME_ELEMENTS)
-  @javax.annotation.Nullable
-  private List<CustomListElementDto> elements;
+  public static final String JSON_PROPERTY_ELEMENTS = "elements";
+  private JsonNullable<List<CustomListElementDto>> elements = JsonNullable.<List<CustomListElementDto>>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public CustomListDto() {
+  public CustomListDto() { 
   }
 
-  public CustomListDto id(@javax.annotation.Nullable UUID id) {
+  public CustomListDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -98,18 +82,23 @@ public class CustomListDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public CustomListDto customListName(@javax.annotation.Nullable String customListName) {
-    this.customListName = customListName;
+  public CustomListDto customListName(@jakarta.annotation.Nullable String customListName) {
+    this.customListName = JsonNullable.<String>of(customListName);
     return this;
   }
 
@@ -117,26 +106,43 @@ public class CustomListDto {
    * Get customListName
    * @return customListName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomListName() {
-    return customListName;
+        return customListName.orElse(null);
   }
 
-  public void setCustomListName(@javax.annotation.Nullable String customListName) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOM_LIST_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomListName_JsonNullable() {
+    return customListName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOM_LIST_NAME)
+  public void setCustomListName_JsonNullable(JsonNullable<String> customListName) {
     this.customListName = customListName;
   }
 
+  public void setCustomListName(@jakarta.annotation.Nullable String customListName) {
+    this.customListName = JsonNullable.<String>of(customListName);
+  }
 
-  public CustomListDto elements(@javax.annotation.Nullable List<CustomListElementDto> elements) {
-    this.elements = elements;
+
+  public CustomListDto elements(@jakarta.annotation.Nullable List<CustomListElementDto> elements) {
+    this.elements = JsonNullable.<List<CustomListElementDto>>of(elements);
     return this;
   }
 
   public CustomListDto addElementsItem(CustomListElementDto elementsItem) {
-    if (this.elements == null) {
-      this.elements = new ArrayList<>();
+    if (this.elements == null || !this.elements.isPresent()) {
+      this.elements = JsonNullable.<List<CustomListElementDto>>of(new ArrayList<>());
     }
-    this.elements.add(elementsItem);
+    try {
+      this.elements.get().add(elementsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -144,18 +150,31 @@ public class CustomListDto {
    * Get elements
    * @return elements
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<CustomListElementDto> getElements() {
-    return elements;
+        return elements.orElse(null);
   }
 
-  public void setElements(@javax.annotation.Nullable List<CustomListElementDto> elements) {
+  @JsonProperty(value = JSON_PROPERTY_ELEMENTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<CustomListElementDto>> getElements_JsonNullable() {
+    return elements;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ELEMENTS)
+  public void setElements_JsonNullable(JsonNullable<List<CustomListElementDto>> elements) {
     this.elements = elements;
   }
 
+  public void setElements(@jakarta.annotation.Nullable List<CustomListElementDto> elements) {
+    this.elements = JsonNullable.<List<CustomListElementDto>>of(elements);
+  }
 
-  public CustomListDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public CustomListDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -163,18 +182,31 @@ public class CustomListDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public CustomListDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public CustomListDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -182,18 +214,31 @@ public class CustomListDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public CustomListDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public CustomListDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -201,17 +246,32 @@ public class CustomListDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
 
+  /**
+   * Return true if this CustomListDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -222,11 +282,11 @@ public class CustomListDto {
     }
     CustomListDto customListDto = (CustomListDto) o;
     return Objects.equals(this.id, customListDto.id) &&
-        Objects.equals(this.customListName, customListDto.customListName) &&
-        Objects.equals(this.elements, customListDto.elements) &&
-        Objects.equals(this.createdDateUtc, customListDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, customListDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, customListDto.lastModifiedBy);
+        equalsNullable(this.customListName, customListDto.customListName) &&
+        equalsNullable(this.elements, customListDto.elements) &&
+        equalsNullable(this.createdDateUtc, customListDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, customListDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, customListDto.lastModifiedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -235,7 +295,7 @@ public class CustomListDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, customListName, elements, createdDateUtc, modifiedDateUtc, lastModifiedBy);
+    return Objects.hash(id, hashCodeNullable(customListName), hashCodeNullable(elements), hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -270,111 +330,74 @@ public class CustomListDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "custom_list_name", "elements", "created_date_utc", "modified_date_utc", "last_modified_by"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CustomListDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!CustomListDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomListDto is not found in the empty JSON string", CustomListDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CustomListDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomListDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("custom_list_name") != null && !jsonObj.get("custom_list_name").isJsonNull()) && !jsonObj.get("custom_list_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `custom_list_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("custom_list_name").toString()));
-      }
-      if (jsonObj.get("elements") != null && !jsonObj.get("elements").isJsonNull()) {
-        JsonArray jsonArrayelements = jsonObj.getAsJsonArray("elements");
-        if (jsonArrayelements != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("elements").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `elements` to be an array in the JSON string but got `%s`", jsonObj.get("elements").toString()));
-          }
-
-          // validate the optional field `elements` (array)
-          for (int i = 0; i < jsonArrayelements.size(); i++) {
-            CustomListElementDto.validateJsonElement(jsonArrayelements.get(i));
-          };
-        }
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CustomListDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CustomListDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CustomListDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CustomListDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<CustomListDto>() {
-           @Override
-           public void write(JsonWriter out, CustomListDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public CustomListDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of CustomListDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of CustomListDto
-   * @throws IOException if the JSON string is invalid with respect to CustomListDto
-   */
-  public static CustomListDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CustomListDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of CustomListDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `custom_list_name` to the URL query string
+    if (getCustomListName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustom_list_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomListName()))));
+    }
+
+    // add `elements` to the URL query string
+    if (getElements() != null) {
+      for (int i = 0; i < getElements().size(); i++) {
+        if (getElements().get(i) != null) {
+          joiner.add(getElements().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%selements%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    return joiner.toString();
   }
 }
 

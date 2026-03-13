@@ -13,60 +13,48 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * OmittedDataSet
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  OmittedDataSet.JSON_PROPERTY_RECORD_LINE,
+  OmittedDataSet.JSON_PROPERTY_ERRORS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class OmittedDataSet {
-  public static final String SERIALIZED_NAME_RECORD_LINE = "recordLine";
-  @SerializedName(SERIALIZED_NAME_RECORD_LINE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RECORD_LINE = "recordLine";
+  @jakarta.annotation.Nullable
   private Integer recordLine;
 
-  public static final String SERIALIZED_NAME_ERRORS = "errors";
-  @SerializedName(SERIALIZED_NAME_ERRORS)
-  @javax.annotation.Nullable
-  private List<String> errors;
+  public static final String JSON_PROPERTY_ERRORS = "errors";
+  private JsonNullable<List<String>> errors = JsonNullable.<List<String>>undefined();
 
-  public OmittedDataSet() {
+  public OmittedDataSet() { 
   }
 
-  public OmittedDataSet recordLine(@javax.annotation.Nullable Integer recordLine) {
+  public OmittedDataSet recordLine(@jakarta.annotation.Nullable Integer recordLine) {
     this.recordLine = recordLine;
     return this;
   }
@@ -75,26 +63,35 @@ public class OmittedDataSet {
    * Get recordLine
    * @return recordLine
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RECORD_LINE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getRecordLine() {
     return recordLine;
   }
 
-  public void setRecordLine(@javax.annotation.Nullable Integer recordLine) {
+
+  @JsonProperty(value = JSON_PROPERTY_RECORD_LINE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRecordLine(@jakarta.annotation.Nullable Integer recordLine) {
     this.recordLine = recordLine;
   }
 
 
-  public OmittedDataSet errors(@javax.annotation.Nullable List<String> errors) {
-    this.errors = errors;
+  public OmittedDataSet errors(@jakarta.annotation.Nullable List<String> errors) {
+    this.errors = JsonNullable.<List<String>>of(errors);
     return this;
   }
 
   public OmittedDataSet addErrorsItem(String errorsItem) {
-    if (this.errors == null) {
-      this.errors = new ArrayList<>();
+    if (this.errors == null || !this.errors.isPresent()) {
+      this.errors = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.errors.add(errorsItem);
+    try {
+      this.errors.get().add(errorsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -102,17 +99,32 @@ public class OmittedDataSet {
    * Get errors
    * @return errors
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getErrors() {
-    return errors;
+        return errors.orElse(null);
   }
 
-  public void setErrors(@javax.annotation.Nullable List<String> errors) {
+  @JsonProperty(value = JSON_PROPERTY_ERRORS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getErrors_JsonNullable() {
+    return errors;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ERRORS)
+  public void setErrors_JsonNullable(JsonNullable<List<String>> errors) {
     this.errors = errors;
   }
 
+  public void setErrors(@jakarta.annotation.Nullable List<String> errors) {
+    this.errors = JsonNullable.<List<String>>of(errors);
+  }
 
 
+  /**
+   * Return true if this OmittedDataSet object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -123,7 +135,7 @@ public class OmittedDataSet {
     }
     OmittedDataSet omittedDataSet = (OmittedDataSet) o;
     return Objects.equals(this.recordLine, omittedDataSet.recordLine) &&
-        Objects.equals(this.errors, omittedDataSet.errors);
+        equalsNullable(this.errors, omittedDataSet.errors);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -132,7 +144,7 @@ public class OmittedDataSet {
 
   @Override
   public int hashCode() {
-    return Objects.hash(recordLine, errors);
+    return Objects.hash(recordLine, hashCodeNullable(errors));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -163,92 +175,53 @@ public class OmittedDataSet {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("recordLine", "errors"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to OmittedDataSet
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!OmittedDataSet.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in OmittedDataSet is not found in the empty JSON string", OmittedDataSet.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!OmittedDataSet.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `OmittedDataSet` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("errors") != null && !jsonObj.get("errors").isJsonNull() && !jsonObj.get("errors").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `errors` to be an array in the JSON string but got `%s`", jsonObj.get("errors").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!OmittedDataSet.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'OmittedDataSet' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<OmittedDataSet> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(OmittedDataSet.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<OmittedDataSet>() {
-           @Override
-           public void write(JsonWriter out, OmittedDataSet value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public OmittedDataSet read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of OmittedDataSet given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of OmittedDataSet
-   * @throws IOException if the JSON string is invalid with respect to OmittedDataSet
-   */
-  public static OmittedDataSet fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, OmittedDataSet.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of OmittedDataSet to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `recordLine` to the URL query string
+    if (getRecordLine() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%srecordLine%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRecordLine()))));
+    }
+
+    // add `errors` to the URL query string
+    if (getErrors() != null) {
+      for (int i = 0; i < getErrors().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%serrors%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getErrors().get(i)))));
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

@@ -13,75 +13,60 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * CustomerTypeDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  CustomerTypeDto.JSON_PROPERTY_ID,
+  CustomerTypeDto.JSON_PROPERTY_CUSTOMER_TYPE_NAME,
+  CustomerTypeDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  CustomerTypeDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  CustomerTypeDto.JSON_PROPERTY_LAST_MODIFIED_BY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomerTypeDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_TYPE_NAME = "customer_type_name";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_TYPE_NAME)
-  @javax.annotation.Nullable
-  private String customerTypeName;
+  public static final String JSON_PROPERTY_CUSTOMER_TYPE_NAME = "customer_type_name";
+  private JsonNullable<String> customerTypeName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public CustomerTypeDto() {
+  public CustomerTypeDto() { 
   }
 
-  public CustomerTypeDto id(@javax.annotation.Nullable UUID id) {
+  public CustomerTypeDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -90,18 +75,23 @@ public class CustomerTypeDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public CustomerTypeDto customerTypeName(@javax.annotation.Nullable String customerTypeName) {
-    this.customerTypeName = customerTypeName;
+  public CustomerTypeDto customerTypeName(@jakarta.annotation.Nullable String customerTypeName) {
+    this.customerTypeName = JsonNullable.<String>of(customerTypeName);
     return this;
   }
 
@@ -109,18 +99,31 @@ public class CustomerTypeDto {
    * Get customerTypeName
    * @return customerTypeName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomerTypeName() {
-    return customerTypeName;
+        return customerTypeName.orElse(null);
   }
 
-  public void setCustomerTypeName(@javax.annotation.Nullable String customerTypeName) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_TYPE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomerTypeName_JsonNullable() {
+    return customerTypeName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_TYPE_NAME)
+  public void setCustomerTypeName_JsonNullable(JsonNullable<String> customerTypeName) {
     this.customerTypeName = customerTypeName;
   }
 
+  public void setCustomerTypeName(@jakarta.annotation.Nullable String customerTypeName) {
+    this.customerTypeName = JsonNullable.<String>of(customerTypeName);
+  }
 
-  public CustomerTypeDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public CustomerTypeDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -128,18 +131,31 @@ public class CustomerTypeDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public CustomerTypeDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public CustomerTypeDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -147,18 +163,31 @@ public class CustomerTypeDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public CustomerTypeDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public CustomerTypeDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -166,17 +195,32 @@ public class CustomerTypeDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
 
+  /**
+   * Return true if this CustomerTypeDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -187,10 +231,10 @@ public class CustomerTypeDto {
     }
     CustomerTypeDto customerTypeDto = (CustomerTypeDto) o;
     return Objects.equals(this.id, customerTypeDto.id) &&
-        Objects.equals(this.customerTypeName, customerTypeDto.customerTypeName) &&
-        Objects.equals(this.createdDateUtc, customerTypeDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, customerTypeDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, customerTypeDto.lastModifiedBy);
+        equalsNullable(this.customerTypeName, customerTypeDto.customerTypeName) &&
+        equalsNullable(this.createdDateUtc, customerTypeDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, customerTypeDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, customerTypeDto.lastModifiedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -199,7 +243,7 @@ public class CustomerTypeDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, customerTypeName, createdDateUtc, modifiedDateUtc, lastModifiedBy);
+    return Objects.hash(id, hashCodeNullable(customerTypeName), hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -233,97 +277,64 @@ public class CustomerTypeDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "customer_type_name", "created_date_utc", "modified_date_utc", "last_modified_by"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CustomerTypeDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!CustomerTypeDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomerTypeDto is not found in the empty JSON string", CustomerTypeDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CustomerTypeDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomerTypeDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("customer_type_name") != null && !jsonObj.get("customer_type_name").isJsonNull()) && !jsonObj.get("customer_type_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_type_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_type_name").toString()));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CustomerTypeDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CustomerTypeDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CustomerTypeDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CustomerTypeDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<CustomerTypeDto>() {
-           @Override
-           public void write(JsonWriter out, CustomerTypeDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public CustomerTypeDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of CustomerTypeDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of CustomerTypeDto
-   * @throws IOException if the JSON string is invalid with respect to CustomerTypeDto
-   */
-  public static CustomerTypeDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CustomerTypeDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of CustomerTypeDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `customer_type_name` to the URL query string
+    if (getCustomerTypeName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_type_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerTypeName()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    return joiner.toString();
   }
 }
 

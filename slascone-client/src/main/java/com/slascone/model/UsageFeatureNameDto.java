@@ -13,69 +13,56 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * UsageFeatureNameDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  UsageFeatureNameDto.JSON_PROPERTY_USAGE_FEATURE_NAME,
+  UsageFeatureNameDto.JSON_PROPERTY_USAGE_MODULE_NAME,
+  UsageFeatureNameDto.JSON_PROPERTY_TIMESTAMP_UTC,
+  UsageFeatureNameDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class UsageFeatureNameDto {
-  public static final String SERIALIZED_NAME_USAGE_FEATURE_NAME = "usage_feature_name";
-  @SerializedName(SERIALIZED_NAME_USAGE_FEATURE_NAME)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_USAGE_FEATURE_NAME = "usage_feature_name";
+  @jakarta.annotation.Nonnull
   private String usageFeatureName;
 
-  public static final String SERIALIZED_NAME_USAGE_MODULE_NAME = "usage_module_name";
-  @SerializedName(SERIALIZED_NAME_USAGE_MODULE_NAME)
-  @javax.annotation.Nullable
-  private String usageModuleName;
+  public static final String JSON_PROPERTY_USAGE_MODULE_NAME = "usage_module_name";
+  private JsonNullable<String> usageModuleName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TIMESTAMP_UTC = "timestamp_utc";
-  @SerializedName(SERIALIZED_NAME_TIMESTAMP_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime timestampUtc;
+  public static final String JSON_PROPERTY_TIMESTAMP_UTC = "timestamp_utc";
+  private JsonNullable<OffsetDateTime> timestampUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nullable
   private Double value;
 
-  public UsageFeatureNameDto() {
+  public UsageFeatureNameDto() { 
   }
 
-  public UsageFeatureNameDto usageFeatureName(@javax.annotation.Nonnull String usageFeatureName) {
+  public UsageFeatureNameDto usageFeatureName(@jakarta.annotation.Nonnull String usageFeatureName) {
     this.usageFeatureName = usageFeatureName;
     return this;
   }
@@ -84,18 +71,23 @@ public class UsageFeatureNameDto {
    * Get usageFeatureName
    * @return usageFeatureName
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_USAGE_FEATURE_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getUsageFeatureName() {
     return usageFeatureName;
   }
 
-  public void setUsageFeatureName(@javax.annotation.Nonnull String usageFeatureName) {
+
+  @JsonProperty(value = JSON_PROPERTY_USAGE_FEATURE_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setUsageFeatureName(@jakarta.annotation.Nonnull String usageFeatureName) {
     this.usageFeatureName = usageFeatureName;
   }
 
 
-  public UsageFeatureNameDto usageModuleName(@javax.annotation.Nullable String usageModuleName) {
-    this.usageModuleName = usageModuleName;
+  public UsageFeatureNameDto usageModuleName(@jakarta.annotation.Nullable String usageModuleName) {
+    this.usageModuleName = JsonNullable.<String>of(usageModuleName);
     return this;
   }
 
@@ -103,18 +95,31 @@ public class UsageFeatureNameDto {
    * Get usageModuleName
    * @return usageModuleName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUsageModuleName() {
-    return usageModuleName;
+        return usageModuleName.orElse(null);
   }
 
-  public void setUsageModuleName(@javax.annotation.Nullable String usageModuleName) {
+  @JsonProperty(value = JSON_PROPERTY_USAGE_MODULE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUsageModuleName_JsonNullable() {
+    return usageModuleName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USAGE_MODULE_NAME)
+  public void setUsageModuleName_JsonNullable(JsonNullable<String> usageModuleName) {
     this.usageModuleName = usageModuleName;
   }
 
+  public void setUsageModuleName(@jakarta.annotation.Nullable String usageModuleName) {
+    this.usageModuleName = JsonNullable.<String>of(usageModuleName);
+  }
 
-  public UsageFeatureNameDto timestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
-    this.timestampUtc = timestampUtc;
+
+  public UsageFeatureNameDto timestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
     return this;
   }
 
@@ -122,17 +127,30 @@ public class UsageFeatureNameDto {
    * Get timestampUtc
    * @return timestampUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getTimestampUtc() {
-    return timestampUtc;
+        return timestampUtc.orElse(null);
   }
 
-  public void setTimestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
+  @JsonProperty(value = JSON_PROPERTY_TIMESTAMP_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getTimestampUtc_JsonNullable() {
+    return timestampUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TIMESTAMP_UTC)
+  public void setTimestampUtc_JsonNullable(JsonNullable<OffsetDateTime> timestampUtc) {
     this.timestampUtc = timestampUtc;
   }
 
+  public void setTimestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
+  }
 
-  public UsageFeatureNameDto value(@javax.annotation.Nullable Double value) {
+
+  public UsageFeatureNameDto value(@jakarta.annotation.Nullable Double value) {
     this.value = value;
     return this;
   }
@@ -141,17 +159,24 @@ public class UsageFeatureNameDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Double getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nullable Double value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValue(@jakarta.annotation.Nullable Double value) {
     this.value = value;
   }
 
 
-
+  /**
+   * Return true if this UsageFeatureNameDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -162,8 +187,8 @@ public class UsageFeatureNameDto {
     }
     UsageFeatureNameDto usageFeatureNameDto = (UsageFeatureNameDto) o;
     return Objects.equals(this.usageFeatureName, usageFeatureNameDto.usageFeatureName) &&
-        Objects.equals(this.usageModuleName, usageFeatureNameDto.usageModuleName) &&
-        Objects.equals(this.timestampUtc, usageFeatureNameDto.timestampUtc) &&
+        equalsNullable(this.usageModuleName, usageFeatureNameDto.usageModuleName) &&
+        equalsNullable(this.timestampUtc, usageFeatureNameDto.timestampUtc) &&
         Objects.equals(this.value, usageFeatureNameDto.value);
   }
 
@@ -173,7 +198,7 @@ public class UsageFeatureNameDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(usageFeatureName, usageModuleName, timestampUtc, value);
+    return Objects.hash(usageFeatureName, hashCodeNullable(usageModuleName), hashCodeNullable(timestampUtc), value);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -206,101 +231,59 @@ public class UsageFeatureNameDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("usage_feature_name", "usage_module_name", "timestamp_utc", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("usage_feature_name"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to UsageFeatureNameDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!UsageFeatureNameDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in UsageFeatureNameDto is not found in the empty JSON string", UsageFeatureNameDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!UsageFeatureNameDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UsageFeatureNameDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : UsageFeatureNameDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("usage_feature_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `usage_feature_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("usage_feature_name").toString()));
-      }
-      if ((jsonObj.get("usage_module_name") != null && !jsonObj.get("usage_module_name").isJsonNull()) && !jsonObj.get("usage_module_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `usage_module_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("usage_module_name").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!UsageFeatureNameDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'UsageFeatureNameDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<UsageFeatureNameDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(UsageFeatureNameDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<UsageFeatureNameDto>() {
-           @Override
-           public void write(JsonWriter out, UsageFeatureNameDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public UsageFeatureNameDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of UsageFeatureNameDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of UsageFeatureNameDto
-   * @throws IOException if the JSON string is invalid with respect to UsageFeatureNameDto
-   */
-  public static UsageFeatureNameDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, UsageFeatureNameDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of UsageFeatureNameDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `usage_feature_name` to the URL query string
+    if (getUsageFeatureName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%susage_feature_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUsageFeatureName()))));
+    }
+
+    // add `usage_module_name` to the URL query string
+    if (getUsageModuleName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%susage_module_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUsageModuleName()))));
+    }
+
+    // add `timestamp_utc` to the URL query string
+    if (getTimestampUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stimestamp_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTimestampUtc()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

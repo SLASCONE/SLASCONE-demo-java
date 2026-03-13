@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.HistoryDto;
@@ -33,1182 +24,1070 @@ import com.slascone.model.LicenseBundleDto;
 import com.slascone.model.ProblemDetails;
 import java.util.UUID;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseBundleApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public LicenseBundleApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public LicenseBundleApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for addLicenseBundle
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call addLicenseBundleCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  public LicenseBundleApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public LicenseBundleApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto addLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
+    return addLicenseBundle(isvId, licenseBundleDto, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto addLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseBundleDto> localVarResponse = addLicenseBundleWithHttpInfo(isvId, licenseBundleDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> addLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
+    return addLicenseBundleWithHttpInfo(isvId, licenseBundleDto, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> addLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addLicenseBundleRequestBuilder(isvId, licenseBundleDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addLicenseBundle", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseBundleDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = licenseBundleDto;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseBundleDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseBundleDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<LicenseBundleDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder addLicenseBundleRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addLicenseBundle");
+    }
+    // verify the required parameter 'licenseBundleDto' is set
+    if (licenseBundleDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleDto' when calling addLicenseBundle");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addLicenseBundleValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addLicenseBundle(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseBundleDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto deleteLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return deleteLicenseBundle(isvId, licenseBundleId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto deleteLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseBundleDto> localVarResponse = deleteLicenseBundleWithHttpInfo(isvId, licenseBundleId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> deleteLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return deleteLicenseBundleWithHttpInfo(isvId, licenseBundleId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> deleteLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteLicenseBundleRequestBuilder(isvId, licenseBundleId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteLicenseBundle", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseBundleDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'licenseBundleDto' is set
-        if (licenseBundleDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleDto' when calling addLicenseBundle(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseBundleDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseBundleDto>() {});
+        
+
+        return new ApiResponse<LicenseBundleDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteLicenseBundleRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteLicenseBundle");
+    }
+    // verify the required parameter 'licenseBundleId' is set
+    if (licenseBundleId == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleId' when calling deleteLicenseBundle");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{license_bundle_id}", ApiClient.urlEncode(licenseBundleId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto getLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return getLicenseBundle(isvId, licenseBundleId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto getLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseBundleDto> localVarResponse = getLicenseBundleWithHttpInfo(isvId, licenseBundleId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> getLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return getLicenseBundleWithHttpInfo(isvId, licenseBundleId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> getLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicenseBundleRequestBuilder(isvId, licenseBundleId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicenseBundle", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseBundleDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return addLicenseBundleCall(isvId, licenseBundleDto, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseBundleDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseBundleDto>() {});
+        
 
+        return new ApiResponse<LicenseBundleDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicenseBundleRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicenseBundle");
+    }
+    // verify the required parameter 'licenseBundleId' is set
+    if (licenseBundleId == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleId' when calling getLicenseBundle");
     }
 
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @return LicenseBundleDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseBundleDto addLicenseBundle(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
-        ApiResponse<LicenseBundleDto> localVarResp = addLicenseBundleWithHttpInfo(isvId, licenseBundleDto);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{license_bundle_id}", ApiClient.urlEncode(licenseBundleId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @return ApiResponse&lt;LicenseBundleDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseBundleDto> addLicenseBundleWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
-        okhttp3.Call localVarCall = addLicenseBundleValidateBeforeCall(isvId, licenseBundleDto, null);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     *  (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addLicenseBundleAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback<LicenseBundleDto> _callback) throws ApiException {
+  /**
+   * Returns the entire audit history of a license bundle
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return List&lt;HistoryDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<HistoryDto> getLicenseBundleHistory(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return getLicenseBundleHistory(isvId, licenseBundleId, null);
+  }
 
-        okhttp3.Call localVarCall = addLicenseBundleValidateBeforeCall(isvId, licenseBundleDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteLicenseBundle
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteLicenseBundleCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+  /**
+   * Returns the entire audit history of a license bundle
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;HistoryDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<HistoryDto> getLicenseBundleHistory(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<HistoryDto>> localVarResponse = getLicenseBundleHistoryWithHttpInfo(isvId, licenseBundleId, headers);
+    return localVarResponse.getData();
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  /**
+   * Returns the entire audit history of a license bundle
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @return ApiResponse&lt;List&lt;HistoryDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<HistoryDto>> getLicenseBundleHistoryWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId) throws ApiException {
+    return getLicenseBundleHistoryWithHttpInfo(isvId, licenseBundleId, null);
+  }
+
+  /**
+   * Returns the entire audit history of a license bundle
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;HistoryDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<HistoryDto>> getLicenseBundleHistoryWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicenseBundleHistoryRequestBuilder(isvId, licenseBundleId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicenseBundleHistory", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<HistoryDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = null;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<HistoryDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<HistoryDto>>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "license_bundle_id" + "}", localVarApiClient.escapeString(licenseBundleId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<List<HistoryDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder getLicenseBundleHistoryRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicenseBundleHistory");
+    }
+    // verify the required parameter 'licenseBundleId' is set
+    if (licenseBundleId == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleId' when calling getLicenseBundleHistory");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteLicenseBundleValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteLicenseBundle(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}/history"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{license_bundle_id}", ApiClient.urlEncode(licenseBundleId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns a specific license bundle audit history snapshot
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param historyId  (required)
+   * @return HistoryDto
+   * @throws ApiException if fails to make API call
+   */
+  public HistoryDto getLicenseBundleHistoryDetail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, @jakarta.annotation.Nonnull UUID historyId) throws ApiException {
+    return getLicenseBundleHistoryDetail(isvId, licenseBundleId, historyId, null);
+  }
+
+  /**
+   * Returns a specific license bundle audit history snapshot
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param historyId  (required)
+   * @param headers Optional headers to include in the request
+   * @return HistoryDto
+   * @throws ApiException if fails to make API call
+   */
+  public HistoryDto getLicenseBundleHistoryDetail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, @jakarta.annotation.Nonnull UUID historyId, Map<String, String> headers) throws ApiException {
+    ApiResponse<HistoryDto> localVarResponse = getLicenseBundleHistoryDetailWithHttpInfo(isvId, licenseBundleId, historyId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns a specific license bundle audit history snapshot
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param historyId  (required)
+   * @return ApiResponse&lt;HistoryDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<HistoryDto> getLicenseBundleHistoryDetailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, @jakarta.annotation.Nonnull UUID historyId) throws ApiException {
+    return getLicenseBundleHistoryDetailWithHttpInfo(isvId, licenseBundleId, historyId, null);
+  }
+
+  /**
+   * Returns a specific license bundle audit history snapshot
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleId  (required)
+   * @param historyId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;HistoryDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<HistoryDto> getLicenseBundleHistoryDetailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, @jakarta.annotation.Nonnull UUID historyId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicenseBundleHistoryDetailRequestBuilder(isvId, licenseBundleId, historyId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicenseBundleHistoryDetail", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<HistoryDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'licenseBundleId' is set
-        if (licenseBundleId == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleId' when calling deleteLicenseBundle(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        HistoryDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<HistoryDto>() {});
+        
+
+        return new ApiResponse<HistoryDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicenseBundleHistoryDetailRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseBundleId, @jakarta.annotation.Nonnull UUID historyId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicenseBundleHistoryDetail");
+    }
+    // verify the required parameter 'licenseBundleId' is set
+    if (licenseBundleId == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleId' when calling getLicenseBundleHistoryDetail");
+    }
+    // verify the required parameter 'historyId' is set
+    if (historyId == null) {
+      throw new ApiException(400, "Missing the required parameter 'historyId' when calling getLicenseBundleHistoryDetail");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}/history/{history_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{license_bundle_id}", ApiClient.urlEncode(licenseBundleId.toString()))
+        .replace("{history_id}", ApiClient.urlEncode(historyId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param customerId  (optional)
+   * @return List&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseBundleDto> getLicenseBundles(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID customerId) throws ApiException {
+    return getLicenseBundles(isvId, customerId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param customerId  (optional)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseBundleDto> getLicenseBundles(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID customerId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<LicenseBundleDto>> localVarResponse = getLicenseBundlesWithHttpInfo(isvId, customerId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param customerId  (optional)
+   * @return ApiResponse&lt;List&lt;LicenseBundleDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseBundleDto>> getLicenseBundlesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID customerId) throws ApiException {
+    return getLicenseBundlesWithHttpInfo(isvId, customerId, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param customerId  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;LicenseBundleDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseBundleDto>> getLicenseBundlesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID customerId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicenseBundlesRequestBuilder(isvId, customerId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicenseBundles", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<LicenseBundleDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return deleteLicenseBundleCall(isvId, licenseBundleId, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<LicenseBundleDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<LicenseBundleDto>>() {});
+        
 
+        return new ApiResponse<List<LicenseBundleDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicenseBundlesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID customerId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicenseBundles");
     }
 
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return LicenseBundleDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseBundleDto deleteLicenseBundle(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        ApiResponse<LicenseBundleDto> localVarResp = deleteLicenseBundleWithHttpInfo(isvId, licenseBundleId);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "customer_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("customer_id", customerId));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
     }
 
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return ApiResponse&lt;LicenseBundleDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseBundleDto> deleteLicenseBundleWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        okhttp3.Call localVarCall = deleteLicenseBundleValidateBeforeCall(isvId, licenseBundleId, null);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     *  (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteLicenseBundleAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback<LicenseBundleDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteLicenseBundleValidateBeforeCall(isvId, licenseBundleId, _callback);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
-    /**
-     * Build call for getLicenseBundle
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    return localVarRequestBuilder;
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto updateLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
+    return updateLicenseBundle(isvId, licenseBundleDto, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseBundleDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseBundleDto updateLicenseBundle(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseBundleDto> localVarResponse = updateLicenseBundleWithHttpInfo(isvId, licenseBundleDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> updateLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
+    return updateLicenseBundleWithHttpInfo(isvId, licenseBundleDto, null);
+  }
+
+  /**
+   * 
+   * 
+   * @param isvId  (required)
+   * @param licenseBundleDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseBundleDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseBundleDto> updateLicenseBundleWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateLicenseBundleRequestBuilder(isvId, licenseBundleDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateLicenseBundle", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseBundleDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = null;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseBundleDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseBundleDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "license_bundle_id" + "}", localVarApiClient.escapeString(licenseBundleId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+        return new ApiResponse<LicenseBundleDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder updateLicenseBundleRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseBundleDto licenseBundleDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateLicenseBundle");
+    }
+    // verify the required parameter 'licenseBundleDto' is set
+    if (licenseBundleDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseBundleDto' when calling updateLicenseBundle");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicenseBundleValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicenseBundle(Async)");
-        }
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        // verify the required parameter 'licenseBundleId' is set
-        if (licenseBundleId == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleId' when calling getLicenseBundle(Async)");
-        }
+    String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
 
-        return getLicenseBundleCall(isvId, licenseBundleId, _callback);
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
 
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseBundleDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return LicenseBundleDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseBundleDto getLicenseBundle(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        ApiResponse<LicenseBundleDto> localVarResp = getLicenseBundleWithHttpInfo(isvId, licenseBundleId);
-        return localVarResp.getData();
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return ApiResponse&lt;LicenseBundleDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseBundleDto> getLicenseBundleWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        okhttp3.Call localVarCall = getLicenseBundleValidateBeforeCall(isvId, licenseBundleId, null);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     *  (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback<LicenseBundleDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicenseBundleValidateBeforeCall(isvId, licenseBundleId, _callback);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicenseBundleHistory
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleHistoryCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}/history"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "license_bundle_id" + "}", localVarApiClient.escapeString(licenseBundleId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicenseBundleHistoryValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicenseBundleHistory(Async)");
-        }
-
-        // verify the required parameter 'licenseBundleId' is set
-        if (licenseBundleId == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleId' when calling getLicenseBundleHistory(Async)");
-        }
-
-        return getLicenseBundleHistoryCall(isvId, licenseBundleId, _callback);
-
-    }
-
-    /**
-     * Returns the entire audit history of a license bundle
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return List&lt;HistoryDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<HistoryDto> getLicenseBundleHistory(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        ApiResponse<List<HistoryDto>> localVarResp = getLicenseBundleHistoryWithHttpInfo(isvId, licenseBundleId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the entire audit history of a license bundle
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @return ApiResponse&lt;List&lt;HistoryDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<HistoryDto>> getLicenseBundleHistoryWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId) throws ApiException {
-        okhttp3.Call localVarCall = getLicenseBundleHistoryValidateBeforeCall(isvId, licenseBundleId, null);
-        Type localVarReturnType = new TypeToken<List<HistoryDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the entire audit history of a license bundle (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleHistoryAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, final ApiCallback<List<HistoryDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicenseBundleHistoryValidateBeforeCall(isvId, licenseBundleId, _callback);
-        Type localVarReturnType = new TypeToken<List<HistoryDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicenseBundleHistoryDetail
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param historyId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleHistoryDetailCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, @javax.annotation.Nonnull UUID historyId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles/{license_bundle_id}/history/{history_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "license_bundle_id" + "}", localVarApiClient.escapeString(licenseBundleId.toString()))
-            .replace("{" + "history_id" + "}", localVarApiClient.escapeString(historyId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicenseBundleHistoryDetailValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, @javax.annotation.Nonnull UUID historyId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicenseBundleHistoryDetail(Async)");
-        }
-
-        // verify the required parameter 'licenseBundleId' is set
-        if (licenseBundleId == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleId' when calling getLicenseBundleHistoryDetail(Async)");
-        }
-
-        // verify the required parameter 'historyId' is set
-        if (historyId == null) {
-            throw new ApiException("Missing the required parameter 'historyId' when calling getLicenseBundleHistoryDetail(Async)");
-        }
-
-        return getLicenseBundleHistoryDetailCall(isvId, licenseBundleId, historyId, _callback);
-
-    }
-
-    /**
-     * Returns a specific license bundle audit history snapshot
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param historyId  (required)
-     * @return HistoryDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public HistoryDto getLicenseBundleHistoryDetail(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, @javax.annotation.Nonnull UUID historyId) throws ApiException {
-        ApiResponse<HistoryDto> localVarResp = getLicenseBundleHistoryDetailWithHttpInfo(isvId, licenseBundleId, historyId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns a specific license bundle audit history snapshot
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param historyId  (required)
-     * @return ApiResponse&lt;HistoryDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<HistoryDto> getLicenseBundleHistoryDetailWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, @javax.annotation.Nonnull UUID historyId) throws ApiException {
-        okhttp3.Call localVarCall = getLicenseBundleHistoryDetailValidateBeforeCall(isvId, licenseBundleId, historyId, null);
-        Type localVarReturnType = new TypeToken<HistoryDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns a specific license bundle audit history snapshot (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleId  (required)
-     * @param historyId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundleHistoryDetailAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseBundleId, @javax.annotation.Nonnull UUID historyId, final ApiCallback<HistoryDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicenseBundleHistoryDetailValidateBeforeCall(isvId, licenseBundleId, historyId, _callback);
-        Type localVarReturnType = new TypeToken<HistoryDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicenseBundles
-     * @param isvId  (required)
-     * @param customerId  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundlesCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID customerId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (customerId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("customer_id", customerId));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicenseBundlesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID customerId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicenseBundles(Async)");
-        }
-
-        return getLicenseBundlesCall(isvId, customerId, _callback);
-
-    }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param customerId  (optional)
-     * @return List&lt;LicenseBundleDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<LicenseBundleDto> getLicenseBundles(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID customerId) throws ApiException {
-        ApiResponse<List<LicenseBundleDto>> localVarResp = getLicenseBundlesWithHttpInfo(isvId, customerId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param customerId  (optional)
-     * @return ApiResponse&lt;List&lt;LicenseBundleDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<LicenseBundleDto>> getLicenseBundlesWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID customerId) throws ApiException {
-        okhttp3.Call localVarCall = getLicenseBundlesValidateBeforeCall(isvId, customerId, null);
-        Type localVarReturnType = new TypeToken<List<LicenseBundleDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     *  (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customerId  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseBundlesAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID customerId, final ApiCallback<List<LicenseBundleDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicenseBundlesValidateBeforeCall(isvId, customerId, _callback);
-        Type localVarReturnType = new TypeToken<List<LicenseBundleDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateLicenseBundle
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseBundleCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = licenseBundleDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/licensebundles"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateLicenseBundleValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateLicenseBundle(Async)");
-        }
-
-        // verify the required parameter 'licenseBundleDto' is set
-        if (licenseBundleDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseBundleDto' when calling updateLicenseBundle(Async)");
-        }
-
-        return updateLicenseBundleCall(isvId, licenseBundleDto, _callback);
-
-    }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @return LicenseBundleDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseBundleDto updateLicenseBundle(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
-        ApiResponse<LicenseBundleDto> localVarResp = updateLicenseBundleWithHttpInfo(isvId, licenseBundleDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * 
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @return ApiResponse&lt;LicenseBundleDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseBundleDto> updateLicenseBundleWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto) throws ApiException {
-        okhttp3.Call localVarCall = updateLicenseBundleValidateBeforeCall(isvId, licenseBundleDto, null);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     *  (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param licenseBundleDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateLicenseBundleAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseBundleDto licenseBundleDto, final ApiCallback<LicenseBundleDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateLicenseBundleValidateBeforeCall(isvId, licenseBundleDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseBundleDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

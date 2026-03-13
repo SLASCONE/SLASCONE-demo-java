@@ -13,86 +13,70 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.HistoryAction;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * HistoryDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  HistoryDto.JSON_PROPERTY_ID,
+  HistoryDto.JSON_PROPERTY_NEW_VALUE,
+  HistoryDto.JSON_PROPERTY_ACTION,
+  HistoryDto.JSON_PROPERTY_COMMENT,
+  HistoryDto.JSON_PROPERTY_LAST_MODIFIED_BY,
+  HistoryDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  HistoryDto.JSON_PROPERTY_CREATED_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class HistoryDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NEW_VALUE = "new_value";
-  @SerializedName(SERIALIZED_NAME_NEW_VALUE)
-  @javax.annotation.Nullable
-  private String newValue;
+  public static final String JSON_PROPERTY_NEW_VALUE = "new_value";
+  private JsonNullable<String> newValue = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_ACTION = "action";
-  @SerializedName(SERIALIZED_NAME_ACTION)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ACTION = "action";
+  @jakarta.annotation.Nullable
   private HistoryAction action;
 
-  public static final String SERIALIZED_NAME_COMMENT = "comment";
-  @SerializedName(SERIALIZED_NAME_COMMENT)
-  @javax.annotation.Nullable
-  private String comment;
+  public static final String JSON_PROPERTY_COMMENT = "comment";
+  private JsonNullable<String> comment = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public HistoryDto() {
+  public HistoryDto() { 
   }
 
-  public HistoryDto id(@javax.annotation.Nullable UUID id) {
+  public HistoryDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -101,18 +85,23 @@ public class HistoryDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public HistoryDto newValue(@javax.annotation.Nullable String newValue) {
-    this.newValue = newValue;
+  public HistoryDto newValue(@jakarta.annotation.Nullable String newValue) {
+    this.newValue = JsonNullable.<String>of(newValue);
     return this;
   }
 
@@ -120,17 +109,30 @@ public class HistoryDto {
    * Get newValue
    * @return newValue
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getNewValue() {
-    return newValue;
+        return newValue.orElse(null);
   }
 
-  public void setNewValue(@javax.annotation.Nullable String newValue) {
+  @JsonProperty(value = JSON_PROPERTY_NEW_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getNewValue_JsonNullable() {
+    return newValue;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NEW_VALUE)
+  public void setNewValue_JsonNullable(JsonNullable<String> newValue) {
     this.newValue = newValue;
   }
 
+  public void setNewValue(@jakarta.annotation.Nullable String newValue) {
+    this.newValue = JsonNullable.<String>of(newValue);
+  }
 
-  public HistoryDto action(@javax.annotation.Nullable HistoryAction action) {
+
+  public HistoryDto action(@jakarta.annotation.Nullable HistoryAction action) {
     this.action = action;
     return this;
   }
@@ -139,18 +141,23 @@ public class HistoryDto {
    * Get action
    * @return action
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ACTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public HistoryAction getAction() {
     return action;
   }
 
-  public void setAction(@javax.annotation.Nullable HistoryAction action) {
+
+  @JsonProperty(value = JSON_PROPERTY_ACTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAction(@jakarta.annotation.Nullable HistoryAction action) {
     this.action = action;
   }
 
 
-  public HistoryDto comment(@javax.annotation.Nullable String comment) {
-    this.comment = comment;
+  public HistoryDto comment(@jakarta.annotation.Nullable String comment) {
+    this.comment = JsonNullable.<String>of(comment);
     return this;
   }
 
@@ -158,18 +165,31 @@ public class HistoryDto {
    * Get comment
    * @return comment
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getComment() {
-    return comment;
+        return comment.orElse(null);
   }
 
-  public void setComment(@javax.annotation.Nullable String comment) {
+  @JsonProperty(value = JSON_PROPERTY_COMMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getComment_JsonNullable() {
+    return comment;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COMMENT)
+  public void setComment_JsonNullable(JsonNullable<String> comment) {
     this.comment = comment;
   }
 
+  public void setComment(@jakarta.annotation.Nullable String comment) {
+    this.comment = JsonNullable.<String>of(comment);
+  }
 
-  public HistoryDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public HistoryDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -177,18 +197,31 @@ public class HistoryDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
-  public HistoryDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public HistoryDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -196,18 +229,31 @@ public class HistoryDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public HistoryDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public HistoryDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -215,17 +261,32 @@ public class HistoryDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
 
+  /**
+   * Return true if this HistoryDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -236,12 +297,12 @@ public class HistoryDto {
     }
     HistoryDto historyDto = (HistoryDto) o;
     return Objects.equals(this.id, historyDto.id) &&
-        Objects.equals(this.newValue, historyDto.newValue) &&
+        equalsNullable(this.newValue, historyDto.newValue) &&
         Objects.equals(this.action, historyDto.action) &&
-        Objects.equals(this.comment, historyDto.comment) &&
-        Objects.equals(this.lastModifiedBy, historyDto.lastModifiedBy) &&
-        Objects.equals(this.modifiedDateUtc, historyDto.modifiedDateUtc) &&
-        Objects.equals(this.createdDateUtc, historyDto.createdDateUtc);
+        equalsNullable(this.comment, historyDto.comment) &&
+        equalsNullable(this.lastModifiedBy, historyDto.lastModifiedBy) &&
+        equalsNullable(this.modifiedDateUtc, historyDto.modifiedDateUtc) &&
+        equalsNullable(this.createdDateUtc, historyDto.createdDateUtc);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -250,7 +311,7 @@ public class HistoryDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, newValue, action, comment, lastModifiedBy, modifiedDateUtc, createdDateUtc);
+    return Objects.hash(id, hashCodeNullable(newValue), action, hashCodeNullable(comment), hashCodeNullable(lastModifiedBy), hashCodeNullable(modifiedDateUtc), hashCodeNullable(createdDateUtc));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -286,104 +347,74 @@ public class HistoryDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "new_value", "action", "comment", "last_modified_by", "modified_date_utc", "created_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to HistoryDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!HistoryDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in HistoryDto is not found in the empty JSON string", HistoryDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!HistoryDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `HistoryDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("new_value") != null && !jsonObj.get("new_value").isJsonNull()) && !jsonObj.get("new_value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `new_value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("new_value").toString()));
-      }
-      // validate the optional field `action`
-      if (jsonObj.get("action") != null && !jsonObj.get("action").isJsonNull()) {
-        HistoryAction.validateJsonElement(jsonObj.get("action"));
-      }
-      if ((jsonObj.get("comment") != null && !jsonObj.get("comment").isJsonNull()) && !jsonObj.get("comment").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `comment` to be a primitive type in the JSON string but got `%s`", jsonObj.get("comment").toString()));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!HistoryDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'HistoryDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<HistoryDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(HistoryDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<HistoryDto>() {
-           @Override
-           public void write(JsonWriter out, HistoryDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public HistoryDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of HistoryDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of HistoryDto
-   * @throws IOException if the JSON string is invalid with respect to HistoryDto
-   */
-  public static HistoryDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, HistoryDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of HistoryDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `new_value` to the URL query string
+    if (getNewValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%snew_value%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getNewValue()))));
+    }
+
+    // add `action` to the URL query string
+    if (getAction() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%saction%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAction()))));
+    }
+
+    // add `comment` to the URL query string
+    if (getComment() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scomment%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getComment()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

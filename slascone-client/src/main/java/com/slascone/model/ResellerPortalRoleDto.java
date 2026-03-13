@@ -13,64 +13,52 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResellerPortalRoleDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerPortalRoleDto.JSON_PROPERTY_RESELLER_ID,
+  ResellerPortalRoleDto.JSON_PROPERTY_RESELLER_NAME,
+  ResellerPortalRoleDto.JSON_PROPERTY_RESELLER_PORTAL_ROLE_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerPortalRoleDto {
-  public static final String SERIALIZED_NAME_RESELLER_ID = "resellerId";
-  @SerializedName(SERIALIZED_NAME_RESELLER_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESELLER_ID = "resellerId";
+  @jakarta.annotation.Nullable
   private UUID resellerId;
 
-  public static final String SERIALIZED_NAME_RESELLER_NAME = "resellerName";
-  @SerializedName(SERIALIZED_NAME_RESELLER_NAME)
-  @javax.annotation.Nullable
-  private String resellerName;
+  public static final String JSON_PROPERTY_RESELLER_NAME = "resellerName";
+  private JsonNullable<String> resellerName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_PORTAL_ROLE_ID = "resellerPortalRoleId";
-  @SerializedName(SERIALIZED_NAME_RESELLER_PORTAL_ROLE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESELLER_PORTAL_ROLE_ID = "resellerPortalRoleId";
+  @jakarta.annotation.Nullable
   private UUID resellerPortalRoleId;
 
-  public ResellerPortalRoleDto() {
+  public ResellerPortalRoleDto() { 
   }
 
-  public ResellerPortalRoleDto resellerId(@javax.annotation.Nullable UUID resellerId) {
+  public ResellerPortalRoleDto resellerId(@jakarta.annotation.Nullable UUID resellerId) {
     this.resellerId = resellerId;
     return this;
   }
@@ -79,18 +67,23 @@ public class ResellerPortalRoleDto {
    * Get resellerId
    * @return resellerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getResellerId() {
     return resellerId;
   }
 
-  public void setResellerId(@javax.annotation.Nullable UUID resellerId) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResellerId(@jakarta.annotation.Nullable UUID resellerId) {
     this.resellerId = resellerId;
   }
 
 
-  public ResellerPortalRoleDto resellerName(@javax.annotation.Nullable String resellerName) {
-    this.resellerName = resellerName;
+  public ResellerPortalRoleDto resellerName(@jakarta.annotation.Nullable String resellerName) {
+    this.resellerName = JsonNullable.<String>of(resellerName);
     return this;
   }
 
@@ -98,17 +91,30 @@ public class ResellerPortalRoleDto {
    * Get resellerName
    * @return resellerName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getResellerName() {
-    return resellerName;
+        return resellerName.orElse(null);
   }
 
-  public void setResellerName(@javax.annotation.Nullable String resellerName) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getResellerName_JsonNullable() {
+    return resellerName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_NAME)
+  public void setResellerName_JsonNullable(JsonNullable<String> resellerName) {
     this.resellerName = resellerName;
   }
 
+  public void setResellerName(@jakarta.annotation.Nullable String resellerName) {
+    this.resellerName = JsonNullable.<String>of(resellerName);
+  }
 
-  public ResellerPortalRoleDto resellerPortalRoleId(@javax.annotation.Nullable UUID resellerPortalRoleId) {
+
+  public ResellerPortalRoleDto resellerPortalRoleId(@jakarta.annotation.Nullable UUID resellerPortalRoleId) {
     this.resellerPortalRoleId = resellerPortalRoleId;
     return this;
   }
@@ -117,17 +123,24 @@ public class ResellerPortalRoleDto {
    * Get resellerPortalRoleId
    * @return resellerPortalRoleId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_PORTAL_ROLE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getResellerPortalRoleId() {
     return resellerPortalRoleId;
   }
 
-  public void setResellerPortalRoleId(@javax.annotation.Nullable UUID resellerPortalRoleId) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_PORTAL_ROLE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResellerPortalRoleId(@jakarta.annotation.Nullable UUID resellerPortalRoleId) {
     this.resellerPortalRoleId = resellerPortalRoleId;
   }
 
 
-
+  /**
+   * Return true if this ResellerPortalRoleDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -138,7 +151,7 @@ public class ResellerPortalRoleDto {
     }
     ResellerPortalRoleDto resellerPortalRoleDto = (ResellerPortalRoleDto) o;
     return Objects.equals(this.resellerId, resellerPortalRoleDto.resellerId) &&
-        Objects.equals(this.resellerName, resellerPortalRoleDto.resellerName) &&
+        equalsNullable(this.resellerName, resellerPortalRoleDto.resellerName) &&
         Objects.equals(this.resellerPortalRoleId, resellerPortalRoleDto.resellerPortalRoleId);
   }
 
@@ -148,7 +161,7 @@ public class ResellerPortalRoleDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(resellerId, resellerName, resellerPortalRoleId);
+    return Objects.hash(resellerId, hashCodeNullable(resellerName), resellerPortalRoleId);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -180,97 +193,54 @@ public class ResellerPortalRoleDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("resellerId", "resellerName", "resellerPortalRoleId"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerPortalRoleDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerPortalRoleDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerPortalRoleDto is not found in the empty JSON string", ResellerPortalRoleDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerPortalRoleDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerPortalRoleDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("resellerId") != null && !jsonObj.get("resellerId").isJsonNull()) && !jsonObj.get("resellerId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `resellerId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerId").toString()));
-      }
-      if ((jsonObj.get("resellerName") != null && !jsonObj.get("resellerName").isJsonNull()) && !jsonObj.get("resellerName").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `resellerName` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerName").toString()));
-      }
-      if ((jsonObj.get("resellerPortalRoleId") != null && !jsonObj.get("resellerPortalRoleId").isJsonNull()) && !jsonObj.get("resellerPortalRoleId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `resellerPortalRoleId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerPortalRoleId").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerPortalRoleDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerPortalRoleDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerPortalRoleDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerPortalRoleDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerPortalRoleDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerPortalRoleDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerPortalRoleDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerPortalRoleDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerPortalRoleDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerPortalRoleDto
-   */
-  public static ResellerPortalRoleDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerPortalRoleDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerPortalRoleDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `resellerId` to the URL query string
+    if (getResellerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sresellerId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerId()))));
+    }
+
+    // add `resellerName` to the URL query string
+    if (getResellerName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sresellerName%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerName()))));
+    }
+
+    // add `resellerPortalRoleId` to the URL query string
+    if (getResellerPortalRoleId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sresellerPortalRoleId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerPortalRoleId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

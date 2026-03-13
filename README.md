@@ -295,8 +295,11 @@ You can provide a `config.json` file to configure the generator. To generate the
   "modelPackage": "com.slascone.model",
   "groupId": "com.slascone",
   "artifactId": "slascone-client",
+  "library": "native",
   "dateLibrary": "java8",
-  "hideGenerationTimestamp": true
+  "useJakartaEe": true,
+  "hideGenerationTimestamp": true,
+  "disallowAdditionalPropertiesIfNotPresent": false
 }
 ```
 

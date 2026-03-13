@@ -13,59 +13,46 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseImportVariableDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseImportVariableDto.JSON_PROPERTY_VARIABLE,
+  LicenseImportVariableDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseImportVariableDto {
-  public static final String SERIALIZED_NAME_VARIABLE = "variable";
-  @SerializedName(SERIALIZED_NAME_VARIABLE)
-  @javax.annotation.Nullable
-  private String variable;
+  public static final String JSON_PROPERTY_VARIABLE = "variable";
+  private JsonNullable<String> variable = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
-  private String value;
+  public static final String JSON_PROPERTY_VALUE = "value";
+  private JsonNullable<String> value = JsonNullable.<String>undefined();
 
-  public LicenseImportVariableDto() {
+  public LicenseImportVariableDto() { 
   }
 
-  public LicenseImportVariableDto variable(@javax.annotation.Nullable String variable) {
-    this.variable = variable;
+  public LicenseImportVariableDto variable(@jakarta.annotation.Nullable String variable) {
+    this.variable = JsonNullable.<String>of(variable);
     return this;
   }
 
@@ -73,18 +60,31 @@ public class LicenseImportVariableDto {
    * Get variable
    * @return variable
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getVariable() {
-    return variable;
+        return variable.orElse(null);
   }
 
-  public void setVariable(@javax.annotation.Nullable String variable) {
+  @JsonProperty(value = JSON_PROPERTY_VARIABLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getVariable_JsonNullable() {
+    return variable;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VARIABLE)
+  public void setVariable_JsonNullable(JsonNullable<String> variable) {
     this.variable = variable;
   }
 
+  public void setVariable(@jakarta.annotation.Nullable String variable) {
+    this.variable = JsonNullable.<String>of(variable);
+  }
 
-  public LicenseImportVariableDto value(@javax.annotation.Nullable String value) {
-    this.value = value;
+
+  public LicenseImportVariableDto value(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
     return this;
   }
 
@@ -92,17 +92,32 @@ public class LicenseImportVariableDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getValue() {
-    return value;
+        return value.orElse(null);
   }
 
-  public void setValue(@javax.annotation.Nullable String value) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getValue_JsonNullable() {
+    return value;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  public void setValue_JsonNullable(JsonNullable<String> value) {
     this.value = value;
   }
 
+  public void setValue(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
+  }
 
 
+  /**
+   * Return true if this LicenseImportVariableDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -112,8 +127,8 @@ public class LicenseImportVariableDto {
       return false;
     }
     LicenseImportVariableDto licenseImportVariableDto = (LicenseImportVariableDto) o;
-    return Objects.equals(this.variable, licenseImportVariableDto.variable) &&
-        Objects.equals(this.value, licenseImportVariableDto.value);
+    return equalsNullable(this.variable, licenseImportVariableDto.variable) &&
+        equalsNullable(this.value, licenseImportVariableDto.value);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -122,7 +137,7 @@ public class LicenseImportVariableDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(variable, value);
+    return Objects.hash(hashCodeNullable(variable), hashCodeNullable(value));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -153,94 +168,49 @@ public class LicenseImportVariableDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("variable", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseImportVariableDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseImportVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseImportVariableDto is not found in the empty JSON string", LicenseImportVariableDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseImportVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseImportVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("variable") != null && !jsonObj.get("variable").isJsonNull()) && !jsonObj.get("variable").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `variable` to be a primitive type in the JSON string but got `%s`", jsonObj.get("variable").toString()));
-      }
-      if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseImportVariableDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseImportVariableDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseImportVariableDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseImportVariableDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseImportVariableDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseImportVariableDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseImportVariableDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseImportVariableDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseImportVariableDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseImportVariableDto
-   */
-  public static LicenseImportVariableDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseImportVariableDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseImportVariableDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `variable` to the URL query string
+    if (getVariable() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svariable%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getVariable()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

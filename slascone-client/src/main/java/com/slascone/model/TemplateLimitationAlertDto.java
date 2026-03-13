@@ -13,86 +13,73 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.EmailTemplateDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * TemplateLimitationAlertDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  TemplateLimitationAlertDto.JSON_PROPERTY_ID,
+  TemplateLimitationAlertDto.JSON_PROPERTY_IS_ACTIVE,
+  TemplateLimitationAlertDto.JSON_PROPERTY_ALERT_PERCENTAGE,
+  TemplateLimitationAlertDto.JSON_PROPERTY_TEMPLATE_LIMITATION_ID,
+  TemplateLimitationAlertDto.JSON_PROPERTY_EMAIL_TEMPLATE_ID,
+  TemplateLimitationAlertDto.JSON_PROPERTY_EMAIL_TEMPLATE,
+  TemplateLimitationAlertDto.JSON_PROPERTY_CREATED_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class TemplateLimitationAlertDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_ALERT_PERCENTAGE = "alert_percentage";
-  @SerializedName(SERIALIZED_NAME_ALERT_PERCENTAGE)
-  @javax.annotation.Nullable
-  private Integer alertPercentage;
+  public static final String JSON_PROPERTY_ALERT_PERCENTAGE = "alert_percentage";
+  private JsonNullable<Integer> alertPercentage = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_TEMPLATE_LIMITATION_ID = "template_limitation_id";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_LIMITATION_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TEMPLATE_LIMITATION_ID = "template_limitation_id";
+  @jakarta.annotation.Nullable
   private UUID templateLimitationId;
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATE_ID = "email_template_id";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATE_ID = "email_template_id";
+  @jakarta.annotation.Nullable
   private UUID emailTemplateId;
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATE = "email_template";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATE)
-  @javax.annotation.Nullable
-  private EmailTemplateDto emailTemplate;
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATE = "email_template";
+  private JsonNullable<EmailTemplateDto> emailTemplate = JsonNullable.<EmailTemplateDto>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public TemplateLimitationAlertDto() {
+  public TemplateLimitationAlertDto() { 
   }
 
-  public TemplateLimitationAlertDto id(@javax.annotation.Nullable UUID id) {
+  public TemplateLimitationAlertDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -101,17 +88,22 @@ public class TemplateLimitationAlertDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public TemplateLimitationAlertDto isActive(@javax.annotation.Nullable Boolean isActive) {
+  public TemplateLimitationAlertDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -120,18 +112,23 @@ public class TemplateLimitationAlertDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public TemplateLimitationAlertDto alertPercentage(@javax.annotation.Nullable Integer alertPercentage) {
-    this.alertPercentage = alertPercentage;
+  public TemplateLimitationAlertDto alertPercentage(@jakarta.annotation.Nullable Integer alertPercentage) {
+    this.alertPercentage = JsonNullable.<Integer>of(alertPercentage);
     return this;
   }
 
@@ -139,17 +136,30 @@ public class TemplateLimitationAlertDto {
    * Get alertPercentage
    * @return alertPercentage
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getAlertPercentage() {
-    return alertPercentage;
+        return alertPercentage.orElse(null);
   }
 
-  public void setAlertPercentage(@javax.annotation.Nullable Integer alertPercentage) {
+  @JsonProperty(value = JSON_PROPERTY_ALERT_PERCENTAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getAlertPercentage_JsonNullable() {
+    return alertPercentage;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ALERT_PERCENTAGE)
+  public void setAlertPercentage_JsonNullable(JsonNullable<Integer> alertPercentage) {
     this.alertPercentage = alertPercentage;
   }
 
+  public void setAlertPercentage(@jakarta.annotation.Nullable Integer alertPercentage) {
+    this.alertPercentage = JsonNullable.<Integer>of(alertPercentage);
+  }
 
-  public TemplateLimitationAlertDto templateLimitationId(@javax.annotation.Nullable UUID templateLimitationId) {
+
+  public TemplateLimitationAlertDto templateLimitationId(@jakarta.annotation.Nullable UUID templateLimitationId) {
     this.templateLimitationId = templateLimitationId;
     return this;
   }
@@ -158,17 +168,22 @@ public class TemplateLimitationAlertDto {
    * Get templateLimitationId
    * @return templateLimitationId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getTemplateLimitationId() {
     return templateLimitationId;
   }
 
-  public void setTemplateLimitationId(@javax.annotation.Nullable UUID templateLimitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTemplateLimitationId(@jakarta.annotation.Nullable UUID templateLimitationId) {
     this.templateLimitationId = templateLimitationId;
   }
 
 
-  public TemplateLimitationAlertDto emailTemplateId(@javax.annotation.Nullable UUID emailTemplateId) {
+  public TemplateLimitationAlertDto emailTemplateId(@jakarta.annotation.Nullable UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
     return this;
   }
@@ -177,18 +192,23 @@ public class TemplateLimitationAlertDto {
    * Get emailTemplateId
    * @return emailTemplateId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getEmailTemplateId() {
     return emailTemplateId;
   }
 
-  public void setEmailTemplateId(@javax.annotation.Nullable UUID emailTemplateId) {
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEmailTemplateId(@jakarta.annotation.Nullable UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
   }
 
 
-  public TemplateLimitationAlertDto emailTemplate(@javax.annotation.Nullable EmailTemplateDto emailTemplate) {
-    this.emailTemplate = emailTemplate;
+  public TemplateLimitationAlertDto emailTemplate(@jakarta.annotation.Nullable EmailTemplateDto emailTemplate) {
+    this.emailTemplate = JsonNullable.<EmailTemplateDto>of(emailTemplate);
     return this;
   }
 
@@ -196,17 +216,30 @@ public class TemplateLimitationAlertDto {
    * Get emailTemplate
    * @return emailTemplate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public EmailTemplateDto getEmailTemplate() {
-    return emailTemplate;
+        return emailTemplate.orElse(null);
   }
 
-  public void setEmailTemplate(@javax.annotation.Nullable EmailTemplateDto emailTemplate) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<EmailTemplateDto> getEmailTemplate_JsonNullable() {
+    return emailTemplate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL_TEMPLATE)
+  public void setEmailTemplate_JsonNullable(JsonNullable<EmailTemplateDto> emailTemplate) {
     this.emailTemplate = emailTemplate;
   }
 
+  public void setEmailTemplate(@jakarta.annotation.Nullable EmailTemplateDto emailTemplate) {
+    this.emailTemplate = JsonNullable.<EmailTemplateDto>of(emailTemplate);
+  }
 
-  public TemplateLimitationAlertDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public TemplateLimitationAlertDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -215,17 +248,24 @@ public class TemplateLimitationAlertDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-
+  /**
+   * Return true if this TemplateLimitationAlertDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -237,10 +277,10 @@ public class TemplateLimitationAlertDto {
     TemplateLimitationAlertDto templateLimitationAlertDto = (TemplateLimitationAlertDto) o;
     return Objects.equals(this.id, templateLimitationAlertDto.id) &&
         Objects.equals(this.isActive, templateLimitationAlertDto.isActive) &&
-        Objects.equals(this.alertPercentage, templateLimitationAlertDto.alertPercentage) &&
+        equalsNullable(this.alertPercentage, templateLimitationAlertDto.alertPercentage) &&
         Objects.equals(this.templateLimitationId, templateLimitationAlertDto.templateLimitationId) &&
         Objects.equals(this.emailTemplateId, templateLimitationAlertDto.emailTemplateId) &&
-        Objects.equals(this.emailTemplate, templateLimitationAlertDto.emailTemplate) &&
+        equalsNullable(this.emailTemplate, templateLimitationAlertDto.emailTemplate) &&
         Objects.equals(this.createdDateUtc, templateLimitationAlertDto.createdDateUtc);
   }
 
@@ -250,7 +290,7 @@ public class TemplateLimitationAlertDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, isActive, alertPercentage, templateLimitationId, emailTemplateId, emailTemplate, createdDateUtc);
+    return Objects.hash(id, isActive, hashCodeNullable(alertPercentage), templateLimitationId, emailTemplateId, hashCodeNullable(emailTemplate), createdDateUtc);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -286,101 +326,74 @@ public class TemplateLimitationAlertDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "is_active", "alert_percentage", "template_limitation_id", "email_template_id", "email_template", "created_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to TemplateLimitationAlertDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!TemplateLimitationAlertDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateLimitationAlertDto is not found in the empty JSON string", TemplateLimitationAlertDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!TemplateLimitationAlertDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateLimitationAlertDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("template_limitation_id") != null && !jsonObj.get("template_limitation_id").isJsonNull()) && !jsonObj.get("template_limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_limitation_id").toString()));
-      }
-      if ((jsonObj.get("email_template_id") != null && !jsonObj.get("email_template_id").isJsonNull()) && !jsonObj.get("email_template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email_template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email_template_id").toString()));
-      }
-      // validate the optional field `email_template`
-      if (jsonObj.get("email_template") != null && !jsonObj.get("email_template").isJsonNull()) {
-        EmailTemplateDto.validateJsonElement(jsonObj.get("email_template"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!TemplateLimitationAlertDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'TemplateLimitationAlertDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<TemplateLimitationAlertDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(TemplateLimitationAlertDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<TemplateLimitationAlertDto>() {
-           @Override
-           public void write(JsonWriter out, TemplateLimitationAlertDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public TemplateLimitationAlertDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of TemplateLimitationAlertDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of TemplateLimitationAlertDto
-   * @throws IOException if the JSON string is invalid with respect to TemplateLimitationAlertDto
-   */
-  public static TemplateLimitationAlertDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, TemplateLimitationAlertDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of TemplateLimitationAlertDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `alert_percentage` to the URL query string
+    if (getAlertPercentage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%salert_percentage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAlertPercentage()))));
+    }
+
+    // add `template_limitation_id` to the URL query string
+    if (getTemplateLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemplate_limitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemplateLimitationId()))));
+    }
+
+    // add `email_template_id` to the URL query string
+    if (getEmailTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail_template_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmailTemplateId()))));
+    }
+
+    // add `email_template` to the URL query string
+    if (getEmailTemplate() != null) {
+      joiner.add(getEmailTemplate().toUrlQueryString(prefix + "email_template" + suffix));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

@@ -13,111 +13,92 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ResourceDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseBundleAssignmentDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseBundleAssignmentDto.JSON_PROPERTY_ID,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_BUNDLE_ID,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_LICENSE_ID,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_LICENSE_NAME,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_LICENSE_DESCRIPTION,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_LICENSE_TEMPLATE_NAME,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_PRODUCT_NAME,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_PRODUCT_LOGO,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  LicenseBundleAssignmentDto.JSON_PROPERTY_LAST_MODIFIED_BY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseBundleAssignmentDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nonnull
   private UUID id;
 
-  public static final String SERIALIZED_NAME_BUNDLE_ID = "bundle_id";
-  @SerializedName(SERIALIZED_NAME_BUNDLE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_BUNDLE_ID = "bundle_id";
+  @jakarta.annotation.Nonnull
   private UUID bundleId;
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nonnull
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_LICENSE_NAME = "license_name";
-  @SerializedName(SERIALIZED_NAME_LICENSE_NAME)
-  @javax.annotation.Nullable
-  private String licenseName;
+  public static final String JSON_PROPERTY_LICENSE_NAME = "license_name";
+  private JsonNullable<String> licenseName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_DESCRIPTION = "license_description";
-  @SerializedName(SERIALIZED_NAME_LICENSE_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String licenseDescription;
+  public static final String JSON_PROPERTY_LICENSE_DESCRIPTION = "license_description";
+  private JsonNullable<String> licenseDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_TEMPLATE_NAME = "license_template_name";
-  @SerializedName(SERIALIZED_NAME_LICENSE_TEMPLATE_NAME)
-  @javax.annotation.Nullable
-  private String licenseTemplateName;
+  public static final String JSON_PROPERTY_LICENSE_TEMPLATE_NAME = "license_template_name";
+  private JsonNullable<String> licenseTemplateName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_PRODUCT_NAME = "product_name";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_NAME)
-  @javax.annotation.Nullable
-  private String productName;
+  public static final String JSON_PROPERTY_PRODUCT_NAME = "product_name";
+  private JsonNullable<String> productName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PRODUCT_LOGO = "product_logo";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_LOGO)
-  @javax.annotation.Nullable
-  private ResourceDto productLogo;
+  public static final String JSON_PROPERTY_PRODUCT_LOGO = "product_logo";
+  private JsonNullable<ResourceDto> productLogo = JsonNullable.<ResourceDto>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public LicenseBundleAssignmentDto() {
+  public LicenseBundleAssignmentDto() { 
   }
 
-  public LicenseBundleAssignmentDto id(@javax.annotation.Nonnull UUID id) {
+  public LicenseBundleAssignmentDto id(@jakarta.annotation.Nonnull UUID id) {
     this.id = id;
     return this;
   }
@@ -126,17 +107,22 @@ public class LicenseBundleAssignmentDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nonnull UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setId(@jakarta.annotation.Nonnull UUID id) {
     this.id = id;
   }
 
 
-  public LicenseBundleAssignmentDto bundleId(@javax.annotation.Nonnull UUID bundleId) {
+  public LicenseBundleAssignmentDto bundleId(@jakarta.annotation.Nonnull UUID bundleId) {
     this.bundleId = bundleId;
     return this;
   }
@@ -145,17 +131,22 @@ public class LicenseBundleAssignmentDto {
    * Get bundleId
    * @return bundleId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_BUNDLE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getBundleId() {
     return bundleId;
   }
 
-  public void setBundleId(@javax.annotation.Nonnull UUID bundleId) {
+
+  @JsonProperty(value = JSON_PROPERTY_BUNDLE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setBundleId(@jakarta.annotation.Nonnull UUID bundleId) {
     this.bundleId = bundleId;
   }
 
 
-  public LicenseBundleAssignmentDto licenseId(@javax.annotation.Nonnull UUID licenseId) {
+  public LicenseBundleAssignmentDto licenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -164,18 +155,23 @@ public class LicenseBundleAssignmentDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nonnull UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public LicenseBundleAssignmentDto licenseName(@javax.annotation.Nullable String licenseName) {
-    this.licenseName = licenseName;
+  public LicenseBundleAssignmentDto licenseName(@jakarta.annotation.Nullable String licenseName) {
+    this.licenseName = JsonNullable.<String>of(licenseName);
     return this;
   }
 
@@ -183,18 +179,31 @@ public class LicenseBundleAssignmentDto {
    * Get licenseName
    * @return licenseName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLicenseName() {
-    return licenseName;
+        return licenseName.orElse(null);
   }
 
-  public void setLicenseName(@javax.annotation.Nullable String licenseName) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLicenseName_JsonNullable() {
+    return licenseName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_NAME)
+  public void setLicenseName_JsonNullable(JsonNullable<String> licenseName) {
     this.licenseName = licenseName;
   }
 
+  public void setLicenseName(@jakarta.annotation.Nullable String licenseName) {
+    this.licenseName = JsonNullable.<String>of(licenseName);
+  }
 
-  public LicenseBundleAssignmentDto licenseDescription(@javax.annotation.Nullable String licenseDescription) {
-    this.licenseDescription = licenseDescription;
+
+  public LicenseBundleAssignmentDto licenseDescription(@jakarta.annotation.Nullable String licenseDescription) {
+    this.licenseDescription = JsonNullable.<String>of(licenseDescription);
     return this;
   }
 
@@ -202,18 +211,31 @@ public class LicenseBundleAssignmentDto {
    * Get licenseDescription
    * @return licenseDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLicenseDescription() {
-    return licenseDescription;
+        return licenseDescription.orElse(null);
   }
 
-  public void setLicenseDescription(@javax.annotation.Nullable String licenseDescription) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLicenseDescription_JsonNullable() {
+    return licenseDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_DESCRIPTION)
+  public void setLicenseDescription_JsonNullable(JsonNullable<String> licenseDescription) {
     this.licenseDescription = licenseDescription;
   }
 
+  public void setLicenseDescription(@jakarta.annotation.Nullable String licenseDescription) {
+    this.licenseDescription = JsonNullable.<String>of(licenseDescription);
+  }
 
-  public LicenseBundleAssignmentDto licenseTemplateName(@javax.annotation.Nullable String licenseTemplateName) {
-    this.licenseTemplateName = licenseTemplateName;
+
+  public LicenseBundleAssignmentDto licenseTemplateName(@jakarta.annotation.Nullable String licenseTemplateName) {
+    this.licenseTemplateName = JsonNullable.<String>of(licenseTemplateName);
     return this;
   }
 
@@ -221,17 +243,30 @@ public class LicenseBundleAssignmentDto {
    * Get licenseTemplateName
    * @return licenseTemplateName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLicenseTemplateName() {
-    return licenseTemplateName;
+        return licenseTemplateName.orElse(null);
   }
 
-  public void setLicenseTemplateName(@javax.annotation.Nullable String licenseTemplateName) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_TEMPLATE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLicenseTemplateName_JsonNullable() {
+    return licenseTemplateName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_TEMPLATE_NAME)
+  public void setLicenseTemplateName_JsonNullable(JsonNullable<String> licenseTemplateName) {
     this.licenseTemplateName = licenseTemplateName;
   }
 
+  public void setLicenseTemplateName(@jakarta.annotation.Nullable String licenseTemplateName) {
+    this.licenseTemplateName = JsonNullable.<String>of(licenseTemplateName);
+  }
 
-  public LicenseBundleAssignmentDto productId(@javax.annotation.Nonnull UUID productId) {
+
+  public LicenseBundleAssignmentDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -240,18 +275,23 @@ public class LicenseBundleAssignmentDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseBundleAssignmentDto productName(@javax.annotation.Nullable String productName) {
-    this.productName = productName;
+  public LicenseBundleAssignmentDto productName(@jakarta.annotation.Nullable String productName) {
+    this.productName = JsonNullable.<String>of(productName);
     return this;
   }
 
@@ -259,18 +299,31 @@ public class LicenseBundleAssignmentDto {
    * Get productName
    * @return productName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getProductName() {
-    return productName;
+        return productName.orElse(null);
   }
 
-  public void setProductName(@javax.annotation.Nullable String productName) {
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getProductName_JsonNullable() {
+    return productName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PRODUCT_NAME)
+  public void setProductName_JsonNullable(JsonNullable<String> productName) {
     this.productName = productName;
   }
 
+  public void setProductName(@jakarta.annotation.Nullable String productName) {
+    this.productName = JsonNullable.<String>of(productName);
+  }
 
-  public LicenseBundleAssignmentDto productLogo(@javax.annotation.Nullable ResourceDto productLogo) {
-    this.productLogo = productLogo;
+
+  public LicenseBundleAssignmentDto productLogo(@jakarta.annotation.Nullable ResourceDto productLogo) {
+    this.productLogo = JsonNullable.<ResourceDto>of(productLogo);
     return this;
   }
 
@@ -278,18 +331,31 @@ public class LicenseBundleAssignmentDto {
    * Get productLogo
    * @return productLogo
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ResourceDto getProductLogo() {
-    return productLogo;
+        return productLogo.orElse(null);
   }
 
-  public void setProductLogo(@javax.annotation.Nullable ResourceDto productLogo) {
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_LOGO, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ResourceDto> getProductLogo_JsonNullable() {
+    return productLogo;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PRODUCT_LOGO)
+  public void setProductLogo_JsonNullable(JsonNullable<ResourceDto> productLogo) {
     this.productLogo = productLogo;
   }
 
+  public void setProductLogo(@jakarta.annotation.Nullable ResourceDto productLogo) {
+    this.productLogo = JsonNullable.<ResourceDto>of(productLogo);
+  }
 
-  public LicenseBundleAssignmentDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public LicenseBundleAssignmentDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -297,18 +363,31 @@ public class LicenseBundleAssignmentDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public LicenseBundleAssignmentDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public LicenseBundleAssignmentDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -316,18 +395,31 @@ public class LicenseBundleAssignmentDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public LicenseBundleAssignmentDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public LicenseBundleAssignmentDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -335,17 +427,32 @@ public class LicenseBundleAssignmentDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
 
+  /**
+   * Return true if this LicenseBundleAssignmentDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -358,15 +465,15 @@ public class LicenseBundleAssignmentDto {
     return Objects.equals(this.id, licenseBundleAssignmentDto.id) &&
         Objects.equals(this.bundleId, licenseBundleAssignmentDto.bundleId) &&
         Objects.equals(this.licenseId, licenseBundleAssignmentDto.licenseId) &&
-        Objects.equals(this.licenseName, licenseBundleAssignmentDto.licenseName) &&
-        Objects.equals(this.licenseDescription, licenseBundleAssignmentDto.licenseDescription) &&
-        Objects.equals(this.licenseTemplateName, licenseBundleAssignmentDto.licenseTemplateName) &&
+        equalsNullable(this.licenseName, licenseBundleAssignmentDto.licenseName) &&
+        equalsNullable(this.licenseDescription, licenseBundleAssignmentDto.licenseDescription) &&
+        equalsNullable(this.licenseTemplateName, licenseBundleAssignmentDto.licenseTemplateName) &&
         Objects.equals(this.productId, licenseBundleAssignmentDto.productId) &&
-        Objects.equals(this.productName, licenseBundleAssignmentDto.productName) &&
-        Objects.equals(this.productLogo, licenseBundleAssignmentDto.productLogo) &&
-        Objects.equals(this.createdDateUtc, licenseBundleAssignmentDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, licenseBundleAssignmentDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, licenseBundleAssignmentDto.lastModifiedBy);
+        equalsNullable(this.productName, licenseBundleAssignmentDto.productName) &&
+        equalsNullable(this.productLogo, licenseBundleAssignmentDto.productLogo) &&
+        equalsNullable(this.createdDateUtc, licenseBundleAssignmentDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, licenseBundleAssignmentDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, licenseBundleAssignmentDto.lastModifiedBy);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -375,7 +482,7 @@ public class LicenseBundleAssignmentDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, bundleId, licenseId, licenseName, licenseDescription, licenseTemplateName, productId, productName, productLogo, createdDateUtc, modifiedDateUtc, lastModifiedBy);
+    return Objects.hash(id, bundleId, licenseId, hashCodeNullable(licenseName), hashCodeNullable(licenseDescription), hashCodeNullable(licenseTemplateName), productId, hashCodeNullable(productName), hashCodeNullable(productLogo), hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -416,126 +523,99 @@ public class LicenseBundleAssignmentDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "bundle_id", "license_id", "license_name", "license_description", "license_template_name", "product_id", "product_name", "product_logo", "created_date_utc", "modified_date_utc", "last_modified_by"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("id", "bundle_id", "license_id", "product_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseBundleAssignmentDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseBundleAssignmentDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseBundleAssignmentDto is not found in the empty JSON string", LicenseBundleAssignmentDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseBundleAssignmentDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseBundleAssignmentDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseBundleAssignmentDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if (!jsonObj.get("bundle_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `bundle_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("bundle_id").toString()));
-      }
-      if (!jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("license_name") != null && !jsonObj.get("license_name").isJsonNull()) && !jsonObj.get("license_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_name").toString()));
-      }
-      if ((jsonObj.get("license_description") != null && !jsonObj.get("license_description").isJsonNull()) && !jsonObj.get("license_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_description").toString()));
-      }
-      if ((jsonObj.get("license_template_name") != null && !jsonObj.get("license_template_name").isJsonNull()) && !jsonObj.get("license_template_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_template_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_template_name").toString()));
-      }
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if ((jsonObj.get("product_name") != null && !jsonObj.get("product_name").isJsonNull()) && !jsonObj.get("product_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_name").toString()));
-      }
-      // validate the optional field `product_logo`
-      if (jsonObj.get("product_logo") != null && !jsonObj.get("product_logo").isJsonNull()) {
-        ResourceDto.validateJsonElement(jsonObj.get("product_logo"));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseBundleAssignmentDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseBundleAssignmentDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseBundleAssignmentDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseBundleAssignmentDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseBundleAssignmentDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseBundleAssignmentDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseBundleAssignmentDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseBundleAssignmentDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseBundleAssignmentDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseBundleAssignmentDto
-   */
-  public static LicenseBundleAssignmentDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseBundleAssignmentDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseBundleAssignmentDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `bundle_id` to the URL query string
+    if (getBundleId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbundle_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBundleId()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `license_name` to the URL query string
+    if (getLicenseName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseName()))));
+    }
+
+    // add `license_description` to the URL query string
+    if (getLicenseDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseDescription()))));
+    }
+
+    // add `license_template_name` to the URL query string
+    if (getLicenseTemplateName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_template_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseTemplateName()))));
+    }
+
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `product_name` to the URL query string
+    if (getProductName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductName()))));
+    }
+
+    // add `product_logo` to the URL query string
+    if (getProductLogo() != null) {
+      joiner.add(getProductLogo().toUrlQueryString(prefix + "product_logo" + suffix));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    return joiner.toString();
   }
 }
 

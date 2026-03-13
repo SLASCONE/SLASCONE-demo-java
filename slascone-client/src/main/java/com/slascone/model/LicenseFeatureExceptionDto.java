@@ -13,63 +13,49 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseFeatureExceptionDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseFeatureExceptionDto.JSON_PROPERTY_START_DATE_UTC,
+  LicenseFeatureExceptionDto.JSON_PROPERTY_END_DATE_UTC,
+  LicenseFeatureExceptionDto.JSON_PROPERTY_TEMPORARY_IS_ACTIVE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseFeatureExceptionDto {
-  public static final String SERIALIZED_NAME_START_DATE_UTC = "start_date_utc";
-  @SerializedName(SERIALIZED_NAME_START_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_START_DATE_UTC = "start_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime startDateUtc;
 
-  public static final String SERIALIZED_NAME_END_DATE_UTC = "end_date_utc";
-  @SerializedName(SERIALIZED_NAME_END_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_END_DATE_UTC = "end_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime endDateUtc;
 
-  public static final String SERIALIZED_NAME_TEMPORARY_IS_ACTIVE = "temporary_is_active";
-  @SerializedName(SERIALIZED_NAME_TEMPORARY_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TEMPORARY_IS_ACTIVE = "temporary_is_active";
+  @jakarta.annotation.Nullable
   private Boolean temporaryIsActive;
 
-  public LicenseFeatureExceptionDto() {
+  public LicenseFeatureExceptionDto() { 
   }
 
-  public LicenseFeatureExceptionDto startDateUtc(@javax.annotation.Nullable OffsetDateTime startDateUtc) {
+  public LicenseFeatureExceptionDto startDateUtc(@jakarta.annotation.Nullable OffsetDateTime startDateUtc) {
     this.startDateUtc = startDateUtc;
     return this;
   }
@@ -78,17 +64,22 @@ public class LicenseFeatureExceptionDto {
    * Get startDateUtc
    * @return startDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_START_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getStartDateUtc() {
     return startDateUtc;
   }
 
-  public void setStartDateUtc(@javax.annotation.Nullable OffsetDateTime startDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_START_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStartDateUtc(@jakarta.annotation.Nullable OffsetDateTime startDateUtc) {
     this.startDateUtc = startDateUtc;
   }
 
 
-  public LicenseFeatureExceptionDto endDateUtc(@javax.annotation.Nullable OffsetDateTime endDateUtc) {
+  public LicenseFeatureExceptionDto endDateUtc(@jakarta.annotation.Nullable OffsetDateTime endDateUtc) {
     this.endDateUtc = endDateUtc;
     return this;
   }
@@ -97,17 +88,22 @@ public class LicenseFeatureExceptionDto {
    * Get endDateUtc
    * @return endDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_END_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getEndDateUtc() {
     return endDateUtc;
   }
 
-  public void setEndDateUtc(@javax.annotation.Nullable OffsetDateTime endDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_END_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEndDateUtc(@jakarta.annotation.Nullable OffsetDateTime endDateUtc) {
     this.endDateUtc = endDateUtc;
   }
 
 
-  public LicenseFeatureExceptionDto temporaryIsActive(@javax.annotation.Nullable Boolean temporaryIsActive) {
+  public LicenseFeatureExceptionDto temporaryIsActive(@jakarta.annotation.Nullable Boolean temporaryIsActive) {
     this.temporaryIsActive = temporaryIsActive;
     return this;
   }
@@ -116,17 +112,24 @@ public class LicenseFeatureExceptionDto {
    * Get temporaryIsActive
    * @return temporaryIsActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TEMPORARY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getTemporaryIsActive() {
     return temporaryIsActive;
   }
 
-  public void setTemporaryIsActive(@javax.annotation.Nullable Boolean temporaryIsActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPORARY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTemporaryIsActive(@jakarta.annotation.Nullable Boolean temporaryIsActive) {
     this.temporaryIsActive = temporaryIsActive;
   }
 
 
-
+  /**
+   * Return true if this LicenseFeatureExceptionDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -168,88 +171,54 @@ public class LicenseFeatureExceptionDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("start_date_utc", "end_date_utc", "temporary_is_active"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseFeatureExceptionDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseFeatureExceptionDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFeatureExceptionDto is not found in the empty JSON string", LicenseFeatureExceptionDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseFeatureExceptionDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFeatureExceptionDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseFeatureExceptionDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseFeatureExceptionDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseFeatureExceptionDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseFeatureExceptionDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseFeatureExceptionDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseFeatureExceptionDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseFeatureExceptionDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseFeatureExceptionDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseFeatureExceptionDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseFeatureExceptionDto
-   */
-  public static LicenseFeatureExceptionDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseFeatureExceptionDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseFeatureExceptionDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `start_date_utc` to the URL query string
+    if (getStartDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstart_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStartDateUtc()))));
+    }
+
+    // add `end_date_utc` to the URL query string
+    if (getEndDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%send_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEndDateUtc()))));
+    }
+
+    // add `temporary_is_active` to the URL query string
+    if (getTemporaryIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemporary_is_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemporaryIsActive()))));
+    }
+
+    return joiner.toString();
   }
 }
 

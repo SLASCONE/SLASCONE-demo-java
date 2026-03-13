@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.BackupStorageDto;
 import com.slascone.model.BackupStorageResponseErrors;
@@ -39,4144 +30,3341 @@ import com.slascone.model.SlasconeLicenseInfoDto;
 import java.util.UUID;
 import com.slascone.model.ValidateAssignmentsDto;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class AdministrationApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public AdministrationApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public AdministrationApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for addCustomList
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call addCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
+  public AdministrationApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public AdministrationApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Adds a new custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto addCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return addCustomList(isvId, customListDto, null);
+  }
+
+  /**
+   * Adds a new custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto addCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomListDto> localVarResponse = addCustomListWithHttpInfo(isvId, customListDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Adds a new custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> addCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return addCustomListWithHttpInfo(isvId, customListDto, null);
+  }
+
+  /**
+   * Adds a new custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> addCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addCustomListRequestBuilder(isvId, customListDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addCustomList", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomListDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomListDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomListDto>() {});
+        
+
+        return new ApiResponse<CustomListDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addCustomListRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addCustomList");
+    }
+    // verify the required parameter 'customListDto' is set
+    if (customListDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customListDto' when calling addCustomList");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customListDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Executes custom operations for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void customOperations(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    customOperations(isvId, null);
+  }
+
+  /**
+   * Executes custom operations for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void customOperations(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    customOperationsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Executes custom operations for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> customOperationsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return customOperationsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Executes custom operations for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> customOperationsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = customOperationsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("customOperations", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder customOperationsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling customOperations");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customoperations"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId) throws ApiException {
+    deleteCustomList(isvId, customListId, null);
+  }
+
+  /**
+   * Deletes a custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    deleteCustomListWithHttpInfo(isvId, customListId, headers);
+  }
+
+  /**
+   * Deletes a custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId) throws ApiException {
+    return deleteCustomListWithHttpInfo(isvId, customListId, null);
+  }
+
+  /**
+   * Deletes a custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteCustomListRequestBuilder(isvId, customListId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteCustomList", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteCustomListRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteCustomList");
+    }
+    // verify the required parameter 'customListId' is set
+    if (customListId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customListId' when calling deleteCustomList");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist/{custom_list_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{custom_list_id}", ApiClient.urlEncode(customListId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes inactive sessions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteInactiveSessions(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    deleteInactiveSessions(isvId, null);
+  }
+
+  /**
+   * Deletes inactive sessions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteInactiveSessions(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    deleteInactiveSessionsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Deletes inactive sessions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteInactiveSessionsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return deleteInactiveSessionsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Deletes inactive sessions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteInactiveSessionsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteInactiveSessionsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteInactiveSessions", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteInactiveSessionsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteInactiveSessions");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/deleteinactivesessions"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gathers analytics by sending consumption heartbeats.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void gatherAnalytics(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    gatherAnalytics(isvId, null);
+  }
+
+  /**
+   * Gathers analytics by sending consumption heartbeats.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void gatherAnalytics(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    gatherAnalyticsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Gathers analytics by sending consumption heartbeats.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> gatherAnalyticsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return gatherAnalyticsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gathers analytics by sending consumption heartbeats.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> gatherAnalyticsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = gatherAnalyticsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("gatherAnalytics", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder gatherAnalyticsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling gatherAnalytics");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/gatheranalytics"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets all custom lists for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return List&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomListDto> getAllCustomLists(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllCustomLists(isvId, null);
+  }
+
+  /**
+   * Gets all custom lists for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<CustomListDto> getAllCustomLists(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<CustomListDto>> localVarResponse = getAllCustomListsWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets all custom lists for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;List&lt;CustomListDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomListDto>> getAllCustomListsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllCustomListsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets all custom lists for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;CustomListDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<CustomListDto>> getAllCustomListsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllCustomListsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllCustomLists", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<CustomListDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<CustomListDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<CustomListDto>>() {});
+        
+
+        return new ApiResponse<List<CustomListDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllCustomListsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllCustomLists");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return BackupStorageDto
+   * @throws ApiException if fails to make API call
+   */
+  public BackupStorageDto getBackupStorage(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getBackupStorage(isvId, null);
+  }
+
+  /**
+   * Gets the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return BackupStorageDto
+   * @throws ApiException if fails to make API call
+   */
+  public BackupStorageDto getBackupStorage(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<BackupStorageDto> localVarResponse = getBackupStorageWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;BackupStorageDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BackupStorageDto> getBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getBackupStorageWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;BackupStorageDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BackupStorageDto> getBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getBackupStorageRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getBackupStorage", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<BackupStorageDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        BackupStorageDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<BackupStorageDto>() {});
+        
+
+        return new ApiResponse<BackupStorageDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getBackupStorageRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getBackupStorage");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets a shared access token for the backup storage of the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String getBackupStorageAccessToken(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getBackupStorageAccessToken(isvId, null);
+  }
+
+  /**
+   * Gets a shared access token for the backup storage of the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String getBackupStorageAccessToken(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = getBackupStorageAccessTokenWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets a shared access token for the backup storage of the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> getBackupStorageAccessTokenWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getBackupStorageAccessTokenWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets a shared access token for the backup storage of the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> getBackupStorageAccessTokenWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getBackupStorageAccessTokenRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getBackupStorageAccessToken", localVarResponse);
+        }
+        // for plain text response
+        if (localVarResponse.headers().map().containsKey("Content-Type") &&
+                "text/plain".equalsIgnoreCase(localVarResponse.headers().map().get("Content-Type").get(0).split(";")[0].trim())) {
+          localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+          java.util.Scanner s = new java.util.Scanner(localVarResponseBody == null ? InputStream.nullInputStream() : localVarResponseBody).useDelimiter("\\A");
+          String responseBodyText = s.hasNext() ? s.next() : "";
+          return new ApiResponse<String>(
+                  localVarResponse.statusCode(),
+                  localVarResponse.headers().map(),
+                  responseBodyText
+          );
         } else {
-            basePath = null;
+            throw new RuntimeException("Error! The response Content-Type is supposed to be `text/plain` but it's not: " + localVarResponse);
         }
-
-        Object localVarPostBody = customListDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder getBackupStorageAccessTokenRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getBackupStorageAccessToken");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addCustomListValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addCustomList(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage/access_token"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "text/plain, application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConfigurationDto getConfiguration(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getConfiguration(isvId, null);
+  }
+
+  /**
+   * Gets the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConfigurationDto getConfiguration(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<ConfigurationDto> localVarResponse = getConfigurationWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ApiResponse&lt;ConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConfigurationDto> getConfigurationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getConfigurationWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConfigurationDto> getConfigurationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getConfigurationRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getConfiguration", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ConfigurationDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'customListDto' is set
-        if (customListDto == null) {
-            throw new ApiException("Missing the required parameter 'customListDto' when calling addCustomList(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ConfigurationDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ConfigurationDto>() {});
+        
+
+        return new ApiResponse<ConfigurationDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getConfigurationRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getConfiguration");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/configuration"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets a specific custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto getCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId) throws ApiException {
+    return getCustomList(isvId, customListId, null);
+  }
+
+  /**
+   * Gets a specific custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto getCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomListDto> localVarResponse = getCustomListWithHttpInfo(isvId, customListId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets a specific custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> getCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId) throws ApiException {
+    return getCustomListWithHttpInfo(isvId, customListId, null);
+  }
+
+  /**
+   * Gets a specific custom list by its ID for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> getCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getCustomListRequestBuilder(isvId, customListId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getCustomList", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomListDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return addCustomListCall(isvId, customListDto, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomListDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomListDto>() {});
+        
 
+        return new ApiResponse<CustomListDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getCustomListRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID customListId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getCustomList");
+    }
+    // verify the required parameter 'customListId' is set
+    if (customListId == null) {
+      throw new ApiException(400, "Missing the required parameter 'customListId' when calling getCustomList");
     }
 
-    /**
-     * Adds a new custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return CustomListDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomListDto addCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        ApiResponse<CustomListDto> localVarResp = addCustomListWithHttpInfo(isvId, customListDto);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist/{custom_list_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{custom_list_id}", ApiClient.urlEncode(customListId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets the number of license seats for the specified ISV and filter criteria.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param productId The product identifier. (optional)
+   * @param templateIds The list of template identifiers. (optional)
+   * @param customerTypeIds The list of customer type identifiers. (optional)
+   * @param licenseTypeIds The list of license type identifiers. (optional)
+   * @return Integer
+   * @throws ApiException if fails to make API call
+   */
+  public Integer getLicenseSeats(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable List<UUID> templateIds, @jakarta.annotation.Nullable List<UUID> customerTypeIds, @jakarta.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
+    return getLicenseSeats(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, null);
+  }
+
+  /**
+   * Gets the number of license seats for the specified ISV and filter criteria.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param productId The product identifier. (optional)
+   * @param templateIds The list of template identifiers. (optional)
+   * @param customerTypeIds The list of customer type identifiers. (optional)
+   * @param licenseTypeIds The list of license type identifiers. (optional)
+   * @param headers Optional headers to include in the request
+   * @return Integer
+   * @throws ApiException if fails to make API call
+   */
+  public Integer getLicenseSeats(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable List<UUID> templateIds, @jakarta.annotation.Nullable List<UUID> customerTypeIds, @jakarta.annotation.Nullable List<UUID> licenseTypeIds, Map<String, String> headers) throws ApiException {
+    ApiResponse<Integer> localVarResponse = getLicenseSeatsWithHttpInfo(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets the number of license seats for the specified ISV and filter criteria.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param productId The product identifier. (optional)
+   * @param templateIds The list of template identifiers. (optional)
+   * @param customerTypeIds The list of customer type identifiers. (optional)
+   * @param licenseTypeIds The list of license type identifiers. (optional)
+   * @return ApiResponse&lt;Integer&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Integer> getLicenseSeatsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable List<UUID> templateIds, @jakarta.annotation.Nullable List<UUID> customerTypeIds, @jakarta.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
+    return getLicenseSeatsWithHttpInfo(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, null);
+  }
+
+  /**
+   * Gets the number of license seats for the specified ISV and filter criteria.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param productId The product identifier. (optional)
+   * @param templateIds The list of template identifiers. (optional)
+   * @param customerTypeIds The list of customer type identifiers. (optional)
+   * @param licenseTypeIds The list of license type identifiers. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Integer&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Integer> getLicenseSeatsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable List<UUID> templateIds, @jakarta.annotation.Nullable List<UUID> customerTypeIds, @jakarta.annotation.Nullable List<UUID> licenseTypeIds, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicenseSeatsRequestBuilder(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicenseSeats", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<Integer>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        Integer responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Integer>() {});
+        
+
+        return new ApiResponse<Integer>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicenseSeatsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable List<UUID> templateIds, @jakarta.annotation.Nullable List<UUID> customerTypeIds, @jakarta.annotation.Nullable List<UUID> licenseTypeIds, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicenseSeats");
     }
 
-    /**
-     * Adds a new custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return ApiResponse&lt;CustomListDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomListDto> addCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        okhttp3.Call localVarCall = addCustomListValidateBeforeCall(isvId, customListDto, null);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/licenseseats"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "product_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("product_id", productId));
+    localVarQueryParameterBaseName = "templateIds";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "templateIds", templateIds));
+    localVarQueryParameterBaseName = "customerTypeIds";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "customerTypeIds", customerTypeIds));
+    localVarQueryParameterBaseName = "licenseTypeIds";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "licenseTypeIds", licenseTypeIds));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
     }
 
-    /**
-     * Adds a new custom list for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
+    localVarRequestBuilder.header("Accept", "application/json");
 
-        okhttp3.Call localVarCall = addCustomListValidateBeforeCall(isvId, customListDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-    /**
-     * Build call for customOperations
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call customOperationsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
+  /**
+   * Retrieve Slascone licensing state and license info
+   * 
+   * @param isvId  (required)
+   * @param forceSendHeartbeat  (optional)
+   * @return SlasconeLicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public SlasconeLicenseInfoDto getSlasconeLicenseInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
+    return getSlasconeLicenseInfo(isvId, forceSendHeartbeat, null);
+  }
+
+  /**
+   * Retrieve Slascone licensing state and license info
+   * 
+   * @param isvId  (required)
+   * @param forceSendHeartbeat  (optional)
+   * @param headers Optional headers to include in the request
+   * @return SlasconeLicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public SlasconeLicenseInfoDto getSlasconeLicenseInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable Boolean forceSendHeartbeat, Map<String, String> headers) throws ApiException {
+    ApiResponse<SlasconeLicenseInfoDto> localVarResponse = getSlasconeLicenseInfoWithHttpInfo(isvId, forceSendHeartbeat, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Retrieve Slascone licensing state and license info
+   * 
+   * @param isvId  (required)
+   * @param forceSendHeartbeat  (optional)
+   * @return ApiResponse&lt;SlasconeLicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<SlasconeLicenseInfoDto> getSlasconeLicenseInfoWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
+    return getSlasconeLicenseInfoWithHttpInfo(isvId, forceSendHeartbeat, null);
+  }
+
+  /**
+   * Retrieve Slascone licensing state and license info
+   * 
+   * @param isvId  (required)
+   * @param forceSendHeartbeat  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;SlasconeLicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<SlasconeLicenseInfoDto> getSlasconeLicenseInfoWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable Boolean forceSendHeartbeat, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getSlasconeLicenseInfoRequestBuilder(isvId, forceSendHeartbeat, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getSlasconeLicenseInfo", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<SlasconeLicenseInfoDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        SlasconeLicenseInfoDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<SlasconeLicenseInfoDto>() {});
+        
+
+        return new ApiResponse<SlasconeLicenseInfoDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getSlasconeLicenseInfoRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable Boolean forceSendHeartbeat, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getSlasconeLicenseInfo");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/slasconelicenseinfo"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "forceSendHeartbeat";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("forceSendHeartbeat", forceSendHeartbeat));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Performs a health check for the specified ISV, including product and user role validation and migration.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String healthCheck(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return healthCheck(isvId, null);
+  }
+
+  /**
+   * Performs a health check for the specified ISV, including product and user role validation and migration.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String healthCheck(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = healthCheckWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Performs a health check for the specified ISV, including product and user role validation and migration.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> healthCheckWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return healthCheckWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Performs a health check for the specified ISV, including product and user role validation and migration.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> healthCheckWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = healthCheckRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("healthCheck", localVarResponse);
+        }
+        // for plain text response
+        if (localVarResponse.headers().map().containsKey("Content-Type") &&
+                "text/plain".equalsIgnoreCase(localVarResponse.headers().map().get("Content-Type").get(0).split(";")[0].trim())) {
+          localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+          java.util.Scanner s = new java.util.Scanner(localVarResponseBody == null ? InputStream.nullInputStream() : localVarResponseBody).useDelimiter("\\A");
+          String responseBodyText = s.hasNext() ? s.next() : "";
+          return new ApiResponse<String>(
+                  localVarResponse.statusCode(),
+                  localVarResponse.headers().map(),
+                  responseBodyText
+          );
         } else {
-            basePath = null;
+            throw new RuntimeException("Error! The response Content-Type is supposed to be `text/plain` but it's not: " + localVarResponse);
         }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customoperations"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
+  private HttpRequest.Builder healthCheckRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling healthCheck");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/healthcheck"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "text/plain, application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param customerId The customer identifier or customer number (optional). (optional)
+   * @param includeInactive Whether to include inactive licenses (optional). (optional)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String initBackupStorage(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerId, @jakarta.annotation.Nullable Boolean includeInactive) throws ApiException {
+    return initBackupStorage(isvId, customerId, includeInactive, null);
+  }
+
+  /**
+   * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param customerId The customer identifier or customer number (optional). (optional)
+   * @param includeInactive Whether to include inactive licenses (optional). (optional)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String initBackupStorage(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerId, @jakarta.annotation.Nullable Boolean includeInactive, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = initBackupStorageWithHttpInfo(isvId, customerId, includeInactive, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param customerId The customer identifier or customer number (optional). (optional)
+   * @param includeInactive Whether to include inactive licenses (optional). (optional)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> initBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerId, @jakarta.annotation.Nullable Boolean includeInactive) throws ApiException {
+    return initBackupStorageWithHttpInfo(isvId, customerId, includeInactive, null);
+  }
+
+  /**
+   * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param customerId The customer identifier or customer number (optional). (optional)
+   * @param includeInactive Whether to include inactive licenses (optional). (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> initBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerId, @jakarta.annotation.Nullable Boolean includeInactive, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = initBackupStorageRequestBuilder(isvId, customerId, includeInactive, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("initBackupStorage", localVarResponse);
         }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call customOperationsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling customOperations(Async)");
-        }
-
-        return customOperationsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Executes custom operations for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void customOperations(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        customOperationsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Executes custom operations for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> customOperationsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = customOperationsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Executes custom operations for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call customOperationsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = customOperationsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteCustomList
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
+        // for plain text response
+        if (localVarResponse.headers().map().containsKey("Content-Type") &&
+                "text/plain".equalsIgnoreCase(localVarResponse.headers().map().get("Content-Type").get(0).split(";")[0].trim())) {
+          localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+          java.util.Scanner s = new java.util.Scanner(localVarResponseBody == null ? InputStream.nullInputStream() : localVarResponseBody).useDelimiter("\\A");
+          String responseBodyText = s.hasNext() ? s.next() : "";
+          return new ApiResponse<String>(
+                  localVarResponse.statusCode(),
+                  localVarResponse.headers().map(),
+                  responseBodyText
+          );
         } else {
-            basePath = null;
+            throw new RuntimeException("Error! The response Content-Type is supposed to be `text/plain` but it's not: " + localVarResponse);
         }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist/{custom_list_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "custom_list_id" + "}", localVarApiClient.escapeString(customListId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder initBackupStorageRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String customerId, @jakarta.annotation.Nullable Boolean includeInactive, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling initBackupStorage");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteCustomListValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteCustomList(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage/init"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "customer_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("customer_id", customerId));
+    localVarQueryParameterBaseName = "include_inactive";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("include_inactive", includeInactive));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "text/plain, application/json");
+
+    localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Migrates the database for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void migrateDatabase(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    migrateDatabase(isvId, null);
+  }
+
+  /**
+   * Migrates the database for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void migrateDatabase(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    migrateDatabaseWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Migrates the database for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> migrateDatabaseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return migrateDatabaseWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Migrates the database for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> migrateDatabaseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = migrateDatabaseRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("migrateDatabase", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder migrateDatabaseRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling migrateDatabase");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/migratedatabase"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param configurationDto The configuration data transfer object. (required)
+   * @return ConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConfigurationDto patchConfiguration(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
+    return patchConfiguration(isvId, configurationDto, null);
+  }
+
+  /**
+   * Updates the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param configurationDto The configuration data transfer object. (required)
+   * @param headers Optional headers to include in the request
+   * @return ConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConfigurationDto patchConfiguration(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConfigurationDto configurationDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ConfigurationDto> localVarResponse = patchConfigurationWithHttpInfo(isvId, configurationDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param configurationDto The configuration data transfer object. (required)
+   * @return ApiResponse&lt;ConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConfigurationDto> patchConfigurationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
+    return patchConfigurationWithHttpInfo(isvId, configurationDto, null);
+  }
+
+  /**
+   * Updates the configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param configurationDto The configuration data transfer object. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConfigurationDto> patchConfigurationWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConfigurationDto configurationDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = patchConfigurationRequestBuilder(isvId, configurationDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("patchConfiguration", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ConfigurationDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'customListId' is set
-        if (customListId == null) {
-            throw new ApiException("Missing the required parameter 'customListId' when calling deleteCustomList(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ConfigurationDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ConfigurationDto>() {});
+        
+
+        return new ApiResponse<ConfigurationDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder patchConfigurationRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ConfigurationDto configurationDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling patchConfiguration");
+    }
+    // verify the required parameter 'configurationDto' is set
+    if (configurationDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'configurationDto' when calling patchConfiguration");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/configuration"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(configurationDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Partially updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto patchCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return patchCustomList(isvId, customListDto, null);
+  }
+
+  /**
+   * Partially updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto patchCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomListDto> localVarResponse = patchCustomListWithHttpInfo(isvId, customListDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Partially updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> patchCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return patchCustomListWithHttpInfo(isvId, customListDto, null);
+  }
+
+  /**
+   * Partially updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> patchCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = patchCustomListRequestBuilder(isvId, customListDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("patchCustomList", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomListDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return deleteCustomListCall(isvId, customListId, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomListDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomListDto>() {});
+        
 
+        return new ApiResponse<CustomListDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder patchCustomListRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling patchCustomList");
+    }
+    // verify the required parameter 'customListDto' is set
+    if (customListDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customListDto' when calling patchCustomList");
     }
 
-    /**
-     * Deletes a custom list by its ID for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void deleteCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
-        deleteCustomListWithHttpInfo(isvId, customListId);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customListDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * Deletes a custom list by its ID for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> deleteCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
-        okhttp3.Call localVarCall = deleteCustomListValidateBeforeCall(isvId, customListId, null);
-        return localVarApiClient.execute(localVarCall);
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * Deletes a custom list by its ID for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 204 </td><td> No content </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteCustomListValidateBeforeCall(isvId, customListId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
-    /**
-     * Build call for deleteInactiveSessions
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteInactiveSessionsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    return localVarRequestBuilder;
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
+  /**
+   * Checks the validity of a signature for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param body The signature to check. (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String signatureCheck(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String body) throws ApiException {
+    return signatureCheck(isvId, body, null);
+  }
+
+  /**
+   * Checks the validity of a signature for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param body The signature to check. (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String signatureCheck(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String body, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = signatureCheckWithHttpInfo(isvId, body, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Checks the validity of a signature for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param body The signature to check. (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> signatureCheckWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String body) throws ApiException {
+    return signatureCheckWithHttpInfo(isvId, body, null);
+  }
+
+  /**
+   * Checks the validity of a signature for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param body The signature to check. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> signatureCheckWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String body, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = signatureCheckRequestBuilder(isvId, body, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("signatureCheck", localVarResponse);
+        }
+        // for plain text response
+        if (localVarResponse.headers().map().containsKey("Content-Type") &&
+                "text/plain".equalsIgnoreCase(localVarResponse.headers().map().get("Content-Type").get(0).split(";")[0].trim())) {
+          localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+          java.util.Scanner s = new java.util.Scanner(localVarResponseBody == null ? InputStream.nullInputStream() : localVarResponseBody).useDelimiter("\\A");
+          String responseBodyText = s.hasNext() ? s.next() : "";
+          return new ApiResponse<String>(
+                  localVarResponse.statusCode(),
+                  localVarResponse.headers().map(),
+                  responseBodyText
+          );
         } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/deleteinactivesessions"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteInactiveSessionsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteInactiveSessions(Async)");
-        }
-
-        return deleteInactiveSessionsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Deletes inactive sessions for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void deleteInactiveSessions(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        deleteInactiveSessionsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Deletes inactive sessions for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> deleteInactiveSessionsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = deleteInactiveSessionsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Deletes inactive sessions for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteInactiveSessionsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteInactiveSessionsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for gatherAnalytics
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call gatherAnalyticsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/gatheranalytics"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call gatherAnalyticsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling gatherAnalytics(Async)");
-        }
-
-        return gatherAnalyticsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gathers analytics by sending consumption heartbeats.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void gatherAnalytics(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        gatherAnalyticsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Gathers analytics by sending consumption heartbeats.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> gatherAnalyticsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = gatherAnalyticsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Gathers analytics by sending consumption heartbeats. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call gatherAnalyticsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = gatherAnalyticsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllCustomLists
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomListsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllCustomListsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllCustomLists(Async)");
-        }
-
-        return getAllCustomListsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gets all custom lists for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return List&lt;CustomListDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<CustomListDto> getAllCustomLists(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<CustomListDto>> localVarResp = getAllCustomListsWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets all custom lists for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;List&lt;CustomListDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<CustomListDto>> getAllCustomListsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getAllCustomListsValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<CustomListDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets all custom lists for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllCustomListsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<CustomListDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllCustomListsValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<CustomListDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getBackupStorage
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getBackupStorageCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getBackupStorageValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getBackupStorage(Async)");
-        }
-
-        return getBackupStorageCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gets the backup storage configuration for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return BackupStorageDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public BackupStorageDto getBackupStorage(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<BackupStorageDto> localVarResp = getBackupStorageWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets the backup storage configuration for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;BackupStorageDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<BackupStorageDto> getBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getBackupStorageValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<BackupStorageDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets the backup storage configuration for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<BackupStorageDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getBackupStorageValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<BackupStorageDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getBackupStorageAccessToken
-     * @param isvId The ISV identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getBackupStorageAccessTokenCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage/access_token"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "text/plain",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getBackupStorageAccessTokenValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getBackupStorageAccessToken(Async)");
-        }
-
-        return getBackupStorageAccessTokenCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gets a shared access token for the backup storage of the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String getBackupStorageAccessToken(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<String> localVarResp = getBackupStorageAccessTokenWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets a shared access token for the backup storage of the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> getBackupStorageAccessTokenWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getBackupStorageAccessTokenValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets a shared access token for the backup storage of the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getBackupStorageAccessTokenAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getBackupStorageAccessTokenValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getConfiguration
-     * @param isvId The ISV identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getConfigurationCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/configuration"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getConfigurationValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getConfiguration(Async)");
-        }
-
-        return getConfigurationCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gets the configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ConfigurationDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ConfigurationDto getConfiguration(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<ConfigurationDto> localVarResp = getConfigurationWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets the configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ApiResponse&lt;ConfigurationDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ConfigurationDto> getConfigurationWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getConfigurationValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<ConfigurationDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets the configuration for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getConfigurationAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<ConfigurationDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getConfigurationValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<ConfigurationDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getCustomList
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist/{custom_list_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "custom_list_id" + "}", localVarApiClient.escapeString(customListId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getCustomListValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getCustomList(Async)");
-        }
-
-        // verify the required parameter 'customListId' is set
-        if (customListId == null) {
-            throw new ApiException("Missing the required parameter 'customListId' when calling getCustomList(Async)");
-        }
-
-        return getCustomListCall(isvId, customListId, _callback);
-
-    }
-
-    /**
-     * Gets a specific custom list by its ID for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @return CustomListDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomListDto getCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
-        ApiResponse<CustomListDto> localVarResp = getCustomListWithHttpInfo(isvId, customListId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets a specific custom list by its ID for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @return ApiResponse&lt;CustomListDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomListDto> getCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId) throws ApiException {
-        okhttp3.Call localVarCall = getCustomListValidateBeforeCall(isvId, customListId, null);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets a specific custom list by its ID for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customListId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td>  </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID customListId, final ApiCallback<CustomListDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getCustomListValidateBeforeCall(isvId, customListId, _callback);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicenseSeats
-     * @param isvId The ISV identifier. (required)
-     * @param productId The product identifier. (optional)
-     * @param templateIds The list of template identifiers. (optional)
-     * @param customerTypeIds The list of customer type identifiers. (optional)
-     * @param licenseTypeIds The list of license type identifiers. (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseSeatsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/licenseseats"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (productId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("product_id", productId));
-        }
-
-        if (templateIds != null) {
-            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "templateIds", templateIds));
-        }
-
-        if (customerTypeIds != null) {
-            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "customerTypeIds", customerTypeIds));
-        }
-
-        if (licenseTypeIds != null) {
-            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "licenseTypeIds", licenseTypeIds));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicenseSeatsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicenseSeats(Async)");
-        }
-
-        return getLicenseSeatsCall(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, _callback);
-
-    }
-
-    /**
-     * Gets the number of license seats for the specified ISV and filter criteria.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param productId The product identifier. (optional)
-     * @param templateIds The list of template identifiers. (optional)
-     * @param customerTypeIds The list of customer type identifiers. (optional)
-     * @param licenseTypeIds The list of license type identifiers. (optional)
-     * @return Integer
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public Integer getLicenseSeats(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
-        ApiResponse<Integer> localVarResp = getLicenseSeatsWithHttpInfo(isvId, productId, templateIds, customerTypeIds, licenseTypeIds);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets the number of license seats for the specified ISV and filter criteria.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param productId The product identifier. (optional)
-     * @param templateIds The list of template identifiers. (optional)
-     * @param customerTypeIds The list of customer type identifiers. (optional)
-     * @param licenseTypeIds The list of license type identifiers. (optional)
-     * @return ApiResponse&lt;Integer&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Integer> getLicenseSeatsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds) throws ApiException {
-        okhttp3.Call localVarCall = getLicenseSeatsValidateBeforeCall(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, null);
-        Type localVarReturnType = new TypeToken<Integer>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets the number of license seats for the specified ISV and filter criteria. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param productId The product identifier. (optional)
-     * @param templateIds The list of template identifiers. (optional)
-     * @param customerTypeIds The list of customer type identifiers. (optional)
-     * @param licenseTypeIds The list of license type identifiers. (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicenseSeatsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable List<UUID> templateIds, @javax.annotation.Nullable List<UUID> customerTypeIds, @javax.annotation.Nullable List<UUID> licenseTypeIds, final ApiCallback<Integer> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicenseSeatsValidateBeforeCall(isvId, productId, templateIds, customerTypeIds, licenseTypeIds, _callback);
-        Type localVarReturnType = new TypeToken<Integer>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getSlasconeLicenseInfo
-     * @param isvId  (required)
-     * @param forceSendHeartbeat  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getSlasconeLicenseInfoCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/slasconelicenseinfo"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (forceSendHeartbeat != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("forceSendHeartbeat", forceSendHeartbeat));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getSlasconeLicenseInfoValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getSlasconeLicenseInfo(Async)");
-        }
-
-        return getSlasconeLicenseInfoCall(isvId, forceSendHeartbeat, _callback);
-
-    }
-
-    /**
-     * Retrieve Slascone licensing state and license info
-     * 
-     * @param isvId  (required)
-     * @param forceSendHeartbeat  (optional)
-     * @return SlasconeLicenseInfoDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public SlasconeLicenseInfoDto getSlasconeLicenseInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
-        ApiResponse<SlasconeLicenseInfoDto> localVarResp = getSlasconeLicenseInfoWithHttpInfo(isvId, forceSendHeartbeat);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Retrieve Slascone licensing state and license info
-     * 
-     * @param isvId  (required)
-     * @param forceSendHeartbeat  (optional)
-     * @return ApiResponse&lt;SlasconeLicenseInfoDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<SlasconeLicenseInfoDto> getSlasconeLicenseInfoWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat) throws ApiException {
-        okhttp3.Call localVarCall = getSlasconeLicenseInfoValidateBeforeCall(isvId, forceSendHeartbeat, null);
-        Type localVarReturnType = new TypeToken<SlasconeLicenseInfoDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Retrieve Slascone licensing state and license info (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param forceSendHeartbeat  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getSlasconeLicenseInfoAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable Boolean forceSendHeartbeat, final ApiCallback<SlasconeLicenseInfoDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getSlasconeLicenseInfoValidateBeforeCall(isvId, forceSendHeartbeat, _callback);
-        Type localVarReturnType = new TypeToken<SlasconeLicenseInfoDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for healthCheck
-     * @param isvId The ISV identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call healthCheckCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/healthcheck"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "text/plain",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call healthCheckValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling healthCheck(Async)");
-        }
-
-        return healthCheckCall(isvId, _callback);
-
-    }
-
-    /**
-     * Performs a health check for the specified ISV, including product and user role validation and migration.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String healthCheck(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<String> localVarResp = healthCheckWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Performs a health check for the specified ISV, including product and user role validation and migration.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> healthCheckWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = healthCheckValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Performs a health check for the specified ISV, including product and user role validation and migration. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call healthCheckAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = healthCheckValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for initBackupStorage
-     * @param isvId The ISV identifier. (required)
-     * @param customerId The customer identifier or customer number (optional). (optional)
-     * @param includeInactive Whether to include inactive licenses (optional). (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call initBackupStorageCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage/init"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (customerId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("customer_id", customerId));
-        }
-
-        if (includeInactive != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("include_inactive", includeInactive));
-        }
-
-        final String[] localVarAccepts = {
-            "text/plain",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call initBackupStorageValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling initBackupStorage(Async)");
-        }
-
-        return initBackupStorageCall(isvId, customerId, includeInactive, _callback);
-
-    }
-
-    /**
-     * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param customerId The customer identifier or customer number (optional). (optional)
-     * @param includeInactive Whether to include inactive licenses (optional). (optional)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String initBackupStorage(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive) throws ApiException {
-        ApiResponse<String> localVarResp = initBackupStorageWithHttpInfo(isvId, customerId, includeInactive);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param customerId The customer identifier or customer number (optional). (optional)
-     * @param includeInactive Whether to include inactive licenses (optional). (optional)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> initBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive) throws ApiException {
-        okhttp3.Call localVarCall = initBackupStorageValidateBeforeCall(isvId, customerId, includeInactive, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Initializes backup storage for the specified ISV, optionally for a specific customer and including inactive licenses. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param customerId The customer identifier or customer number (optional). (optional)
-     * @param includeInactive Whether to include inactive licenses (optional). (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call initBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String customerId, @javax.annotation.Nullable Boolean includeInactive, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = initBackupStorageValidateBeforeCall(isvId, customerId, includeInactive, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for migrateDatabase
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call migrateDatabaseCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/migratedatabase"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call migrateDatabaseValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling migrateDatabase(Async)");
-        }
-
-        return migrateDatabaseCall(isvId, _callback);
-
-    }
+            throw new RuntimeException("Error! The response Content-Type is supposed to be `text/plain` but it's not: " + localVarResponse);
+        }
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder signatureCheckRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String body, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling signatureCheck");
+    }
+    // verify the required parameter 'body' is set
+    if (body == null) {
+      throw new ApiException(400, "Missing the required parameter 'body' when calling signatureCheck");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/healthcheck/signaturecheck"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "text/plain, application/json");
+
+    localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofString(body));
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param backupStorageDto  (required)
+   * @return BackupStorageDto
+   * @throws ApiException if fails to make API call
+   */
+  public BackupStorageDto updateBackupStorage(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
+    return updateBackupStorage(isvId, backupStorageDto, null);
+  }
+
+  /**
+   * Updates the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param backupStorageDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return BackupStorageDto
+   * @throws ApiException if fails to make API call
+   */
+  public BackupStorageDto updateBackupStorage(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull BackupStorageDto backupStorageDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<BackupStorageDto> localVarResponse = updateBackupStorageWithHttpInfo(isvId, backupStorageDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param backupStorageDto  (required)
+   * @return ApiResponse&lt;BackupStorageDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BackupStorageDto> updateBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
+    return updateBackupStorageWithHttpInfo(isvId, backupStorageDto, null);
+  }
+
+  /**
+   * Updates the backup storage configuration for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param backupStorageDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;BackupStorageDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<BackupStorageDto> updateBackupStorageWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull BackupStorageDto backupStorageDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateBackupStorageRequestBuilder(isvId, backupStorageDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateBackupStorage", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<BackupStorageDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        BackupStorageDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<BackupStorageDto>() {});
+        
+
+        return new ApiResponse<BackupStorageDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateBackupStorageRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull BackupStorageDto backupStorageDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateBackupStorage");
+    }
+    // verify the required parameter 'backupStorageDto' is set
+    if (backupStorageDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'backupStorageDto' when calling updateBackupStorage");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(backupStorageDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto updateCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return updateCustomList(isvId, customListDto, null);
+  }
+
+  /**
+   * Updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return CustomListDto
+   * @throws ApiException if fails to make API call
+   */
+  public CustomListDto updateCustomList(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<CustomListDto> localVarResponse = updateCustomListWithHttpInfo(isvId, customListDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> updateCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto) throws ApiException {
+    return updateCustomListWithHttpInfo(isvId, customListDto, null);
+  }
+
+  /**
+   * Updates an existing custom list for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param customListDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;CustomListDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<CustomListDto> updateCustomListWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateCustomListRequestBuilder(isvId, customListDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateCustomList", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<CustomListDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        CustomListDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<CustomListDto>() {});
+        
+
+        return new ApiResponse<CustomListDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateCustomListRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull CustomListDto customListDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateCustomList");
+    }
+    // verify the required parameter 'customListDto' is set
+    if (customListDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'customListDto' when calling updateCustomList");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(customListDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Validates and sends alerts for licenses based on alert configuration.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAlerts(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateAlerts(isvId, null);
+  }
+
+  /**
+   * Validates and sends alerts for licenses based on alert configuration.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAlerts(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateAlertsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Validates and sends alerts for licenses based on alert configuration.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAlertsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateAlertsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Validates and sends alerts for licenses based on alert configuration.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAlertsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateAlertsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateAlerts", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateAlertsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateAlerts");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/alert"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Automatically unassigns tokens based on inactivity for all products.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAssignments(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateAssignments(isvId, null);
+  }
+
+  /**
+   * Automatically unassigns tokens based on inactivity for all products.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAssignments(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateAssignmentsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Automatically unassigns tokens based on inactivity for all products.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateAssignmentsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Automatically unassigns tokens based on inactivity for all products.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAssignmentsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateAssignmentsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateAssignments", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateAssignmentsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateAssignments");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/autounassign"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Automatically unassigns tokens for a specific product based on inactivity.
+   * 
+   * @param isvId  (required)
+   * @param productId  (required)
+   * @param validateAssignmentsDto  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAssignmentsByProductId(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID productId, @jakarta.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
+    validateAssignmentsByProductId(isvId, productId, validateAssignmentsDto, null);
+  }
+
+  /**
+   * Automatically unassigns tokens for a specific product based on inactivity.
+   * 
+   * @param isvId  (required)
+   * @param productId  (required)
+   * @param validateAssignmentsDto  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateAssignmentsByProductId(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID productId, @jakarta.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, Map<String, String> headers) throws ApiException {
+    validateAssignmentsByProductIdWithHttpInfo(isvId, productId, validateAssignmentsDto, headers);
+  }
+
+  /**
+   * Automatically unassigns tokens for a specific product based on inactivity.
+   * 
+   * @param isvId  (required)
+   * @param productId  (required)
+   * @param validateAssignmentsDto  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAssignmentsByProductIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID productId, @jakarta.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
+    return validateAssignmentsByProductIdWithHttpInfo(isvId, productId, validateAssignmentsDto, null);
+  }
+
+  /**
+   * Automatically unassigns tokens for a specific product based on inactivity.
+   * 
+   * @param isvId  (required)
+   * @param productId  (required)
+   * @param validateAssignmentsDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateAssignmentsByProductIdWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID productId, @jakarta.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateAssignmentsByProductIdRequestBuilder(isvId, productId, validateAssignmentsDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateAssignmentsByProductId", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateAssignmentsByProductIdRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID productId, @jakarta.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateAssignmentsByProductId");
+    }
+    // verify the required parameter 'productId' is set
+    if (productId == null) {
+      throw new ApiException(400, "Missing the required parameter 'productId' when calling validateAssignmentsByProductId");
+    }
+    // verify the required parameter 'validateAssignmentsDto' is set
+    if (validateAssignmentsDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'validateAssignmentsDto' when calling validateAssignmentsByProductId");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/product/{product_id}/autounassign"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{product_id}", ApiClient.urlEncode(productId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(validateAssignmentsDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Validates and updates consumption balances for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateConsumptionBalances(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateConsumptionBalances(isvId, null);
+  }
+
+  /**
+   * Validates and updates consumption balances for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateConsumptionBalances(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateConsumptionBalancesWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Validates and updates consumption balances for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateConsumptionBalancesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateConsumptionBalancesWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Validates and updates consumption balances for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateConsumptionBalancesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateConsumptionBalancesRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateConsumptionBalances", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateConsumptionBalancesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateConsumptionBalances");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/consumptionbalance"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Validates heartbeat groups for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateHeartbeatGroups(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateHeartbeatGroups(isvId, null);
+  }
+
+  /**
+   * Validates heartbeat groups for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateHeartbeatGroups(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateHeartbeatGroupsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Validates heartbeat groups for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateHeartbeatGroupsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateHeartbeatGroupsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Validates heartbeat groups for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateHeartbeatGroupsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateHeartbeatGroupsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateHeartbeatGroups", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateHeartbeatGroupsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateHeartbeatGroups");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/validateheartbeatgroups"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Validates license expiration dates, feature expiration, and license start dates.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateLicenseExpirationDate(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateLicenseExpirationDate(isvId, null);
+  }
+
+  /**
+   * Validates license expiration dates, feature expiration, and license start dates.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateLicenseExpirationDate(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateLicenseExpirationDateWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Validates license expiration dates, feature expiration, and license start dates.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateLicenseExpirationDateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateLicenseExpirationDateWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Validates license expiration dates, feature expiration, and license start dates.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateLicenseExpirationDateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateLicenseExpirationDateRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateLicenseExpirationDate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateLicenseExpirationDateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateLicenseExpirationDate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/validatelicensesexpirationdate"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Validates software versions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void validateSoftwareVersions(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    validateSoftwareVersions(isvId, null);
+  }
+
+  /**
+   * Validates software versions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void validateSoftwareVersions(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    validateSoftwareVersionsWithHttpInfo(isvId, headers);
+  }
+
+  /**
+   * Validates software versions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateSoftwareVersionsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return validateSoftwareVersionsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Validates software versions for the specified ISV.
+   * 
+   * @param isvId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> validateSoftwareVersionsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = validateSoftwareVersionsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("validateSoftwareVersions", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder validateSoftwareVersionsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling validateSoftwareVersions");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/administration/validatesoftwareversions"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     * Migrates the database for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void migrateDatabase(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        migrateDatabaseWithHttpInfo(isvId);
-    }
-
-    /**
-     * Migrates the database for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> migrateDatabaseWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = migrateDatabaseValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Migrates the database for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call migrateDatabaseAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = migrateDatabaseValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for patchConfiguration
-     * @param isvId The ISV identifier. (required)
-     * @param configurationDto The configuration data transfer object. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchConfigurationCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = configurationDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/configuration"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call patchConfigurationValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling patchConfiguration(Async)");
-        }
-
-        // verify the required parameter 'configurationDto' is set
-        if (configurationDto == null) {
-            throw new ApiException("Missing the required parameter 'configurationDto' when calling patchConfiguration(Async)");
-        }
-
-        return patchConfigurationCall(isvId, configurationDto, _callback);
-
-    }
-
-    /**
-     * Updates the configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param configurationDto The configuration data transfer object. (required)
-     * @return ConfigurationDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ConfigurationDto patchConfiguration(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
-        ApiResponse<ConfigurationDto> localVarResp = patchConfigurationWithHttpInfo(isvId, configurationDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates the configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param configurationDto The configuration data transfer object. (required)
-     * @return ApiResponse&lt;ConfigurationDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ConfigurationDto> patchConfigurationWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto) throws ApiException {
-        okhttp3.Call localVarCall = patchConfigurationValidateBeforeCall(isvId, configurationDto, null);
-        Type localVarReturnType = new TypeToken<ConfigurationDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates the configuration for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param configurationDto The configuration data transfer object. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchConfigurationAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ConfigurationDto configurationDto, final ApiCallback<ConfigurationDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = patchConfigurationValidateBeforeCall(isvId, configurationDto, _callback);
-        Type localVarReturnType = new TypeToken<ConfigurationDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for patchCustomList
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customListDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call patchCustomListValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling patchCustomList(Async)");
-        }
-
-        // verify the required parameter 'customListDto' is set
-        if (customListDto == null) {
-            throw new ApiException("Missing the required parameter 'customListDto' when calling patchCustomList(Async)");
-        }
-
-        return patchCustomListCall(isvId, customListDto, _callback);
-
-    }
-
-    /**
-     * Partially updates an existing custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return CustomListDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomListDto patchCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        ApiResponse<CustomListDto> localVarResp = patchCustomListWithHttpInfo(isvId, customListDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Partially updates an existing custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return ApiResponse&lt;CustomListDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomListDto> patchCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        okhttp3.Call localVarCall = patchCustomListValidateBeforeCall(isvId, customListDto, null);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Partially updates an existing custom list for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = patchCustomListValidateBeforeCall(isvId, customListDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for signatureCheck
-     * @param isvId The ISV identifier. (required)
-     * @param body The signature to check. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call signatureCheckCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = body;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/healthcheck/signaturecheck"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "text/plain",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call signatureCheckValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling signatureCheck(Async)");
-        }
-
-        // verify the required parameter 'body' is set
-        if (body == null) {
-            throw new ApiException("Missing the required parameter 'body' when calling signatureCheck(Async)");
-        }
-
-        return signatureCheckCall(isvId, body, _callback);
-
-    }
-
-    /**
-     * Checks the validity of a signature for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param body The signature to check. (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String signatureCheck(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body) throws ApiException {
-        ApiResponse<String> localVarResp = signatureCheckWithHttpInfo(isvId, body);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Checks the validity of a signature for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param body The signature to check. (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> signatureCheckWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body) throws ApiException {
-        okhttp3.Call localVarCall = signatureCheckValidateBeforeCall(isvId, body, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Checks the validity of a signature for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param body The signature to check. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Plain text </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call signatureCheckAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String body, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = signatureCheckValidateBeforeCall(isvId, body, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateBackupStorage
-     * @param isvId  (required)
-     * @param backupStorageDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateBackupStorageCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = backupStorageDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/backupstorage"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateBackupStorageValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateBackupStorage(Async)");
-        }
-
-        // verify the required parameter 'backupStorageDto' is set
-        if (backupStorageDto == null) {
-            throw new ApiException("Missing the required parameter 'backupStorageDto' when calling updateBackupStorage(Async)");
-        }
-
-        return updateBackupStorageCall(isvId, backupStorageDto, _callback);
-
-    }
-
-    /**
-     * Updates the backup storage configuration for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param backupStorageDto  (required)
-     * @return BackupStorageDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public BackupStorageDto updateBackupStorage(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
-        ApiResponse<BackupStorageDto> localVarResp = updateBackupStorageWithHttpInfo(isvId, backupStorageDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates the backup storage configuration for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param backupStorageDto  (required)
-     * @return ApiResponse&lt;BackupStorageDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<BackupStorageDto> updateBackupStorageWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto) throws ApiException {
-        okhttp3.Call localVarCall = updateBackupStorageValidateBeforeCall(isvId, backupStorageDto, null);
-        Type localVarReturnType = new TypeToken<BackupStorageDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates the backup storage configuration for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param backupStorageDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateBackupStorageAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull BackupStorageDto backupStorageDto, final ApiCallback<BackupStorageDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateBackupStorageValidateBeforeCall(isvId, backupStorageDto, _callback);
-        Type localVarReturnType = new TypeToken<BackupStorageDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateCustomList
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomListCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = customListDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/customlist"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateCustomListValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateCustomList(Async)");
-        }
-
-        // verify the required parameter 'customListDto' is set
-        if (customListDto == null) {
-            throw new ApiException("Missing the required parameter 'customListDto' when calling updateCustomList(Async)");
-        }
-
-        return updateCustomListCall(isvId, customListDto, _callback);
-
-    }
-
-    /**
-     * Updates an existing custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return CustomListDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public CustomListDto updateCustomList(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        ApiResponse<CustomListDto> localVarResp = updateCustomListWithHttpInfo(isvId, customListDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates an existing custom list for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @return ApiResponse&lt;CustomListDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<CustomListDto> updateCustomListWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto) throws ApiException {
-        okhttp3.Call localVarCall = updateCustomListValidateBeforeCall(isvId, customListDto, null);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates an existing custom list for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param customListDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateCustomListAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull CustomListDto customListDto, final ApiCallback<CustomListDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateCustomListValidateBeforeCall(isvId, customListDto, _callback);
-        Type localVarReturnType = new TypeToken<CustomListDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateAlerts
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAlertsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/alert"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateAlertsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateAlerts(Async)");
-        }
-
-        return validateAlertsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Validates and sends alerts for licenses based on alert configuration.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateAlerts(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateAlertsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Validates and sends alerts for licenses based on alert configuration.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateAlertsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateAlertsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Validates and sends alerts for licenses based on alert configuration. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAlertsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateAlertsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateAssignments
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAssignmentsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/autounassign"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateAssignmentsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateAssignments(Async)");
-        }
-
-        return validateAssignmentsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Automatically unassigns tokens based on inactivity for all products.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateAssignments(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateAssignmentsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Automatically unassigns tokens based on inactivity for all products.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateAssignmentsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateAssignmentsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Automatically unassigns tokens based on inactivity for all products. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAssignmentsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateAssignmentsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateAssignmentsByProductId
-     * @param isvId  (required)
-     * @param productId  (required)
-     * @param validateAssignmentsDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAssignmentsByProductIdCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = validateAssignmentsDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/product/{product_id}/autounassign"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "product_id" + "}", localVarApiClient.escapeString(productId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateAssignmentsByProductIdValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateAssignmentsByProductId(Async)");
-        }
-
-        // verify the required parameter 'productId' is set
-        if (productId == null) {
-            throw new ApiException("Missing the required parameter 'productId' when calling validateAssignmentsByProductId(Async)");
-        }
-
-        // verify the required parameter 'validateAssignmentsDto' is set
-        if (validateAssignmentsDto == null) {
-            throw new ApiException("Missing the required parameter 'validateAssignmentsDto' when calling validateAssignmentsByProductId(Async)");
-        }
-
-        return validateAssignmentsByProductIdCall(isvId, productId, validateAssignmentsDto, _callback);
-
-    }
-
-    /**
-     * Automatically unassigns tokens for a specific product based on inactivity.
-     * 
-     * @param isvId  (required)
-     * @param productId  (required)
-     * @param validateAssignmentsDto  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateAssignmentsByProductId(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
-        validateAssignmentsByProductIdWithHttpInfo(isvId, productId, validateAssignmentsDto);
-    }
-
-    /**
-     * Automatically unassigns tokens for a specific product based on inactivity.
-     * 
-     * @param isvId  (required)
-     * @param productId  (required)
-     * @param validateAssignmentsDto  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateAssignmentsByProductIdWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto) throws ApiException {
-        okhttp3.Call localVarCall = validateAssignmentsByProductIdValidateBeforeCall(isvId, productId, validateAssignmentsDto, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Automatically unassigns tokens for a specific product based on inactivity. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param productId  (required)
-     * @param validateAssignmentsDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateAssignmentsByProductIdAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID productId, @javax.annotation.Nonnull ValidateAssignmentsDto validateAssignmentsDto, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateAssignmentsByProductIdValidateBeforeCall(isvId, productId, validateAssignmentsDto, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateConsumptionBalances
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateConsumptionBalancesCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/consumptionbalance"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateConsumptionBalancesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateConsumptionBalances(Async)");
-        }
-
-        return validateConsumptionBalancesCall(isvId, _callback);
-
-    }
-
-    /**
-     * Validates and updates consumption balances for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateConsumptionBalances(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateConsumptionBalancesWithHttpInfo(isvId);
-    }
-
-    /**
-     * Validates and updates consumption balances for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateConsumptionBalancesWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateConsumptionBalancesValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Validates and updates consumption balances for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateConsumptionBalancesAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateConsumptionBalancesValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateHeartbeatGroups
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateHeartbeatGroupsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/validateheartbeatgroups"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateHeartbeatGroupsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateHeartbeatGroups(Async)");
-        }
-
-        return validateHeartbeatGroupsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Validates heartbeat groups for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateHeartbeatGroups(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateHeartbeatGroupsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Validates heartbeat groups for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateHeartbeatGroupsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateHeartbeatGroupsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Validates heartbeat groups for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateHeartbeatGroupsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateHeartbeatGroupsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateLicenseExpirationDate
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateLicenseExpirationDateCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/validatelicensesexpirationdate"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateLicenseExpirationDateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateLicenseExpirationDate(Async)");
-        }
-
-        return validateLicenseExpirationDateCall(isvId, _callback);
-
-    }
-
-    /**
-     * Validates license expiration dates, feature expiration, and license start dates.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateLicenseExpirationDate(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateLicenseExpirationDateWithHttpInfo(isvId);
-    }
-
-    /**
-     * Validates license expiration dates, feature expiration, and license start dates.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateLicenseExpirationDateWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateLicenseExpirationDateValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Validates license expiration dates, feature expiration, and license start dates. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateLicenseExpirationDateAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateLicenseExpirationDateValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for validateSoftwareVersions
-     * @param isvId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateSoftwareVersionsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/administration/validatesoftwareversions"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call validateSoftwareVersionsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling validateSoftwareVersions(Async)");
-        }
-
-        return validateSoftwareVersionsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Validates software versions for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void validateSoftwareVersions(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        validateSoftwareVersionsWithHttpInfo(isvId);
-    }
-
-    /**
-     * Validates software versions for the specified ISV.
-     * 
-     * @param isvId  (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> validateSoftwareVersionsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = validateSoftwareVersionsValidateBeforeCall(isvId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Validates software versions for the specified ISV. (asynchronously)
-     * 
-     * @param isvId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call validateSoftwareVersionsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = validateSoftwareVersionsValidateBeforeCall(isvId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
 }

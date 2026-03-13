@@ -13,69 +13,55 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * CustomerLightDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  CustomerLightDto.JSON_PROPERTY_ID,
+  CustomerLightDto.JSON_PROPERTY_COMPANY_NAME,
+  CustomerLightDto.JSON_PROPERTY_CUSTOMER_NUMBER,
+  CustomerLightDto.JSON_PROPERTY_EMAIL
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class CustomerLightDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_COMPANY_NAME = "company_name";
-  @SerializedName(SERIALIZED_NAME_COMPANY_NAME)
-  @javax.annotation.Nullable
-  private String companyName;
+  public static final String JSON_PROPERTY_COMPANY_NAME = "company_name";
+  private JsonNullable<String> companyName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER = "customer_number";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER)
-  @javax.annotation.Nullable
-  private String customerNumber;
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER = "customer_number";
+  private JsonNullable<String> customerNumber = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  @javax.annotation.Nullable
-  private String email;
+  public static final String JSON_PROPERTY_EMAIL = "email";
+  private JsonNullable<String> email = JsonNullable.<String>undefined();
 
-  public CustomerLightDto() {
+  public CustomerLightDto() { 
   }
 
-  public CustomerLightDto id(@javax.annotation.Nullable UUID id) {
+  public CustomerLightDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -84,18 +70,23 @@ public class CustomerLightDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public CustomerLightDto companyName(@javax.annotation.Nullable String companyName) {
-    this.companyName = companyName;
+  public CustomerLightDto companyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
     return this;
   }
 
@@ -103,18 +94,31 @@ public class CustomerLightDto {
    * Get companyName
    * @return companyName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCompanyName() {
-    return companyName;
+        return companyName.orElse(null);
   }
 
-  public void setCompanyName(@javax.annotation.Nullable String companyName) {
+  @JsonProperty(value = JSON_PROPERTY_COMPANY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCompanyName_JsonNullable() {
+    return companyName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COMPANY_NAME)
+  public void setCompanyName_JsonNullable(JsonNullable<String> companyName) {
     this.companyName = companyName;
   }
 
+  public void setCompanyName(@jakarta.annotation.Nullable String companyName) {
+    this.companyName = JsonNullable.<String>of(companyName);
+  }
 
-  public CustomerLightDto customerNumber(@javax.annotation.Nullable String customerNumber) {
-    this.customerNumber = customerNumber;
+
+  public CustomerLightDto customerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
     return this;
   }
 
@@ -122,18 +126,31 @@ public class CustomerLightDto {
    * Get customerNumber
    * @return customerNumber
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomerNumber() {
-    return customerNumber;
+        return customerNumber.orElse(null);
   }
 
-  public void setCustomerNumber(@javax.annotation.Nullable String customerNumber) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomerNumber_JsonNullable() {
+    return customerNumber;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_NUMBER)
+  public void setCustomerNumber_JsonNullable(JsonNullable<String> customerNumber) {
     this.customerNumber = customerNumber;
   }
 
+  public void setCustomerNumber(@jakarta.annotation.Nullable String customerNumber) {
+    this.customerNumber = JsonNullable.<String>of(customerNumber);
+  }
 
-  public CustomerLightDto email(@javax.annotation.Nullable String email) {
-    this.email = email;
+
+  public CustomerLightDto email(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
     return this;
   }
 
@@ -141,17 +158,32 @@ public class CustomerLightDto {
    * Get email
    * @return email
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getEmail() {
-    return email;
+        return email.orElse(null);
   }
 
-  public void setEmail(@javax.annotation.Nullable String email) {
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getEmail_JsonNullable() {
+    return email;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EMAIL)
+  public void setEmail_JsonNullable(JsonNullable<String> email) {
     this.email = email;
   }
 
+  public void setEmail(@jakarta.annotation.Nullable String email) {
+    this.email = JsonNullable.<String>of(email);
+  }
 
 
+  /**
+   * Return true if this CustomerLightDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -162,9 +194,9 @@ public class CustomerLightDto {
     }
     CustomerLightDto customerLightDto = (CustomerLightDto) o;
     return Objects.equals(this.id, customerLightDto.id) &&
-        Objects.equals(this.companyName, customerLightDto.companyName) &&
-        Objects.equals(this.customerNumber, customerLightDto.customerNumber) &&
-        Objects.equals(this.email, customerLightDto.email);
+        equalsNullable(this.companyName, customerLightDto.companyName) &&
+        equalsNullable(this.customerNumber, customerLightDto.customerNumber) &&
+        equalsNullable(this.email, customerLightDto.email);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -173,7 +205,7 @@ public class CustomerLightDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, companyName, customerNumber, email);
+    return Objects.hash(id, hashCodeNullable(companyName), hashCodeNullable(customerNumber), hashCodeNullable(email));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -206,100 +238,59 @@ public class CustomerLightDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "company_name", "customer_number", "email"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CustomerLightDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!CustomerLightDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CustomerLightDto is not found in the empty JSON string", CustomerLightDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CustomerLightDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CustomerLightDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("company_name") != null && !jsonObj.get("company_name").isJsonNull()) && !jsonObj.get("company_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `company_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("company_name").toString()));
-      }
-      if ((jsonObj.get("customer_number") != null && !jsonObj.get("customer_number").isJsonNull()) && !jsonObj.get("customer_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_number").toString()));
-      }
-      if ((jsonObj.get("email") != null && !jsonObj.get("email").isJsonNull()) && !jsonObj.get("email").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CustomerLightDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CustomerLightDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CustomerLightDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CustomerLightDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<CustomerLightDto>() {
-           @Override
-           public void write(JsonWriter out, CustomerLightDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public CustomerLightDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of CustomerLightDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of CustomerLightDto
-   * @throws IOException if the JSON string is invalid with respect to CustomerLightDto
-   */
-  public static CustomerLightDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CustomerLightDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of CustomerLightDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `company_name` to the URL query string
+    if (getCompanyName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scompany_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCompanyName()))));
+    }
+
+    // add `customer_number` to the URL query string
+    if (getCustomerNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumber()))));
+    }
+
+    // add `email` to the URL query string
+    if (getEmail() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmail()))));
+    }
+
+    return joiner.toString();
   }
 }
 

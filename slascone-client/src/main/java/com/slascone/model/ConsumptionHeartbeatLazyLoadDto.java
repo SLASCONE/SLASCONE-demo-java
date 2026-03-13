@@ -13,76 +13,67 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionHeartbeatDto;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ConsumptionHeartbeatLazyLoadDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ConsumptionHeartbeatLazyLoadDto.JSON_PROPERTY_CONSUMPTION_HEARTBEATS,
+  ConsumptionHeartbeatLazyLoadDto.JSON_PROPERTY_MAX_COUNT,
+  ConsumptionHeartbeatLazyLoadDto.JSON_PROPERTY_AGGREGATE_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ConsumptionHeartbeatLazyLoadDto {
-  public static final String SERIALIZED_NAME_CONSUMPTION_HEARTBEATS = "consumption_heartbeats";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_HEARTBEATS)
-  @javax.annotation.Nullable
-  private List<ConsumptionHeartbeatDto> consumptionHeartbeats;
+  public static final String JSON_PROPERTY_CONSUMPTION_HEARTBEATS = "consumption_heartbeats";
+  private JsonNullable<List<ConsumptionHeartbeatDto>> consumptionHeartbeats = JsonNullable.<List<ConsumptionHeartbeatDto>>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_COUNT = "max_count";
-  @SerializedName(SERIALIZED_NAME_MAX_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_COUNT = "max_count";
+  @jakarta.annotation.Nullable
   private Integer maxCount;
 
-  public static final String SERIALIZED_NAME_AGGREGATE_VALUE = "aggregate_value";
-  @SerializedName(SERIALIZED_NAME_AGGREGATE_VALUE)
-  @javax.annotation.Nullable
-  private BigDecimal aggregateValue;
+  public static final String JSON_PROPERTY_AGGREGATE_VALUE = "aggregate_value";
+  private JsonNullable<BigDecimal> aggregateValue = JsonNullable.<BigDecimal>undefined();
 
-  public ConsumptionHeartbeatLazyLoadDto() {
+  public ConsumptionHeartbeatLazyLoadDto() { 
   }
 
-  public ConsumptionHeartbeatLazyLoadDto consumptionHeartbeats(@javax.annotation.Nullable List<ConsumptionHeartbeatDto> consumptionHeartbeats) {
-    this.consumptionHeartbeats = consumptionHeartbeats;
+  public ConsumptionHeartbeatLazyLoadDto consumptionHeartbeats(@jakarta.annotation.Nullable List<ConsumptionHeartbeatDto> consumptionHeartbeats) {
+    this.consumptionHeartbeats = JsonNullable.<List<ConsumptionHeartbeatDto>>of(consumptionHeartbeats);
     return this;
   }
 
   public ConsumptionHeartbeatLazyLoadDto addConsumptionHeartbeatsItem(ConsumptionHeartbeatDto consumptionHeartbeatsItem) {
-    if (this.consumptionHeartbeats == null) {
-      this.consumptionHeartbeats = new ArrayList<>();
+    if (this.consumptionHeartbeats == null || !this.consumptionHeartbeats.isPresent()) {
+      this.consumptionHeartbeats = JsonNullable.<List<ConsumptionHeartbeatDto>>of(new ArrayList<>());
     }
-    this.consumptionHeartbeats.add(consumptionHeartbeatsItem);
+    try {
+      this.consumptionHeartbeats.get().add(consumptionHeartbeatsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -90,17 +81,30 @@ public class ConsumptionHeartbeatLazyLoadDto {
    * Get consumptionHeartbeats
    * @return consumptionHeartbeats
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<ConsumptionHeartbeatDto> getConsumptionHeartbeats() {
-    return consumptionHeartbeats;
+        return consumptionHeartbeats.orElse(null);
   }
 
-  public void setConsumptionHeartbeats(@javax.annotation.Nullable List<ConsumptionHeartbeatDto> consumptionHeartbeats) {
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_HEARTBEATS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<ConsumptionHeartbeatDto>> getConsumptionHeartbeats_JsonNullable() {
+    return consumptionHeartbeats;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSUMPTION_HEARTBEATS)
+  public void setConsumptionHeartbeats_JsonNullable(JsonNullable<List<ConsumptionHeartbeatDto>> consumptionHeartbeats) {
     this.consumptionHeartbeats = consumptionHeartbeats;
   }
 
+  public void setConsumptionHeartbeats(@jakarta.annotation.Nullable List<ConsumptionHeartbeatDto> consumptionHeartbeats) {
+    this.consumptionHeartbeats = JsonNullable.<List<ConsumptionHeartbeatDto>>of(consumptionHeartbeats);
+  }
 
-  public ConsumptionHeartbeatLazyLoadDto maxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  public ConsumptionHeartbeatLazyLoadDto maxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
@@ -109,18 +113,23 @@ public class ConsumptionHeartbeatLazyLoadDto {
    * Get maxCount
    * @return maxCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxCount() {
     return maxCount;
   }
 
-  public void setMaxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
   }
 
 
-  public ConsumptionHeartbeatLazyLoadDto aggregateValue(@javax.annotation.Nullable BigDecimal aggregateValue) {
-    this.aggregateValue = aggregateValue;
+  public ConsumptionHeartbeatLazyLoadDto aggregateValue(@jakarta.annotation.Nullable BigDecimal aggregateValue) {
+    this.aggregateValue = JsonNullable.<BigDecimal>of(aggregateValue);
     return this;
   }
 
@@ -128,17 +137,32 @@ public class ConsumptionHeartbeatLazyLoadDto {
    * Get aggregateValue
    * @return aggregateValue
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public BigDecimal getAggregateValue() {
-    return aggregateValue;
+        return aggregateValue.orElse(null);
   }
 
-  public void setAggregateValue(@javax.annotation.Nullable BigDecimal aggregateValue) {
+  @JsonProperty(value = JSON_PROPERTY_AGGREGATE_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getAggregateValue_JsonNullable() {
+    return aggregateValue;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_AGGREGATE_VALUE)
+  public void setAggregateValue_JsonNullable(JsonNullable<BigDecimal> aggregateValue) {
     this.aggregateValue = aggregateValue;
   }
 
+  public void setAggregateValue(@jakarta.annotation.Nullable BigDecimal aggregateValue) {
+    this.aggregateValue = JsonNullable.<BigDecimal>of(aggregateValue);
+  }
 
 
+  /**
+   * Return true if this ConsumptionHeartbeatLazyLoadDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -148,9 +172,9 @@ public class ConsumptionHeartbeatLazyLoadDto {
       return false;
     }
     ConsumptionHeartbeatLazyLoadDto consumptionHeartbeatLazyLoadDto = (ConsumptionHeartbeatLazyLoadDto) o;
-    return Objects.equals(this.consumptionHeartbeats, consumptionHeartbeatLazyLoadDto.consumptionHeartbeats) &&
+    return equalsNullable(this.consumptionHeartbeats, consumptionHeartbeatLazyLoadDto.consumptionHeartbeats) &&
         Objects.equals(this.maxCount, consumptionHeartbeatLazyLoadDto.maxCount) &&
-        Objects.equals(this.aggregateValue, consumptionHeartbeatLazyLoadDto.aggregateValue);
+        equalsNullable(this.aggregateValue, consumptionHeartbeatLazyLoadDto.aggregateValue);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -159,7 +183,7 @@ public class ConsumptionHeartbeatLazyLoadDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(consumptionHeartbeats, maxCount, aggregateValue);
+    return Objects.hash(hashCodeNullable(consumptionHeartbeats), maxCount, hashCodeNullable(aggregateValue));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -191,102 +215,59 @@ public class ConsumptionHeartbeatLazyLoadDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("consumption_heartbeats", "max_count", "aggregate_value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ConsumptionHeartbeatLazyLoadDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ConsumptionHeartbeatLazyLoadDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionHeartbeatLazyLoadDto is not found in the empty JSON string", ConsumptionHeartbeatLazyLoadDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ConsumptionHeartbeatLazyLoadDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionHeartbeatLazyLoadDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (jsonObj.get("consumption_heartbeats") != null && !jsonObj.get("consumption_heartbeats").isJsonNull()) {
-        JsonArray jsonArrayconsumptionHeartbeats = jsonObj.getAsJsonArray("consumption_heartbeats");
-        if (jsonArrayconsumptionHeartbeats != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("consumption_heartbeats").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `consumption_heartbeats` to be an array in the JSON string but got `%s`", jsonObj.get("consumption_heartbeats").toString()));
-          }
-
-          // validate the optional field `consumption_heartbeats` (array)
-          for (int i = 0; i < jsonArrayconsumptionHeartbeats.size(); i++) {
-            ConsumptionHeartbeatDto.validateJsonElement(jsonArrayconsumptionHeartbeats.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ConsumptionHeartbeatLazyLoadDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ConsumptionHeartbeatLazyLoadDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ConsumptionHeartbeatLazyLoadDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ConsumptionHeartbeatLazyLoadDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ConsumptionHeartbeatLazyLoadDto>() {
-           @Override
-           public void write(JsonWriter out, ConsumptionHeartbeatLazyLoadDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ConsumptionHeartbeatLazyLoadDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ConsumptionHeartbeatLazyLoadDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ConsumptionHeartbeatLazyLoadDto
-   * @throws IOException if the JSON string is invalid with respect to ConsumptionHeartbeatLazyLoadDto
-   */
-  public static ConsumptionHeartbeatLazyLoadDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ConsumptionHeartbeatLazyLoadDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ConsumptionHeartbeatLazyLoadDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `consumption_heartbeats` to the URL query string
+    if (getConsumptionHeartbeats() != null) {
+      for (int i = 0; i < getConsumptionHeartbeats().size(); i++) {
+        if (getConsumptionHeartbeats().get(i) != null) {
+          joiner.add(getConsumptionHeartbeats().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sconsumption_heartbeats%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `max_count` to the URL query string
+    if (getMaxCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxCount()))));
+    }
+
+    // add `aggregate_value` to the URL query string
+    if (getAggregateValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%saggregate_value%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAggregateValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

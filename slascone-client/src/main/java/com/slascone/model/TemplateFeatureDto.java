@@ -13,84 +13,72 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * TemplateFeatureDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  TemplateFeatureDto.JSON_PROPERTY_TEMPLATE_ID,
+  TemplateFeatureDto.JSON_PROPERTY_FEATURE_ID,
+  TemplateFeatureDto.JSON_PROPERTY_FEATURE_NAME,
+  TemplateFeatureDto.JSON_PROPERTY_IS_ADJUSTABLE,
+  TemplateFeatureDto.JSON_PROPERTY_IS_ACTIVE,
+  TemplateFeatureDto.JSON_PROPERTY_IS_HIDDEN,
+  TemplateFeatureDto.JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class TemplateFeatureDto {
-  public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
+  @jakarta.annotation.Nullable
   private UUID templateId;
 
-  public static final String SERIALIZED_NAME_FEATURE_ID = "feature_id";
-  @SerializedName(SERIALIZED_NAME_FEATURE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_FEATURE_ID = "feature_id";
+  @jakarta.annotation.Nonnull
   private UUID featureId;
 
-  public static final String SERIALIZED_NAME_FEATURE_NAME = "feature_name";
-  @SerializedName(SERIALIZED_NAME_FEATURE_NAME)
-  @javax.annotation.Nullable
-  private String featureName;
+  public static final String JSON_PROPERTY_FEATURE_NAME = "feature_name";
+  private JsonNullable<String> featureName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ADJUSTABLE = "is_adjustable";
-  @SerializedName(SERIALIZED_NAME_IS_ADJUSTABLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ADJUSTABLE = "is_adjustable";
+  @jakarta.annotation.Nullable
   private Boolean isAdjustable;
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
-  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_HIDDEN = "is_hidden";
+  @jakarta.annotation.Nullable
   private Boolean isHidden;
 
-  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
-  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @jakarta.annotation.Nullable
   private Boolean isCustomerPortalHidden;
 
-  public TemplateFeatureDto() {
+  public TemplateFeatureDto() { 
   }
 
-  public TemplateFeatureDto templateId(@javax.annotation.Nullable UUID templateId) {
+  public TemplateFeatureDto templateId(@jakarta.annotation.Nullable UUID templateId) {
     this.templateId = templateId;
     return this;
   }
@@ -99,17 +87,22 @@ public class TemplateFeatureDto {
    * Get templateId
    * @return templateId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getTemplateId() {
     return templateId;
   }
 
-  public void setTemplateId(@javax.annotation.Nullable UUID templateId) {
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTemplateId(@jakarta.annotation.Nullable UUID templateId) {
     this.templateId = templateId;
   }
 
 
-  public TemplateFeatureDto featureId(@javax.annotation.Nonnull UUID featureId) {
+  public TemplateFeatureDto featureId(@jakarta.annotation.Nonnull UUID featureId) {
     this.featureId = featureId;
     return this;
   }
@@ -118,18 +111,23 @@ public class TemplateFeatureDto {
    * Get featureId
    * @return featureId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getFeatureId() {
     return featureId;
   }
 
-  public void setFeatureId(@javax.annotation.Nonnull UUID featureId) {
+
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFeatureId(@jakarta.annotation.Nonnull UUID featureId) {
     this.featureId = featureId;
   }
 
 
-  public TemplateFeatureDto featureName(@javax.annotation.Nullable String featureName) {
-    this.featureName = featureName;
+  public TemplateFeatureDto featureName(@jakarta.annotation.Nullable String featureName) {
+    this.featureName = JsonNullable.<String>of(featureName);
     return this;
   }
 
@@ -137,17 +135,30 @@ public class TemplateFeatureDto {
    * Get featureName
    * @return featureName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getFeatureName() {
-    return featureName;
+        return featureName.orElse(null);
   }
 
-  public void setFeatureName(@javax.annotation.Nullable String featureName) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getFeatureName_JsonNullable() {
+    return featureName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURE_NAME)
+  public void setFeatureName_JsonNullable(JsonNullable<String> featureName) {
     this.featureName = featureName;
   }
 
+  public void setFeatureName(@jakarta.annotation.Nullable String featureName) {
+    this.featureName = JsonNullable.<String>of(featureName);
+  }
 
-  public TemplateFeatureDto isAdjustable(@javax.annotation.Nullable Boolean isAdjustable) {
+
+  public TemplateFeatureDto isAdjustable(@jakarta.annotation.Nullable Boolean isAdjustable) {
     this.isAdjustable = isAdjustable;
     return this;
   }
@@ -156,17 +167,22 @@ public class TemplateFeatureDto {
    * Get isAdjustable
    * @return isAdjustable
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ADJUSTABLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsAdjustable() {
     return isAdjustable;
   }
 
-  public void setIsAdjustable(@javax.annotation.Nullable Boolean isAdjustable) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ADJUSTABLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsAdjustable(@jakarta.annotation.Nullable Boolean isAdjustable) {
     this.isAdjustable = isAdjustable;
   }
 
 
-  public TemplateFeatureDto isActive(@javax.annotation.Nullable Boolean isActive) {
+  public TemplateFeatureDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -175,17 +191,22 @@ public class TemplateFeatureDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public TemplateFeatureDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+  public TemplateFeatureDto isHidden(@jakarta.annotation.Nullable Boolean isHidden) {
     this.isHidden = isHidden;
     return this;
   }
@@ -194,17 +215,22 @@ public class TemplateFeatureDto {
    * Get isHidden
    * @return isHidden
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsHidden() {
     return isHidden;
   }
 
-  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsHidden(@jakarta.annotation.Nullable Boolean isHidden) {
     this.isHidden = isHidden;
   }
 
 
-  public TemplateFeatureDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+  public TemplateFeatureDto isCustomerPortalHidden(@jakarta.annotation.Nullable Boolean isCustomerPortalHidden) {
     this.isCustomerPortalHidden = isCustomerPortalHidden;
     return this;
   }
@@ -213,17 +239,24 @@ public class TemplateFeatureDto {
    * Get isCustomerPortalHidden
    * @return isCustomerPortalHidden
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsCustomerPortalHidden() {
     return isCustomerPortalHidden;
   }
 
-  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsCustomerPortalHidden(@jakarta.annotation.Nullable Boolean isCustomerPortalHidden) {
     this.isCustomerPortalHidden = isCustomerPortalHidden;
   }
 
 
-
+  /**
+   * Return true if this TemplateFeatureDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -235,7 +268,7 @@ public class TemplateFeatureDto {
     TemplateFeatureDto templateFeatureDto = (TemplateFeatureDto) o;
     return Objects.equals(this.templateId, templateFeatureDto.templateId) &&
         Objects.equals(this.featureId, templateFeatureDto.featureId) &&
-        Objects.equals(this.featureName, templateFeatureDto.featureName) &&
+        equalsNullable(this.featureName, templateFeatureDto.featureName) &&
         Objects.equals(this.isAdjustable, templateFeatureDto.isAdjustable) &&
         Objects.equals(this.isActive, templateFeatureDto.isActive) &&
         Objects.equals(this.isHidden, templateFeatureDto.isHidden) &&
@@ -248,7 +281,7 @@ public class TemplateFeatureDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, featureId, featureName, isAdjustable, isActive, isHidden, isCustomerPortalHidden);
+    return Objects.hash(templateId, featureId, hashCodeNullable(featureName), isAdjustable, isActive, isHidden, isCustomerPortalHidden);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -284,104 +317,74 @@ public class TemplateFeatureDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "feature_id", "feature_name", "is_adjustable", "is_active", "is_hidden", "is_customer_portal_hidden"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("feature_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to TemplateFeatureDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!TemplateFeatureDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateFeatureDto is not found in the empty JSON string", TemplateFeatureDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!TemplateFeatureDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateFeatureDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : TemplateFeatureDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
-      }
-      if (!jsonObj.get("feature_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_id").toString()));
-      }
-      if ((jsonObj.get("feature_name") != null && !jsonObj.get("feature_name").isJsonNull()) && !jsonObj.get("feature_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_name").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!TemplateFeatureDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'TemplateFeatureDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<TemplateFeatureDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(TemplateFeatureDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<TemplateFeatureDto>() {
-           @Override
-           public void write(JsonWriter out, TemplateFeatureDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public TemplateFeatureDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of TemplateFeatureDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of TemplateFeatureDto
-   * @throws IOException if the JSON string is invalid with respect to TemplateFeatureDto
-   */
-  public static TemplateFeatureDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, TemplateFeatureDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of TemplateFeatureDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `template_id` to the URL query string
+    if (getTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemplate_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemplateId()))));
+    }
+
+    // add `feature_id` to the URL query string
+    if (getFeatureId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFeatureId()))));
+    }
+
+    // add `feature_name` to the URL query string
+    if (getFeatureName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFeatureName()))));
+    }
+
+    // add `is_adjustable` to the URL query string
+    if (getIsAdjustable() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_adjustable%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsAdjustable()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `is_hidden` to the URL query string
+    if (getIsHidden() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_hidden%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsHidden()))));
+    }
+
+    // add `is_customer_portal_hidden` to the URL query string
+    if (getIsCustomerPortalHidden() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_customer_portal_hidden%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsCustomerPortalHidden()))));
+    }
+
+    return joiner.toString();
   }
 }
 

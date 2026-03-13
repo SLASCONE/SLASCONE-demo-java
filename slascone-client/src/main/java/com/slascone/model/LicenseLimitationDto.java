@@ -13,90 +13,74 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionResetPeriod;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseLimitationDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseLimitationDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseLimitationDto.JSON_PROPERTY_LIMITATION_ID,
+  LicenseLimitationDto.JSON_PROPERTY_LIMITATION_NAME,
+  LicenseLimitationDto.JSON_PROPERTY_LIMITATION_DESCRIPTION,
+  LicenseLimitationDto.JSON_PROPERTY_LIMIT,
+  LicenseLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_MODE,
+  LicenseLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS,
+  LicenseLimitationDto.JSON_PROPERTY_CURRENT_USER_TRANSACTION_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseLimitationDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nonnull
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_LIMITATION_NAME = "limitation_name";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_NAME)
-  @javax.annotation.Nullable
-  private String limitationName;
+  public static final String JSON_PROPERTY_LIMITATION_NAME = "limitation_name";
+  private JsonNullable<String> limitationName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LIMITATION_DESCRIPTION = "limitation_description";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String limitationDescription;
+  public static final String JSON_PROPERTY_LIMITATION_DESCRIPTION = "limitation_description";
+  private JsonNullable<String> limitationDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LIMIT = "limit";
-  @SerializedName(SERIALIZED_NAME_LIMIT)
-  @javax.annotation.Nullable
-  private Integer limit;
+  public static final String JSON_PROPERTY_LIMIT = "limit";
+  private JsonNullable<Integer> limit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
+  @jakarta.annotation.Nullable
   private ConsumptionResetPeriod consumptionResetMode;
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS)
-  @javax.annotation.Nullable
-  private Integer consumptionResetPeriodDays;
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
+  private JsonNullable<Integer> consumptionResetPeriodDays = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_CURRENT_USER_TRANSACTION_ID = "current_user_transaction_id";
-  @SerializedName(SERIALIZED_NAME_CURRENT_USER_TRANSACTION_ID)
-  @javax.annotation.Nullable
-  private UUID currentUserTransactionId;
+  public static final String JSON_PROPERTY_CURRENT_USER_TRANSACTION_ID = "current_user_transaction_id";
+  private JsonNullable<UUID> currentUserTransactionId = JsonNullable.<UUID>undefined();
 
-  public LicenseLimitationDto() {
+  public LicenseLimitationDto() { 
   }
 
-  public LicenseLimitationDto productId(@javax.annotation.Nonnull UUID productId) {
+  public LicenseLimitationDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -105,17 +89,22 @@ public class LicenseLimitationDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseLimitationDto limitationId(@javax.annotation.Nonnull UUID limitationId) {
+  public LicenseLimitationDto limitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -124,18 +113,23 @@ public class LicenseLimitationDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nonnull UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLimitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public LicenseLimitationDto limitationName(@javax.annotation.Nullable String limitationName) {
-    this.limitationName = limitationName;
+  public LicenseLimitationDto limitationName(@jakarta.annotation.Nullable String limitationName) {
+    this.limitationName = JsonNullable.<String>of(limitationName);
     return this;
   }
 
@@ -143,18 +137,31 @@ public class LicenseLimitationDto {
    * Get limitationName
    * @return limitationName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLimitationName() {
-    return limitationName;
+        return limitationName.orElse(null);
   }
 
-  public void setLimitationName(@javax.annotation.Nullable String limitationName) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLimitationName_JsonNullable() {
+    return limitationName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATION_NAME)
+  public void setLimitationName_JsonNullable(JsonNullable<String> limitationName) {
     this.limitationName = limitationName;
   }
 
+  public void setLimitationName(@jakarta.annotation.Nullable String limitationName) {
+    this.limitationName = JsonNullable.<String>of(limitationName);
+  }
 
-  public LicenseLimitationDto limitationDescription(@javax.annotation.Nullable String limitationDescription) {
-    this.limitationDescription = limitationDescription;
+
+  public LicenseLimitationDto limitationDescription(@jakarta.annotation.Nullable String limitationDescription) {
+    this.limitationDescription = JsonNullable.<String>of(limitationDescription);
     return this;
   }
 
@@ -162,18 +169,31 @@ public class LicenseLimitationDto {
    * Get limitationDescription
    * @return limitationDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLimitationDescription() {
-    return limitationDescription;
+        return limitationDescription.orElse(null);
   }
 
-  public void setLimitationDescription(@javax.annotation.Nullable String limitationDescription) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLimitationDescription_JsonNullable() {
+    return limitationDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATION_DESCRIPTION)
+  public void setLimitationDescription_JsonNullable(JsonNullable<String> limitationDescription) {
     this.limitationDescription = limitationDescription;
   }
 
+  public void setLimitationDescription(@jakarta.annotation.Nullable String limitationDescription) {
+    this.limitationDescription = JsonNullable.<String>of(limitationDescription);
+  }
 
-  public LicenseLimitationDto limit(@javax.annotation.Nullable Integer limit) {
-    this.limit = limit;
+
+  public LicenseLimitationDto limit(@jakarta.annotation.Nullable Integer limit) {
+    this.limit = JsonNullable.<Integer>of(limit);
     return this;
   }
 
@@ -181,17 +201,30 @@ public class LicenseLimitationDto {
    * Get limit
    * @return limit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getLimit() {
-    return limit;
+        return limit.orElse(null);
   }
 
-  public void setLimit(@javax.annotation.Nullable Integer limit) {
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getLimit_JsonNullable() {
+    return limit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMIT)
+  public void setLimit_JsonNullable(JsonNullable<Integer> limit) {
     this.limit = limit;
   }
 
+  public void setLimit(@jakarta.annotation.Nullable Integer limit) {
+    this.limit = JsonNullable.<Integer>of(limit);
+  }
 
-  public LicenseLimitationDto consumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+
+  public LicenseLimitationDto consumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
     this.consumptionResetMode = consumptionResetMode;
     return this;
   }
@@ -200,18 +233,23 @@ public class LicenseLimitationDto {
    * Get consumptionResetMode
    * @return consumptionResetMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ConsumptionResetPeriod getConsumptionResetMode() {
     return consumptionResetMode;
   }
 
-  public void setConsumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConsumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
     this.consumptionResetMode = consumptionResetMode;
   }
 
 
-  public LicenseLimitationDto consumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
-    this.consumptionResetPeriodDays = consumptionResetPeriodDays;
+  public LicenseLimitationDto consumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
     return this;
   }
 
@@ -219,18 +257,31 @@ public class LicenseLimitationDto {
    * Get consumptionResetPeriodDays
    * @return consumptionResetPeriodDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getConsumptionResetPeriodDays() {
-    return consumptionResetPeriodDays;
+        return consumptionResetPeriodDays.orElse(null);
   }
 
-  public void setConsumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getConsumptionResetPeriodDays_JsonNullable() {
+    return consumptionResetPeriodDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS)
+  public void setConsumptionResetPeriodDays_JsonNullable(JsonNullable<Integer> consumptionResetPeriodDays) {
     this.consumptionResetPeriodDays = consumptionResetPeriodDays;
   }
 
+  public void setConsumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
+  }
 
-  public LicenseLimitationDto currentUserTransactionId(@javax.annotation.Nullable UUID currentUserTransactionId) {
-    this.currentUserTransactionId = currentUserTransactionId;
+
+  public LicenseLimitationDto currentUserTransactionId(@jakarta.annotation.Nullable UUID currentUserTransactionId) {
+    this.currentUserTransactionId = JsonNullable.<UUID>of(currentUserTransactionId);
     return this;
   }
 
@@ -238,17 +289,32 @@ public class LicenseLimitationDto {
    * Get currentUserTransactionId
    * @return currentUserTransactionId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getCurrentUserTransactionId() {
-    return currentUserTransactionId;
+        return currentUserTransactionId.orElse(null);
   }
 
-  public void setCurrentUserTransactionId(@javax.annotation.Nullable UUID currentUserTransactionId) {
+  @JsonProperty(value = JSON_PROPERTY_CURRENT_USER_TRANSACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getCurrentUserTransactionId_JsonNullable() {
+    return currentUserTransactionId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CURRENT_USER_TRANSACTION_ID)
+  public void setCurrentUserTransactionId_JsonNullable(JsonNullable<UUID> currentUserTransactionId) {
     this.currentUserTransactionId = currentUserTransactionId;
   }
 
+  public void setCurrentUserTransactionId(@jakarta.annotation.Nullable UUID currentUserTransactionId) {
+    this.currentUserTransactionId = JsonNullable.<UUID>of(currentUserTransactionId);
+  }
 
 
+  /**
+   * Return true if this LicenseLimitationDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -260,12 +326,12 @@ public class LicenseLimitationDto {
     LicenseLimitationDto licenseLimitationDto = (LicenseLimitationDto) o;
     return Objects.equals(this.productId, licenseLimitationDto.productId) &&
         Objects.equals(this.limitationId, licenseLimitationDto.limitationId) &&
-        Objects.equals(this.limitationName, licenseLimitationDto.limitationName) &&
-        Objects.equals(this.limitationDescription, licenseLimitationDto.limitationDescription) &&
-        Objects.equals(this.limit, licenseLimitationDto.limit) &&
+        equalsNullable(this.limitationName, licenseLimitationDto.limitationName) &&
+        equalsNullable(this.limitationDescription, licenseLimitationDto.limitationDescription) &&
+        equalsNullable(this.limit, licenseLimitationDto.limit) &&
         Objects.equals(this.consumptionResetMode, licenseLimitationDto.consumptionResetMode) &&
-        Objects.equals(this.consumptionResetPeriodDays, licenseLimitationDto.consumptionResetPeriodDays) &&
-        Objects.equals(this.currentUserTransactionId, licenseLimitationDto.currentUserTransactionId);
+        equalsNullable(this.consumptionResetPeriodDays, licenseLimitationDto.consumptionResetPeriodDays) &&
+        equalsNullable(this.currentUserTransactionId, licenseLimitationDto.currentUserTransactionId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -274,7 +340,7 @@ public class LicenseLimitationDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, limitationId, limitationName, limitationDescription, limit, consumptionResetMode, consumptionResetPeriodDays, currentUserTransactionId);
+    return Objects.hash(productId, limitationId, hashCodeNullable(limitationName), hashCodeNullable(limitationDescription), hashCodeNullable(limit), consumptionResetMode, hashCodeNullable(consumptionResetPeriodDays), hashCodeNullable(currentUserTransactionId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -311,114 +377,79 @@ public class LicenseLimitationDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "limitation_id", "limitation_name", "limitation_description", "limit", "consumption_reset_mode", "consumption_reset_period_days", "current_user_transaction_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "limitation_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseLimitationDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseLimitationDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseLimitationDto is not found in the empty JSON string", LicenseLimitationDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseLimitationDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseLimitationDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseLimitationDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-      if ((jsonObj.get("limitation_name") != null && !jsonObj.get("limitation_name").isJsonNull()) && !jsonObj.get("limitation_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_name").toString()));
-      }
-      if ((jsonObj.get("limitation_description") != null && !jsonObj.get("limitation_description").isJsonNull()) && !jsonObj.get("limitation_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_description").toString()));
-      }
-      // validate the optional field `consumption_reset_mode`
-      if (jsonObj.get("consumption_reset_mode") != null && !jsonObj.get("consumption_reset_mode").isJsonNull()) {
-        ConsumptionResetPeriod.validateJsonElement(jsonObj.get("consumption_reset_mode"));
-      }
-      if ((jsonObj.get("current_user_transaction_id") != null && !jsonObj.get("current_user_transaction_id").isJsonNull()) && !jsonObj.get("current_user_transaction_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `current_user_transaction_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("current_user_transaction_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseLimitationDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseLimitationDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseLimitationDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseLimitationDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseLimitationDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseLimitationDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseLimitationDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseLimitationDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseLimitationDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseLimitationDto
-   */
-  public static LicenseLimitationDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseLimitationDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseLimitationDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `limitation_name` to the URL query string
+    if (getLimitationName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationName()))));
+    }
+
+    // add `limitation_description` to the URL query string
+    if (getLimitationDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationDescription()))));
+    }
+
+    // add `limit` to the URL query string
+    if (getLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimit()))));
+    }
+
+    // add `consumption_reset_mode` to the URL query string
+    if (getConsumptionResetMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetMode()))));
+    }
+
+    // add `consumption_reset_period_days` to the URL query string
+    if (getConsumptionResetPeriodDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_period_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetPeriodDays()))));
+    }
+
+    // add `current_user_transaction_id` to the URL query string
+    if (getCurrentUserTransactionId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scurrent_user_transaction_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCurrentUserTransactionId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

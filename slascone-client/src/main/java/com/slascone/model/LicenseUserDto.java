@@ -13,98 +13,82 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.SessionDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseUserDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseUserDto.JSON_PROPERTY_USER_ID,
+  LicenseUserDto.JSON_PROPERTY_NAME,
+  LicenseUserDto.JSON_PROPERTY_LICENSE_ID,
+  LicenseUserDto.JSON_PROPERTY_IS_ACTIVE,
+  LicenseUserDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  LicenseUserDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  LicenseUserDto.JSON_PROPERTY_LAST_MODIFIED_BY,
+  LicenseUserDto.JSON_PROPERTY_ACTIVE_SESSIONS,
+  LicenseUserDto.JSON_PROPERTY_LICENSE_USER_GROUP_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseUserDto {
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  @jakarta.annotation.Nonnull
   private String userId;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_NAME = "name";
+  @jakarta.annotation.Nonnull
   private String name;
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nonnull
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nonnull
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_ACTIVE_SESSIONS = "active_sessions";
-  @SerializedName(SERIALIZED_NAME_ACTIVE_SESSIONS)
-  @javax.annotation.Nullable
-  private List<SessionDto> activeSessions;
+  public static final String JSON_PROPERTY_ACTIVE_SESSIONS = "active_sessions";
+  private JsonNullable<List<SessionDto>> activeSessions = JsonNullable.<List<SessionDto>>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_USER_GROUP_ID = "license_user_group_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_USER_GROUP_ID)
-  @javax.annotation.Nullable
-  private UUID licenseUserGroupId;
+  public static final String JSON_PROPERTY_LICENSE_USER_GROUP_ID = "license_user_group_id";
+  private JsonNullable<UUID> licenseUserGroupId = JsonNullable.<UUID>undefined();
 
-  public LicenseUserDto() {
+  public LicenseUserDto() { 
   }
 
-  public LicenseUserDto userId(@javax.annotation.Nonnull String userId) {
+  public LicenseUserDto userId(@jakarta.annotation.Nonnull String userId) {
     this.userId = userId;
     return this;
   }
@@ -113,17 +97,22 @@ public class LicenseUserDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getUserId() {
     return userId;
   }
 
-  public void setUserId(@javax.annotation.Nonnull String userId) {
+
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setUserId(@jakarta.annotation.Nonnull String userId) {
     this.userId = userId;
   }
 
 
-  public LicenseUserDto name(@javax.annotation.Nonnull String name) {
+  public LicenseUserDto name(@jakarta.annotation.Nonnull String name) {
     this.name = name;
     return this;
   }
@@ -132,17 +121,22 @@ public class LicenseUserDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getName() {
     return name;
   }
 
-  public void setName(@javax.annotation.Nonnull String name) {
+
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setName(@jakarta.annotation.Nonnull String name) {
     this.name = name;
   }
 
 
-  public LicenseUserDto licenseId(@javax.annotation.Nonnull UUID licenseId) {
+  public LicenseUserDto licenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -151,17 +145,22 @@ public class LicenseUserDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nonnull UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseId(@jakarta.annotation.Nonnull UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public LicenseUserDto isActive(@javax.annotation.Nonnull Boolean isActive) {
+  public LicenseUserDto isActive(@jakarta.annotation.Nonnull Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -170,18 +169,23 @@ public class LicenseUserDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nonnull Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setIsActive(@jakarta.annotation.Nonnull Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public LicenseUserDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+  public LicenseUserDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -189,18 +193,31 @@ public class LicenseUserDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public LicenseUserDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public LicenseUserDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -208,18 +225,31 @@ public class LicenseUserDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public LicenseUserDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public LicenseUserDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -227,26 +257,43 @@ public class LicenseUserDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
-  public LicenseUserDto activeSessions(@javax.annotation.Nullable List<SessionDto> activeSessions) {
-    this.activeSessions = activeSessions;
+
+  public LicenseUserDto activeSessions(@jakarta.annotation.Nullable List<SessionDto> activeSessions) {
+    this.activeSessions = JsonNullable.<List<SessionDto>>of(activeSessions);
     return this;
   }
 
   public LicenseUserDto addActiveSessionsItem(SessionDto activeSessionsItem) {
-    if (this.activeSessions == null) {
-      this.activeSessions = new ArrayList<>();
+    if (this.activeSessions == null || !this.activeSessions.isPresent()) {
+      this.activeSessions = JsonNullable.<List<SessionDto>>of(new ArrayList<>());
     }
-    this.activeSessions.add(activeSessionsItem);
+    try {
+      this.activeSessions.get().add(activeSessionsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -254,18 +301,31 @@ public class LicenseUserDto {
    * Get activeSessions
    * @return activeSessions
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<SessionDto> getActiveSessions() {
-    return activeSessions;
+        return activeSessions.orElse(null);
   }
 
-  public void setActiveSessions(@javax.annotation.Nullable List<SessionDto> activeSessions) {
+  @JsonProperty(value = JSON_PROPERTY_ACTIVE_SESSIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<SessionDto>> getActiveSessions_JsonNullable() {
+    return activeSessions;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ACTIVE_SESSIONS)
+  public void setActiveSessions_JsonNullable(JsonNullable<List<SessionDto>> activeSessions) {
     this.activeSessions = activeSessions;
   }
 
+  public void setActiveSessions(@jakarta.annotation.Nullable List<SessionDto> activeSessions) {
+    this.activeSessions = JsonNullable.<List<SessionDto>>of(activeSessions);
+  }
 
-  public LicenseUserDto licenseUserGroupId(@javax.annotation.Nullable UUID licenseUserGroupId) {
-    this.licenseUserGroupId = licenseUserGroupId;
+
+  public LicenseUserDto licenseUserGroupId(@jakarta.annotation.Nullable UUID licenseUserGroupId) {
+    this.licenseUserGroupId = JsonNullable.<UUID>of(licenseUserGroupId);
     return this;
   }
 
@@ -273,17 +333,32 @@ public class LicenseUserDto {
    * Get licenseUserGroupId
    * @return licenseUserGroupId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getLicenseUserGroupId() {
-    return licenseUserGroupId;
+        return licenseUserGroupId.orElse(null);
   }
 
-  public void setLicenseUserGroupId(@javax.annotation.Nullable UUID licenseUserGroupId) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_USER_GROUP_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getLicenseUserGroupId_JsonNullable() {
+    return licenseUserGroupId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_USER_GROUP_ID)
+  public void setLicenseUserGroupId_JsonNullable(JsonNullable<UUID> licenseUserGroupId) {
     this.licenseUserGroupId = licenseUserGroupId;
   }
 
+  public void setLicenseUserGroupId(@jakarta.annotation.Nullable UUID licenseUserGroupId) {
+    this.licenseUserGroupId = JsonNullable.<UUID>of(licenseUserGroupId);
+  }
 
 
+  /**
+   * Return true if this LicenseUserDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -297,11 +372,11 @@ public class LicenseUserDto {
         Objects.equals(this.name, licenseUserDto.name) &&
         Objects.equals(this.licenseId, licenseUserDto.licenseId) &&
         Objects.equals(this.isActive, licenseUserDto.isActive) &&
-        Objects.equals(this.createdDateUtc, licenseUserDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, licenseUserDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, licenseUserDto.lastModifiedBy) &&
-        Objects.equals(this.activeSessions, licenseUserDto.activeSessions) &&
-        Objects.equals(this.licenseUserGroupId, licenseUserDto.licenseUserGroupId);
+        equalsNullable(this.createdDateUtc, licenseUserDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, licenseUserDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, licenseUserDto.lastModifiedBy) &&
+        equalsNullable(this.activeSessions, licenseUserDto.activeSessions) &&
+        equalsNullable(this.licenseUserGroupId, licenseUserDto.licenseUserGroupId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -310,7 +385,7 @@ public class LicenseUserDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, name, licenseId, isActive, createdDateUtc, modifiedDateUtc, lastModifiedBy, activeSessions, licenseUserGroupId);
+    return Objects.hash(userId, name, licenseId, isActive, hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy), hashCodeNullable(activeSessions), hashCodeNullable(licenseUserGroupId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -348,124 +423,89 @@ public class LicenseUserDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("user_id", "name", "license_id", "is_active", "created_date_utc", "modified_date_utc", "last_modified_by", "active_sessions", "license_user_group_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("user_id", "name", "license_id", "is_active"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseUserDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseUserDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseUserDto is not found in the empty JSON string", LicenseUserDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseUserDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseUserDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseUserDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      if (!jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if (!jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-      if (jsonObj.get("active_sessions") != null && !jsonObj.get("active_sessions").isJsonNull()) {
-        JsonArray jsonArrayactiveSessions = jsonObj.getAsJsonArray("active_sessions");
-        if (jsonArrayactiveSessions != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("active_sessions").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `active_sessions` to be an array in the JSON string but got `%s`", jsonObj.get("active_sessions").toString()));
-          }
-
-          // validate the optional field `active_sessions` (array)
-          for (int i = 0; i < jsonArrayactiveSessions.size(); i++) {
-            SessionDto.validateJsonElement(jsonArrayactiveSessions.get(i));
-          };
-        }
-      }
-      if ((jsonObj.get("license_user_group_id") != null && !jsonObj.get("license_user_group_id").isJsonNull()) && !jsonObj.get("license_user_group_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_user_group_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_user_group_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseUserDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseUserDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseUserDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseUserDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseUserDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseUserDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseUserDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseUserDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseUserDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseUserDto
-   */
-  public static LicenseUserDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseUserDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseUserDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    // add `active_sessions` to the URL query string
+    if (getActiveSessions() != null) {
+      for (int i = 0; i < getActiveSessions().size(); i++) {
+        if (getActiveSessions().get(i) != null) {
+          joiner.add(getActiveSessions().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sactive_sessions%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `license_user_group_id` to the URL query string
+    if (getLicenseUserGroupId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_user_group_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseUserGroupId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

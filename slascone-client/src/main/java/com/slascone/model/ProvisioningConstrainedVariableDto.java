@@ -13,76 +13,62 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ProvisioningConstrainedVariableDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ProvisioningConstrainedVariableDto.JSON_PROPERTY_ID,
+  ProvisioningConstrainedVariableDto.JSON_PROPERTY_NAME,
+  ProvisioningConstrainedVariableDto.JSON_PROPERTY_DESCRIPTION,
+  ProvisioningConstrainedVariableDto.JSON_PROPERTY_CUSTOM_LIST_ID,
+  ProvisioningConstrainedVariableDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ProvisioningConstrainedVariableDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
-  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String description;
+  public static final String JSON_PROPERTY_DESCRIPTION = "description";
+  private JsonNullable<String> description = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOM_LIST_ID = "customListId";
-  @SerializedName(SERIALIZED_NAME_CUSTOM_LIST_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CUSTOM_LIST_ID = "customListId";
+  @jakarta.annotation.Nullable
   private UUID customListId;
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
-  private List<String> value;
+  public static final String JSON_PROPERTY_VALUE = "value";
+  private JsonNullable<List<String>> value = JsonNullable.<List<String>>undefined();
 
-  public ProvisioningConstrainedVariableDto() {
+  public ProvisioningConstrainedVariableDto() { 
   }
 
-  public ProvisioningConstrainedVariableDto id(@javax.annotation.Nullable UUID id) {
+  public ProvisioningConstrainedVariableDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -91,18 +77,23 @@ public class ProvisioningConstrainedVariableDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public ProvisioningConstrainedVariableDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public ProvisioningConstrainedVariableDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -110,18 +101,31 @@ public class ProvisioningConstrainedVariableDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public ProvisioningConstrainedVariableDto description(@javax.annotation.Nullable String description) {
-    this.description = description;
+
+  public ProvisioningConstrainedVariableDto description(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
     return this;
   }
 
@@ -129,17 +133,30 @@ public class ProvisioningConstrainedVariableDto {
    * Get description
    * @return description
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getDescription() {
-    return description;
+        return description.orElse(null);
   }
 
-  public void setDescription(@javax.annotation.Nullable String description) {
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getDescription_JsonNullable() {
+    return description;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  public void setDescription_JsonNullable(JsonNullable<String> description) {
     this.description = description;
   }
 
+  public void setDescription(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
+  }
 
-  public ProvisioningConstrainedVariableDto customListId(@javax.annotation.Nullable UUID customListId) {
+
+  public ProvisioningConstrainedVariableDto customListId(@jakarta.annotation.Nullable UUID customListId) {
     this.customListId = customListId;
     return this;
   }
@@ -148,26 +165,35 @@ public class ProvisioningConstrainedVariableDto {
    * Get customListId
    * @return customListId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOM_LIST_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getCustomListId() {
     return customListId;
   }
 
-  public void setCustomListId(@javax.annotation.Nullable UUID customListId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOM_LIST_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomListId(@jakarta.annotation.Nullable UUID customListId) {
     this.customListId = customListId;
   }
 
 
-  public ProvisioningConstrainedVariableDto value(@javax.annotation.Nullable List<String> value) {
-    this.value = value;
+  public ProvisioningConstrainedVariableDto value(@jakarta.annotation.Nullable List<String> value) {
+    this.value = JsonNullable.<List<String>>of(value);
     return this;
   }
 
   public ProvisioningConstrainedVariableDto addValueItem(String valueItem) {
-    if (this.value == null) {
-      this.value = new ArrayList<>();
+    if (this.value == null || !this.value.isPresent()) {
+      this.value = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.value.add(valueItem);
+    try {
+      this.value.get().add(valueItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -175,17 +201,32 @@ public class ProvisioningConstrainedVariableDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getValue() {
-    return value;
+        return value.orElse(null);
   }
 
-  public void setValue(@javax.annotation.Nullable List<String> value) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getValue_JsonNullable() {
+    return value;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  public void setValue_JsonNullable(JsonNullable<List<String>> value) {
     this.value = value;
   }
 
+  public void setValue(@jakarta.annotation.Nullable List<String> value) {
+    this.value = JsonNullable.<List<String>>of(value);
+  }
 
 
+  /**
+   * Return true if this ProvisioningConstrainedVariableDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -196,10 +237,10 @@ public class ProvisioningConstrainedVariableDto {
     }
     ProvisioningConstrainedVariableDto provisioningConstrainedVariableDto = (ProvisioningConstrainedVariableDto) o;
     return Objects.equals(this.id, provisioningConstrainedVariableDto.id) &&
-        Objects.equals(this.name, provisioningConstrainedVariableDto.name) &&
-        Objects.equals(this.description, provisioningConstrainedVariableDto.description) &&
+        equalsNullable(this.name, provisioningConstrainedVariableDto.name) &&
+        equalsNullable(this.description, provisioningConstrainedVariableDto.description) &&
         Objects.equals(this.customListId, provisioningConstrainedVariableDto.customListId) &&
-        Objects.equals(this.value, provisioningConstrainedVariableDto.value);
+        equalsNullable(this.value, provisioningConstrainedVariableDto.value);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -208,7 +249,7 @@ public class ProvisioningConstrainedVariableDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, customListId, value);
+    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(description), customListId, hashCodeNullable(value));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -242,104 +283,68 @@ public class ProvisioningConstrainedVariableDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "description", "customListId", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ProvisioningConstrainedVariableDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ProvisioningConstrainedVariableDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ProvisioningConstrainedVariableDto is not found in the empty JSON string", ProvisioningConstrainedVariableDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ProvisioningConstrainedVariableDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ProvisioningConstrainedVariableDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      if ((jsonObj.get("customListId") != null && !jsonObj.get("customListId").isJsonNull()) && !jsonObj.get("customListId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customListId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customListId").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull() && !jsonObj.get("value").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be an array in the JSON string but got `%s`", jsonObj.get("value").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ProvisioningConstrainedVariableDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ProvisioningConstrainedVariableDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ProvisioningConstrainedVariableDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ProvisioningConstrainedVariableDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ProvisioningConstrainedVariableDto>() {
-           @Override
-           public void write(JsonWriter out, ProvisioningConstrainedVariableDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ProvisioningConstrainedVariableDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ProvisioningConstrainedVariableDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ProvisioningConstrainedVariableDto
-   * @throws IOException if the JSON string is invalid with respect to ProvisioningConstrainedVariableDto
-   */
-  public static ProvisioningConstrainedVariableDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ProvisioningConstrainedVariableDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ProvisioningConstrainedVariableDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `description` to the URL query string
+    if (getDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
+    }
+
+    // add `customListId` to the URL query string
+    if (getCustomListId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomListId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomListId()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      for (int i = 0; i < getValue().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getValue().get(i)))));
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

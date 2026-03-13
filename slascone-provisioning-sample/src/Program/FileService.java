@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.slascone.ApiClient;
 import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SessionStatusDto;
 
@@ -139,7 +141,8 @@ public class FileService {
 			}
 
 			String licenseJson = new String(licenseBytes, java.nio.charset.StandardCharsets.UTF_8);
-			return LicenseInfoDto.fromJson(licenseJson);			
+			ObjectMapper mapper = ApiClient.createDefaultObjectMapper();
+			return mapper.readValue(licenseJson, LicenseInfoDto.class);			
 
 		} catch (Exception e) {
 			System.err.println("Error retrieving offline license: " + e.getMessage());
@@ -168,7 +171,8 @@ public class FileService {
 			}
 
 			String sessionJson = new String(sessionBytes, java.nio.charset.StandardCharsets.UTF_8);
-			SessionStatusDto status = SessionStatusDto.fromJson(sessionJson);
+			ObjectMapper mapper = ApiClient.createDefaultObjectMapper();
+			SessionStatusDto status = mapper.readValue(sessionJson, SessionStatusDto.class);
 
 			// Check session valid date/time against current date/time
 			if (status.getSessionValidUntil().compareTo(OffsetDateTime.now()) < 0) {

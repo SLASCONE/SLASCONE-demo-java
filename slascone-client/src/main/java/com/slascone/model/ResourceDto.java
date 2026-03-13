@@ -13,59 +13,46 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResourceDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResourceDto.JSON_PROPERTY_URI,
+  ResourceDto.JSON_PROPERTY_NAME
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResourceDto {
-  public static final String SERIALIZED_NAME_URI = "uri";
-  @SerializedName(SERIALIZED_NAME_URI)
-  @javax.annotation.Nullable
-  private String uri;
+  public static final String JSON_PROPERTY_URI = "uri";
+  private JsonNullable<String> uri = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public ResourceDto() {
+  public ResourceDto() { 
   }
 
-  public ResourceDto uri(@javax.annotation.Nullable String uri) {
-    this.uri = uri;
+  public ResourceDto uri(@jakarta.annotation.Nullable String uri) {
+    this.uri = JsonNullable.<String>of(uri);
     return this;
   }
 
@@ -73,18 +60,31 @@ public class ResourceDto {
    * Get uri
    * @return uri
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUri() {
-    return uri;
+        return uri.orElse(null);
   }
 
-  public void setUri(@javax.annotation.Nullable String uri) {
+  @JsonProperty(value = JSON_PROPERTY_URI, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUri_JsonNullable() {
+    return uri;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_URI)
+  public void setUri_JsonNullable(JsonNullable<String> uri) {
     this.uri = uri;
   }
 
+  public void setUri(@jakarta.annotation.Nullable String uri) {
+    this.uri = JsonNullable.<String>of(uri);
+  }
 
-  public ResourceDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+
+  public ResourceDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -92,17 +92,32 @@ public class ResourceDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
 
+  /**
+   * Return true if this ResourceDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -112,8 +127,8 @@ public class ResourceDto {
       return false;
     }
     ResourceDto resourceDto = (ResourceDto) o;
-    return Objects.equals(this.uri, resourceDto.uri) &&
-        Objects.equals(this.name, resourceDto.name);
+    return equalsNullable(this.uri, resourceDto.uri) &&
+        equalsNullable(this.name, resourceDto.name);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -122,7 +137,7 @@ public class ResourceDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(uri, name);
+    return Objects.hash(hashCodeNullable(uri), hashCodeNullable(name));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -153,94 +168,49 @@ public class ResourceDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("uri", "name"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResourceDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResourceDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResourceDto is not found in the empty JSON string", ResourceDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResourceDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResourceDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("uri") != null && !jsonObj.get("uri").isJsonNull()) && !jsonObj.get("uri").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `uri` to be a primitive type in the JSON string but got `%s`", jsonObj.get("uri").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResourceDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResourceDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResourceDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResourceDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResourceDto>() {
-           @Override
-           public void write(JsonWriter out, ResourceDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResourceDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResourceDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResourceDto
-   * @throws IOException if the JSON string is invalid with respect to ResourceDto
-   */
-  public static ResourceDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResourceDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResourceDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `uri` to the URL query string
+    if (getUri() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suri%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUri()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    return joiner.toString();
   }
 }
 

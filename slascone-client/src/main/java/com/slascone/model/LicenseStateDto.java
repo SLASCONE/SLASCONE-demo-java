@@ -13,69 +13,57 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseStateDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseStateDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseStateDto.JSON_PROPERTY_LICENSE_ID,
+  LicenseStateDto.JSON_PROPERTY_LEGACY_LICENSE_KEY,
+  LicenseStateDto.JSON_PROPERTY_IS_ACTIVE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseStateDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nullable
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nullable
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_LEGACY_LICENSE_KEY = "legacy_license_key";
-  @SerializedName(SERIALIZED_NAME_LEGACY_LICENSE_KEY)
-  @javax.annotation.Nullable
-  private String legacyLicenseKey;
+  public static final String JSON_PROPERTY_LEGACY_LICENSE_KEY = "legacy_license_key";
+  private JsonNullable<String> legacyLicenseKey = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public LicenseStateDto() {
+  public LicenseStateDto() { 
   }
 
-  public LicenseStateDto productId(@javax.annotation.Nullable UUID productId) {
+  public LicenseStateDto productId(@jakarta.annotation.Nullable UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -84,17 +72,22 @@ public class LicenseStateDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nullable UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setProductId(@jakarta.annotation.Nullable UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseStateDto licenseId(@javax.annotation.Nullable UUID licenseId) {
+  public LicenseStateDto licenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -103,18 +96,23 @@ public class LicenseStateDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nullable UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLicenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public LicenseStateDto legacyLicenseKey(@javax.annotation.Nullable String legacyLicenseKey) {
-    this.legacyLicenseKey = legacyLicenseKey;
+  public LicenseStateDto legacyLicenseKey(@jakarta.annotation.Nullable String legacyLicenseKey) {
+    this.legacyLicenseKey = JsonNullable.<String>of(legacyLicenseKey);
     return this;
   }
 
@@ -122,17 +120,30 @@ public class LicenseStateDto {
    * Get legacyLicenseKey
    * @return legacyLicenseKey
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLegacyLicenseKey() {
-    return legacyLicenseKey;
+        return legacyLicenseKey.orElse(null);
   }
 
-  public void setLegacyLicenseKey(@javax.annotation.Nullable String legacyLicenseKey) {
+  @JsonProperty(value = JSON_PROPERTY_LEGACY_LICENSE_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLegacyLicenseKey_JsonNullable() {
+    return legacyLicenseKey;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LEGACY_LICENSE_KEY)
+  public void setLegacyLicenseKey_JsonNullable(JsonNullable<String> legacyLicenseKey) {
     this.legacyLicenseKey = legacyLicenseKey;
   }
 
+  public void setLegacyLicenseKey(@jakarta.annotation.Nullable String legacyLicenseKey) {
+    this.legacyLicenseKey = JsonNullable.<String>of(legacyLicenseKey);
+  }
 
-  public LicenseStateDto isActive(@javax.annotation.Nullable Boolean isActive) {
+
+  public LicenseStateDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -141,17 +152,24 @@ public class LicenseStateDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-
+  /**
+   * Return true if this LicenseStateDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -163,7 +181,7 @@ public class LicenseStateDto {
     LicenseStateDto licenseStateDto = (LicenseStateDto) o;
     return Objects.equals(this.productId, licenseStateDto.productId) &&
         Objects.equals(this.licenseId, licenseStateDto.licenseId) &&
-        Objects.equals(this.legacyLicenseKey, licenseStateDto.legacyLicenseKey) &&
+        equalsNullable(this.legacyLicenseKey, licenseStateDto.legacyLicenseKey) &&
         Objects.equals(this.isActive, licenseStateDto.isActive);
   }
 
@@ -173,7 +191,7 @@ public class LicenseStateDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, licenseId, legacyLicenseKey, isActive);
+    return Objects.hash(productId, licenseId, hashCodeNullable(legacyLicenseKey), isActive);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -206,97 +224,59 @@ public class LicenseStateDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "license_id", "legacy_license_key", "is_active"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseStateDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseStateDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseStateDto is not found in the empty JSON string", LicenseStateDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseStateDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseStateDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("legacy_license_key") != null && !jsonObj.get("legacy_license_key").isJsonNull()) && !jsonObj.get("legacy_license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `legacy_license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("legacy_license_key").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseStateDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseStateDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseStateDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseStateDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseStateDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseStateDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseStateDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseStateDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseStateDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseStateDto
-   */
-  public static LicenseStateDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseStateDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseStateDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `legacy_license_key` to the URL query string
+    if (getLegacyLicenseKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slegacy_license_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLegacyLicenseKey()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    return joiner.toString();
   }
 }
 

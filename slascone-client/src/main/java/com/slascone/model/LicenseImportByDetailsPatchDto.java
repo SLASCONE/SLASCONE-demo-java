@@ -13,159 +13,131 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.LicenseImportConstrainedVariableDto;
 import com.slascone.model.LicenseImportLimitationDto;
 import com.slascone.model.LicenseImportVariableDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseImportByDetailsPatchDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_KEY,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_CUSTOMER_NUMBER,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_NAME,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_TEMPLATE,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LEGACY_LICENSE_KEY,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_DESCRIPTION,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_TOKEN_LIMIT,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_GOODWILL_TOKEN_LIMIT,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_FLOATING_TOKEN_LIMIT,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_USER_LIMIT,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_START_DATE,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_EXPIRATION_DATE,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_TYPE,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATION,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_FEATURES,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_LIMITATIONS,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_VARIABLES,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_LICENSE_CONSTRAINED_VARIABLES,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_IS_ACTIVE,
+  LicenseImportByDetailsPatchDto.JSON_PROPERTY_RESUME_ON_ERROR
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseImportByDetailsPatchDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_LICENSE_KEY = "license_key";
-  @SerializedName(SERIALIZED_NAME_LICENSE_KEY)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_KEY = "license_key";
+  @jakarta.annotation.Nonnull
   private String licenseKey;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER = "customer_number";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER = "customer_number";
+  @jakarta.annotation.Nonnull
   private String customerNumber;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TEMPLATE = "template";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE)
-  @javax.annotation.Nullable
-  private String template;
+  public static final String JSON_PROPERTY_TEMPLATE = "template";
+  private JsonNullable<String> template = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LEGACY_LICENSE_KEY = "legacy_license_key";
-  @SerializedName(SERIALIZED_NAME_LEGACY_LICENSE_KEY)
-  @javax.annotation.Nullable
-  private String legacyLicenseKey;
+  public static final String JSON_PROPERTY_LEGACY_LICENSE_KEY = "legacy_license_key";
+  private JsonNullable<String> legacyLicenseKey = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_DESCRIPTION = "description";
-  @SerializedName(SERIALIZED_NAME_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String description;
+  public static final String JSON_PROPERTY_DESCRIPTION = "description";
+  private JsonNullable<String> description = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TOKEN_LIMIT = "token_limit";
-  @SerializedName(SERIALIZED_NAME_TOKEN_LIMIT)
-  @javax.annotation.Nullable
-  private Integer tokenLimit;
+  public static final String JSON_PROPERTY_TOKEN_LIMIT = "token_limit";
+  private JsonNullable<Integer> tokenLimit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_GOODWILL_TOKEN_LIMIT = "goodwill_token_limit";
-  @SerializedName(SERIALIZED_NAME_GOODWILL_TOKEN_LIMIT)
-  @javax.annotation.Nullable
-  private Integer goodwillTokenLimit;
+  public static final String JSON_PROPERTY_GOODWILL_TOKEN_LIMIT = "goodwill_token_limit";
+  private JsonNullable<Integer> goodwillTokenLimit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_FLOATING_TOKEN_LIMIT = "floating_token_limit";
-  @SerializedName(SERIALIZED_NAME_FLOATING_TOKEN_LIMIT)
-  @javax.annotation.Nullable
-  private Integer floatingTokenLimit;
+  public static final String JSON_PROPERTY_FLOATING_TOKEN_LIMIT = "floating_token_limit";
+  private JsonNullable<Integer> floatingTokenLimit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_USER_LIMIT = "user_limit";
-  @SerializedName(SERIALIZED_NAME_USER_LIMIT)
-  @javax.annotation.Nullable
-  private Integer userLimit;
+  public static final String JSON_PROPERTY_USER_LIMIT = "user_limit";
+  private JsonNullable<Integer> userLimit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_START_DATE = "start_date";
-  @SerializedName(SERIALIZED_NAME_START_DATE)
-  @javax.annotation.Nullable
-  private String startDate;
+  public static final String JSON_PROPERTY_START_DATE = "start_date";
+  private JsonNullable<String> startDate = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_EXPIRATION_DATE = "expiration_date";
-  @SerializedName(SERIALIZED_NAME_EXPIRATION_DATE)
-  @javax.annotation.Nullable
-  private String expirationDate;
+  public static final String JSON_PROPERTY_EXPIRATION_DATE = "expiration_date";
+  private JsonNullable<String> expirationDate = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_TYPE = "license_type";
-  @SerializedName(SERIALIZED_NAME_LICENSE_TYPE)
-  @javax.annotation.Nullable
-  private String licenseType;
+  public static final String JSON_PROPERTY_LICENSE_TYPE = "license_type";
+  private JsonNullable<String> licenseType = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_RELEASE_LIMITATION = "software_release_limitation";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_RELEASE_LIMITATION)
-  @javax.annotation.Nullable
-  private String softwareReleaseLimitation;
+  public static final String JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATION = "software_release_limitation";
+  private JsonNullable<String> softwareReleaseLimitation = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_FEATURES = "license_features";
-  @SerializedName(SERIALIZED_NAME_LICENSE_FEATURES)
-  @javax.annotation.Nullable
-  private List<String> licenseFeatures;
+  public static final String JSON_PROPERTY_LICENSE_FEATURES = "license_features";
+  private JsonNullable<List<String>> licenseFeatures = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_LIMITATIONS = "license_limitations";
-  @SerializedName(SERIALIZED_NAME_LICENSE_LIMITATIONS)
-  @javax.annotation.Nullable
-  private List<LicenseImportLimitationDto> licenseLimitations;
+  public static final String JSON_PROPERTY_LICENSE_LIMITATIONS = "license_limitations";
+  private JsonNullable<List<LicenseImportLimitationDto>> licenseLimitations = JsonNullable.<List<LicenseImportLimitationDto>>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_VARIABLES = "license_variables";
-  @SerializedName(SERIALIZED_NAME_LICENSE_VARIABLES)
-  @javax.annotation.Nullable
-  private List<LicenseImportVariableDto> licenseVariables;
+  public static final String JSON_PROPERTY_LICENSE_VARIABLES = "license_variables";
+  private JsonNullable<List<LicenseImportVariableDto>> licenseVariables = JsonNullable.<List<LicenseImportVariableDto>>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_CONSTRAINED_VARIABLES = "license_constrained_variables";
-  @SerializedName(SERIALIZED_NAME_LICENSE_CONSTRAINED_VARIABLES)
-  @javax.annotation.Nullable
-  private List<LicenseImportConstrainedVariableDto> licenseConstrainedVariables;
+  public static final String JSON_PROPERTY_LICENSE_CONSTRAINED_VARIABLES = "license_constrained_variables";
+  private JsonNullable<List<LicenseImportConstrainedVariableDto>> licenseConstrainedVariables = JsonNullable.<List<LicenseImportConstrainedVariableDto>>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
-  private Boolean isActive = true;
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  private JsonNullable<Boolean> isActive = JsonNullable.<Boolean>of(true);
 
-  public static final String SERIALIZED_NAME_RESUME_ON_ERROR = "resume_on_error";
-  @SerializedName(SERIALIZED_NAME_RESUME_ON_ERROR)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESUME_ON_ERROR = "resume_on_error";
+  @jakarta.annotation.Nullable
   private Boolean resumeOnError = false;
 
-  public LicenseImportByDetailsPatchDto() {
+  public LicenseImportByDetailsPatchDto() { 
   }
 
-  public LicenseImportByDetailsPatchDto productId(@javax.annotation.Nonnull UUID productId) {
+  public LicenseImportByDetailsPatchDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -174,17 +146,22 @@ public class LicenseImportByDetailsPatchDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseImportByDetailsPatchDto licenseKey(@javax.annotation.Nonnull String licenseKey) {
+  public LicenseImportByDetailsPatchDto licenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
     return this;
   }
@@ -193,17 +170,22 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseKey
    * @return licenseKey
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getLicenseKey() {
     return licenseKey;
   }
 
-  public void setLicenseKey(@javax.annotation.Nonnull String licenseKey) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
   }
 
 
-  public LicenseImportByDetailsPatchDto customerNumber(@javax.annotation.Nonnull String customerNumber) {
+  public LicenseImportByDetailsPatchDto customerNumber(@jakarta.annotation.Nonnull String customerNumber) {
     this.customerNumber = customerNumber;
     return this;
   }
@@ -212,18 +194,23 @@ public class LicenseImportByDetailsPatchDto {
    * Get customerNumber
    * @return customerNumber
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getCustomerNumber() {
     return customerNumber;
   }
 
-  public void setCustomerNumber(@javax.annotation.Nonnull String customerNumber) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setCustomerNumber(@jakarta.annotation.Nonnull String customerNumber) {
     this.customerNumber = customerNumber;
   }
 
 
-  public LicenseImportByDetailsPatchDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public LicenseImportByDetailsPatchDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -231,18 +218,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public LicenseImportByDetailsPatchDto template(@javax.annotation.Nullable String template) {
-    this.template = template;
+
+  public LicenseImportByDetailsPatchDto template(@jakarta.annotation.Nullable String template) {
+    this.template = JsonNullable.<String>of(template);
     return this;
   }
 
@@ -250,18 +250,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get template
    * @return template
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getTemplate() {
-    return template;
+        return template.orElse(null);
   }
 
-  public void setTemplate(@javax.annotation.Nullable String template) {
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getTemplate_JsonNullable() {
+    return template;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE)
+  public void setTemplate_JsonNullable(JsonNullable<String> template) {
     this.template = template;
   }
 
+  public void setTemplate(@jakarta.annotation.Nullable String template) {
+    this.template = JsonNullable.<String>of(template);
+  }
 
-  public LicenseImportByDetailsPatchDto legacyLicenseKey(@javax.annotation.Nullable String legacyLicenseKey) {
-    this.legacyLicenseKey = legacyLicenseKey;
+
+  public LicenseImportByDetailsPatchDto legacyLicenseKey(@jakarta.annotation.Nullable String legacyLicenseKey) {
+    this.legacyLicenseKey = JsonNullable.<String>of(legacyLicenseKey);
     return this;
   }
 
@@ -269,18 +282,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get legacyLicenseKey
    * @return legacyLicenseKey
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLegacyLicenseKey() {
-    return legacyLicenseKey;
+        return legacyLicenseKey.orElse(null);
   }
 
-  public void setLegacyLicenseKey(@javax.annotation.Nullable String legacyLicenseKey) {
+  @JsonProperty(value = JSON_PROPERTY_LEGACY_LICENSE_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLegacyLicenseKey_JsonNullable() {
+    return legacyLicenseKey;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LEGACY_LICENSE_KEY)
+  public void setLegacyLicenseKey_JsonNullable(JsonNullable<String> legacyLicenseKey) {
     this.legacyLicenseKey = legacyLicenseKey;
   }
 
+  public void setLegacyLicenseKey(@jakarta.annotation.Nullable String legacyLicenseKey) {
+    this.legacyLicenseKey = JsonNullable.<String>of(legacyLicenseKey);
+  }
 
-  public LicenseImportByDetailsPatchDto description(@javax.annotation.Nullable String description) {
-    this.description = description;
+
+  public LicenseImportByDetailsPatchDto description(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
     return this;
   }
 
@@ -288,18 +314,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get description
    * @return description
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getDescription() {
-    return description;
+        return description.orElse(null);
   }
 
-  public void setDescription(@javax.annotation.Nullable String description) {
+  @JsonProperty(value = JSON_PROPERTY_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getDescription_JsonNullable() {
+    return description;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  public void setDescription_JsonNullable(JsonNullable<String> description) {
     this.description = description;
   }
 
+  public void setDescription(@jakarta.annotation.Nullable String description) {
+    this.description = JsonNullable.<String>of(description);
+  }
 
-  public LicenseImportByDetailsPatchDto tokenLimit(@javax.annotation.Nullable Integer tokenLimit) {
-    this.tokenLimit = tokenLimit;
+
+  public LicenseImportByDetailsPatchDto tokenLimit(@jakarta.annotation.Nullable Integer tokenLimit) {
+    this.tokenLimit = JsonNullable.<Integer>of(tokenLimit);
     return this;
   }
 
@@ -307,18 +346,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get tokenLimit
    * @return tokenLimit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getTokenLimit() {
-    return tokenLimit;
+        return tokenLimit.orElse(null);
   }
 
-  public void setTokenLimit(@javax.annotation.Nullable Integer tokenLimit) {
+  @JsonProperty(value = JSON_PROPERTY_TOKEN_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getTokenLimit_JsonNullable() {
+    return tokenLimit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TOKEN_LIMIT)
+  public void setTokenLimit_JsonNullable(JsonNullable<Integer> tokenLimit) {
     this.tokenLimit = tokenLimit;
   }
 
+  public void setTokenLimit(@jakarta.annotation.Nullable Integer tokenLimit) {
+    this.tokenLimit = JsonNullable.<Integer>of(tokenLimit);
+  }
 
-  public LicenseImportByDetailsPatchDto goodwillTokenLimit(@javax.annotation.Nullable Integer goodwillTokenLimit) {
-    this.goodwillTokenLimit = goodwillTokenLimit;
+
+  public LicenseImportByDetailsPatchDto goodwillTokenLimit(@jakarta.annotation.Nullable Integer goodwillTokenLimit) {
+    this.goodwillTokenLimit = JsonNullable.<Integer>of(goodwillTokenLimit);
     return this;
   }
 
@@ -326,18 +378,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get goodwillTokenLimit
    * @return goodwillTokenLimit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getGoodwillTokenLimit() {
-    return goodwillTokenLimit;
+        return goodwillTokenLimit.orElse(null);
   }
 
-  public void setGoodwillTokenLimit(@javax.annotation.Nullable Integer goodwillTokenLimit) {
+  @JsonProperty(value = JSON_PROPERTY_GOODWILL_TOKEN_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getGoodwillTokenLimit_JsonNullable() {
+    return goodwillTokenLimit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GOODWILL_TOKEN_LIMIT)
+  public void setGoodwillTokenLimit_JsonNullable(JsonNullable<Integer> goodwillTokenLimit) {
     this.goodwillTokenLimit = goodwillTokenLimit;
   }
 
+  public void setGoodwillTokenLimit(@jakarta.annotation.Nullable Integer goodwillTokenLimit) {
+    this.goodwillTokenLimit = JsonNullable.<Integer>of(goodwillTokenLimit);
+  }
 
-  public LicenseImportByDetailsPatchDto floatingTokenLimit(@javax.annotation.Nullable Integer floatingTokenLimit) {
-    this.floatingTokenLimit = floatingTokenLimit;
+
+  public LicenseImportByDetailsPatchDto floatingTokenLimit(@jakarta.annotation.Nullable Integer floatingTokenLimit) {
+    this.floatingTokenLimit = JsonNullable.<Integer>of(floatingTokenLimit);
     return this;
   }
 
@@ -345,18 +410,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get floatingTokenLimit
    * @return floatingTokenLimit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getFloatingTokenLimit() {
-    return floatingTokenLimit;
+        return floatingTokenLimit.orElse(null);
   }
 
-  public void setFloatingTokenLimit(@javax.annotation.Nullable Integer floatingTokenLimit) {
+  @JsonProperty(value = JSON_PROPERTY_FLOATING_TOKEN_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getFloatingTokenLimit_JsonNullable() {
+    return floatingTokenLimit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FLOATING_TOKEN_LIMIT)
+  public void setFloatingTokenLimit_JsonNullable(JsonNullable<Integer> floatingTokenLimit) {
     this.floatingTokenLimit = floatingTokenLimit;
   }
 
+  public void setFloatingTokenLimit(@jakarta.annotation.Nullable Integer floatingTokenLimit) {
+    this.floatingTokenLimit = JsonNullable.<Integer>of(floatingTokenLimit);
+  }
 
-  public LicenseImportByDetailsPatchDto userLimit(@javax.annotation.Nullable Integer userLimit) {
-    this.userLimit = userLimit;
+
+  public LicenseImportByDetailsPatchDto userLimit(@jakarta.annotation.Nullable Integer userLimit) {
+    this.userLimit = JsonNullable.<Integer>of(userLimit);
     return this;
   }
 
@@ -364,18 +442,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get userLimit
    * @return userLimit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getUserLimit() {
-    return userLimit;
+        return userLimit.orElse(null);
   }
 
-  public void setUserLimit(@javax.annotation.Nullable Integer userLimit) {
+  @JsonProperty(value = JSON_PROPERTY_USER_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getUserLimit_JsonNullable() {
+    return userLimit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_LIMIT)
+  public void setUserLimit_JsonNullable(JsonNullable<Integer> userLimit) {
     this.userLimit = userLimit;
   }
 
+  public void setUserLimit(@jakarta.annotation.Nullable Integer userLimit) {
+    this.userLimit = JsonNullable.<Integer>of(userLimit);
+  }
 
-  public LicenseImportByDetailsPatchDto startDate(@javax.annotation.Nullable String startDate) {
-    this.startDate = startDate;
+
+  public LicenseImportByDetailsPatchDto startDate(@jakarta.annotation.Nullable String startDate) {
+    this.startDate = JsonNullable.<String>of(startDate);
     return this;
   }
 
@@ -383,18 +474,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get startDate
    * @return startDate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getStartDate() {
-    return startDate;
+        return startDate.orElse(null);
   }
 
-  public void setStartDate(@javax.annotation.Nullable String startDate) {
+  @JsonProperty(value = JSON_PROPERTY_START_DATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getStartDate_JsonNullable() {
+    return startDate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_START_DATE)
+  public void setStartDate_JsonNullable(JsonNullable<String> startDate) {
     this.startDate = startDate;
   }
 
+  public void setStartDate(@jakarta.annotation.Nullable String startDate) {
+    this.startDate = JsonNullable.<String>of(startDate);
+  }
 
-  public LicenseImportByDetailsPatchDto expirationDate(@javax.annotation.Nullable String expirationDate) {
-    this.expirationDate = expirationDate;
+
+  public LicenseImportByDetailsPatchDto expirationDate(@jakarta.annotation.Nullable String expirationDate) {
+    this.expirationDate = JsonNullable.<String>of(expirationDate);
     return this;
   }
 
@@ -402,18 +506,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get expirationDate
    * @return expirationDate
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getExpirationDate() {
-    return expirationDate;
+        return expirationDate.orElse(null);
   }
 
-  public void setExpirationDate(@javax.annotation.Nullable String expirationDate) {
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_DATE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getExpirationDate_JsonNullable() {
+    return expirationDate;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXPIRATION_DATE)
+  public void setExpirationDate_JsonNullable(JsonNullable<String> expirationDate) {
     this.expirationDate = expirationDate;
   }
 
+  public void setExpirationDate(@jakarta.annotation.Nullable String expirationDate) {
+    this.expirationDate = JsonNullable.<String>of(expirationDate);
+  }
 
-  public LicenseImportByDetailsPatchDto licenseType(@javax.annotation.Nullable String licenseType) {
-    this.licenseType = licenseType;
+
+  public LicenseImportByDetailsPatchDto licenseType(@jakarta.annotation.Nullable String licenseType) {
+    this.licenseType = JsonNullable.<String>of(licenseType);
     return this;
   }
 
@@ -421,18 +538,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseType
    * @return licenseType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLicenseType() {
-    return licenseType;
+        return licenseType.orElse(null);
   }
 
-  public void setLicenseType(@javax.annotation.Nullable String licenseType) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLicenseType_JsonNullable() {
+    return licenseType;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_TYPE)
+  public void setLicenseType_JsonNullable(JsonNullable<String> licenseType) {
     this.licenseType = licenseType;
   }
 
+  public void setLicenseType(@jakarta.annotation.Nullable String licenseType) {
+    this.licenseType = JsonNullable.<String>of(licenseType);
+  }
 
-  public LicenseImportByDetailsPatchDto softwareReleaseLimitation(@javax.annotation.Nullable String softwareReleaseLimitation) {
-    this.softwareReleaseLimitation = softwareReleaseLimitation;
+
+  public LicenseImportByDetailsPatchDto softwareReleaseLimitation(@jakarta.annotation.Nullable String softwareReleaseLimitation) {
+    this.softwareReleaseLimitation = JsonNullable.<String>of(softwareReleaseLimitation);
     return this;
   }
 
@@ -440,26 +570,43 @@ public class LicenseImportByDetailsPatchDto {
    * Get softwareReleaseLimitation
    * @return softwareReleaseLimitation
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSoftwareReleaseLimitation() {
-    return softwareReleaseLimitation;
+        return softwareReleaseLimitation.orElse(null);
   }
 
-  public void setSoftwareReleaseLimitation(@javax.annotation.Nullable String softwareReleaseLimitation) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSoftwareReleaseLimitation_JsonNullable() {
+    return softwareReleaseLimitation;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_RELEASE_LIMITATION)
+  public void setSoftwareReleaseLimitation_JsonNullable(JsonNullable<String> softwareReleaseLimitation) {
     this.softwareReleaseLimitation = softwareReleaseLimitation;
   }
 
+  public void setSoftwareReleaseLimitation(@jakarta.annotation.Nullable String softwareReleaseLimitation) {
+    this.softwareReleaseLimitation = JsonNullable.<String>of(softwareReleaseLimitation);
+  }
 
-  public LicenseImportByDetailsPatchDto licenseFeatures(@javax.annotation.Nullable List<String> licenseFeatures) {
-    this.licenseFeatures = licenseFeatures;
+
+  public LicenseImportByDetailsPatchDto licenseFeatures(@jakarta.annotation.Nullable List<String> licenseFeatures) {
+    this.licenseFeatures = JsonNullable.<List<String>>of(licenseFeatures);
     return this;
   }
 
   public LicenseImportByDetailsPatchDto addLicenseFeaturesItem(String licenseFeaturesItem) {
-    if (this.licenseFeatures == null) {
-      this.licenseFeatures = new ArrayList<>();
+    if (this.licenseFeatures == null || !this.licenseFeatures.isPresent()) {
+      this.licenseFeatures = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.licenseFeatures.add(licenseFeaturesItem);
+    try {
+      this.licenseFeatures.get().add(licenseFeaturesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -467,26 +614,43 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseFeatures
    * @return licenseFeatures
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getLicenseFeatures() {
-    return licenseFeatures;
+        return licenseFeatures.orElse(null);
   }
 
-  public void setLicenseFeatures(@javax.annotation.Nullable List<String> licenseFeatures) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_FEATURES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getLicenseFeatures_JsonNullable() {
+    return licenseFeatures;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_FEATURES)
+  public void setLicenseFeatures_JsonNullable(JsonNullable<List<String>> licenseFeatures) {
     this.licenseFeatures = licenseFeatures;
   }
 
+  public void setLicenseFeatures(@jakarta.annotation.Nullable List<String> licenseFeatures) {
+    this.licenseFeatures = JsonNullable.<List<String>>of(licenseFeatures);
+  }
 
-  public LicenseImportByDetailsPatchDto licenseLimitations(@javax.annotation.Nullable List<LicenseImportLimitationDto> licenseLimitations) {
-    this.licenseLimitations = licenseLimitations;
+
+  public LicenseImportByDetailsPatchDto licenseLimitations(@jakarta.annotation.Nullable List<LicenseImportLimitationDto> licenseLimitations) {
+    this.licenseLimitations = JsonNullable.<List<LicenseImportLimitationDto>>of(licenseLimitations);
     return this;
   }
 
   public LicenseImportByDetailsPatchDto addLicenseLimitationsItem(LicenseImportLimitationDto licenseLimitationsItem) {
-    if (this.licenseLimitations == null) {
-      this.licenseLimitations = new ArrayList<>();
+    if (this.licenseLimitations == null || !this.licenseLimitations.isPresent()) {
+      this.licenseLimitations = JsonNullable.<List<LicenseImportLimitationDto>>of(new ArrayList<>());
     }
-    this.licenseLimitations.add(licenseLimitationsItem);
+    try {
+      this.licenseLimitations.get().add(licenseLimitationsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -494,26 +658,43 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseLimitations
    * @return licenseLimitations
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<LicenseImportLimitationDto> getLicenseLimitations() {
-    return licenseLimitations;
+        return licenseLimitations.orElse(null);
   }
 
-  public void setLicenseLimitations(@javax.annotation.Nullable List<LicenseImportLimitationDto> licenseLimitations) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_LIMITATIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<LicenseImportLimitationDto>> getLicenseLimitations_JsonNullable() {
+    return licenseLimitations;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_LIMITATIONS)
+  public void setLicenseLimitations_JsonNullable(JsonNullable<List<LicenseImportLimitationDto>> licenseLimitations) {
     this.licenseLimitations = licenseLimitations;
   }
 
+  public void setLicenseLimitations(@jakarta.annotation.Nullable List<LicenseImportLimitationDto> licenseLimitations) {
+    this.licenseLimitations = JsonNullable.<List<LicenseImportLimitationDto>>of(licenseLimitations);
+  }
 
-  public LicenseImportByDetailsPatchDto licenseVariables(@javax.annotation.Nullable List<LicenseImportVariableDto> licenseVariables) {
-    this.licenseVariables = licenseVariables;
+
+  public LicenseImportByDetailsPatchDto licenseVariables(@jakarta.annotation.Nullable List<LicenseImportVariableDto> licenseVariables) {
+    this.licenseVariables = JsonNullable.<List<LicenseImportVariableDto>>of(licenseVariables);
     return this;
   }
 
   public LicenseImportByDetailsPatchDto addLicenseVariablesItem(LicenseImportVariableDto licenseVariablesItem) {
-    if (this.licenseVariables == null) {
-      this.licenseVariables = new ArrayList<>();
+    if (this.licenseVariables == null || !this.licenseVariables.isPresent()) {
+      this.licenseVariables = JsonNullable.<List<LicenseImportVariableDto>>of(new ArrayList<>());
     }
-    this.licenseVariables.add(licenseVariablesItem);
+    try {
+      this.licenseVariables.get().add(licenseVariablesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -521,26 +702,43 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseVariables
    * @return licenseVariables
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<LicenseImportVariableDto> getLicenseVariables() {
-    return licenseVariables;
+        return licenseVariables.orElse(null);
   }
 
-  public void setLicenseVariables(@javax.annotation.Nullable List<LicenseImportVariableDto> licenseVariables) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_VARIABLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<LicenseImportVariableDto>> getLicenseVariables_JsonNullable() {
+    return licenseVariables;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_VARIABLES)
+  public void setLicenseVariables_JsonNullable(JsonNullable<List<LicenseImportVariableDto>> licenseVariables) {
     this.licenseVariables = licenseVariables;
   }
 
+  public void setLicenseVariables(@jakarta.annotation.Nullable List<LicenseImportVariableDto> licenseVariables) {
+    this.licenseVariables = JsonNullable.<List<LicenseImportVariableDto>>of(licenseVariables);
+  }
 
-  public LicenseImportByDetailsPatchDto licenseConstrainedVariables(@javax.annotation.Nullable List<LicenseImportConstrainedVariableDto> licenseConstrainedVariables) {
-    this.licenseConstrainedVariables = licenseConstrainedVariables;
+
+  public LicenseImportByDetailsPatchDto licenseConstrainedVariables(@jakarta.annotation.Nullable List<LicenseImportConstrainedVariableDto> licenseConstrainedVariables) {
+    this.licenseConstrainedVariables = JsonNullable.<List<LicenseImportConstrainedVariableDto>>of(licenseConstrainedVariables);
     return this;
   }
 
   public LicenseImportByDetailsPatchDto addLicenseConstrainedVariablesItem(LicenseImportConstrainedVariableDto licenseConstrainedVariablesItem) {
-    if (this.licenseConstrainedVariables == null) {
-      this.licenseConstrainedVariables = new ArrayList<>();
+    if (this.licenseConstrainedVariables == null || !this.licenseConstrainedVariables.isPresent()) {
+      this.licenseConstrainedVariables = JsonNullable.<List<LicenseImportConstrainedVariableDto>>of(new ArrayList<>());
     }
-    this.licenseConstrainedVariables.add(licenseConstrainedVariablesItem);
+    try {
+      this.licenseConstrainedVariables.get().add(licenseConstrainedVariablesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -548,18 +746,31 @@ public class LicenseImportByDetailsPatchDto {
    * Get licenseConstrainedVariables
    * @return licenseConstrainedVariables
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<LicenseImportConstrainedVariableDto> getLicenseConstrainedVariables() {
-    return licenseConstrainedVariables;
+        return licenseConstrainedVariables.orElse(null);
   }
 
-  public void setLicenseConstrainedVariables(@javax.annotation.Nullable List<LicenseImportConstrainedVariableDto> licenseConstrainedVariables) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_CONSTRAINED_VARIABLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<LicenseImportConstrainedVariableDto>> getLicenseConstrainedVariables_JsonNullable() {
+    return licenseConstrainedVariables;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_CONSTRAINED_VARIABLES)
+  public void setLicenseConstrainedVariables_JsonNullable(JsonNullable<List<LicenseImportConstrainedVariableDto>> licenseConstrainedVariables) {
     this.licenseConstrainedVariables = licenseConstrainedVariables;
   }
 
+  public void setLicenseConstrainedVariables(@jakarta.annotation.Nullable List<LicenseImportConstrainedVariableDto> licenseConstrainedVariables) {
+    this.licenseConstrainedVariables = JsonNullable.<List<LicenseImportConstrainedVariableDto>>of(licenseConstrainedVariables);
+  }
 
-  public LicenseImportByDetailsPatchDto isActive(@javax.annotation.Nullable Boolean isActive) {
-    this.isActive = isActive;
+
+  public LicenseImportByDetailsPatchDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
+    this.isActive = JsonNullable.<Boolean>of(isActive);
     return this;
   }
 
@@ -567,17 +778,30 @@ public class LicenseImportByDetailsPatchDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsActive() {
-    return isActive;
+        return isActive.orElse(null);
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsActive_JsonNullable() {
+    return isActive;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
+  public void setIsActive_JsonNullable(JsonNullable<Boolean> isActive) {
     this.isActive = isActive;
   }
 
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
+    this.isActive = JsonNullable.<Boolean>of(isActive);
+  }
 
-  public LicenseImportByDetailsPatchDto resumeOnError(@javax.annotation.Nullable Boolean resumeOnError) {
+
+  public LicenseImportByDetailsPatchDto resumeOnError(@jakarta.annotation.Nullable Boolean resumeOnError) {
     this.resumeOnError = resumeOnError;
     return this;
   }
@@ -586,17 +810,24 @@ public class LicenseImportByDetailsPatchDto {
    * Get resumeOnError
    * @return resumeOnError
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESUME_ON_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getResumeOnError() {
     return resumeOnError;
   }
 
-  public void setResumeOnError(@javax.annotation.Nullable Boolean resumeOnError) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESUME_ON_ERROR, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResumeOnError(@jakarta.annotation.Nullable Boolean resumeOnError) {
     this.resumeOnError = resumeOnError;
   }
 
 
-
+  /**
+   * Return true if this LicenseImportByDetailsPatchDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -609,23 +840,23 @@ public class LicenseImportByDetailsPatchDto {
     return Objects.equals(this.productId, licenseImportByDetailsPatchDto.productId) &&
         Objects.equals(this.licenseKey, licenseImportByDetailsPatchDto.licenseKey) &&
         Objects.equals(this.customerNumber, licenseImportByDetailsPatchDto.customerNumber) &&
-        Objects.equals(this.name, licenseImportByDetailsPatchDto.name) &&
-        Objects.equals(this.template, licenseImportByDetailsPatchDto.template) &&
-        Objects.equals(this.legacyLicenseKey, licenseImportByDetailsPatchDto.legacyLicenseKey) &&
-        Objects.equals(this.description, licenseImportByDetailsPatchDto.description) &&
-        Objects.equals(this.tokenLimit, licenseImportByDetailsPatchDto.tokenLimit) &&
-        Objects.equals(this.goodwillTokenLimit, licenseImportByDetailsPatchDto.goodwillTokenLimit) &&
-        Objects.equals(this.floatingTokenLimit, licenseImportByDetailsPatchDto.floatingTokenLimit) &&
-        Objects.equals(this.userLimit, licenseImportByDetailsPatchDto.userLimit) &&
-        Objects.equals(this.startDate, licenseImportByDetailsPatchDto.startDate) &&
-        Objects.equals(this.expirationDate, licenseImportByDetailsPatchDto.expirationDate) &&
-        Objects.equals(this.licenseType, licenseImportByDetailsPatchDto.licenseType) &&
-        Objects.equals(this.softwareReleaseLimitation, licenseImportByDetailsPatchDto.softwareReleaseLimitation) &&
-        Objects.equals(this.licenseFeatures, licenseImportByDetailsPatchDto.licenseFeatures) &&
-        Objects.equals(this.licenseLimitations, licenseImportByDetailsPatchDto.licenseLimitations) &&
-        Objects.equals(this.licenseVariables, licenseImportByDetailsPatchDto.licenseVariables) &&
-        Objects.equals(this.licenseConstrainedVariables, licenseImportByDetailsPatchDto.licenseConstrainedVariables) &&
-        Objects.equals(this.isActive, licenseImportByDetailsPatchDto.isActive) &&
+        equalsNullable(this.name, licenseImportByDetailsPatchDto.name) &&
+        equalsNullable(this.template, licenseImportByDetailsPatchDto.template) &&
+        equalsNullable(this.legacyLicenseKey, licenseImportByDetailsPatchDto.legacyLicenseKey) &&
+        equalsNullable(this.description, licenseImportByDetailsPatchDto.description) &&
+        equalsNullable(this.tokenLimit, licenseImportByDetailsPatchDto.tokenLimit) &&
+        equalsNullable(this.goodwillTokenLimit, licenseImportByDetailsPatchDto.goodwillTokenLimit) &&
+        equalsNullable(this.floatingTokenLimit, licenseImportByDetailsPatchDto.floatingTokenLimit) &&
+        equalsNullable(this.userLimit, licenseImportByDetailsPatchDto.userLimit) &&
+        equalsNullable(this.startDate, licenseImportByDetailsPatchDto.startDate) &&
+        equalsNullable(this.expirationDate, licenseImportByDetailsPatchDto.expirationDate) &&
+        equalsNullable(this.licenseType, licenseImportByDetailsPatchDto.licenseType) &&
+        equalsNullable(this.softwareReleaseLimitation, licenseImportByDetailsPatchDto.softwareReleaseLimitation) &&
+        equalsNullable(this.licenseFeatures, licenseImportByDetailsPatchDto.licenseFeatures) &&
+        equalsNullable(this.licenseLimitations, licenseImportByDetailsPatchDto.licenseLimitations) &&
+        equalsNullable(this.licenseVariables, licenseImportByDetailsPatchDto.licenseVariables) &&
+        equalsNullable(this.licenseConstrainedVariables, licenseImportByDetailsPatchDto.licenseConstrainedVariables) &&
+        equalsNullable(this.isActive, licenseImportByDetailsPatchDto.isActive) &&
         Objects.equals(this.resumeOnError, licenseImportByDetailsPatchDto.resumeOnError);
   }
 
@@ -635,7 +866,7 @@ public class LicenseImportByDetailsPatchDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, licenseKey, customerNumber, name, template, legacyLicenseKey, description, tokenLimit, goodwillTokenLimit, floatingTokenLimit, userLimit, startDate, expirationDate, licenseType, softwareReleaseLimitation, licenseFeatures, licenseLimitations, licenseVariables, licenseConstrainedVariables, isActive, resumeOnError);
+    return Objects.hash(productId, licenseKey, customerNumber, hashCodeNullable(name), hashCodeNullable(template), hashCodeNullable(legacyLicenseKey), hashCodeNullable(description), hashCodeNullable(tokenLimit), hashCodeNullable(goodwillTokenLimit), hashCodeNullable(floatingTokenLimit), hashCodeNullable(userLimit), hashCodeNullable(startDate), hashCodeNullable(expirationDate), hashCodeNullable(licenseType), hashCodeNullable(softwareReleaseLimitation), hashCodeNullable(licenseFeatures), hashCodeNullable(licenseLimitations), hashCodeNullable(licenseVariables), hashCodeNullable(licenseConstrainedVariables), hashCodeNullable(isActive), resumeOnError);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -685,174 +916,163 @@ public class LicenseImportByDetailsPatchDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "license_key", "customer_number", "name", "template", "legacy_license_key", "description", "token_limit", "goodwill_token_limit", "floating_token_limit", "user_limit", "start_date", "expiration_date", "license_type", "software_release_limitation", "license_features", "license_limitations", "license_variables", "license_constrained_variables", "is_active", "resume_on_error"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "license_key", "customer_number"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseImportByDetailsPatchDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseImportByDetailsPatchDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseImportByDetailsPatchDto is not found in the empty JSON string", LicenseImportByDetailsPatchDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseImportByDetailsPatchDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseImportByDetailsPatchDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseImportByDetailsPatchDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_key").toString()));
-      }
-      if (!jsonObj.get("customer_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_number").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("template") != null && !jsonObj.get("template").isJsonNull()) && !jsonObj.get("template").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template").toString()));
-      }
-      if ((jsonObj.get("legacy_license_key") != null && !jsonObj.get("legacy_license_key").isJsonNull()) && !jsonObj.get("legacy_license_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `legacy_license_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("legacy_license_key").toString()));
-      }
-      if ((jsonObj.get("description") != null && !jsonObj.get("description").isJsonNull()) && !jsonObj.get("description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("description").toString()));
-      }
-      if ((jsonObj.get("start_date") != null && !jsonObj.get("start_date").isJsonNull()) && !jsonObj.get("start_date").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `start_date` to be a primitive type in the JSON string but got `%s`", jsonObj.get("start_date").toString()));
-      }
-      if ((jsonObj.get("expiration_date") != null && !jsonObj.get("expiration_date").isJsonNull()) && !jsonObj.get("expiration_date").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `expiration_date` to be a primitive type in the JSON string but got `%s`", jsonObj.get("expiration_date").toString()));
-      }
-      if ((jsonObj.get("license_type") != null && !jsonObj.get("license_type").isJsonNull()) && !jsonObj.get("license_type").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_type` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_type").toString()));
-      }
-      if ((jsonObj.get("software_release_limitation") != null && !jsonObj.get("software_release_limitation").isJsonNull()) && !jsonObj.get("software_release_limitation").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_release_limitation` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_release_limitation").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("license_features") != null && !jsonObj.get("license_features").isJsonNull() && !jsonObj.get("license_features").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_features` to be an array in the JSON string but got `%s`", jsonObj.get("license_features").toString()));
-      }
-      if (jsonObj.get("license_limitations") != null && !jsonObj.get("license_limitations").isJsonNull()) {
-        JsonArray jsonArraylicenseLimitations = jsonObj.getAsJsonArray("license_limitations");
-        if (jsonArraylicenseLimitations != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("license_limitations").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `license_limitations` to be an array in the JSON string but got `%s`", jsonObj.get("license_limitations").toString()));
-          }
-
-          // validate the optional field `license_limitations` (array)
-          for (int i = 0; i < jsonArraylicenseLimitations.size(); i++) {
-            LicenseImportLimitationDto.validateJsonElement(jsonArraylicenseLimitations.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("license_variables") != null && !jsonObj.get("license_variables").isJsonNull()) {
-        JsonArray jsonArraylicenseVariables = jsonObj.getAsJsonArray("license_variables");
-        if (jsonArraylicenseVariables != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("license_variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `license_variables` to be an array in the JSON string but got `%s`", jsonObj.get("license_variables").toString()));
-          }
-
-          // validate the optional field `license_variables` (array)
-          for (int i = 0; i < jsonArraylicenseVariables.size(); i++) {
-            LicenseImportVariableDto.validateJsonElement(jsonArraylicenseVariables.get(i));
-          };
-        }
-      }
-      if (jsonObj.get("license_constrained_variables") != null && !jsonObj.get("license_constrained_variables").isJsonNull()) {
-        JsonArray jsonArraylicenseConstrainedVariables = jsonObj.getAsJsonArray("license_constrained_variables");
-        if (jsonArraylicenseConstrainedVariables != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("license_constrained_variables").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `license_constrained_variables` to be an array in the JSON string but got `%s`", jsonObj.get("license_constrained_variables").toString()));
-          }
-
-          // validate the optional field `license_constrained_variables` (array)
-          for (int i = 0; i < jsonArraylicenseConstrainedVariables.size(); i++) {
-            LicenseImportConstrainedVariableDto.validateJsonElement(jsonArraylicenseConstrainedVariables.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseImportByDetailsPatchDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseImportByDetailsPatchDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseImportByDetailsPatchDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseImportByDetailsPatchDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseImportByDetailsPatchDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseImportByDetailsPatchDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseImportByDetailsPatchDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseImportByDetailsPatchDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseImportByDetailsPatchDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseImportByDetailsPatchDto
-   */
-  public static LicenseImportByDetailsPatchDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseImportByDetailsPatchDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseImportByDetailsPatchDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `license_key` to the URL query string
+    if (getLicenseKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseKey()))));
+    }
+
+    // add `customer_number` to the URL query string
+    if (getCustomerNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumber()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `template` to the URL query string
+    if (getTemplate() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemplate%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemplate()))));
+    }
+
+    // add `legacy_license_key` to the URL query string
+    if (getLegacyLicenseKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slegacy_license_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLegacyLicenseKey()))));
+    }
+
+    // add `description` to the URL query string
+    if (getDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescription%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescription()))));
+    }
+
+    // add `token_limit` to the URL query string
+    if (getTokenLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stoken_limit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTokenLimit()))));
+    }
+
+    // add `goodwill_token_limit` to the URL query string
+    if (getGoodwillTokenLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgoodwill_token_limit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGoodwillTokenLimit()))));
+    }
+
+    // add `floating_token_limit` to the URL query string
+    if (getFloatingTokenLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfloating_token_limit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFloatingTokenLimit()))));
+    }
+
+    // add `user_limit` to the URL query string
+    if (getUserLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_limit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserLimit()))));
+    }
+
+    // add `start_date` to the URL query string
+    if (getStartDate() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstart_date%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStartDate()))));
+    }
+
+    // add `expiration_date` to the URL query string
+    if (getExpirationDate() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexpiration_date%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpirationDate()))));
+    }
+
+    // add `license_type` to the URL query string
+    if (getLicenseType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseType()))));
+    }
+
+    // add `software_release_limitation` to the URL query string
+    if (getSoftwareReleaseLimitation() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_release_limitation%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSoftwareReleaseLimitation()))));
+    }
+
+    // add `license_features` to the URL query string
+    if (getLicenseFeatures() != null) {
+      for (int i = 0; i < getLicenseFeatures().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%slicense_features%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getLicenseFeatures().get(i)))));
+      }
+    }
+
+    // add `license_limitations` to the URL query string
+    if (getLicenseLimitations() != null) {
+      for (int i = 0; i < getLicenseLimitations().size(); i++) {
+        if (getLicenseLimitations().get(i) != null) {
+          joiner.add(getLicenseLimitations().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%slicense_limitations%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `license_variables` to the URL query string
+    if (getLicenseVariables() != null) {
+      for (int i = 0; i < getLicenseVariables().size(); i++) {
+        if (getLicenseVariables().get(i) != null) {
+          joiner.add(getLicenseVariables().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%slicense_variables%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `license_constrained_variables` to the URL query string
+    if (getLicenseConstrainedVariables() != null) {
+      for (int i = 0; i < getLicenseConstrainedVariables().size(); i++) {
+        if (getLicenseConstrainedVariables().get(i) != null) {
+          joiner.add(getLicenseConstrainedVariables().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%slicense_constrained_variables%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `resume_on_error` to the URL query string
+    if (getResumeOnError() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sresume_on_error%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResumeOnError()))));
+    }
+
+    return joiner.toString();
   }
 }
 

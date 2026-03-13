@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.CommonErrorResponse;
 import com.slascone.model.EmailConfigurationDto;
@@ -34,1798 +25,1561 @@ import com.slascone.model.ProblemDetails;
 import java.util.UUID;
 import com.slascone.model.UserEmailTemplateDto;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class NotificationApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public NotificationApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public NotificationApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for addUserEmailTemplate
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to add. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call addUserEmailTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  public NotificationApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public NotificationApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Adds a new user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to add. (required)
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto addUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return addUserEmailTemplate(isvId, userEmailTemplateDto, null);
+  }
+
+  /**
+   * Adds a new user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to add. (required)
+   * @param headers Optional headers to include in the request
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto addUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UserEmailTemplateDto> localVarResponse = addUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Adds a new user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to add. (required)
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> addUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return addUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto, null);
+  }
+
+  /**
+   * Adds a new user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to add. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> addUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addUserEmailTemplateRequestBuilder(isvId, userEmailTemplateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addUserEmailTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UserEmailTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = userEmailTemplateDto;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UserEmailTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UserEmailTemplateDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
+        return new ApiResponse<UserEmailTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+  private HttpRequest.Builder addUserEmailTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addUserEmailTemplate");
+    }
+    // verify the required parameter 'userEmailTemplateDto' is set
+    if (userEmailTemplateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'userEmailTemplateDto' when calling addUserEmailTemplate");
+    }
 
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(userEmailTemplateDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Deletes a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId) throws ApiException {
+    deleteUserEmailTemplate(isvId, emailTemplateId, null);
+  }
+
+  /**
+   * Deletes a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void deleteUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    deleteUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, headers);
+  }
+
+  /**
+   * Deletes a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId) throws ApiException {
+    return deleteUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, null);
+  }
+
+  /**
+   * Deletes a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> deleteUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = deleteUserEmailTemplateRequestBuilder(isvId, emailTemplateId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("deleteUserEmailTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder deleteUserEmailTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling deleteUserEmailTemplate");
+    }
+    // verify the required parameter 'emailTemplateId' is set
+    if (emailTemplateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailTemplateId' when calling deleteUserEmailTemplate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{email_template_id}", ApiClient.urlEncode(emailTemplateId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("DELETE", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets all user email templates for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return List&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<UserEmailTemplateDto> getAllUserEmailTemplates(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllUserEmailTemplates(isvId, null);
+  }
+
+  /**
+   * Gets all user email templates for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<UserEmailTemplateDto> getAllUserEmailTemplates(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<UserEmailTemplateDto>> localVarResponse = getAllUserEmailTemplatesWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets all user email templates for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<UserEmailTemplateDto>> getAllUserEmailTemplatesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getAllUserEmailTemplatesWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets all user email templates for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<UserEmailTemplateDto>> getAllUserEmailTemplatesWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getAllUserEmailTemplatesRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getAllUserEmailTemplates", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<UserEmailTemplateDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<UserEmailTemplateDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<UserEmailTemplateDto>>() {});
+        
+
+        return new ApiResponse<List<UserEmailTemplateDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getAllUserEmailTemplatesRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getAllUserEmailTemplates");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets the current email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return EmailConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public EmailConfigurationDto getNotificationSettings(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getNotificationSettings(isvId, null);
+  }
+
+  /**
+   * Gets the current email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return EmailConfigurationDto
+   * @throws ApiException if fails to make API call
+   */
+  public EmailConfigurationDto getNotificationSettings(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    ApiResponse<EmailConfigurationDto> localVarResponse = getNotificationSettingsWithHttpInfo(isvId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets the current email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @return ApiResponse&lt;EmailConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<EmailConfigurationDto> getNotificationSettingsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId) throws ApiException {
+    return getNotificationSettingsWithHttpInfo(isvId, null);
+  }
+
+  /**
+   * Gets the current email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;EmailConfigurationDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<EmailConfigurationDto> getNotificationSettingsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getNotificationSettingsRequestBuilder(isvId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getNotificationSettings", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<EmailConfigurationDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        EmailConfigurationDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<EmailConfigurationDto>() {});
+        
+
+        return new ApiResponse<EmailConfigurationDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getNotificationSettingsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getNotificationSettings");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addUserEmailTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addUserEmailTemplate(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets a specific user email template by its identifier.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto getUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId) throws ApiException {
+    return getUserEmailTemplate(isvId, emailTemplateId, null);
+  }
+
+  /**
+   * Gets a specific user email template by its identifier.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto getUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    ApiResponse<UserEmailTemplateDto> localVarResponse = getUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets a specific user email template by its identifier.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> getUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId) throws ApiException {
+    return getUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, null);
+  }
+
+  /**
+   * Gets a specific user email template by its identifier.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> getUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getUserEmailTemplateRequestBuilder(isvId, emailTemplateId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getUserEmailTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UserEmailTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'userEmailTemplateDto' is set
-        if (userEmailTemplateDto == null) {
-            throw new ApiException("Missing the required parameter 'userEmailTemplateDto' when calling addUserEmailTemplate(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UserEmailTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UserEmailTemplateDto>() {});
+        
+
+        return new ApiResponse<UserEmailTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getUserEmailTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getUserEmailTemplate");
+    }
+    // verify the required parameter 'emailTemplateId' is set
+    if (emailTemplateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailTemplateId' when calling getUserEmailTemplate");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{email_template_id}", ApiClient.urlEncode(emailTemplateId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Gets user email templates by their purpose.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param purpose The purpose of the email templates. (required)
+   * @return List&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<UserEmailTemplateDto> getUserEmailTemplatesByPurpose(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String purpose) throws ApiException {
+    return getUserEmailTemplatesByPurpose(isvId, purpose, null);
+  }
+
+  /**
+   * Gets user email templates by their purpose.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param purpose The purpose of the email templates. (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<UserEmailTemplateDto> getUserEmailTemplatesByPurpose(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String purpose, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<UserEmailTemplateDto>> localVarResponse = getUserEmailTemplatesByPurposeWithHttpInfo(isvId, purpose, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Gets user email templates by their purpose.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param purpose The purpose of the email templates. (required)
+   * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<UserEmailTemplateDto>> getUserEmailTemplatesByPurposeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String purpose) throws ApiException {
+    return getUserEmailTemplatesByPurposeWithHttpInfo(isvId, purpose, null);
+  }
+
+  /**
+   * Gets user email templates by their purpose.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param purpose The purpose of the email templates. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<UserEmailTemplateDto>> getUserEmailTemplatesByPurposeWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String purpose, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getUserEmailTemplatesByPurposeRequestBuilder(isvId, purpose, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getUserEmailTemplatesByPurpose", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<UserEmailTemplateDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return addUserEmailTemplateCall(isvId, userEmailTemplateDto, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<UserEmailTemplateDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<UserEmailTemplateDto>>() {});
+        
 
+        return new ApiResponse<List<UserEmailTemplateDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getUserEmailTemplatesByPurposeRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull String purpose, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getUserEmailTemplatesByPurpose");
+    }
+    // verify the required parameter 'purpose' is set
+    if (purpose == null) {
+      throw new ApiException(400, "Missing the required parameter 'purpose' when calling getUserEmailTemplatesByPurpose");
     }
 
-    /**
-     * Adds a new user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to add. (required)
-     * @return UserEmailTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UserEmailTemplateDto addUserEmailTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        ApiResponse<UserEmailTemplateDto> localVarResp = addUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto);
-        return localVarResp.getData();
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/purpose/{purpose}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{purpose}", ApiClient.urlEncode(purpose.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * Adds a new user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to add. (required)
-     * @return ApiResponse&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UserEmailTemplateDto> addUserEmailTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        okhttp3.Call localVarCall = addUserEmailTemplateValidateBeforeCall(isvId, userEmailTemplateDto, null);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     * Adds a new user email template for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to add. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addUserEmailTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback<UserEmailTemplateDto> _callback) throws ApiException {
+  /**
+   * Partially updates a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param userEmailTemplateDto The user email template with updated fields. (required)
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto patchUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return patchUserEmailTemplate(isvId, emailTemplateId, userEmailTemplateDto, null);
+  }
 
-        okhttp3.Call localVarCall = addUserEmailTemplateValidateBeforeCall(isvId, userEmailTemplateDto, _callback);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for deleteUserEmailTemplate
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteUserEmailTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
+  /**
+   * Partially updates a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param userEmailTemplateDto The user email template with updated fields. (required)
+   * @param headers Optional headers to include in the request
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto patchUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UserEmailTemplateDto> localVarResponse = patchUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, userEmailTemplateDto, headers);
+    return localVarResponse.getData();
+  }
 
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+  /**
+   * Partially updates a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param userEmailTemplateDto The user email template with updated fields. (required)
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> patchUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return patchUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, userEmailTemplateDto, null);
+  }
+
+  /**
+   * Partially updates a user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailTemplateId The email template identifier. (required)
+   * @param userEmailTemplateDto The user email template with updated fields. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> patchUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = patchUserEmailTemplateRequestBuilder(isvId, emailTemplateId, userEmailTemplateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("patchUserEmailTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UserEmailTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        Object localVarPostBody = null;
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UserEmailTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UserEmailTemplateDto>() {});
+        
 
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "email_template_id" + "}", localVarApiClient.escapeString(emailTemplateId.toString()));
+        return new ApiResponse<UserEmailTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+  private HttpRequest.Builder patchUserEmailTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID emailTemplateId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling patchUserEmailTemplate");
+    }
+    // verify the required parameter 'emailTemplateId' is set
+    if (emailTemplateId == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailTemplateId' when calling patchUserEmailTemplate");
+    }
+    // verify the required parameter 'userEmailTemplateDto' is set
+    if (userEmailTemplateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'userEmailTemplateDto' when calling patchUserEmailTemplate");
+    }
 
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{email_template_id}", ApiClient.urlEncode(emailTemplateId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(userEmailTemplateDto);
+      localVarRequestBuilder.method("PATCH", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Sends a license-related email using the specified template and recipients.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param licenseMailDto The license mail details including template and recipients. (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String sendLicenseMail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseMailDto licenseMailDto) throws ApiException {
+    return sendLicenseMail(isvId, licenseMailDto, null);
+  }
+
+  /**
+   * Sends a license-related email using the specified template and recipients.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param licenseMailDto The license mail details including template and recipients. (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String sendLicenseMail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseMailDto licenseMailDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = sendLicenseMailWithHttpInfo(isvId, licenseMailDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Sends a license-related email using the specified template and recipients.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param licenseMailDto The license mail details including template and recipients. (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> sendLicenseMailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseMailDto licenseMailDto) throws ApiException {
+    return sendLicenseMailWithHttpInfo(isvId, licenseMailDto, null);
+  }
+
+  /**
+   * Sends a license-related email using the specified template and recipients.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param licenseMailDto The license mail details including template and recipients. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> sendLicenseMailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseMailDto licenseMailDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = sendLicenseMailRequestBuilder(isvId, licenseMailDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("sendLicenseMail", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder sendLicenseMailRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull LicenseMailDto licenseMailDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling sendLicenseMail");
+    }
+    // verify the required parameter 'licenseMailDto' is set
+    if (licenseMailDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseMailDto' when calling sendLicenseMail");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/emails"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(licenseMailDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Sends a test email to verify the email configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param toEmail The recipient email address. (optional)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String sendTestEmail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String toEmail) throws ApiException {
+    return sendTestEmail(isvId, toEmail, null);
+  }
+
+  /**
+   * Sends a test email to verify the email configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param toEmail The recipient email address. (optional)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String sendTestEmail(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String toEmail, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = sendTestEmailWithHttpInfo(isvId, toEmail, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Sends a test email to verify the email configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param toEmail The recipient email address. (optional)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> sendTestEmailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String toEmail) throws ApiException {
+    return sendTestEmailWithHttpInfo(isvId, toEmail, null);
+  }
+
+  /**
+   * Sends a test email to verify the email configuration for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param toEmail The recipient email address. (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> sendTestEmailWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String toEmail, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = sendTestEmailRequestBuilder(isvId, toEmail, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("sendTestEmail", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "DELETE", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder sendTestEmailRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable String toEmail, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling sendTestEmail");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call deleteUserEmailTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling deleteUserEmailTemplate(Async)");
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations/tests"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "to_email";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("to_email", toEmail));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates the email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailConfigurationDto The email configuration settings. (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String updateNotificationSettings(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull EmailConfigurationDto emailConfigurationDto) throws ApiException {
+    return updateNotificationSettings(isvId, emailConfigurationDto, null);
+  }
+
+  /**
+   * Updates the email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailConfigurationDto The email configuration settings. (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String updateNotificationSettings(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = updateNotificationSettingsWithHttpInfo(isvId, emailConfigurationDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates the email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailConfigurationDto The email configuration settings. (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> updateNotificationSettingsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull EmailConfigurationDto emailConfigurationDto) throws ApiException {
+    return updateNotificationSettingsWithHttpInfo(isvId, emailConfigurationDto, null);
+  }
+
+  /**
+   * Updates the email notification settings for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param emailConfigurationDto The email configuration settings. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> updateNotificationSettingsWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateNotificationSettingsRequestBuilder(isvId, emailConfigurationDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateNotificationSettings", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        // verify the required parameter 'emailTemplateId' is set
-        if (emailTemplateId == null) {
-            throw new ApiException("Missing the required parameter 'emailTemplateId' when calling deleteUserEmailTemplate(Async)");
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder updateNotificationSettingsRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateNotificationSettings");
+    }
+    // verify the required parameter 'emailConfigurationDto' is set
+    if (emailConfigurationDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'emailConfigurationDto' when calling updateNotificationSettings");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(emailConfigurationDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Updates an existing user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to update. (required)
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto updateUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return updateUserEmailTemplate(isvId, userEmailTemplateDto, null);
+  }
+
+  /**
+   * Updates an existing user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to update. (required)
+   * @param headers Optional headers to include in the request
+   * @return UserEmailTemplateDto
+   * @throws ApiException if fails to make API call
+   */
+  public UserEmailTemplateDto updateUserEmailTemplate(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<UserEmailTemplateDto> localVarResponse = updateUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Updates an existing user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to update. (required)
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> updateUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
+    return updateUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto, null);
+  }
+
+  /**
+   * Updates an existing user email template for the specified ISV.
+   * 
+   * @param isvId The ISV identifier. (required)
+   * @param userEmailTemplateDto The user email template to update. (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;UserEmailTemplateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<UserEmailTemplateDto> updateUserEmailTemplateWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = updateUserEmailTemplateRequestBuilder(isvId, userEmailTemplateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("updateUserEmailTemplate", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<UserEmailTemplateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
         }
 
-        return deleteUserEmailTemplateCall(isvId, emailTemplateId, _callback);
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        UserEmailTemplateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<UserEmailTemplateDto>() {});
+        
 
-    }
-
-    /**
-     * Deletes a user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void deleteUserEmailTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId) throws ApiException {
-        deleteUserEmailTemplateWithHttpInfo(isvId, emailTemplateId);
-    }
-
-    /**
-     * Deletes a user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> deleteUserEmailTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId) throws ApiException {
-        okhttp3.Call localVarCall = deleteUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Deletes a user email template for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call deleteUserEmailTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = deleteUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getAllUserEmailTemplates
-     * @param isvId The ISV identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllUserEmailTemplatesCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
+        return new ApiResponse<UserEmailTemplateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
         }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
 
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
+  private HttpRequest.Builder updateUserEmailTemplateRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling updateUserEmailTemplate");
+    }
+    // verify the required parameter 'userEmailTemplateDto' is set
+    if (userEmailTemplateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'userEmailTemplateDto' when calling updateUserEmailTemplate");
     }
 
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getAllUserEmailTemplatesValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getAllUserEmailTemplates(Async)");
-        }
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
 
-        return getAllUserEmailTemplatesCall(isvId, _callback);
+    String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
 
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(userEmailTemplateDto);
+      localVarRequestBuilder.method("PUT", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
     }
-
-    /**
-     * Gets all user email templates for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return List&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<UserEmailTemplateDto> getAllUserEmailTemplates(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<List<UserEmailTemplateDto>> localVarResp = getAllUserEmailTemplatesWithHttpInfo(isvId);
-        return localVarResp.getData();
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
     }
-
-    /**
-     * Gets all user email templates for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<UserEmailTemplateDto>> getAllUserEmailTemplatesWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getAllUserEmailTemplatesValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<List<UserEmailTemplateDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
     }
+    return localVarRequestBuilder;
+  }
 
-    /**
-     * Gets all user email templates for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getAllUserEmailTemplatesAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<List<UserEmailTemplateDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getAllUserEmailTemplatesValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<List<UserEmailTemplateDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getNotificationSettings
-     * @param isvId The ISV identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getNotificationSettingsCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getNotificationSettingsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getNotificationSettings(Async)");
-        }
-
-        return getNotificationSettingsCall(isvId, _callback);
-
-    }
-
-    /**
-     * Gets the current email notification settings for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return EmailConfigurationDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public EmailConfigurationDto getNotificationSettings(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        ApiResponse<EmailConfigurationDto> localVarResp = getNotificationSettingsWithHttpInfo(isvId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets the current email notification settings for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @return ApiResponse&lt;EmailConfigurationDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<EmailConfigurationDto> getNotificationSettingsWithHttpInfo(@javax.annotation.Nonnull UUID isvId) throws ApiException {
-        okhttp3.Call localVarCall = getNotificationSettingsValidateBeforeCall(isvId, null);
-        Type localVarReturnType = new TypeToken<EmailConfigurationDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets the current email notification settings for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getNotificationSettingsAsync(@javax.annotation.Nonnull UUID isvId, final ApiCallback<EmailConfigurationDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getNotificationSettingsValidateBeforeCall(isvId, _callback);
-        Type localVarReturnType = new TypeToken<EmailConfigurationDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getUserEmailTemplate
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getUserEmailTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "email_template_id" + "}", localVarApiClient.escapeString(emailTemplateId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getUserEmailTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getUserEmailTemplate(Async)");
-        }
-
-        // verify the required parameter 'emailTemplateId' is set
-        if (emailTemplateId == null) {
-            throw new ApiException("Missing the required parameter 'emailTemplateId' when calling getUserEmailTemplate(Async)");
-        }
-
-        return getUserEmailTemplateCall(isvId, emailTemplateId, _callback);
-
-    }
-
-    /**
-     * Gets a specific user email template by its identifier.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @return UserEmailTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UserEmailTemplateDto getUserEmailTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId) throws ApiException {
-        ApiResponse<UserEmailTemplateDto> localVarResp = getUserEmailTemplateWithHttpInfo(isvId, emailTemplateId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets a specific user email template by its identifier.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @return ApiResponse&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UserEmailTemplateDto> getUserEmailTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId) throws ApiException {
-        okhttp3.Call localVarCall = getUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, null);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets a specific user email template by its identifier. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getUserEmailTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, final ApiCallback<UserEmailTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, _callback);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getUserEmailTemplatesByPurpose
-     * @param isvId The ISV identifier. (required)
-     * @param purpose The purpose of the email templates. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getUserEmailTemplatesByPurposeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String purpose, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/purpose/{purpose}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "purpose" + "}", localVarApiClient.escapeString(purpose.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getUserEmailTemplatesByPurposeValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String purpose, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getUserEmailTemplatesByPurpose(Async)");
-        }
-
-        // verify the required parameter 'purpose' is set
-        if (purpose == null) {
-            throw new ApiException("Missing the required parameter 'purpose' when calling getUserEmailTemplatesByPurpose(Async)");
-        }
-
-        return getUserEmailTemplatesByPurposeCall(isvId, purpose, _callback);
-
-    }
-
-    /**
-     * Gets user email templates by their purpose.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param purpose The purpose of the email templates. (required)
-     * @return List&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<UserEmailTemplateDto> getUserEmailTemplatesByPurpose(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String purpose) throws ApiException {
-        ApiResponse<List<UserEmailTemplateDto>> localVarResp = getUserEmailTemplatesByPurposeWithHttpInfo(isvId, purpose);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Gets user email templates by their purpose.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param purpose The purpose of the email templates. (required)
-     * @return ApiResponse&lt;List&lt;UserEmailTemplateDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<UserEmailTemplateDto>> getUserEmailTemplatesByPurposeWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String purpose) throws ApiException {
-        okhttp3.Call localVarCall = getUserEmailTemplatesByPurposeValidateBeforeCall(isvId, purpose, null);
-        Type localVarReturnType = new TypeToken<List<UserEmailTemplateDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Gets user email templates by their purpose. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param purpose The purpose of the email templates. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getUserEmailTemplatesByPurposeAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull String purpose, final ApiCallback<List<UserEmailTemplateDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getUserEmailTemplatesByPurposeValidateBeforeCall(isvId, purpose, _callback);
-        Type localVarReturnType = new TypeToken<List<UserEmailTemplateDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for patchUserEmailTemplate
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param userEmailTemplateDto The user email template with updated fields. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchUserEmailTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = userEmailTemplateDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id}"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "email_template_id" + "}", localVarApiClient.escapeString(emailTemplateId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PATCH", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call patchUserEmailTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling patchUserEmailTemplate(Async)");
-        }
-
-        // verify the required parameter 'emailTemplateId' is set
-        if (emailTemplateId == null) {
-            throw new ApiException("Missing the required parameter 'emailTemplateId' when calling patchUserEmailTemplate(Async)");
-        }
-
-        // verify the required parameter 'userEmailTemplateDto' is set
-        if (userEmailTemplateDto == null) {
-            throw new ApiException("Missing the required parameter 'userEmailTemplateDto' when calling patchUserEmailTemplate(Async)");
-        }
-
-        return patchUserEmailTemplateCall(isvId, emailTemplateId, userEmailTemplateDto, _callback);
-
-    }
-
-    /**
-     * Partially updates a user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param userEmailTemplateDto The user email template with updated fields. (required)
-     * @return UserEmailTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UserEmailTemplateDto patchUserEmailTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        ApiResponse<UserEmailTemplateDto> localVarResp = patchUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, userEmailTemplateDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Partially updates a user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param userEmailTemplateDto The user email template with updated fields. (required)
-     * @return ApiResponse&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UserEmailTemplateDto> patchUserEmailTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        okhttp3.Call localVarCall = patchUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, userEmailTemplateDto, null);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Partially updates a user email template for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailTemplateId The email template identifier. (required)
-     * @param userEmailTemplateDto The user email template with updated fields. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call patchUserEmailTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID emailTemplateId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback<UserEmailTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = patchUserEmailTemplateValidateBeforeCall(isvId, emailTemplateId, userEmailTemplateDto, _callback);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for sendLicenseMail
-     * @param isvId The ISV identifier. (required)
-     * @param licenseMailDto The license mail details including template and recipients. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call sendLicenseMailCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseMailDto licenseMailDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = licenseMailDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/emails"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call sendLicenseMailValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseMailDto licenseMailDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling sendLicenseMail(Async)");
-        }
-
-        // verify the required parameter 'licenseMailDto' is set
-        if (licenseMailDto == null) {
-            throw new ApiException("Missing the required parameter 'licenseMailDto' when calling sendLicenseMail(Async)");
-        }
-
-        return sendLicenseMailCall(isvId, licenseMailDto, _callback);
-
-    }
-
-    /**
-     * Sends a license-related email using the specified template and recipients.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param licenseMailDto The license mail details including template and recipients. (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String sendLicenseMail(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseMailDto licenseMailDto) throws ApiException {
-        ApiResponse<String> localVarResp = sendLicenseMailWithHttpInfo(isvId, licenseMailDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Sends a license-related email using the specified template and recipients.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param licenseMailDto The license mail details including template and recipients. (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> sendLicenseMailWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseMailDto licenseMailDto) throws ApiException {
-        okhttp3.Call localVarCall = sendLicenseMailValidateBeforeCall(isvId, licenseMailDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Sends a license-related email using the specified template and recipients. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param licenseMailDto The license mail details including template and recipients. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call sendLicenseMailAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull LicenseMailDto licenseMailDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = sendLicenseMailValidateBeforeCall(isvId, licenseMailDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for sendTestEmail
-     * @param isvId The ISV identifier. (required)
-     * @param toEmail The recipient email address. (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call sendTestEmailCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String toEmail, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations/tests"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (toEmail != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("to_email", toEmail));
-        }
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call sendTestEmailValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String toEmail, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling sendTestEmail(Async)");
-        }
-
-        return sendTestEmailCall(isvId, toEmail, _callback);
-
-    }
-
-    /**
-     * Sends a test email to verify the email configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param toEmail The recipient email address. (optional)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String sendTestEmail(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String toEmail) throws ApiException {
-        ApiResponse<String> localVarResp = sendTestEmailWithHttpInfo(isvId, toEmail);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Sends a test email to verify the email configuration for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param toEmail The recipient email address. (optional)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> sendTestEmailWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String toEmail) throws ApiException {
-        okhttp3.Call localVarCall = sendTestEmailValidateBeforeCall(isvId, toEmail, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Sends a test email to verify the email configuration for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param toEmail The recipient email address. (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call sendTestEmailAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable String toEmail, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = sendTestEmailValidateBeforeCall(isvId, toEmail, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateNotificationSettings
-     * @param isvId The ISV identifier. (required)
-     * @param emailConfigurationDto The email configuration settings. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateNotificationSettingsCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = emailConfigurationDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/configurations"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateNotificationSettingsValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateNotificationSettings(Async)");
-        }
-
-        // verify the required parameter 'emailConfigurationDto' is set
-        if (emailConfigurationDto == null) {
-            throw new ApiException("Missing the required parameter 'emailConfigurationDto' when calling updateNotificationSettings(Async)");
-        }
-
-        return updateNotificationSettingsCall(isvId, emailConfigurationDto, _callback);
-
-    }
-
-    /**
-     * Updates the email notification settings for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailConfigurationDto The email configuration settings. (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String updateNotificationSettings(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull EmailConfigurationDto emailConfigurationDto) throws ApiException {
-        ApiResponse<String> localVarResp = updateNotificationSettingsWithHttpInfo(isvId, emailConfigurationDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates the email notification settings for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailConfigurationDto The email configuration settings. (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> updateNotificationSettingsWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull EmailConfigurationDto emailConfigurationDto) throws ApiException {
-        okhttp3.Call localVarCall = updateNotificationSettingsValidateBeforeCall(isvId, emailConfigurationDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates the email notification settings for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param emailConfigurationDto The email configuration settings. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateNotificationSettingsAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull EmailConfigurationDto emailConfigurationDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateNotificationSettingsValidateBeforeCall(isvId, emailConfigurationDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for updateUserEmailTemplate
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to update. (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateUserEmailTemplateCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = userEmailTemplateDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/notifications/useremailtemplates"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "PUT", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call updateUserEmailTemplateValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling updateUserEmailTemplate(Async)");
-        }
-
-        // verify the required parameter 'userEmailTemplateDto' is set
-        if (userEmailTemplateDto == null) {
-            throw new ApiException("Missing the required parameter 'userEmailTemplateDto' when calling updateUserEmailTemplate(Async)");
-        }
-
-        return updateUserEmailTemplateCall(isvId, userEmailTemplateDto, _callback);
-
-    }
-
-    /**
-     * Updates an existing user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to update. (required)
-     * @return UserEmailTemplateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public UserEmailTemplateDto updateUserEmailTemplate(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        ApiResponse<UserEmailTemplateDto> localVarResp = updateUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Updates an existing user email template for the specified ISV.
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to update. (required)
-     * @return ApiResponse&lt;UserEmailTemplateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<UserEmailTemplateDto> updateUserEmailTemplateWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto) throws ApiException {
-        okhttp3.Call localVarCall = updateUserEmailTemplateValidateBeforeCall(isvId, userEmailTemplateDto, null);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Updates an existing user email template for the specified ISV. (asynchronously)
-     * 
-     * @param isvId The ISV identifier. (required)
-     * @param userEmailTemplateDto The user email template to update. (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 400 </td><td> Bad request </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 404 </td><td> Not found </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call updateUserEmailTemplateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UserEmailTemplateDto userEmailTemplateDto, final ApiCallback<UserEmailTemplateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = updateUserEmailTemplateValidateBeforeCall(isvId, userEmailTemplateDto, _callback);
-        Type localVarReturnType = new TypeToken<UserEmailTemplateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

@@ -13,58 +13,47 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import com.slascone.model.ResellerPortalSettingsDto;
-import java.io.IOException;
-import java.util.Arrays;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.slascone.model.ResellerPortalSettingsDto;
+import java.util.Arrays;
+import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.slascone.JSON;
 
+import com.slascone.ApiClient;
 /**
  * ResellerSettingsDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerSettingsDto.JSON_PROPERTY_OVERRIDE_GLOBAL_PORTAL_SETTINGS,
+  ResellerSettingsDto.JSON_PROPERTY_PORTAL_SETTINGS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerSettingsDto {
-  public static final String SERIALIZED_NAME_OVERRIDE_GLOBAL_PORTAL_SETTINGS = "override_global_portal_settings";
-  @SerializedName(SERIALIZED_NAME_OVERRIDE_GLOBAL_PORTAL_SETTINGS)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_OVERRIDE_GLOBAL_PORTAL_SETTINGS = "override_global_portal_settings";
+  @jakarta.annotation.Nullable
   private Boolean overrideGlobalPortalSettings;
 
-  public static final String SERIALIZED_NAME_PORTAL_SETTINGS = "portal_settings";
-  @SerializedName(SERIALIZED_NAME_PORTAL_SETTINGS)
-  @javax.annotation.Nullable
-  private ResellerPortalSettingsDto portalSettings;
+  public static final String JSON_PROPERTY_PORTAL_SETTINGS = "portal_settings";
+  private JsonNullable<ResellerPortalSettingsDto> portalSettings = JsonNullable.<ResellerPortalSettingsDto>undefined();
 
-  public ResellerSettingsDto() {
+  public ResellerSettingsDto() { 
   }
 
-  public ResellerSettingsDto overrideGlobalPortalSettings(@javax.annotation.Nullable Boolean overrideGlobalPortalSettings) {
+  public ResellerSettingsDto overrideGlobalPortalSettings(@jakarta.annotation.Nullable Boolean overrideGlobalPortalSettings) {
     this.overrideGlobalPortalSettings = overrideGlobalPortalSettings;
     return this;
   }
@@ -73,18 +62,23 @@ public class ResellerSettingsDto {
    * Get overrideGlobalPortalSettings
    * @return overrideGlobalPortalSettings
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_OVERRIDE_GLOBAL_PORTAL_SETTINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getOverrideGlobalPortalSettings() {
     return overrideGlobalPortalSettings;
   }
 
-  public void setOverrideGlobalPortalSettings(@javax.annotation.Nullable Boolean overrideGlobalPortalSettings) {
+
+  @JsonProperty(value = JSON_PROPERTY_OVERRIDE_GLOBAL_PORTAL_SETTINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setOverrideGlobalPortalSettings(@jakarta.annotation.Nullable Boolean overrideGlobalPortalSettings) {
     this.overrideGlobalPortalSettings = overrideGlobalPortalSettings;
   }
 
 
-  public ResellerSettingsDto portalSettings(@javax.annotation.Nullable ResellerPortalSettingsDto portalSettings) {
-    this.portalSettings = portalSettings;
+  public ResellerSettingsDto portalSettings(@jakarta.annotation.Nullable ResellerPortalSettingsDto portalSettings) {
+    this.portalSettings = JsonNullable.<ResellerPortalSettingsDto>of(portalSettings);
     return this;
   }
 
@@ -92,17 +86,32 @@ public class ResellerSettingsDto {
    * Get portalSettings
    * @return portalSettings
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ResellerPortalSettingsDto getPortalSettings() {
-    return portalSettings;
+        return portalSettings.orElse(null);
   }
 
-  public void setPortalSettings(@javax.annotation.Nullable ResellerPortalSettingsDto portalSettings) {
+  @JsonProperty(value = JSON_PROPERTY_PORTAL_SETTINGS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ResellerPortalSettingsDto> getPortalSettings_JsonNullable() {
+    return portalSettings;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PORTAL_SETTINGS)
+  public void setPortalSettings_JsonNullable(JsonNullable<ResellerPortalSettingsDto> portalSettings) {
     this.portalSettings = portalSettings;
   }
 
+  public void setPortalSettings(@jakarta.annotation.Nullable ResellerPortalSettingsDto portalSettings) {
+    this.portalSettings = JsonNullable.<ResellerPortalSettingsDto>of(portalSettings);
+  }
 
 
+  /**
+   * Return true if this ResellerSettingsDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -113,12 +122,23 @@ public class ResellerSettingsDto {
     }
     ResellerSettingsDto resellerSettingsDto = (ResellerSettingsDto) o;
     return Objects.equals(this.overrideGlobalPortalSettings, resellerSettingsDto.overrideGlobalPortalSettings) &&
-        Objects.equals(this.portalSettings, resellerSettingsDto.portalSettings);
+        equalsNullable(this.portalSettings, resellerSettingsDto.portalSettings);
+  }
+
+  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
+    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(overrideGlobalPortalSettings, portalSettings);
+    return Objects.hash(overrideGlobalPortalSettings, hashCodeNullable(portalSettings));
+  }
+
+  private static <T> int hashCodeNullable(JsonNullable<T> a) {
+    if (a == null) {
+      return 1;
+    }
+    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
   }
 
   @Override
@@ -142,92 +162,49 @@ public class ResellerSettingsDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("override_global_portal_settings", "portal_settings"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerSettingsDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerSettingsDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerSettingsDto is not found in the empty JSON string", ResellerSettingsDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerSettingsDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerSettingsDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `portal_settings`
-      if (jsonObj.get("portal_settings") != null && !jsonObj.get("portal_settings").isJsonNull()) {
-        ResellerPortalSettingsDto.validateJsonElement(jsonObj.get("portal_settings"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerSettingsDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerSettingsDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerSettingsDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerSettingsDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerSettingsDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerSettingsDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerSettingsDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerSettingsDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerSettingsDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerSettingsDto
-   */
-  public static ResellerSettingsDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerSettingsDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerSettingsDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `override_global_portal_settings` to the URL query string
+    if (getOverrideGlobalPortalSettings() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soverride_global_portal_settings%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOverrideGlobalPortalSettings()))));
+    }
+
+    // add `portal_settings` to the URL query string
+    if (getPortalSettings() != null) {
+      joiner.add(getPortalSettings().toUrlQueryString(prefix + "portal_settings" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

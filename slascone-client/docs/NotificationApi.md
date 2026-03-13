@@ -5,25 +5,38 @@ All URIs are relative to *http://localhost*
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
 | [**addUserEmailTemplate**](NotificationApi.md#addUserEmailTemplate) | **POST** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Adds a new user email template for the specified ISV. |
+| [**addUserEmailTemplateWithHttpInfo**](NotificationApi.md#addUserEmailTemplateWithHttpInfo) | **POST** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Adds a new user email template for the specified ISV. |
 | [**deleteUserEmailTemplate**](NotificationApi.md#deleteUserEmailTemplate) | **DELETE** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Deletes a user email template for the specified ISV. |
+| [**deleteUserEmailTemplateWithHttpInfo**](NotificationApi.md#deleteUserEmailTemplateWithHttpInfo) | **DELETE** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Deletes a user email template for the specified ISV. |
 | [**getAllUserEmailTemplates**](NotificationApi.md#getAllUserEmailTemplates) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Gets all user email templates for the specified ISV. |
+| [**getAllUserEmailTemplatesWithHttpInfo**](NotificationApi.md#getAllUserEmailTemplatesWithHttpInfo) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Gets all user email templates for the specified ISV. |
 | [**getNotificationSettings**](NotificationApi.md#getNotificationSettings) | **GET** /api/v2/isv/{isv_id}/notifications/configurations | Gets the current email notification settings for the specified ISV. |
+| [**getNotificationSettingsWithHttpInfo**](NotificationApi.md#getNotificationSettingsWithHttpInfo) | **GET** /api/v2/isv/{isv_id}/notifications/configurations | Gets the current email notification settings for the specified ISV. |
 | [**getUserEmailTemplate**](NotificationApi.md#getUserEmailTemplate) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Gets a specific user email template by its identifier. |
+| [**getUserEmailTemplateWithHttpInfo**](NotificationApi.md#getUserEmailTemplateWithHttpInfo) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Gets a specific user email template by its identifier. |
 | [**getUserEmailTemplatesByPurpose**](NotificationApi.md#getUserEmailTemplatesByPurpose) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates/purpose/{purpose} | Gets user email templates by their purpose. |
+| [**getUserEmailTemplatesByPurposeWithHttpInfo**](NotificationApi.md#getUserEmailTemplatesByPurposeWithHttpInfo) | **GET** /api/v2/isv/{isv_id}/notifications/useremailtemplates/purpose/{purpose} | Gets user email templates by their purpose. |
 | [**patchUserEmailTemplate**](NotificationApi.md#patchUserEmailTemplate) | **PATCH** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Partially updates a user email template for the specified ISV. |
+| [**patchUserEmailTemplateWithHttpInfo**](NotificationApi.md#patchUserEmailTemplateWithHttpInfo) | **PATCH** /api/v2/isv/{isv_id}/notifications/useremailtemplates/{email_template_id} | Partially updates a user email template for the specified ISV. |
 | [**sendLicenseMail**](NotificationApi.md#sendLicenseMail) | **POST** /api/v2/isv/{isv_id}/notifications/emails | Sends a license-related email using the specified template and recipients. |
+| [**sendLicenseMailWithHttpInfo**](NotificationApi.md#sendLicenseMailWithHttpInfo) | **POST** /api/v2/isv/{isv_id}/notifications/emails | Sends a license-related email using the specified template and recipients. |
 | [**sendTestEmail**](NotificationApi.md#sendTestEmail) | **GET** /api/v2/isv/{isv_id}/notifications/configurations/tests | Sends a test email to verify the email configuration for the specified ISV. |
+| [**sendTestEmailWithHttpInfo**](NotificationApi.md#sendTestEmailWithHttpInfo) | **GET** /api/v2/isv/{isv_id}/notifications/configurations/tests | Sends a test email to verify the email configuration for the specified ISV. |
 | [**updateNotificationSettings**](NotificationApi.md#updateNotificationSettings) | **POST** /api/v2/isv/{isv_id}/notifications/configurations | Updates the email notification settings for the specified ISV. |
+| [**updateNotificationSettingsWithHttpInfo**](NotificationApi.md#updateNotificationSettingsWithHttpInfo) | **POST** /api/v2/isv/{isv_id}/notifications/configurations | Updates the email notification settings for the specified ISV. |
 | [**updateUserEmailTemplate**](NotificationApi.md#updateUserEmailTemplate) | **PUT** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Updates an existing user email template for the specified ISV. |
+| [**updateUserEmailTemplateWithHttpInfo**](NotificationApi.md#updateUserEmailTemplateWithHttpInfo) | **PUT** /api/v2/isv/{isv_id}/notifications/useremailtemplates | Updates an existing user email template for the specified ISV. |
 
 
-<a id="addUserEmailTemplate"></a>
-# **addUserEmailTemplate**
+
+## addUserEmailTemplate
+
 > UserEmailTemplateDto addUserEmailTemplate(isvId, userEmailTemplateDto)
 
 Adds a new user email template for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -34,40 +47,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to add.
-    try {
-      UserEmailTemplateDto result = apiInstance.addUserEmailTemplate(isvId, userEmailTemplateDto);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#addUserEmailTemplate");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to add.
+        try {
+            UserEmailTemplateDto result = apiInstance.addUserEmailTemplate(isvId, userEmailTemplateDto);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#addUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -78,34 +92,125 @@ public class Example {
 
 [**UserEmailTemplateDto**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
-| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
 
-<a id="deleteUserEmailTemplate"></a>
-# **deleteUserEmailTemplate**
-> deleteUserEmailTemplate(isvId, emailTemplateId)
+## addUserEmailTemplateWithHttpInfo
+
+> ApiResponse<UserEmailTemplateDto> addUserEmailTemplate addUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto)
+
+Adds a new user email template for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to add.
+        try {
+            ApiResponse<UserEmailTemplateDto> response = apiInstance.addUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#addUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **userEmailTemplateDto** | [**UserEmailTemplateDto**](UserEmailTemplateDto.md)| The user email template to add. | |
+
+### Return type
+
+ApiResponse<[**UserEmailTemplateDto**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
+
+
+## deleteUserEmailTemplate
+
+> void deleteUserEmailTemplate(isvId, emailTemplateId)
 
 Deletes a user email template for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -116,39 +221,40 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
-    try {
-      apiInstance.deleteUserEmailTemplate(isvId, emailTemplateId);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#deleteUserEmailTemplate");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        try {
+            apiInstance.deleteUserEmailTemplate(isvId, emailTemplateId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#deleteUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -156,6 +262,7 @@ public class Example {
 | **emailTemplateId** | **UUID**| The email template identifier. | |
 
 ### Return type
+
 
 null (empty response body)
 
@@ -165,28 +272,117 @@ null (empty response body)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
-| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
 
-<a id="getAllUserEmailTemplates"></a>
-# **getAllUserEmailTemplates**
-> List&lt;UserEmailTemplateDto&gt; getAllUserEmailTemplates(isvId)
+## deleteUserEmailTemplateWithHttpInfo
+
+> ApiResponse<Void> deleteUserEmailTemplate deleteUserEmailTemplateWithHttpInfo(isvId, emailTemplateId)
+
+Deletes a user email template for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        try {
+            ApiResponse<Void> response = apiInstance.deleteUserEmailTemplateWithHttpInfo(isvId, emailTemplateId);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#deleteUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **emailTemplateId** | **UUID**| The email template identifier. | |
+
+### Return type
+
+
+ApiResponse<Void>
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
+
+
+## getAllUserEmailTemplates
+
+> List<UserEmailTemplateDto> getAllUserEmailTemplates(isvId)
 
 Gets all user email templates for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -197,39 +393,40 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    try {
-      List<UserEmailTemplateDto> result = apiInstance.getAllUserEmailTemplates(isvId);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#getAllUserEmailTemplates");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        try {
+            List<UserEmailTemplateDto> result = apiInstance.getAllUserEmailTemplates(isvId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getAllUserEmailTemplates");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -239,14 +436,15 @@ public class Example {
 
 [**List&lt;UserEmailTemplateDto&gt;**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -254,17 +452,103 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="getNotificationSettings"></a>
-# **getNotificationSettings**
+## getAllUserEmailTemplatesWithHttpInfo
+
+> ApiResponse<List<UserEmailTemplateDto>> getAllUserEmailTemplates getAllUserEmailTemplatesWithHttpInfo(isvId)
+
+Gets all user email templates for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        try {
+            ApiResponse<List<UserEmailTemplateDto>> response = apiInstance.getAllUserEmailTemplatesWithHttpInfo(isvId);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getAllUserEmailTemplates");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+
+### Return type
+
+ApiResponse<[**List&lt;UserEmailTemplateDto&gt;**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## getNotificationSettings
+
 > EmailConfigurationDto getNotificationSettings(isvId)
 
 Gets the current email notification settings for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -275,39 +559,40 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    try {
-      EmailConfigurationDto result = apiInstance.getNotificationSettings(isvId);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#getNotificationSettings");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        try {
+            EmailConfigurationDto result = apiInstance.getNotificationSettings(isvId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getNotificationSettings");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -317,14 +602,15 @@ public class Example {
 
 [**EmailConfigurationDto**](EmailConfigurationDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -332,17 +618,103 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="getUserEmailTemplate"></a>
-# **getUserEmailTemplate**
+## getNotificationSettingsWithHttpInfo
+
+> ApiResponse<EmailConfigurationDto> getNotificationSettings getNotificationSettingsWithHttpInfo(isvId)
+
+Gets the current email notification settings for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        try {
+            ApiResponse<EmailConfigurationDto> response = apiInstance.getNotificationSettingsWithHttpInfo(isvId);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getNotificationSettings");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+
+### Return type
+
+ApiResponse<[**EmailConfigurationDto**](EmailConfigurationDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## getUserEmailTemplate
+
 > UserEmailTemplateDto getUserEmailTemplate(isvId, emailTemplateId)
 
 Gets a specific user email template by its identifier.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -353,40 +725,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
-    try {
-      UserEmailTemplateDto result = apiInstance.getUserEmailTemplate(isvId, emailTemplateId);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#getUserEmailTemplate");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        try {
+            UserEmailTemplateDto result = apiInstance.getUserEmailTemplate(isvId, emailTemplateId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -397,34 +770,125 @@ public class Example {
 
 [**UserEmailTemplateDto**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
-| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
 
-<a id="getUserEmailTemplatesByPurpose"></a>
-# **getUserEmailTemplatesByPurpose**
-> List&lt;UserEmailTemplateDto&gt; getUserEmailTemplatesByPurpose(isvId, purpose)
+## getUserEmailTemplateWithHttpInfo
+
+> ApiResponse<UserEmailTemplateDto> getUserEmailTemplate getUserEmailTemplateWithHttpInfo(isvId, emailTemplateId)
+
+Gets a specific user email template by its identifier.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        try {
+            ApiResponse<UserEmailTemplateDto> response = apiInstance.getUserEmailTemplateWithHttpInfo(isvId, emailTemplateId);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **emailTemplateId** | **UUID**| The email template identifier. | |
+
+### Return type
+
+ApiResponse<[**UserEmailTemplateDto**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
+
+
+## getUserEmailTemplatesByPurpose
+
+> List<UserEmailTemplateDto> getUserEmailTemplatesByPurpose(isvId, purpose)
 
 Gets user email templates by their purpose.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -435,40 +899,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    String purpose = "purpose_example"; // String | The purpose of the email templates.
-    try {
-      List<UserEmailTemplateDto> result = apiInstance.getUserEmailTemplatesByPurpose(isvId, purpose);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#getUserEmailTemplatesByPurpose");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        String purpose = "purpose_example"; // String | The purpose of the email templates.
+        try {
+            List<UserEmailTemplateDto> result = apiInstance.getUserEmailTemplatesByPurpose(isvId, purpose);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getUserEmailTemplatesByPurpose");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -479,14 +944,15 @@ public class Example {
 
 [**List&lt;UserEmailTemplateDto&gt;**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -494,17 +960,105 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="patchUserEmailTemplate"></a>
-# **patchUserEmailTemplate**
+## getUserEmailTemplatesByPurposeWithHttpInfo
+
+> ApiResponse<List<UserEmailTemplateDto>> getUserEmailTemplatesByPurpose getUserEmailTemplatesByPurposeWithHttpInfo(isvId, purpose)
+
+Gets user email templates by their purpose.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        String purpose = "purpose_example"; // String | The purpose of the email templates.
+        try {
+            ApiResponse<List<UserEmailTemplateDto>> response = apiInstance.getUserEmailTemplatesByPurposeWithHttpInfo(isvId, purpose);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#getUserEmailTemplatesByPurpose");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **purpose** | **String**| The purpose of the email templates. | |
+
+### Return type
+
+ApiResponse<[**List&lt;UserEmailTemplateDto&gt;**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## patchUserEmailTemplate
+
 > UserEmailTemplateDto patchUserEmailTemplate(isvId, emailTemplateId, userEmailTemplateDto)
 
 Partially updates a user email template for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -515,41 +1069,42 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
-    UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template with updated fields.
-    try {
-      UserEmailTemplateDto result = apiInstance.patchUserEmailTemplate(isvId, emailTemplateId, userEmailTemplateDto);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#patchUserEmailTemplate");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template with updated fields.
+        try {
+            UserEmailTemplateDto result = apiInstance.patchUserEmailTemplate(isvId, emailTemplateId, userEmailTemplateDto);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#patchUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -561,34 +1116,127 @@ public class Example {
 
 [**UserEmailTemplateDto**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
-| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
 
-<a id="sendLicenseMail"></a>
-# **sendLicenseMail**
+## patchUserEmailTemplateWithHttpInfo
+
+> ApiResponse<UserEmailTemplateDto> patchUserEmailTemplate patchUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, userEmailTemplateDto)
+
+Partially updates a user email template for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UUID emailTemplateId = UUID.randomUUID(); // UUID | The email template identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template with updated fields.
+        try {
+            ApiResponse<UserEmailTemplateDto> response = apiInstance.patchUserEmailTemplateWithHttpInfo(isvId, emailTemplateId, userEmailTemplateDto);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#patchUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **emailTemplateId** | **UUID**| The email template identifier. | |
+| **userEmailTemplateDto** | [**UserEmailTemplateDto**](UserEmailTemplateDto.md)| The user email template with updated fields. | |
+
+### Return type
+
+ApiResponse<[**UserEmailTemplateDto**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
+
+
+## sendLicenseMail
+
 > String sendLicenseMail(isvId, licenseMailDto)
 
 Sends a license-related email using the specified template and recipients.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -599,46 +1247,47 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: ProvisioningKey
-    ApiKeyAuth ProvisioningKey = (ApiKeyAuth) defaultClient.getAuthentication("ProvisioningKey");
-    ProvisioningKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //ProvisioningKey.setApiKeyPrefix("Token");
+        // Configure API key authorization: ProvisioningKey
+        ApiKeyAuth ProvisioningKey = (ApiKeyAuth) defaultClient.getAuthentication("ProvisioningKey");
+        ProvisioningKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //ProvisioningKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    LicenseMailDto licenseMailDto = new LicenseMailDto(); // LicenseMailDto | The license mail details including template and recipients.
-    try {
-      String result = apiInstance.sendLicenseMail(isvId, licenseMailDto);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#sendLicenseMail");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        LicenseMailDto licenseMailDto = new LicenseMailDto(); // LicenseMailDto | The license mail details including template and recipients.
+        try {
+            String result = apiInstance.sendLicenseMail(isvId, licenseMailDto);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#sendLicenseMail");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -649,14 +1298,15 @@ public class Example {
 
 **String**
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [ProvisioningKey](../README.md#ProvisioningKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -664,17 +1314,111 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="sendTestEmail"></a>
-# **sendTestEmail**
+## sendLicenseMailWithHttpInfo
+
+> ApiResponse<String> sendLicenseMail sendLicenseMailWithHttpInfo(isvId, licenseMailDto)
+
+Sends a license-related email using the specified template and recipients.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: ProvisioningKey
+        ApiKeyAuth ProvisioningKey = (ApiKeyAuth) defaultClient.getAuthentication("ProvisioningKey");
+        ProvisioningKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //ProvisioningKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        LicenseMailDto licenseMailDto = new LicenseMailDto(); // LicenseMailDto | The license mail details including template and recipients.
+        try {
+            ApiResponse<String> response = apiInstance.sendLicenseMailWithHttpInfo(isvId, licenseMailDto);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#sendLicenseMail");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **licenseMailDto** | [**LicenseMailDto**](LicenseMailDto.md)| The license mail details including template and recipients. | |
+
+### Return type
+
+ApiResponse<**String**>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [ProvisioningKey](../README.md#ProvisioningKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## sendTestEmail
+
 > String sendTestEmail(isvId, toEmail)
 
 Sends a test email to verify the email configuration for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -685,40 +1429,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    String toEmail = "toEmail_example"; // String | The recipient email address.
-    try {
-      String result = apiInstance.sendTestEmail(isvId, toEmail);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#sendTestEmail");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        String toEmail = "toEmail_example"; // String | The recipient email address.
+        try {
+            String result = apiInstance.sendTestEmail(isvId, toEmail);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#sendTestEmail");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -729,14 +1474,15 @@ public class Example {
 
 **String**
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -744,17 +1490,105 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="updateNotificationSettings"></a>
-# **updateNotificationSettings**
+## sendTestEmailWithHttpInfo
+
+> ApiResponse<String> sendTestEmail sendTestEmailWithHttpInfo(isvId, toEmail)
+
+Sends a test email to verify the email configuration for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        String toEmail = "toEmail_example"; // String | The recipient email address.
+        try {
+            ApiResponse<String> response = apiInstance.sendTestEmailWithHttpInfo(isvId, toEmail);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#sendTestEmail");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **toEmail** | **String**| The recipient email address. | [optional] |
+
+### Return type
+
+ApiResponse<**String**>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## updateNotificationSettings
+
 > String updateNotificationSettings(isvId, emailConfigurationDto)
 
 Updates the email notification settings for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -765,40 +1599,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    EmailConfigurationDto emailConfigurationDto = new EmailConfigurationDto(); // EmailConfigurationDto | The email configuration settings.
-    try {
-      String result = apiInstance.updateNotificationSettings(isvId, emailConfigurationDto);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#updateNotificationSettings");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        EmailConfigurationDto emailConfigurationDto = new EmailConfigurationDto(); // EmailConfigurationDto | The email configuration settings.
+        try {
+            String result = apiInstance.updateNotificationSettings(isvId, emailConfigurationDto);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#updateNotificationSettings");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -809,14 +1644,15 @@ public class Example {
 
 **String**
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
@@ -824,17 +1660,105 @@ public class Example {
 | **200** | Success |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
 
-<a id="updateUserEmailTemplate"></a>
-# **updateUserEmailTemplate**
+## updateNotificationSettingsWithHttpInfo
+
+> ApiResponse<String> updateNotificationSettings updateNotificationSettingsWithHttpInfo(isvId, emailConfigurationDto)
+
+Updates the email notification settings for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        EmailConfigurationDto emailConfigurationDto = new EmailConfigurationDto(); // EmailConfigurationDto | The email configuration settings.
+        try {
+            ApiResponse<String> response = apiInstance.updateNotificationSettingsWithHttpInfo(isvId, emailConfigurationDto);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#updateNotificationSettings");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **emailConfigurationDto** | [**EmailConfigurationDto**](EmailConfigurationDto.md)| The email configuration settings. | |
+
+### Return type
+
+ApiResponse<**String**>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+
+
+## updateUserEmailTemplate
+
 > UserEmailTemplateDto updateUserEmailTemplate(isvId, userEmailTemplateDto)
 
 Updates an existing user email template for the specified ISV.
 
 ### Example
+
 ```java
 // Import classes:
 import com.slascone.ApiClient;
@@ -845,40 +1769,41 @@ import com.slascone.models.*;
 import com.slascone.api.NotificationApi;
 
 public class Example {
-  public static void main(String[] args) {
-    ApiClient defaultClient = Configuration.getDefaultApiClient();
-    defaultClient.setBasePath("http://localhost");
-    
-    // Configure API key authorization: AdminKey
-    ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
-    AdminKey.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //AdminKey.setApiKeyPrefix("Token");
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
 
-    // Configure API key authorization: Bearer
-    ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
-    Bearer.setApiKey("YOUR API KEY");
-    // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
-    //Bearer.setApiKeyPrefix("Token");
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
 
-    NotificationApi apiInstance = new NotificationApi(defaultClient);
-    UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
-    UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to update.
-    try {
-      UserEmailTemplateDto result = apiInstance.updateUserEmailTemplate(isvId, userEmailTemplateDto);
-      System.out.println(result);
-    } catch (ApiException e) {
-      System.err.println("Exception when calling NotificationApi#updateUserEmailTemplate");
-      System.err.println("Status code: " + e.getCode());
-      System.err.println("Reason: " + e.getResponseBody());
-      System.err.println("Response headers: " + e.getResponseHeaders());
-      e.printStackTrace();
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to update.
+        try {
+            UserEmailTemplateDto result = apiInstance.updateUserEmailTemplate(isvId, userEmailTemplateDto);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#updateUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
     }
-  }
 }
 ```
 
 ### Parameters
+
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
@@ -889,24 +1814,113 @@ public class Example {
 
 [**UserEmailTemplateDto**](UserEmailTemplateDto.md)
 
+
 ### Authorization
 
 [AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **200** | Success |  -  |
-| **400** | Bad request |  -  |
 | **401** | Unauthorized |  -  |
 | **403** | Forbidden |  -  |
-| **404** | Not found |  -  |
-| **409** | Conflict |  -  |
 | **500** | Internal server error |  -  |
 | **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
+
+## updateUserEmailTemplateWithHttpInfo
+
+> ApiResponse<UserEmailTemplateDto> updateUserEmailTemplate updateUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto)
+
+Updates an existing user email template for the specified ISV.
+
+### Example
+
+```java
+// Import classes:
+import com.slascone.ApiClient;
+import com.slascone.ApiException;
+import com.slascone.ApiResponse;
+import com.slascone.Configuration;
+import com.slascone.auth.*;
+import com.slascone.models.*;
+import com.slascone.api.NotificationApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        defaultClient.setBasePath("http://localhost");
+        
+        // Configure API key authorization: AdminKey
+        ApiKeyAuth AdminKey = (ApiKeyAuth) defaultClient.getAuthentication("AdminKey");
+        AdminKey.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //AdminKey.setApiKeyPrefix("Token");
+
+        // Configure API key authorization: Bearer
+        ApiKeyAuth Bearer = (ApiKeyAuth) defaultClient.getAuthentication("Bearer");
+        Bearer.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //Bearer.setApiKeyPrefix("Token");
+
+        NotificationApi apiInstance = new NotificationApi(defaultClient);
+        UUID isvId = UUID.randomUUID(); // UUID | The ISV identifier.
+        UserEmailTemplateDto userEmailTemplateDto = new UserEmailTemplateDto(); // UserEmailTemplateDto | The user email template to update.
+        try {
+            ApiResponse<UserEmailTemplateDto> response = apiInstance.updateUserEmailTemplateWithHttpInfo(isvId, userEmailTemplateDto);
+            System.out.println("Status code: " + response.getStatusCode());
+            System.out.println("Response headers: " + response.getHeaders());
+            System.out.println("Response body: " + response.getData());
+        } catch (ApiException e) {
+            System.err.println("Exception when calling NotificationApi#updateUserEmailTemplate");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            System.err.println("Reason: " + e.getResponseBody());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### Parameters
+
+
+| Name | Type | Description  | Notes |
+|------------- | ------------- | ------------- | -------------|
+| **isvId** | **UUID**| The ISV identifier. | |
+| **userEmailTemplateDto** | [**UserEmailTemplateDto**](UserEmailTemplateDto.md)| The user email template to update. | |
+
+### Return type
+
+ApiResponse<[**UserEmailTemplateDto**](UserEmailTemplateDto.md)>
+
+
+### Authorization
+
+[AdminKey](../README.md#AdminKey), [Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **200** | Success |  -  |
+| **401** | Unauthorized |  -  |
+| **403** | Forbidden |  -  |
+| **500** | Internal server error |  -  |
+| **503** | Service unavailable |  -  |
+| **409** | Conflict |  -  |
+| **404** | Not found |  -  |
+| **400** | Bad request |  -  |
 

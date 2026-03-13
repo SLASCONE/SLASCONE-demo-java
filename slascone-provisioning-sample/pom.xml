@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.slascone</groupId>
             <artifactId>slascone-client</artifactId>
-            <version>25.2</version>
+            <version>v2</version>
         </dependency>
         
         <!-- Apache HTTP Client -->

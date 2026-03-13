@@ -13,98 +13,80 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ResellerSortTypeDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResellerFilterDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerFilterDto.JSON_PROPERTY_PAGE,
+  ResellerFilterDto.JSON_PROPERTY_PAGE_SIZE,
+  ResellerFilterDto.JSON_PROPERTY_SEARCH_TEXT,
+  ResellerFilterDto.JSON_PROPERTY_PLZ_QUERY,
+  ResellerFilterDto.JSON_PROPERTY_RESELLER_TYPES,
+  ResellerFilterDto.JSON_PROPERTY_TAG_IDS,
+  ResellerFilterDto.JSON_PROPERTY_START_CHARACTER,
+  ResellerFilterDto.JSON_PROPERTY_RESELLER_SORT_TYPE,
+  ResellerFilterDto.JSON_PROPERTY_DESCENDING
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerFilterDto {
-  public static final String SERIALIZED_NAME_PAGE = "page";
-  @SerializedName(SERIALIZED_NAME_PAGE)
-  @javax.annotation.Nullable
-  private Integer page;
+  public static final String JSON_PROPERTY_PAGE = "page";
+  private JsonNullable<Integer> page = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_PAGE_SIZE = "page_size";
-  @SerializedName(SERIALIZED_NAME_PAGE_SIZE)
-  @javax.annotation.Nullable
-  private Integer pageSize;
+  public static final String JSON_PROPERTY_PAGE_SIZE = "page_size";
+  private JsonNullable<Integer> pageSize = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_SEARCH_TEXT = "search_text";
-  @SerializedName(SERIALIZED_NAME_SEARCH_TEXT)
-  @javax.annotation.Nullable
-  private String searchText;
+  public static final String JSON_PROPERTY_SEARCH_TEXT = "search_text";
+  private JsonNullable<String> searchText = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PLZ_QUERY = "plz_query";
-  @SerializedName(SERIALIZED_NAME_PLZ_QUERY)
-  @javax.annotation.Nullable
-  private String plzQuery;
+  public static final String JSON_PROPERTY_PLZ_QUERY = "plz_query";
+  private JsonNullable<String> plzQuery = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_TYPES = "reseller_types";
-  @SerializedName(SERIALIZED_NAME_RESELLER_TYPES)
-  @javax.annotation.Nullable
-  private List<UUID> resellerTypes;
+  public static final String JSON_PROPERTY_RESELLER_TYPES = "reseller_types";
+  private JsonNullable<List<UUID>> resellerTypes = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_TAG_IDS = "tag_ids";
-  @SerializedName(SERIALIZED_NAME_TAG_IDS)
-  @javax.annotation.Nullable
-  private List<Integer> tagIds;
+  public static final String JSON_PROPERTY_TAG_IDS = "tag_ids";
+  private JsonNullable<List<Integer>> tagIds = JsonNullable.<List<Integer>>undefined();
 
-  public static final String SERIALIZED_NAME_START_CHARACTER = "start_character";
-  @SerializedName(SERIALIZED_NAME_START_CHARACTER)
-  @javax.annotation.Nullable
-  private String startCharacter;
+  public static final String JSON_PROPERTY_START_CHARACTER = "start_character";
+  private JsonNullable<String> startCharacter = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_SORT_TYPE = "reseller_sort_type";
-  @SerializedName(SERIALIZED_NAME_RESELLER_SORT_TYPE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESELLER_SORT_TYPE = "reseller_sort_type";
+  @jakarta.annotation.Nullable
   private ResellerSortTypeDto resellerSortType;
 
-  public static final String SERIALIZED_NAME_DESCENDING = "descending";
-  @SerializedName(SERIALIZED_NAME_DESCENDING)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DESCENDING = "descending";
+  @jakarta.annotation.Nullable
   private Boolean descending;
 
-  public ResellerFilterDto() {
+  public ResellerFilterDto() { 
   }
 
-  public ResellerFilterDto page(@javax.annotation.Nullable Integer page) {
-    this.page = page;
+  public ResellerFilterDto page(@jakarta.annotation.Nullable Integer page) {
+    this.page = JsonNullable.<Integer>of(page);
     return this;
   }
 
@@ -112,18 +94,31 @@ public class ResellerFilterDto {
    * Get page
    * @return page
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getPage() {
-    return page;
+        return page.orElse(null);
   }
 
-  public void setPage(@javax.annotation.Nullable Integer page) {
+  @JsonProperty(value = JSON_PROPERTY_PAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getPage_JsonNullable() {
+    return page;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PAGE)
+  public void setPage_JsonNullable(JsonNullable<Integer> page) {
     this.page = page;
   }
 
+  public void setPage(@jakarta.annotation.Nullable Integer page) {
+    this.page = JsonNullable.<Integer>of(page);
+  }
 
-  public ResellerFilterDto pageSize(@javax.annotation.Nullable Integer pageSize) {
-    this.pageSize = pageSize;
+
+  public ResellerFilterDto pageSize(@jakarta.annotation.Nullable Integer pageSize) {
+    this.pageSize = JsonNullable.<Integer>of(pageSize);
     return this;
   }
 
@@ -131,18 +126,31 @@ public class ResellerFilterDto {
    * Get pageSize
    * @return pageSize
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getPageSize() {
-    return pageSize;
+        return pageSize.orElse(null);
   }
 
-  public void setPageSize(@javax.annotation.Nullable Integer pageSize) {
+  @JsonProperty(value = JSON_PROPERTY_PAGE_SIZE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getPageSize_JsonNullable() {
+    return pageSize;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PAGE_SIZE)
+  public void setPageSize_JsonNullable(JsonNullable<Integer> pageSize) {
     this.pageSize = pageSize;
   }
 
+  public void setPageSize(@jakarta.annotation.Nullable Integer pageSize) {
+    this.pageSize = JsonNullable.<Integer>of(pageSize);
+  }
 
-  public ResellerFilterDto searchText(@javax.annotation.Nullable String searchText) {
-    this.searchText = searchText;
+
+  public ResellerFilterDto searchText(@jakarta.annotation.Nullable String searchText) {
+    this.searchText = JsonNullable.<String>of(searchText);
     return this;
   }
 
@@ -150,18 +158,31 @@ public class ResellerFilterDto {
    * Get searchText
    * @return searchText
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSearchText() {
-    return searchText;
+        return searchText.orElse(null);
   }
 
-  public void setSearchText(@javax.annotation.Nullable String searchText) {
+  @JsonProperty(value = JSON_PROPERTY_SEARCH_TEXT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSearchText_JsonNullable() {
+    return searchText;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SEARCH_TEXT)
+  public void setSearchText_JsonNullable(JsonNullable<String> searchText) {
     this.searchText = searchText;
   }
 
+  public void setSearchText(@jakarta.annotation.Nullable String searchText) {
+    this.searchText = JsonNullable.<String>of(searchText);
+  }
 
-  public ResellerFilterDto plzQuery(@javax.annotation.Nullable String plzQuery) {
-    this.plzQuery = plzQuery;
+
+  public ResellerFilterDto plzQuery(@jakarta.annotation.Nullable String plzQuery) {
+    this.plzQuery = JsonNullable.<String>of(plzQuery);
     return this;
   }
 
@@ -169,26 +190,43 @@ public class ResellerFilterDto {
    * Get plzQuery
    * @return plzQuery
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getPlzQuery() {
-    return plzQuery;
+        return plzQuery.orElse(null);
   }
 
-  public void setPlzQuery(@javax.annotation.Nullable String plzQuery) {
+  @JsonProperty(value = JSON_PROPERTY_PLZ_QUERY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getPlzQuery_JsonNullable() {
+    return plzQuery;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PLZ_QUERY)
+  public void setPlzQuery_JsonNullable(JsonNullable<String> plzQuery) {
     this.plzQuery = plzQuery;
   }
 
+  public void setPlzQuery(@jakarta.annotation.Nullable String plzQuery) {
+    this.plzQuery = JsonNullable.<String>of(plzQuery);
+  }
 
-  public ResellerFilterDto resellerTypes(@javax.annotation.Nullable List<UUID> resellerTypes) {
-    this.resellerTypes = resellerTypes;
+
+  public ResellerFilterDto resellerTypes(@jakarta.annotation.Nullable List<UUID> resellerTypes) {
+    this.resellerTypes = JsonNullable.<List<UUID>>of(resellerTypes);
     return this;
   }
 
   public ResellerFilterDto addResellerTypesItem(UUID resellerTypesItem) {
-    if (this.resellerTypes == null) {
-      this.resellerTypes = new ArrayList<>();
+    if (this.resellerTypes == null || !this.resellerTypes.isPresent()) {
+      this.resellerTypes = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.resellerTypes.add(resellerTypesItem);
+    try {
+      this.resellerTypes.get().add(resellerTypesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -196,26 +234,43 @@ public class ResellerFilterDto {
    * Get resellerTypes
    * @return resellerTypes
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getResellerTypes() {
-    return resellerTypes;
+        return resellerTypes.orElse(null);
   }
 
-  public void setResellerTypes(@javax.annotation.Nullable List<UUID> resellerTypes) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_TYPES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getResellerTypes_JsonNullable() {
+    return resellerTypes;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_TYPES)
+  public void setResellerTypes_JsonNullable(JsonNullable<List<UUID>> resellerTypes) {
     this.resellerTypes = resellerTypes;
   }
 
+  public void setResellerTypes(@jakarta.annotation.Nullable List<UUID> resellerTypes) {
+    this.resellerTypes = JsonNullable.<List<UUID>>of(resellerTypes);
+  }
 
-  public ResellerFilterDto tagIds(@javax.annotation.Nullable List<Integer> tagIds) {
-    this.tagIds = tagIds;
+
+  public ResellerFilterDto tagIds(@jakarta.annotation.Nullable List<Integer> tagIds) {
+    this.tagIds = JsonNullable.<List<Integer>>of(tagIds);
     return this;
   }
 
   public ResellerFilterDto addTagIdsItem(Integer tagIdsItem) {
-    if (this.tagIds == null) {
-      this.tagIds = new ArrayList<>();
+    if (this.tagIds == null || !this.tagIds.isPresent()) {
+      this.tagIds = JsonNullable.<List<Integer>>of(new ArrayList<>());
     }
-    this.tagIds.add(tagIdsItem);
+    try {
+      this.tagIds.get().add(tagIdsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -223,18 +278,31 @@ public class ResellerFilterDto {
    * Get tagIds
    * @return tagIds
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<Integer> getTagIds() {
-    return tagIds;
+        return tagIds.orElse(null);
   }
 
-  public void setTagIds(@javax.annotation.Nullable List<Integer> tagIds) {
+  @JsonProperty(value = JSON_PROPERTY_TAG_IDS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<Integer>> getTagIds_JsonNullable() {
+    return tagIds;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TAG_IDS)
+  public void setTagIds_JsonNullable(JsonNullable<List<Integer>> tagIds) {
     this.tagIds = tagIds;
   }
 
+  public void setTagIds(@jakarta.annotation.Nullable List<Integer> tagIds) {
+    this.tagIds = JsonNullable.<List<Integer>>of(tagIds);
+  }
 
-  public ResellerFilterDto startCharacter(@javax.annotation.Nullable String startCharacter) {
-    this.startCharacter = startCharacter;
+
+  public ResellerFilterDto startCharacter(@jakarta.annotation.Nullable String startCharacter) {
+    this.startCharacter = JsonNullable.<String>of(startCharacter);
     return this;
   }
 
@@ -242,17 +310,30 @@ public class ResellerFilterDto {
    * Get startCharacter
    * @return startCharacter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getStartCharacter() {
-    return startCharacter;
+        return startCharacter.orElse(null);
   }
 
-  public void setStartCharacter(@javax.annotation.Nullable String startCharacter) {
+  @JsonProperty(value = JSON_PROPERTY_START_CHARACTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getStartCharacter_JsonNullable() {
+    return startCharacter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_START_CHARACTER)
+  public void setStartCharacter_JsonNullable(JsonNullable<String> startCharacter) {
     this.startCharacter = startCharacter;
   }
 
+  public void setStartCharacter(@jakarta.annotation.Nullable String startCharacter) {
+    this.startCharacter = JsonNullable.<String>of(startCharacter);
+  }
 
-  public ResellerFilterDto resellerSortType(@javax.annotation.Nullable ResellerSortTypeDto resellerSortType) {
+
+  public ResellerFilterDto resellerSortType(@jakarta.annotation.Nullable ResellerSortTypeDto resellerSortType) {
     this.resellerSortType = resellerSortType;
     return this;
   }
@@ -261,17 +342,22 @@ public class ResellerFilterDto {
    * Get resellerSortType
    * @return resellerSortType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_SORT_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ResellerSortTypeDto getResellerSortType() {
     return resellerSortType;
   }
 
-  public void setResellerSortType(@javax.annotation.Nullable ResellerSortTypeDto resellerSortType) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_SORT_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResellerSortType(@jakarta.annotation.Nullable ResellerSortTypeDto resellerSortType) {
     this.resellerSortType = resellerSortType;
   }
 
 
-  public ResellerFilterDto descending(@javax.annotation.Nullable Boolean descending) {
+  public ResellerFilterDto descending(@jakarta.annotation.Nullable Boolean descending) {
     this.descending = descending;
     return this;
   }
@@ -280,17 +366,24 @@ public class ResellerFilterDto {
    * Get descending
    * @return descending
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DESCENDING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getDescending() {
     return descending;
   }
 
-  public void setDescending(@javax.annotation.Nullable Boolean descending) {
+
+  @JsonProperty(value = JSON_PROPERTY_DESCENDING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDescending(@jakarta.annotation.Nullable Boolean descending) {
     this.descending = descending;
   }
 
 
-
+  /**
+   * Return true if this ResellerFilterDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -300,13 +393,13 @@ public class ResellerFilterDto {
       return false;
     }
     ResellerFilterDto resellerFilterDto = (ResellerFilterDto) o;
-    return Objects.equals(this.page, resellerFilterDto.page) &&
-        Objects.equals(this.pageSize, resellerFilterDto.pageSize) &&
-        Objects.equals(this.searchText, resellerFilterDto.searchText) &&
-        Objects.equals(this.plzQuery, resellerFilterDto.plzQuery) &&
-        Objects.equals(this.resellerTypes, resellerFilterDto.resellerTypes) &&
-        Objects.equals(this.tagIds, resellerFilterDto.tagIds) &&
-        Objects.equals(this.startCharacter, resellerFilterDto.startCharacter) &&
+    return equalsNullable(this.page, resellerFilterDto.page) &&
+        equalsNullable(this.pageSize, resellerFilterDto.pageSize) &&
+        equalsNullable(this.searchText, resellerFilterDto.searchText) &&
+        equalsNullable(this.plzQuery, resellerFilterDto.plzQuery) &&
+        equalsNullable(this.resellerTypes, resellerFilterDto.resellerTypes) &&
+        equalsNullable(this.tagIds, resellerFilterDto.tagIds) &&
+        equalsNullable(this.startCharacter, resellerFilterDto.startCharacter) &&
         Objects.equals(this.resellerSortType, resellerFilterDto.resellerSortType) &&
         Objects.equals(this.descending, resellerFilterDto.descending);
   }
@@ -317,7 +410,7 @@ public class ResellerFilterDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(page, pageSize, searchText, plzQuery, resellerTypes, tagIds, startCharacter, resellerSortType, descending);
+    return Objects.hash(hashCodeNullable(page), hashCodeNullable(pageSize), hashCodeNullable(searchText), hashCodeNullable(plzQuery), hashCodeNullable(resellerTypes), hashCodeNullable(tagIds), hashCodeNullable(startCharacter), resellerSortType, descending);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -355,109 +448,94 @@ public class ResellerFilterDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("page", "page_size", "search_text", "plz_query", "reseller_types", "tag_ids", "start_character", "reseller_sort_type", "descending"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerFilterDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerFilterDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerFilterDto is not found in the empty JSON string", ResellerFilterDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerFilterDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerFilterDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("search_text") != null && !jsonObj.get("search_text").isJsonNull()) && !jsonObj.get("search_text").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `search_text` to be a primitive type in the JSON string but got `%s`", jsonObj.get("search_text").toString()));
-      }
-      if ((jsonObj.get("plz_query") != null && !jsonObj.get("plz_query").isJsonNull()) && !jsonObj.get("plz_query").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `plz_query` to be a primitive type in the JSON string but got `%s`", jsonObj.get("plz_query").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("reseller_types") != null && !jsonObj.get("reseller_types").isJsonNull() && !jsonObj.get("reseller_types").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_types` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_types").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("tag_ids") != null && !jsonObj.get("tag_ids").isJsonNull() && !jsonObj.get("tag_ids").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `tag_ids` to be an array in the JSON string but got `%s`", jsonObj.get("tag_ids").toString()));
-      }
-      if ((jsonObj.get("start_character") != null && !jsonObj.get("start_character").isJsonNull()) && !jsonObj.get("start_character").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `start_character` to be a primitive type in the JSON string but got `%s`", jsonObj.get("start_character").toString()));
-      }
-      // validate the optional field `reseller_sort_type`
-      if (jsonObj.get("reseller_sort_type") != null && !jsonObj.get("reseller_sort_type").isJsonNull()) {
-        ResellerSortTypeDto.validateJsonElement(jsonObj.get("reseller_sort_type"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerFilterDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerFilterDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerFilterDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerFilterDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerFilterDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerFilterDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerFilterDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerFilterDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerFilterDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerFilterDto
-   */
-  public static ResellerFilterDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerFilterDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerFilterDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `page` to the URL query string
+    if (getPage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPage()))));
+    }
+
+    // add `page_size` to the URL query string
+    if (getPageSize() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spage_size%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPageSize()))));
+    }
+
+    // add `search_text` to the URL query string
+    if (getSearchText() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssearch_text%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSearchText()))));
+    }
+
+    // add `plz_query` to the URL query string
+    if (getPlzQuery() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%splz_query%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPlzQuery()))));
+    }
+
+    // add `reseller_types` to the URL query string
+    if (getResellerTypes() != null) {
+      for (int i = 0; i < getResellerTypes().size(); i++) {
+        if (getResellerTypes().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_types%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getResellerTypes().get(i)))));
+        }
+      }
+    }
+
+    // add `tag_ids` to the URL query string
+    if (getTagIds() != null) {
+      for (int i = 0; i < getTagIds().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%stag_ids%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getTagIds().get(i)))));
+      }
+    }
+
+    // add `start_character` to the URL query string
+    if (getStartCharacter() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sstart_character%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getStartCharacter()))));
+    }
+
+    // add `reseller_sort_type` to the URL query string
+    if (getResellerSortType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_sort_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerSortType()))));
+    }
+
+    // add `descending` to the URL query string
+    if (getDescending() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdescending%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDescending()))));
+    }
+
+    return joiner.toString();
   }
 }
 

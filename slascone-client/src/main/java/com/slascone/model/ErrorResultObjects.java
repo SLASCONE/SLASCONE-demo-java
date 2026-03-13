@@ -13,63 +13,50 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ErrorResultObjects
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ErrorResultObjects.JSON_PROPERTY_ID,
+  ErrorResultObjects.JSON_PROPERTY_MESSAGE,
+  ErrorResultObjects.JSON_PROPERTY_HELP
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ErrorResultObjects {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private Integer id;
 
-  public static final String SERIALIZED_NAME_MESSAGE = "message";
-  @SerializedName(SERIALIZED_NAME_MESSAGE)
-  @javax.annotation.Nullable
-  private String message;
+  public static final String JSON_PROPERTY_MESSAGE = "message";
+  private JsonNullable<String> message = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_HELP = "help";
-  @SerializedName(SERIALIZED_NAME_HELP)
-  @javax.annotation.Nullable
-  private String help;
+  public static final String JSON_PROPERTY_HELP = "help";
+  private JsonNullable<String> help = JsonNullable.<String>undefined();
 
-  public ErrorResultObjects() {
+  public ErrorResultObjects() { 
   }
 
-  public ErrorResultObjects id(@javax.annotation.Nullable Integer id) {
+  public ErrorResultObjects id(@jakarta.annotation.Nullable Integer id) {
     this.id = id;
     return this;
   }
@@ -78,18 +65,23 @@ public class ErrorResultObjects {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable Integer id) {
     this.id = id;
   }
 
 
-  public ErrorResultObjects message(@javax.annotation.Nullable String message) {
-    this.message = message;
+  public ErrorResultObjects message(@jakarta.annotation.Nullable String message) {
+    this.message = JsonNullable.<String>of(message);
     return this;
   }
 
@@ -97,18 +89,31 @@ public class ErrorResultObjects {
    * Get message
    * @return message
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getMessage() {
-    return message;
+        return message.orElse(null);
   }
 
-  public void setMessage(@javax.annotation.Nullable String message) {
+  @JsonProperty(value = JSON_PROPERTY_MESSAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getMessage_JsonNullable() {
+    return message;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MESSAGE)
+  public void setMessage_JsonNullable(JsonNullable<String> message) {
     this.message = message;
   }
 
+  public void setMessage(@jakarta.annotation.Nullable String message) {
+    this.message = JsonNullable.<String>of(message);
+  }
 
-  public ErrorResultObjects help(@javax.annotation.Nullable String help) {
-    this.help = help;
+
+  public ErrorResultObjects help(@jakarta.annotation.Nullable String help) {
+    this.help = JsonNullable.<String>of(help);
     return this;
   }
 
@@ -116,17 +121,32 @@ public class ErrorResultObjects {
    * Get help
    * @return help
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getHelp() {
-    return help;
+        return help.orElse(null);
   }
 
-  public void setHelp(@javax.annotation.Nullable String help) {
+  @JsonProperty(value = JSON_PROPERTY_HELP, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getHelp_JsonNullable() {
+    return help;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_HELP)
+  public void setHelp_JsonNullable(JsonNullable<String> help) {
     this.help = help;
   }
 
+  public void setHelp(@jakarta.annotation.Nullable String help) {
+    this.help = JsonNullable.<String>of(help);
+  }
 
 
+  /**
+   * Return true if this ErrorResultObjects object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -137,8 +157,8 @@ public class ErrorResultObjects {
     }
     ErrorResultObjects errorResultObjects = (ErrorResultObjects) o;
     return Objects.equals(this.id, errorResultObjects.id) &&
-        Objects.equals(this.message, errorResultObjects.message) &&
-        Objects.equals(this.help, errorResultObjects.help);
+        equalsNullable(this.message, errorResultObjects.message) &&
+        equalsNullable(this.help, errorResultObjects.help);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -147,7 +167,7 @@ public class ErrorResultObjects {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, message, help);
+    return Objects.hash(id, hashCodeNullable(message), hashCodeNullable(help));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -179,94 +199,54 @@ public class ErrorResultObjects {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "message", "help"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ErrorResultObjects
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ErrorResultObjects.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ErrorResultObjects is not found in the empty JSON string", ErrorResultObjects.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ErrorResultObjects.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ErrorResultObjects` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("message") != null && !jsonObj.get("message").isJsonNull()) && !jsonObj.get("message").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
-      }
-      if ((jsonObj.get("help") != null && !jsonObj.get("help").isJsonNull()) && !jsonObj.get("help").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `help` to be a primitive type in the JSON string but got `%s`", jsonObj.get("help").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ErrorResultObjects.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ErrorResultObjects' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ErrorResultObjects> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ErrorResultObjects.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ErrorResultObjects>() {
-           @Override
-           public void write(JsonWriter out, ErrorResultObjects value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ErrorResultObjects read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ErrorResultObjects given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ErrorResultObjects
-   * @throws IOException if the JSON string is invalid with respect to ErrorResultObjects
-   */
-  public static ErrorResultObjects fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ErrorResultObjects.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ErrorResultObjects to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `message` to the URL query string
+    if (getMessage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smessage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMessage()))));
+    }
+
+    // add `help` to the URL query string
+    if (getHelp() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%shelp%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHelp()))));
+    }
+
+    return joiner.toString();
   }
 }
 

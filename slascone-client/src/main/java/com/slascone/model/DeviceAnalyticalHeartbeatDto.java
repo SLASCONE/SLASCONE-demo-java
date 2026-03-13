@@ -13,114 +13,97 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.AnalyticalFieldDto;
 import com.slascone.model.LicenseUserDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * DeviceAnalyticalHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_LICENSE_ASSIGNMENT_ID,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_ANALYTICAL_FIELD_ID,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_VALUE,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_VALUE_ARRAY,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_TRANSACTION_ID,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_SOFTWARE_VERSION,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_IS_LAST,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_ANALYTICAL_FIELD,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_USER_ID,
+  DeviceAnalyticalHeartbeatDto.JSON_PROPERTY_LICENSE_USER
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class DeviceAnalyticalHeartbeatDto {
-  public static final String SERIALIZED_NAME_LICENSE_ASSIGNMENT_ID = "license_assignment_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LICENSE_ASSIGNMENT_ID = "license_assignment_id";
+  @jakarta.annotation.Nullable
   private UUID licenseAssignmentId;
 
-  public static final String SERIALIZED_NAME_ANALYTICAL_FIELD_ID = "analytical_field_id";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_FIELD_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ANALYTICAL_FIELD_ID = "analytical_field_id";
+  @jakarta.annotation.Nullable
   private UUID analyticalFieldId;
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
-  private String value;
+  public static final String JSON_PROPERTY_VALUE = "value";
+  private JsonNullable<String> value = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE_ARRAY = "value_array";
-  @SerializedName(SERIALIZED_NAME_VALUE_ARRAY)
-  @javax.annotation.Nullable
-  private List<String> valueArray;
+  public static final String JSON_PROPERTY_VALUE_ARRAY = "value_array";
+  private JsonNullable<List<String>> valueArray = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_TRANSACTION_ID = "transaction_id";
-  @SerializedName(SERIALIZED_NAME_TRANSACTION_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TRANSACTION_ID = "transaction_id";
+  @jakarta.annotation.Nullable
   private UUID transactionId;
 
-  public static final String SERIALIZED_NAME_SOFTWARE_VERSION = "software_version";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_VERSION)
-  @javax.annotation.Nullable
-  private String softwareVersion;
+  public static final String JSON_PROPERTY_SOFTWARE_VERSION = "software_version";
+  private JsonNullable<String> softwareVersion = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime modifiedDateUtc;
 
-  public static final String SERIALIZED_NAME_IS_LAST = "is_last";
-  @SerializedName(SERIALIZED_NAME_IS_LAST)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_LAST = "is_last";
+  @jakarta.annotation.Nullable
   private Boolean isLast;
 
-  public static final String SERIALIZED_NAME_ANALYTICAL_FIELD = "analytical_field";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_FIELD)
-  @javax.annotation.Nullable
-  private AnalyticalFieldDto analyticalField;
+  public static final String JSON_PROPERTY_ANALYTICAL_FIELD = "analytical_field";
+  private JsonNullable<AnalyticalFieldDto> analyticalField = JsonNullable.<AnalyticalFieldDto>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_USER = "license_user";
-  @SerializedName(SERIALIZED_NAME_LICENSE_USER)
-  @javax.annotation.Nullable
-  private LicenseUserDto licenseUser;
+  public static final String JSON_PROPERTY_LICENSE_USER = "license_user";
+  private JsonNullable<LicenseUserDto> licenseUser = JsonNullable.<LicenseUserDto>undefined();
 
-  public DeviceAnalyticalHeartbeatDto() {
+  public DeviceAnalyticalHeartbeatDto() { 
   }
 
-  public DeviceAnalyticalHeartbeatDto licenseAssignmentId(@javax.annotation.Nullable UUID licenseAssignmentId) {
+  public DeviceAnalyticalHeartbeatDto licenseAssignmentId(@jakarta.annotation.Nullable UUID licenseAssignmentId) {
     this.licenseAssignmentId = licenseAssignmentId;
     return this;
   }
@@ -129,17 +112,22 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get licenseAssignmentId
    * @return licenseAssignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLicenseAssignmentId() {
     return licenseAssignmentId;
   }
 
-  public void setLicenseAssignmentId(@javax.annotation.Nullable UUID licenseAssignmentId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLicenseAssignmentId(@jakarta.annotation.Nullable UUID licenseAssignmentId) {
     this.licenseAssignmentId = licenseAssignmentId;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto analyticalFieldId(@javax.annotation.Nullable UUID analyticalFieldId) {
+  public DeviceAnalyticalHeartbeatDto analyticalFieldId(@jakarta.annotation.Nullable UUID analyticalFieldId) {
     this.analyticalFieldId = analyticalFieldId;
     return this;
   }
@@ -148,18 +136,23 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get analyticalFieldId
    * @return analyticalFieldId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getAnalyticalFieldId() {
     return analyticalFieldId;
   }
 
-  public void setAnalyticalFieldId(@javax.annotation.Nullable UUID analyticalFieldId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAnalyticalFieldId(@jakarta.annotation.Nullable UUID analyticalFieldId) {
     this.analyticalFieldId = analyticalFieldId;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto value(@javax.annotation.Nullable String value) {
-    this.value = value;
+  public DeviceAnalyticalHeartbeatDto value(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
     return this;
   }
 
@@ -167,26 +160,43 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getValue() {
-    return value;
+        return value.orElse(null);
   }
 
-  public void setValue(@javax.annotation.Nullable String value) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getValue_JsonNullable() {
+    return value;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  public void setValue_JsonNullable(JsonNullable<String> value) {
     this.value = value;
   }
 
+  public void setValue(@jakarta.annotation.Nullable String value) {
+    this.value = JsonNullable.<String>of(value);
+  }
 
-  public DeviceAnalyticalHeartbeatDto valueArray(@javax.annotation.Nullable List<String> valueArray) {
-    this.valueArray = valueArray;
+
+  public DeviceAnalyticalHeartbeatDto valueArray(@jakarta.annotation.Nullable List<String> valueArray) {
+    this.valueArray = JsonNullable.<List<String>>of(valueArray);
     return this;
   }
 
   public DeviceAnalyticalHeartbeatDto addValueArrayItem(String valueArrayItem) {
-    if (this.valueArray == null) {
-      this.valueArray = new ArrayList<>();
+    if (this.valueArray == null || !this.valueArray.isPresent()) {
+      this.valueArray = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.valueArray.add(valueArrayItem);
+    try {
+      this.valueArray.get().add(valueArrayItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -194,17 +204,30 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get valueArray
    * @return valueArray
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getValueArray() {
-    return valueArray;
+        return valueArray.orElse(null);
   }
 
-  public void setValueArray(@javax.annotation.Nullable List<String> valueArray) {
+  @JsonProperty(value = JSON_PROPERTY_VALUE_ARRAY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getValueArray_JsonNullable() {
+    return valueArray;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_VALUE_ARRAY)
+  public void setValueArray_JsonNullable(JsonNullable<List<String>> valueArray) {
     this.valueArray = valueArray;
   }
 
+  public void setValueArray(@jakarta.annotation.Nullable List<String> valueArray) {
+    this.valueArray = JsonNullable.<List<String>>of(valueArray);
+  }
 
-  public DeviceAnalyticalHeartbeatDto transactionId(@javax.annotation.Nullable UUID transactionId) {
+
+  public DeviceAnalyticalHeartbeatDto transactionId(@jakarta.annotation.Nullable UUID transactionId) {
     this.transactionId = transactionId;
     return this;
   }
@@ -213,18 +236,23 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get transactionId
    * @return transactionId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TRANSACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getTransactionId() {
     return transactionId;
   }
 
-  public void setTransactionId(@javax.annotation.Nullable UUID transactionId) {
+
+  @JsonProperty(value = JSON_PROPERTY_TRANSACTION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTransactionId(@jakarta.annotation.Nullable UUID transactionId) {
     this.transactionId = transactionId;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto softwareVersion(@javax.annotation.Nullable String softwareVersion) {
-    this.softwareVersion = softwareVersion;
+  public DeviceAnalyticalHeartbeatDto softwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
     return this;
   }
 
@@ -232,17 +260,30 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get softwareVersion
    * @return softwareVersion
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSoftwareVersion() {
-    return softwareVersion;
+        return softwareVersion.orElse(null);
   }
 
-  public void setSoftwareVersion(@javax.annotation.Nullable String softwareVersion) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSoftwareVersion_JsonNullable() {
+    return softwareVersion;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_VERSION)
+  public void setSoftwareVersion_JsonNullable(JsonNullable<String> softwareVersion) {
     this.softwareVersion = softwareVersion;
   }
 
+  public void setSoftwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
+  }
 
-  public DeviceAnalyticalHeartbeatDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public DeviceAnalyticalHeartbeatDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -251,17 +292,22 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  public DeviceAnalyticalHeartbeatDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
     return this;
   }
@@ -270,17 +316,22 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getModifiedDateUtc() {
     return modifiedDateUtc;
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto isLast(@javax.annotation.Nullable Boolean isLast) {
+  public DeviceAnalyticalHeartbeatDto isLast(@jakarta.annotation.Nullable Boolean isLast) {
     this.isLast = isLast;
     return this;
   }
@@ -289,18 +340,23 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get isLast
    * @return isLast
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_LAST, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsLast() {
     return isLast;
   }
 
-  public void setIsLast(@javax.annotation.Nullable Boolean isLast) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_LAST, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsLast(@jakarta.annotation.Nullable Boolean isLast) {
     this.isLast = isLast;
   }
 
 
-  public DeviceAnalyticalHeartbeatDto analyticalField(@javax.annotation.Nullable AnalyticalFieldDto analyticalField) {
-    this.analyticalField = analyticalField;
+  public DeviceAnalyticalHeartbeatDto analyticalField(@jakarta.annotation.Nullable AnalyticalFieldDto analyticalField) {
+    this.analyticalField = JsonNullable.<AnalyticalFieldDto>of(analyticalField);
     return this;
   }
 
@@ -308,18 +364,31 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get analyticalField
    * @return analyticalField
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public AnalyticalFieldDto getAnalyticalField() {
-    return analyticalField;
+        return analyticalField.orElse(null);
   }
 
-  public void setAnalyticalField(@javax.annotation.Nullable AnalyticalFieldDto analyticalField) {
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<AnalyticalFieldDto> getAnalyticalField_JsonNullable() {
+    return analyticalField;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ANALYTICAL_FIELD)
+  public void setAnalyticalField_JsonNullable(JsonNullable<AnalyticalFieldDto> analyticalField) {
     this.analyticalField = analyticalField;
   }
 
+  public void setAnalyticalField(@jakarta.annotation.Nullable AnalyticalFieldDto analyticalField) {
+    this.analyticalField = JsonNullable.<AnalyticalFieldDto>of(analyticalField);
+  }
 
-  public DeviceAnalyticalHeartbeatDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+
+  public DeviceAnalyticalHeartbeatDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -327,18 +396,31 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public DeviceAnalyticalHeartbeatDto licenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
-    this.licenseUser = licenseUser;
+
+  public DeviceAnalyticalHeartbeatDto licenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
     return this;
   }
 
@@ -346,17 +428,32 @@ public class DeviceAnalyticalHeartbeatDto {
    * Get licenseUser
    * @return licenseUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LicenseUserDto getLicenseUser() {
-    return licenseUser;
+        return licenseUser.orElse(null);
   }
 
-  public void setLicenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LicenseUserDto> getLicenseUser_JsonNullable() {
+    return licenseUser;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_USER)
+  public void setLicenseUser_JsonNullable(JsonNullable<LicenseUserDto> licenseUser) {
     this.licenseUser = licenseUser;
   }
 
+  public void setLicenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
+  }
 
 
+  /**
+   * Return true if this DeviceAnalyticalHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -368,16 +465,16 @@ public class DeviceAnalyticalHeartbeatDto {
     DeviceAnalyticalHeartbeatDto deviceAnalyticalHeartbeatDto = (DeviceAnalyticalHeartbeatDto) o;
     return Objects.equals(this.licenseAssignmentId, deviceAnalyticalHeartbeatDto.licenseAssignmentId) &&
         Objects.equals(this.analyticalFieldId, deviceAnalyticalHeartbeatDto.analyticalFieldId) &&
-        Objects.equals(this.value, deviceAnalyticalHeartbeatDto.value) &&
-        Objects.equals(this.valueArray, deviceAnalyticalHeartbeatDto.valueArray) &&
+        equalsNullable(this.value, deviceAnalyticalHeartbeatDto.value) &&
+        equalsNullable(this.valueArray, deviceAnalyticalHeartbeatDto.valueArray) &&
         Objects.equals(this.transactionId, deviceAnalyticalHeartbeatDto.transactionId) &&
-        Objects.equals(this.softwareVersion, deviceAnalyticalHeartbeatDto.softwareVersion) &&
+        equalsNullable(this.softwareVersion, deviceAnalyticalHeartbeatDto.softwareVersion) &&
         Objects.equals(this.createdDateUtc, deviceAnalyticalHeartbeatDto.createdDateUtc) &&
         Objects.equals(this.modifiedDateUtc, deviceAnalyticalHeartbeatDto.modifiedDateUtc) &&
         Objects.equals(this.isLast, deviceAnalyticalHeartbeatDto.isLast) &&
-        Objects.equals(this.analyticalField, deviceAnalyticalHeartbeatDto.analyticalField) &&
-        Objects.equals(this.userId, deviceAnalyticalHeartbeatDto.userId) &&
-        Objects.equals(this.licenseUser, deviceAnalyticalHeartbeatDto.licenseUser);
+        equalsNullable(this.analyticalField, deviceAnalyticalHeartbeatDto.analyticalField) &&
+        equalsNullable(this.userId, deviceAnalyticalHeartbeatDto.userId) &&
+        equalsNullable(this.licenseUser, deviceAnalyticalHeartbeatDto.licenseUser);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -386,7 +483,7 @@ public class DeviceAnalyticalHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(licenseAssignmentId, analyticalFieldId, value, valueArray, transactionId, softwareVersion, createdDateUtc, modifiedDateUtc, isLast, analyticalField, userId, licenseUser);
+    return Objects.hash(licenseAssignmentId, analyticalFieldId, hashCodeNullable(value), hashCodeNullable(valueArray), transactionId, hashCodeNullable(softwareVersion), createdDateUtc, modifiedDateUtc, isLast, hashCodeNullable(analyticalField), hashCodeNullable(userId), hashCodeNullable(licenseUser));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -427,118 +524,103 @@ public class DeviceAnalyticalHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("license_assignment_id", "analytical_field_id", "value", "value_array", "transaction_id", "software_version", "created_date_utc", "modified_date_utc", "is_last", "analytical_field", "user_id", "license_user"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to DeviceAnalyticalHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!DeviceAnalyticalHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in DeviceAnalyticalHeartbeatDto is not found in the empty JSON string", DeviceAnalyticalHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!DeviceAnalyticalHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DeviceAnalyticalHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("license_assignment_id") != null && !jsonObj.get("license_assignment_id").isJsonNull()) && !jsonObj.get("license_assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_assignment_id").toString()));
-      }
-      if ((jsonObj.get("analytical_field_id") != null && !jsonObj.get("analytical_field_id").isJsonNull()) && !jsonObj.get("analytical_field_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `analytical_field_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("analytical_field_id").toString()));
-      }
-      if ((jsonObj.get("value") != null && !jsonObj.get("value").isJsonNull()) && !jsonObj.get("value").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value` to be a primitive type in the JSON string but got `%s`", jsonObj.get("value").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("value_array") != null && !jsonObj.get("value_array").isJsonNull() && !jsonObj.get("value_array").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `value_array` to be an array in the JSON string but got `%s`", jsonObj.get("value_array").toString()));
-      }
-      if ((jsonObj.get("transaction_id") != null && !jsonObj.get("transaction_id").isJsonNull()) && !jsonObj.get("transaction_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `transaction_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("transaction_id").toString()));
-      }
-      if ((jsonObj.get("software_version") != null && !jsonObj.get("software_version").isJsonNull()) && !jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
-      }
-      // validate the optional field `analytical_field`
-      if (jsonObj.get("analytical_field") != null && !jsonObj.get("analytical_field").isJsonNull()) {
-        AnalyticalFieldDto.validateJsonElement(jsonObj.get("analytical_field"));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      // validate the optional field `license_user`
-      if (jsonObj.get("license_user") != null && !jsonObj.get("license_user").isJsonNull()) {
-        LicenseUserDto.validateJsonElement(jsonObj.get("license_user"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!DeviceAnalyticalHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'DeviceAnalyticalHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<DeviceAnalyticalHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(DeviceAnalyticalHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<DeviceAnalyticalHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, DeviceAnalyticalHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public DeviceAnalyticalHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of DeviceAnalyticalHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of DeviceAnalyticalHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to DeviceAnalyticalHeartbeatDto
-   */
-  public static DeviceAnalyticalHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, DeviceAnalyticalHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of DeviceAnalyticalHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `license_assignment_id` to the URL query string
+    if (getLicenseAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_assignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseAssignmentId()))));
+    }
+
+    // add `analytical_field_id` to the URL query string
+    if (getAnalyticalFieldId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sanalytical_field_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAnalyticalFieldId()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    // add `value_array` to the URL query string
+    if (getValueArray() != null) {
+      for (int i = 0; i < getValueArray().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%svalue_array%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getValueArray().get(i)))));
+      }
+    }
+
+    // add `transaction_id` to the URL query string
+    if (getTransactionId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stransaction_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTransactionId()))));
+    }
+
+    // add `software_version` to the URL query string
+    if (getSoftwareVersion() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_version%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSoftwareVersion()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `is_last` to the URL query string
+    if (getIsLast() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_last%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsLast()))));
+    }
+
+    // add `analytical_field` to the URL query string
+    if (getAnalyticalField() != null) {
+      joiner.add(getAnalyticalField().toUrlQueryString(prefix + "analytical_field" + suffix));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `license_user` to the URL query string
+    if (getLicenseUser() != null) {
+      joiner.add(getLicenseUser().toUrlQueryString(prefix + "license_user" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

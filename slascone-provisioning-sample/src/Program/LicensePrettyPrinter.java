@@ -8,6 +8,7 @@ import Model.ProvisioningFeatureXml;
 import Model.ProvisioningLimitationXml;
 import Model.ProvisioningVariableXml;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,7 +143,7 @@ public class LicensePrettyPrinter {
             
             System.out.println("\nLimitations:");
             for (ProvisioningLimitationXml limitation : licenseXml.getLimitations()) {
-                System.out.println("- " + limitation.getName() + ": " + limitation.getValue());
+                System.out.println("- " + limitation.getName() + ": " + limitation.getValue()+ " (limit value: " + limitation.getLimitValue() + ")");
             }
         } else {
             System.out.println("\nNo limitations available in this license.");
@@ -323,7 +324,9 @@ public class LicensePrettyPrinter {
             for (var limitation : limitations) {
                 String limName = limitation.getName();
                 Integer limValue = limitation.getValue();
-                System.out.println("- " + (limName != null ? limName : "") + ": " + (limValue != null ? limValue : ""));
+                BigDecimal remaining = limitation.getRemaining();
+                BigDecimal balance = limitation.getBalance();
+                System.out.println("- " + (limName != null ? limName : "") + ": " + (limValue != null ? limValue : "") + " (Remaining: " + (remaining != null ? remaining : "N/A") + ", Balance: " + (balance != null ? balance : "N/A") + ")");
             }
         } else {
             System.out.println("\nNo limitations available in this license.");

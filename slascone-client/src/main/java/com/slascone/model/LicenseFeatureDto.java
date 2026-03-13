@@ -13,80 +13,66 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.LicenseFeatureExceptionsDto;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseFeatureDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseFeatureDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseFeatureDto.JSON_PROPERTY_FEATURE_ID,
+  LicenseFeatureDto.JSON_PROPERTY_FEATURE_NAME,
+  LicenseFeatureDto.JSON_PROPERTY_FEATURE_DESCRIPTION,
+  LicenseFeatureDto.JSON_PROPERTY_IS_ACTIVE,
+  LicenseFeatureDto.JSON_PROPERTY_FEATURE_EXCEPTIONS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseFeatureDto {
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_FEATURE_ID = "feature_id";
-  @SerializedName(SERIALIZED_NAME_FEATURE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_FEATURE_ID = "feature_id";
+  @jakarta.annotation.Nonnull
   private UUID featureId;
 
-  public static final String SERIALIZED_NAME_FEATURE_NAME = "feature_name";
-  @SerializedName(SERIALIZED_NAME_FEATURE_NAME)
-  @javax.annotation.Nullable
-  private String featureName;
+  public static final String JSON_PROPERTY_FEATURE_NAME = "feature_name";
+  private JsonNullable<String> featureName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_FEATURE_DESCRIPTION = "feature_description";
-  @SerializedName(SERIALIZED_NAME_FEATURE_DESCRIPTION)
-  @javax.annotation.Nullable
-  private String featureDescription;
+  public static final String JSON_PROPERTY_FEATURE_DESCRIPTION = "feature_description";
+  private JsonNullable<String> featureDescription = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  @jakarta.annotation.Nullable
   private Boolean isActive;
 
-  public static final String SERIALIZED_NAME_FEATURE_EXCEPTIONS = "feature_exceptions";
-  @SerializedName(SERIALIZED_NAME_FEATURE_EXCEPTIONS)
-  @javax.annotation.Nullable
-  private LicenseFeatureExceptionsDto featureExceptions;
+  public static final String JSON_PROPERTY_FEATURE_EXCEPTIONS = "feature_exceptions";
+  private JsonNullable<LicenseFeatureExceptionsDto> featureExceptions = JsonNullable.<LicenseFeatureExceptionsDto>undefined();
 
-  public LicenseFeatureDto() {
+  public LicenseFeatureDto() { 
   }
 
-  public LicenseFeatureDto productId(@javax.annotation.Nonnull UUID productId) {
+  public LicenseFeatureDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -95,17 +81,22 @@ public class LicenseFeatureDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseFeatureDto featureId(@javax.annotation.Nonnull UUID featureId) {
+  public LicenseFeatureDto featureId(@jakarta.annotation.Nonnull UUID featureId) {
     this.featureId = featureId;
     return this;
   }
@@ -114,18 +105,23 @@ public class LicenseFeatureDto {
    * Get featureId
    * @return featureId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getFeatureId() {
     return featureId;
   }
 
-  public void setFeatureId(@javax.annotation.Nonnull UUID featureId) {
+
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setFeatureId(@jakarta.annotation.Nonnull UUID featureId) {
     this.featureId = featureId;
   }
 
 
-  public LicenseFeatureDto featureName(@javax.annotation.Nullable String featureName) {
-    this.featureName = featureName;
+  public LicenseFeatureDto featureName(@jakarta.annotation.Nullable String featureName) {
+    this.featureName = JsonNullable.<String>of(featureName);
     return this;
   }
 
@@ -133,18 +129,31 @@ public class LicenseFeatureDto {
    * Get featureName
    * @return featureName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getFeatureName() {
-    return featureName;
+        return featureName.orElse(null);
   }
 
-  public void setFeatureName(@javax.annotation.Nullable String featureName) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getFeatureName_JsonNullable() {
+    return featureName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURE_NAME)
+  public void setFeatureName_JsonNullable(JsonNullable<String> featureName) {
     this.featureName = featureName;
   }
 
+  public void setFeatureName(@jakarta.annotation.Nullable String featureName) {
+    this.featureName = JsonNullable.<String>of(featureName);
+  }
 
-  public LicenseFeatureDto featureDescription(@javax.annotation.Nullable String featureDescription) {
-    this.featureDescription = featureDescription;
+
+  public LicenseFeatureDto featureDescription(@jakarta.annotation.Nullable String featureDescription) {
+    this.featureDescription = JsonNullable.<String>of(featureDescription);
     return this;
   }
 
@@ -152,17 +161,30 @@ public class LicenseFeatureDto {
    * Get featureDescription
    * @return featureDescription
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getFeatureDescription() {
-    return featureDescription;
+        return featureDescription.orElse(null);
   }
 
-  public void setFeatureDescription(@javax.annotation.Nullable String featureDescription) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_DESCRIPTION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getFeatureDescription_JsonNullable() {
+    return featureDescription;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURE_DESCRIPTION)
+  public void setFeatureDescription_JsonNullable(JsonNullable<String> featureDescription) {
     this.featureDescription = featureDescription;
   }
 
+  public void setFeatureDescription(@jakarta.annotation.Nullable String featureDescription) {
+    this.featureDescription = JsonNullable.<String>of(featureDescription);
+  }
 
-  public LicenseFeatureDto isActive(@javax.annotation.Nullable Boolean isActive) {
+
+  public LicenseFeatureDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
     return this;
   }
@@ -171,18 +193,23 @@ public class LicenseFeatureDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsActive() {
     return isActive;
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
     this.isActive = isActive;
   }
 
 
-  public LicenseFeatureDto featureExceptions(@javax.annotation.Nullable LicenseFeatureExceptionsDto featureExceptions) {
-    this.featureExceptions = featureExceptions;
+  public LicenseFeatureDto featureExceptions(@jakarta.annotation.Nullable LicenseFeatureExceptionsDto featureExceptions) {
+    this.featureExceptions = JsonNullable.<LicenseFeatureExceptionsDto>of(featureExceptions);
     return this;
   }
 
@@ -190,17 +217,32 @@ public class LicenseFeatureDto {
    * Get featureExceptions
    * @return featureExceptions
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LicenseFeatureExceptionsDto getFeatureExceptions() {
-    return featureExceptions;
+        return featureExceptions.orElse(null);
   }
 
-  public void setFeatureExceptions(@javax.annotation.Nullable LicenseFeatureExceptionsDto featureExceptions) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_EXCEPTIONS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LicenseFeatureExceptionsDto> getFeatureExceptions_JsonNullable() {
+    return featureExceptions;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURE_EXCEPTIONS)
+  public void setFeatureExceptions_JsonNullable(JsonNullable<LicenseFeatureExceptionsDto> featureExceptions) {
     this.featureExceptions = featureExceptions;
   }
 
+  public void setFeatureExceptions(@jakarta.annotation.Nullable LicenseFeatureExceptionsDto featureExceptions) {
+    this.featureExceptions = JsonNullable.<LicenseFeatureExceptionsDto>of(featureExceptions);
+  }
 
 
+  /**
+   * Return true if this LicenseFeatureDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -212,10 +254,10 @@ public class LicenseFeatureDto {
     LicenseFeatureDto licenseFeatureDto = (LicenseFeatureDto) o;
     return Objects.equals(this.productId, licenseFeatureDto.productId) &&
         Objects.equals(this.featureId, licenseFeatureDto.featureId) &&
-        Objects.equals(this.featureName, licenseFeatureDto.featureName) &&
-        Objects.equals(this.featureDescription, licenseFeatureDto.featureDescription) &&
+        equalsNullable(this.featureName, licenseFeatureDto.featureName) &&
+        equalsNullable(this.featureDescription, licenseFeatureDto.featureDescription) &&
         Objects.equals(this.isActive, licenseFeatureDto.isActive) &&
-        Objects.equals(this.featureExceptions, licenseFeatureDto.featureExceptions);
+        equalsNullable(this.featureExceptions, licenseFeatureDto.featureExceptions);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -224,7 +266,7 @@ public class LicenseFeatureDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(productId, featureId, featureName, featureDescription, isActive, featureExceptions);
+    return Objects.hash(productId, featureId, hashCodeNullable(featureName), hashCodeNullable(featureDescription), isActive, hashCodeNullable(featureExceptions));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -259,111 +301,69 @@ public class LicenseFeatureDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("product_id", "feature_id", "feature_name", "feature_description", "is_active", "feature_exceptions"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("product_id", "feature_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseFeatureDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseFeatureDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFeatureDto is not found in the empty JSON string", LicenseFeatureDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseFeatureDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFeatureDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseFeatureDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-      if (!jsonObj.get("feature_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_id").toString()));
-      }
-      if ((jsonObj.get("feature_name") != null && !jsonObj.get("feature_name").isJsonNull()) && !jsonObj.get("feature_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_name").toString()));
-      }
-      if ((jsonObj.get("feature_description") != null && !jsonObj.get("feature_description").isJsonNull()) && !jsonObj.get("feature_description").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_description` to be a primitive type in the JSON string but got `%s`", jsonObj.get("feature_description").toString()));
-      }
-      // validate the optional field `feature_exceptions`
-      if (jsonObj.get("feature_exceptions") != null && !jsonObj.get("feature_exceptions").isJsonNull()) {
-        LicenseFeatureExceptionsDto.validateJsonElement(jsonObj.get("feature_exceptions"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseFeatureDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseFeatureDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseFeatureDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseFeatureDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseFeatureDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseFeatureDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseFeatureDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseFeatureDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseFeatureDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseFeatureDto
-   */
-  public static LicenseFeatureDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseFeatureDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseFeatureDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `feature_id` to the URL query string
+    if (getFeatureId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFeatureId()))));
+    }
+
+    // add `feature_name` to the URL query string
+    if (getFeatureName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFeatureName()))));
+    }
+
+    // add `feature_description` to the URL query string
+    if (getFeatureDescription() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_description%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getFeatureDescription()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `feature_exceptions` to the URL query string
+    if (getFeatureExceptions() != null) {
+      joiner.add(getFeatureExceptions().toUrlQueryString(prefix + "feature_exceptions" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

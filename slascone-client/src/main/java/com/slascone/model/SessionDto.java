@@ -13,111 +13,95 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.DeviceLicenseAssignmentDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * SessionDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  SessionDto.JSON_PROPERTY_ID,
+  SessionDto.JSON_PROPERTY_SESSION_ID,
+  SessionDto.JSON_PROPERTY_SESSION_VALID_UNTIL,
+  SessionDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  SessionDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  SessionDto.JSON_PROPERTY_LICENSE_ID,
+  SessionDto.JSON_PROPERTY_ASSIGNMENT_ID,
+  SessionDto.JSON_PROPERTY_ASSIGNMENT,
+  SessionDto.JSON_PROPERTY_USER_ID,
+  SessionDto.JSON_PROPERTY_MAX_OPEN_SESSION_COUNT,
+  SessionDto.JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT,
+  SessionDto.JSON_PROPERTY_DURATION
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class SessionDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_SESSION_ID = "session_id";
-  @SerializedName(SERIALIZED_NAME_SESSION_ID)
-  @javax.annotation.Nullable
-  private UUID sessionId;
+  public static final String JSON_PROPERTY_SESSION_ID = "session_id";
+  private JsonNullable<UUID> sessionId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_SESSION_VALID_UNTIL = "session_valid_until";
-  @SerializedName(SERIALIZED_NAME_SESSION_VALID_UNTIL)
-  @javax.annotation.Nullable
-  private OffsetDateTime sessionValidUntil;
+  public static final String JSON_PROPERTY_SESSION_VALID_UNTIL = "session_valid_until";
+  private JsonNullable<OffsetDateTime> sessionValidUntil = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nullable
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_ASSIGNMENT_ID = "assignment_id";
-  @SerializedName(SERIALIZED_NAME_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ASSIGNMENT_ID = "assignment_id";
+  @jakarta.annotation.Nullable
   private UUID assignmentId;
 
-  public static final String SERIALIZED_NAME_ASSIGNMENT = "assignment";
-  @SerializedName(SERIALIZED_NAME_ASSIGNMENT)
-  @javax.annotation.Nullable
-  private DeviceLicenseAssignmentDto assignment;
+  public static final String JSON_PROPERTY_ASSIGNMENT = "assignment";
+  private JsonNullable<DeviceLicenseAssignmentDto> assignment = JsonNullable.<DeviceLicenseAssignmentDto>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_OPEN_SESSION_COUNT = "max_open_session_count";
-  @SerializedName(SERIALIZED_NAME_MAX_OPEN_SESSION_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_OPEN_SESSION_COUNT = "max_open_session_count";
+  @jakarta.annotation.Nullable
   private Integer maxOpenSessionCount;
 
-  public static final String SERIALIZED_NAME_MAX_ACTIVE_CLIENT_COUNT = "max_active_client_count";
-  @SerializedName(SERIALIZED_NAME_MAX_ACTIVE_CLIENT_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT = "max_active_client_count";
+  @jakarta.annotation.Nullable
   private Integer maxActiveClientCount;
 
-  public static final String SERIALIZED_NAME_DURATION = "duration";
-  @SerializedName(SERIALIZED_NAME_DURATION)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DURATION = "duration";
+  @jakarta.annotation.Nullable
   private Integer duration;
 
-  public SessionDto() {
+  public SessionDto() { 
   }
 
-  public SessionDto id(@javax.annotation.Nullable UUID id) {
+  public SessionDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -126,18 +110,23 @@ public class SessionDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public SessionDto sessionId(@javax.annotation.Nullable UUID sessionId) {
-    this.sessionId = sessionId;
+  public SessionDto sessionId(@jakarta.annotation.Nullable UUID sessionId) {
+    this.sessionId = JsonNullable.<UUID>of(sessionId);
     return this;
   }
 
@@ -145,18 +134,31 @@ public class SessionDto {
    * Get sessionId
    * @return sessionId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getSessionId() {
-    return sessionId;
+        return sessionId.orElse(null);
   }
 
-  public void setSessionId(@javax.annotation.Nullable UUID sessionId) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getSessionId_JsonNullable() {
+    return sessionId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_ID)
+  public void setSessionId_JsonNullable(JsonNullable<UUID> sessionId) {
     this.sessionId = sessionId;
   }
 
+  public void setSessionId(@jakarta.annotation.Nullable UUID sessionId) {
+    this.sessionId = JsonNullable.<UUID>of(sessionId);
+  }
 
-  public SessionDto sessionValidUntil(@javax.annotation.Nullable OffsetDateTime sessionValidUntil) {
-    this.sessionValidUntil = sessionValidUntil;
+
+  public SessionDto sessionValidUntil(@jakarta.annotation.Nullable OffsetDateTime sessionValidUntil) {
+    this.sessionValidUntil = JsonNullable.<OffsetDateTime>of(sessionValidUntil);
     return this;
   }
 
@@ -164,17 +166,30 @@ public class SessionDto {
    * Get sessionValidUntil
    * @return sessionValidUntil
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getSessionValidUntil() {
-    return sessionValidUntil;
+        return sessionValidUntil.orElse(null);
   }
 
-  public void setSessionValidUntil(@javax.annotation.Nullable OffsetDateTime sessionValidUntil) {
+  @JsonProperty(value = JSON_PROPERTY_SESSION_VALID_UNTIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getSessionValidUntil_JsonNullable() {
+    return sessionValidUntil;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SESSION_VALID_UNTIL)
+  public void setSessionValidUntil_JsonNullable(JsonNullable<OffsetDateTime> sessionValidUntil) {
     this.sessionValidUntil = sessionValidUntil;
   }
 
+  public void setSessionValidUntil(@jakarta.annotation.Nullable OffsetDateTime sessionValidUntil) {
+    this.sessionValidUntil = JsonNullable.<OffsetDateTime>of(sessionValidUntil);
+  }
 
-  public SessionDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public SessionDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -183,18 +198,23 @@ public class SessionDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-  public SessionDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+  public SessionDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -202,17 +222,30 @@ public class SessionDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public SessionDto licenseId(@javax.annotation.Nullable UUID licenseId) {
+
+  public SessionDto licenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -221,17 +254,22 @@ public class SessionDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nullable UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLicenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public SessionDto assignmentId(@javax.annotation.Nullable UUID assignmentId) {
+  public SessionDto assignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
     this.assignmentId = assignmentId;
     return this;
   }
@@ -240,18 +278,23 @@ public class SessionDto {
    * Get assignmentId
    * @return assignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getAssignmentId() {
     return assignmentId;
   }
 
-  public void setAssignmentId(@javax.annotation.Nullable UUID assignmentId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAssignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
     this.assignmentId = assignmentId;
   }
 
 
-  public SessionDto assignment(@javax.annotation.Nullable DeviceLicenseAssignmentDto assignment) {
-    this.assignment = assignment;
+  public SessionDto assignment(@jakarta.annotation.Nullable DeviceLicenseAssignmentDto assignment) {
+    this.assignment = JsonNullable.<DeviceLicenseAssignmentDto>of(assignment);
     return this;
   }
 
@@ -259,18 +302,31 @@ public class SessionDto {
    * Get assignment
    * @return assignment
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public DeviceLicenseAssignmentDto getAssignment() {
-    return assignment;
+        return assignment.orElse(null);
   }
 
-  public void setAssignment(@javax.annotation.Nullable DeviceLicenseAssignmentDto assignment) {
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<DeviceLicenseAssignmentDto> getAssignment_JsonNullable() {
+    return assignment;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ASSIGNMENT)
+  public void setAssignment_JsonNullable(JsonNullable<DeviceLicenseAssignmentDto> assignment) {
     this.assignment = assignment;
   }
 
+  public void setAssignment(@jakarta.annotation.Nullable DeviceLicenseAssignmentDto assignment) {
+    this.assignment = JsonNullable.<DeviceLicenseAssignmentDto>of(assignment);
+  }
 
-  public SessionDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+
+  public SessionDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -278,17 +334,30 @@ public class SessionDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public SessionDto maxOpenSessionCount(@javax.annotation.Nullable Integer maxOpenSessionCount) {
+
+  public SessionDto maxOpenSessionCount(@jakarta.annotation.Nullable Integer maxOpenSessionCount) {
     this.maxOpenSessionCount = maxOpenSessionCount;
     return this;
   }
@@ -297,17 +366,22 @@ public class SessionDto {
    * Get maxOpenSessionCount
    * @return maxOpenSessionCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_OPEN_SESSION_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxOpenSessionCount() {
     return maxOpenSessionCount;
   }
 
-  public void setMaxOpenSessionCount(@javax.annotation.Nullable Integer maxOpenSessionCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_OPEN_SESSION_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxOpenSessionCount(@jakarta.annotation.Nullable Integer maxOpenSessionCount) {
     this.maxOpenSessionCount = maxOpenSessionCount;
   }
 
 
-  public SessionDto maxActiveClientCount(@javax.annotation.Nullable Integer maxActiveClientCount) {
+  public SessionDto maxActiveClientCount(@jakarta.annotation.Nullable Integer maxActiveClientCount) {
     this.maxActiveClientCount = maxActiveClientCount;
     return this;
   }
@@ -316,17 +390,22 @@ public class SessionDto {
    * Get maxActiveClientCount
    * @return maxActiveClientCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxActiveClientCount() {
     return maxActiveClientCount;
   }
 
-  public void setMaxActiveClientCount(@javax.annotation.Nullable Integer maxActiveClientCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_ACTIVE_CLIENT_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxActiveClientCount(@jakarta.annotation.Nullable Integer maxActiveClientCount) {
     this.maxActiveClientCount = maxActiveClientCount;
   }
 
 
-  public SessionDto duration(@javax.annotation.Nullable Integer duration) {
+  public SessionDto duration(@jakarta.annotation.Nullable Integer duration) {
     this.duration = duration;
     return this;
   }
@@ -335,17 +414,24 @@ public class SessionDto {
    * Get duration
    * @return duration
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DURATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getDuration() {
     return duration;
   }
 
-  public void setDuration(@javax.annotation.Nullable Integer duration) {
+
+  @JsonProperty(value = JSON_PROPERTY_DURATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDuration(@jakarta.annotation.Nullable Integer duration) {
     this.duration = duration;
   }
 
 
-
+  /**
+   * Return true if this SessionDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -356,14 +442,14 @@ public class SessionDto {
     }
     SessionDto sessionDto = (SessionDto) o;
     return Objects.equals(this.id, sessionDto.id) &&
-        Objects.equals(this.sessionId, sessionDto.sessionId) &&
-        Objects.equals(this.sessionValidUntil, sessionDto.sessionValidUntil) &&
+        equalsNullable(this.sessionId, sessionDto.sessionId) &&
+        equalsNullable(this.sessionValidUntil, sessionDto.sessionValidUntil) &&
         Objects.equals(this.createdDateUtc, sessionDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, sessionDto.modifiedDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, sessionDto.modifiedDateUtc) &&
         Objects.equals(this.licenseId, sessionDto.licenseId) &&
         Objects.equals(this.assignmentId, sessionDto.assignmentId) &&
-        Objects.equals(this.assignment, sessionDto.assignment) &&
-        Objects.equals(this.userId, sessionDto.userId) &&
+        equalsNullable(this.assignment, sessionDto.assignment) &&
+        equalsNullable(this.userId, sessionDto.userId) &&
         Objects.equals(this.maxOpenSessionCount, sessionDto.maxOpenSessionCount) &&
         Objects.equals(this.maxActiveClientCount, sessionDto.maxActiveClientCount) &&
         Objects.equals(this.duration, sessionDto.duration);
@@ -375,7 +461,7 @@ public class SessionDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, sessionId, sessionValidUntil, createdDateUtc, modifiedDateUtc, licenseId, assignmentId, assignment, userId, maxOpenSessionCount, maxActiveClientCount, duration);
+    return Objects.hash(id, hashCodeNullable(sessionId), hashCodeNullable(sessionValidUntil), createdDateUtc, hashCodeNullable(modifiedDateUtc), licenseId, assignmentId, hashCodeNullable(assignment), hashCodeNullable(userId), maxOpenSessionCount, maxActiveClientCount, duration);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -416,107 +502,99 @@ public class SessionDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "session_id", "session_valid_until", "created_date_utc", "modified_date_utc", "license_id", "assignment_id", "assignment", "user_id", "max_open_session_count", "max_active_client_count", "duration"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to SessionDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!SessionDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in SessionDto is not found in the empty JSON string", SessionDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!SessionDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SessionDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("session_id") != null && !jsonObj.get("session_id").isJsonNull()) && !jsonObj.get("session_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `session_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("session_id").toString()));
-      }
-      if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("assignment_id") != null && !jsonObj.get("assignment_id").isJsonNull()) && !jsonObj.get("assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("assignment_id").toString()));
-      }
-      // validate the optional field `assignment`
-      if (jsonObj.get("assignment") != null && !jsonObj.get("assignment").isJsonNull()) {
-        DeviceLicenseAssignmentDto.validateJsonElement(jsonObj.get("assignment"));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!SessionDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'SessionDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<SessionDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(SessionDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<SessionDto>() {
-           @Override
-           public void write(JsonWriter out, SessionDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public SessionDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of SessionDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of SessionDto
-   * @throws IOException if the JSON string is invalid with respect to SessionDto
-   */
-  public static SessionDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, SessionDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of SessionDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `session_id` to the URL query string
+    if (getSessionId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionId()))));
+    }
+
+    // add `session_valid_until` to the URL query string
+    if (getSessionValidUntil() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssession_valid_until%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSessionValidUntil()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `assignment_id` to the URL query string
+    if (getAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sassignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAssignmentId()))));
+    }
+
+    // add `assignment` to the URL query string
+    if (getAssignment() != null) {
+      joiner.add(getAssignment().toUrlQueryString(prefix + "assignment" + suffix));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `max_open_session_count` to the URL query string
+    if (getMaxOpenSessionCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_open_session_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxOpenSessionCount()))));
+    }
+
+    // add `max_active_client_count` to the URL query string
+    if (getMaxActiveClientCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_active_client_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxActiveClientCount()))));
+    }
+
+    // add `duration` to the URL query string
+    if (getDuration() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sduration%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDuration()))));
+    }
+
+    return joiner.toString();
   }
 }
 

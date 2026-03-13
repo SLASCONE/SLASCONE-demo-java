@@ -13,76 +13,62 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ConsumptionHeartbeatValueDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ConsumptionHeartbeatValueDto.JSON_PROPERTY_LIMITATION_ID,
+  ConsumptionHeartbeatValueDto.JSON_PROPERTY_USER_ID,
+  ConsumptionHeartbeatValueDto.JSON_PROPERTY_EXTERNAL_ID,
+  ConsumptionHeartbeatValueDto.JSON_PROPERTY_TIMESTAMP_UTC,
+  ConsumptionHeartbeatValueDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ConsumptionHeartbeatValueDto {
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nonnull
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_EXTERNAL_ID = "external_id";
-  @SerializedName(SERIALIZED_NAME_EXTERNAL_ID)
-  @javax.annotation.Nullable
-  private String externalId;
+  public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
+  private JsonNullable<String> externalId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_TIMESTAMP_UTC = "timestamp_utc";
-  @SerializedName(SERIALIZED_NAME_TIMESTAMP_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime timestampUtc;
+  public static final String JSON_PROPERTY_TIMESTAMP_UTC = "timestamp_utc";
+  private JsonNullable<OffsetDateTime> timestampUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nonnull
   private BigDecimal value;
 
-  public ConsumptionHeartbeatValueDto() {
+  public ConsumptionHeartbeatValueDto() { 
   }
 
-  public ConsumptionHeartbeatValueDto limitationId(@javax.annotation.Nonnull UUID limitationId) {
+  public ConsumptionHeartbeatValueDto limitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -91,18 +77,23 @@ public class ConsumptionHeartbeatValueDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nonnull UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLimitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public ConsumptionHeartbeatValueDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+  public ConsumptionHeartbeatValueDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -110,18 +101,31 @@ public class ConsumptionHeartbeatValueDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public ConsumptionHeartbeatValueDto externalId(@javax.annotation.Nullable String externalId) {
-    this.externalId = externalId;
+
+  public ConsumptionHeartbeatValueDto externalId(@jakarta.annotation.Nullable String externalId) {
+    this.externalId = JsonNullable.<String>of(externalId);
     return this;
   }
 
@@ -129,18 +133,31 @@ public class ConsumptionHeartbeatValueDto {
    * Get externalId
    * @return externalId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getExternalId() {
-    return externalId;
+        return externalId.orElse(null);
   }
 
-  public void setExternalId(@javax.annotation.Nullable String externalId) {
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getExternalId_JsonNullable() {
+    return externalId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXTERNAL_ID)
+  public void setExternalId_JsonNullable(JsonNullable<String> externalId) {
     this.externalId = externalId;
   }
 
+  public void setExternalId(@jakarta.annotation.Nullable String externalId) {
+    this.externalId = JsonNullable.<String>of(externalId);
+  }
 
-  public ConsumptionHeartbeatValueDto timestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
-    this.timestampUtc = timestampUtc;
+
+  public ConsumptionHeartbeatValueDto timestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
     return this;
   }
 
@@ -148,17 +165,30 @@ public class ConsumptionHeartbeatValueDto {
    * Get timestampUtc
    * @return timestampUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getTimestampUtc() {
-    return timestampUtc;
+        return timestampUtc.orElse(null);
   }
 
-  public void setTimestampUtc(@javax.annotation.Nullable OffsetDateTime timestampUtc) {
+  @JsonProperty(value = JSON_PROPERTY_TIMESTAMP_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getTimestampUtc_JsonNullable() {
+    return timestampUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TIMESTAMP_UTC)
+  public void setTimestampUtc_JsonNullable(JsonNullable<OffsetDateTime> timestampUtc) {
     this.timestampUtc = timestampUtc;
   }
 
+  public void setTimestampUtc(@jakarta.annotation.Nullable OffsetDateTime timestampUtc) {
+    this.timestampUtc = JsonNullable.<OffsetDateTime>of(timestampUtc);
+  }
 
-  public ConsumptionHeartbeatValueDto value(@javax.annotation.Nonnull BigDecimal value) {
+
+  public ConsumptionHeartbeatValueDto value(@jakarta.annotation.Nonnull BigDecimal value) {
     this.value = value;
     return this;
   }
@@ -167,17 +197,24 @@ public class ConsumptionHeartbeatValueDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public BigDecimal getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nonnull BigDecimal value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setValue(@jakarta.annotation.Nonnull BigDecimal value) {
     this.value = value;
   }
 
 
-
+  /**
+   * Return true if this ConsumptionHeartbeatValueDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -188,9 +225,9 @@ public class ConsumptionHeartbeatValueDto {
     }
     ConsumptionHeartbeatValueDto consumptionHeartbeatValueDto = (ConsumptionHeartbeatValueDto) o;
     return Objects.equals(this.limitationId, consumptionHeartbeatValueDto.limitationId) &&
-        Objects.equals(this.userId, consumptionHeartbeatValueDto.userId) &&
-        Objects.equals(this.externalId, consumptionHeartbeatValueDto.externalId) &&
-        Objects.equals(this.timestampUtc, consumptionHeartbeatValueDto.timestampUtc) &&
+        equalsNullable(this.userId, consumptionHeartbeatValueDto.userId) &&
+        equalsNullable(this.externalId, consumptionHeartbeatValueDto.externalId) &&
+        equalsNullable(this.timestampUtc, consumptionHeartbeatValueDto.timestampUtc) &&
         Objects.equals(this.value, consumptionHeartbeatValueDto.value);
   }
 
@@ -200,7 +237,7 @@ public class ConsumptionHeartbeatValueDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(limitationId, userId, externalId, timestampUtc, value);
+    return Objects.hash(limitationId, hashCodeNullable(userId), hashCodeNullable(externalId), hashCodeNullable(timestampUtc), value);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -234,104 +271,64 @@ public class ConsumptionHeartbeatValueDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("limitation_id", "user_id", "external_id", "timestamp_utc", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("limitation_id", "value"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ConsumptionHeartbeatValueDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ConsumptionHeartbeatValueDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionHeartbeatValueDto is not found in the empty JSON string", ConsumptionHeartbeatValueDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ConsumptionHeartbeatValueDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionHeartbeatValueDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : ConsumptionHeartbeatValueDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      if ((jsonObj.get("external_id") != null && !jsonObj.get("external_id").isJsonNull()) && !jsonObj.get("external_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `external_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("external_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ConsumptionHeartbeatValueDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ConsumptionHeartbeatValueDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ConsumptionHeartbeatValueDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ConsumptionHeartbeatValueDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ConsumptionHeartbeatValueDto>() {
-           @Override
-           public void write(JsonWriter out, ConsumptionHeartbeatValueDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ConsumptionHeartbeatValueDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ConsumptionHeartbeatValueDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ConsumptionHeartbeatValueDto
-   * @throws IOException if the JSON string is invalid with respect to ConsumptionHeartbeatValueDto
-   */
-  public static ConsumptionHeartbeatValueDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ConsumptionHeartbeatValueDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ConsumptionHeartbeatValueDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `external_id` to the URL query string
+    if (getExternalId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
+    }
+
+    // add `timestamp_utc` to the URL query string
+    if (getTimestampUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stimestamp_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTimestampUtc()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

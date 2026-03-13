@@ -9,6 +9,7 @@
 |------------ | ------------- | ------------- | -------------|
 |**limit** | **BigDecimal** |  |  [optional] |
 |**remaining** | **BigDecimal** |  |  [optional] |
+|**balance** | **BigDecimal** |  |  [optional] |
 |**lastResetDateUtc** | **OffsetDateTime** |  |  [optional] |
 |**assignmentId** | **UUID** |  |  [optional] |
 |**licenseId** | **UUID** |  |  [optional] |

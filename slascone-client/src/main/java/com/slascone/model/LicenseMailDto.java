@@ -13,81 +13,68 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseMailDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseMailDto.JSON_PROPERTY_LICENSE_KEY,
+  LicenseMailDto.JSON_PROPERTY_EMAIL_TEMPLATE_ID,
+  LicenseMailDto.JSON_PROPERTY_LANGUAGE,
+  LicenseMailDto.JSON_PROPERTY_PRODUCT_ID,
+  LicenseMailDto.JSON_PROPERTY_TO_EMAILS,
+  LicenseMailDto.JSON_PROPERTY_CC_EMAILS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseMailDto {
-  public static final String SERIALIZED_NAME_LICENSE_KEY = "licenseKey";
-  @SerializedName(SERIALIZED_NAME_LICENSE_KEY)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LICENSE_KEY = "licenseKey";
+  @jakarta.annotation.Nonnull
   private String licenseKey;
 
-  public static final String SERIALIZED_NAME_EMAIL_TEMPLATE_ID = "emailTemplateId";
-  @SerializedName(SERIALIZED_NAME_EMAIL_TEMPLATE_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_EMAIL_TEMPLATE_ID = "emailTemplateId";
+  @jakarta.annotation.Nonnull
   private UUID emailTemplateId;
 
-  public static final String SERIALIZED_NAME_LANGUAGE = "language";
-  @SerializedName(SERIALIZED_NAME_LANGUAGE)
-  @javax.annotation.Nullable
-  private String language;
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  private JsonNullable<String> language = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "productId";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PRODUCT_ID = "productId";
+  @jakarta.annotation.Nonnull
   private UUID productId;
 
-  public static final String SERIALIZED_NAME_TO_EMAILS = "toEmails";
-  @SerializedName(SERIALIZED_NAME_TO_EMAILS)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_TO_EMAILS = "toEmails";
+  @jakarta.annotation.Nonnull
   private List<String> toEmails = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_CC_EMAILS = "ccEmails";
-  @SerializedName(SERIALIZED_NAME_CC_EMAILS)
-  @javax.annotation.Nullable
-  private List<String> ccEmails;
+  public static final String JSON_PROPERTY_CC_EMAILS = "ccEmails";
+  private JsonNullable<List<String>> ccEmails = JsonNullable.<List<String>>undefined();
 
-  public LicenseMailDto() {
+  public LicenseMailDto() { 
   }
 
-  public LicenseMailDto licenseKey(@javax.annotation.Nonnull String licenseKey) {
+  public LicenseMailDto licenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
     return this;
   }
@@ -96,17 +83,22 @@ public class LicenseMailDto {
    * Get licenseKey
    * @return licenseKey
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getLicenseKey() {
     return licenseKey;
   }
 
-  public void setLicenseKey(@javax.annotation.Nonnull String licenseKey) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_KEY, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLicenseKey(@jakarta.annotation.Nonnull String licenseKey) {
     this.licenseKey = licenseKey;
   }
 
 
-  public LicenseMailDto emailTemplateId(@javax.annotation.Nonnull UUID emailTemplateId) {
+  public LicenseMailDto emailTemplateId(@jakarta.annotation.Nonnull UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
     return this;
   }
@@ -115,18 +107,23 @@ public class LicenseMailDto {
    * Get emailTemplateId
    * @return emailTemplateId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getEmailTemplateId() {
     return emailTemplateId;
   }
 
-  public void setEmailTemplateId(@javax.annotation.Nonnull UUID emailTemplateId) {
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL_TEMPLATE_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmailTemplateId(@jakarta.annotation.Nonnull UUID emailTemplateId) {
     this.emailTemplateId = emailTemplateId;
   }
 
 
-  public LicenseMailDto language(@javax.annotation.Nullable String language) {
-    this.language = language;
+  public LicenseMailDto language(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
     return this;
   }
 
@@ -134,17 +131,30 @@ public class LicenseMailDto {
    * Get language
    * @return language
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLanguage() {
-    return language;
+        return language.orElse(null);
   }
 
-  public void setLanguage(@javax.annotation.Nullable String language) {
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLanguage_JsonNullable() {
+    return language;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  public void setLanguage_JsonNullable(JsonNullable<String> language) {
     this.language = language;
   }
 
+  public void setLanguage(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
+  }
 
-  public LicenseMailDto productId(@javax.annotation.Nonnull UUID productId) {
+
+  public LicenseMailDto productId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -153,17 +163,22 @@ public class LicenseMailDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nonnull UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setProductId(@jakarta.annotation.Nonnull UUID productId) {
     this.productId = productId;
   }
 
 
-  public LicenseMailDto toEmails(@javax.annotation.Nonnull List<String> toEmails) {
+  public LicenseMailDto toEmails(@jakarta.annotation.Nonnull List<String> toEmails) {
     this.toEmails = toEmails;
     return this;
   }
@@ -180,26 +195,35 @@ public class LicenseMailDto {
    * Get toEmails
    * @return toEmails
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_TO_EMAILS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<String> getToEmails() {
     return toEmails;
   }
 
-  public void setToEmails(@javax.annotation.Nonnull List<String> toEmails) {
+
+  @JsonProperty(value = JSON_PROPERTY_TO_EMAILS, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setToEmails(@jakarta.annotation.Nonnull List<String> toEmails) {
     this.toEmails = toEmails;
   }
 
 
-  public LicenseMailDto ccEmails(@javax.annotation.Nullable List<String> ccEmails) {
-    this.ccEmails = ccEmails;
+  public LicenseMailDto ccEmails(@jakarta.annotation.Nullable List<String> ccEmails) {
+    this.ccEmails = JsonNullable.<List<String>>of(ccEmails);
     return this;
   }
 
   public LicenseMailDto addCcEmailsItem(String ccEmailsItem) {
-    if (this.ccEmails == null) {
-      this.ccEmails = new ArrayList<>();
+    if (this.ccEmails == null || !this.ccEmails.isPresent()) {
+      this.ccEmails = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.ccEmails.add(ccEmailsItem);
+    try {
+      this.ccEmails.get().add(ccEmailsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -207,17 +231,32 @@ public class LicenseMailDto {
    * Get ccEmails
    * @return ccEmails
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getCcEmails() {
-    return ccEmails;
+        return ccEmails.orElse(null);
   }
 
-  public void setCcEmails(@javax.annotation.Nullable List<String> ccEmails) {
+  @JsonProperty(value = JSON_PROPERTY_CC_EMAILS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getCcEmails_JsonNullable() {
+    return ccEmails;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CC_EMAILS)
+  public void setCcEmails_JsonNullable(JsonNullable<List<String>> ccEmails) {
     this.ccEmails = ccEmails;
   }
 
+  public void setCcEmails(@jakarta.annotation.Nullable List<String> ccEmails) {
+    this.ccEmails = JsonNullable.<List<String>>of(ccEmails);
+  }
 
 
+  /**
+   * Return true if this LicenseMailDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -229,10 +268,10 @@ public class LicenseMailDto {
     LicenseMailDto licenseMailDto = (LicenseMailDto) o;
     return Objects.equals(this.licenseKey, licenseMailDto.licenseKey) &&
         Objects.equals(this.emailTemplateId, licenseMailDto.emailTemplateId) &&
-        Objects.equals(this.language, licenseMailDto.language) &&
+        equalsNullable(this.language, licenseMailDto.language) &&
         Objects.equals(this.productId, licenseMailDto.productId) &&
         Objects.equals(this.toEmails, licenseMailDto.toEmails) &&
-        Objects.equals(this.ccEmails, licenseMailDto.ccEmails);
+        equalsNullable(this.ccEmails, licenseMailDto.ccEmails);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -241,7 +280,7 @@ public class LicenseMailDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(licenseKey, emailTemplateId, language, productId, toEmails, ccEmails);
+    return Objects.hash(licenseKey, emailTemplateId, hashCodeNullable(language), productId, toEmails, hashCodeNullable(ccEmails));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -276,117 +315,77 @@ public class LicenseMailDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("licenseKey", "emailTemplateId", "language", "productId", "toEmails", "ccEmails"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("licenseKey", "emailTemplateId", "productId", "toEmails"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseMailDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseMailDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseMailDto is not found in the empty JSON string", LicenseMailDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseMailDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseMailDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseMailDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("licenseKey").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `licenseKey` to be a primitive type in the JSON string but got `%s`", jsonObj.get("licenseKey").toString()));
-      }
-      if (!jsonObj.get("emailTemplateId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `emailTemplateId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("emailTemplateId").toString()));
-      }
-      if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
-      }
-      if (!jsonObj.get("productId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `productId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("productId").toString()));
-      }
-      // ensure the required json array is present
-      if (jsonObj.get("toEmails") == null) {
-        throw new IllegalArgumentException("Expected the field `linkedContent` to be an array in the JSON string but got `null`");
-      } else if (!jsonObj.get("toEmails").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `toEmails` to be an array in the JSON string but got `%s`", jsonObj.get("toEmails").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("ccEmails") != null && !jsonObj.get("ccEmails").isJsonNull() && !jsonObj.get("ccEmails").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `ccEmails` to be an array in the JSON string but got `%s`", jsonObj.get("ccEmails").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseMailDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseMailDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseMailDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseMailDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseMailDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseMailDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseMailDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseMailDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseMailDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseMailDto
-   */
-  public static LicenseMailDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseMailDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseMailDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `licenseKey` to the URL query string
+    if (getLicenseKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicenseKey%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseKey()))));
+    }
+
+    // add `emailTemplateId` to the URL query string
+    if (getEmailTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semailTemplateId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmailTemplateId()))));
+    }
+
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
+    }
+
+    // add `productId` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproductId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    // add `toEmails` to the URL query string
+    if (getToEmails() != null) {
+      for (int i = 0; i < getToEmails().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%stoEmails%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getToEmails().get(i)))));
+      }
+    }
+
+    // add `ccEmails` to the URL query string
+    if (getCcEmails() != null) {
+      for (int i = 0; i < getCcEmails().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sccEmails%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getCcEmails().get(i)))));
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

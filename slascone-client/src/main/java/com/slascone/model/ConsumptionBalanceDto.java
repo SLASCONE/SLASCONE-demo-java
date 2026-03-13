@@ -13,109 +13,98 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionBalanceMode;
 import com.slascone.model.ConsumptionResetPeriod;
 import com.slascone.model.LimitationDto;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ConsumptionBalanceDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ConsumptionBalanceDto.JSON_PROPERTY_LIMIT,
+  ConsumptionBalanceDto.JSON_PROPERTY_REMAINING,
+  ConsumptionBalanceDto.JSON_PROPERTY_BALANCE,
+  ConsumptionBalanceDto.JSON_PROPERTY_LAST_RESET_DATE_UTC,
+  ConsumptionBalanceDto.JSON_PROPERTY_ASSIGNMENT_ID,
+  ConsumptionBalanceDto.JSON_PROPERTY_LICENSE_ID,
+  ConsumptionBalanceDto.JSON_PROPERTY_LIMITATION_ID,
+  ConsumptionBalanceDto.JSON_PROPERTY_LIMITATION,
+  ConsumptionBalanceDto.JSON_PROPERTY_RESET_MODE,
+  ConsumptionBalanceDto.JSON_PROPERTY_RESET_PERIOD_DAYS,
+  ConsumptionBalanceDto.JSON_PROPERTY_CONSUMPTION_BALANCE_MODE,
+  ConsumptionBalanceDto.JSON_PROPERTY_NEXT_RESET_DATE_UTC
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ConsumptionBalanceDto {
-  public static final String SERIALIZED_NAME_LIMIT = "limit";
-  @SerializedName(SERIALIZED_NAME_LIMIT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LIMIT = "limit";
+  @jakarta.annotation.Nullable
   private BigDecimal limit;
 
-  public static final String SERIALIZED_NAME_REMAINING = "remaining";
-  @SerializedName(SERIALIZED_NAME_REMAINING)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_REMAINING = "remaining";
+  @jakarta.annotation.Nullable
   private BigDecimal remaining;
 
-  public static final String SERIALIZED_NAME_LAST_RESET_DATE_UTC = "last_reset_date_utc";
-  @SerializedName(SERIALIZED_NAME_LAST_RESET_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_BALANCE = "balance";
+  @jakarta.annotation.Nullable
+  private BigDecimal balance;
+
+  public static final String JSON_PROPERTY_LAST_RESET_DATE_UTC = "last_reset_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime lastResetDateUtc;
 
-  public static final String SERIALIZED_NAME_ASSIGNMENT_ID = "assignment_id";
-  @SerializedName(SERIALIZED_NAME_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
-  private UUID assignmentId;
+  public static final String JSON_PROPERTY_ASSIGNMENT_ID = "assignment_id";
+  private JsonNullable<UUID> assignmentId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nullable
-  private UUID licenseId;
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  private JsonNullable<UUID> licenseId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nullable
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_LIMITATION = "limitation";
-  @SerializedName(SERIALIZED_NAME_LIMITATION)
-  @javax.annotation.Nullable
-  private LimitationDto limitation;
+  public static final String JSON_PROPERTY_LIMITATION = "limitation";
+  private JsonNullable<LimitationDto> limitation = JsonNullable.<LimitationDto>undefined();
 
-  public static final String SERIALIZED_NAME_RESET_MODE = "reset_mode";
-  @SerializedName(SERIALIZED_NAME_RESET_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_RESET_MODE = "reset_mode";
+  @jakarta.annotation.Nullable
   private ConsumptionResetPeriod resetMode;
 
-  public static final String SERIALIZED_NAME_RESET_PERIOD_DAYS = "reset_period_days";
-  @SerializedName(SERIALIZED_NAME_RESET_PERIOD_DAYS)
-  @javax.annotation.Nullable
-  private Integer resetPeriodDays;
+  public static final String JSON_PROPERTY_RESET_PERIOD_DAYS = "reset_period_days";
+  private JsonNullable<Integer> resetPeriodDays = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_BALANCE_MODE = "consumption_balance_mode";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_BALANCE_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CONSUMPTION_BALANCE_MODE = "consumption_balance_mode";
+  @jakarta.annotation.Nullable
   private ConsumptionBalanceMode consumptionBalanceMode;
 
-  public static final String SERIALIZED_NAME_NEXT_RESET_DATE_UTC = "next_reset_date_utc";
-  @SerializedName(SERIALIZED_NAME_NEXT_RESET_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime nextResetDateUtc;
+  public static final String JSON_PROPERTY_NEXT_RESET_DATE_UTC = "next_reset_date_utc";
+  private JsonNullable<OffsetDateTime> nextResetDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public ConsumptionBalanceDto() {
+  public ConsumptionBalanceDto() { 
   }
 
-  public ConsumptionBalanceDto limit(@javax.annotation.Nullable BigDecimal limit) {
+  public ConsumptionBalanceDto limit(@jakarta.annotation.Nullable BigDecimal limit) {
     this.limit = limit;
     return this;
   }
@@ -124,17 +113,22 @@ public class ConsumptionBalanceDto {
    * Get limit
    * @return limit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public BigDecimal getLimit() {
     return limit;
   }
 
-  public void setLimit(@javax.annotation.Nullable BigDecimal limit) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLimit(@jakarta.annotation.Nullable BigDecimal limit) {
     this.limit = limit;
   }
 
 
-  public ConsumptionBalanceDto remaining(@javax.annotation.Nullable BigDecimal remaining) {
+  public ConsumptionBalanceDto remaining(@jakarta.annotation.Nullable BigDecimal remaining) {
     this.remaining = remaining;
     return this;
   }
@@ -143,17 +137,46 @@ public class ConsumptionBalanceDto {
    * Get remaining
    * @return remaining
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public BigDecimal getRemaining() {
     return remaining;
   }
 
-  public void setRemaining(@javax.annotation.Nullable BigDecimal remaining) {
+
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setRemaining(@jakarta.annotation.Nullable BigDecimal remaining) {
     this.remaining = remaining;
   }
 
 
-  public ConsumptionBalanceDto lastResetDateUtc(@javax.annotation.Nullable OffsetDateTime lastResetDateUtc) {
+  public ConsumptionBalanceDto balance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = balance;
+    return this;
+  }
+
+  /**
+   * Get balance
+   * @return balance
+   */
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getBalance() {
+    return balance;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = balance;
+  }
+
+
+  public ConsumptionBalanceDto lastResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime lastResetDateUtc) {
     this.lastResetDateUtc = lastResetDateUtc;
     return this;
   }
@@ -162,18 +185,23 @@ public class ConsumptionBalanceDto {
    * Get lastResetDateUtc
    * @return lastResetDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LAST_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getLastResetDateUtc() {
     return lastResetDateUtc;
   }
 
-  public void setLastResetDateUtc(@javax.annotation.Nullable OffsetDateTime lastResetDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_LAST_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLastResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime lastResetDateUtc) {
     this.lastResetDateUtc = lastResetDateUtc;
   }
 
 
-  public ConsumptionBalanceDto assignmentId(@javax.annotation.Nullable UUID assignmentId) {
-    this.assignmentId = assignmentId;
+  public ConsumptionBalanceDto assignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
+    this.assignmentId = JsonNullable.<UUID>of(assignmentId);
     return this;
   }
 
@@ -181,18 +209,31 @@ public class ConsumptionBalanceDto {
    * Get assignmentId
    * @return assignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getAssignmentId() {
-    return assignmentId;
+        return assignmentId.orElse(null);
   }
 
-  public void setAssignmentId(@javax.annotation.Nullable UUID assignmentId) {
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getAssignmentId_JsonNullable() {
+    return assignmentId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ASSIGNMENT_ID)
+  public void setAssignmentId_JsonNullable(JsonNullable<UUID> assignmentId) {
     this.assignmentId = assignmentId;
   }
 
+  public void setAssignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
+    this.assignmentId = JsonNullable.<UUID>of(assignmentId);
+  }
 
-  public ConsumptionBalanceDto licenseId(@javax.annotation.Nullable UUID licenseId) {
-    this.licenseId = licenseId;
+
+  public ConsumptionBalanceDto licenseId(@jakarta.annotation.Nullable UUID licenseId) {
+    this.licenseId = JsonNullable.<UUID>of(licenseId);
     return this;
   }
 
@@ -200,17 +241,30 @@ public class ConsumptionBalanceDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getLicenseId() {
-    return licenseId;
+        return licenseId.orElse(null);
   }
 
-  public void setLicenseId(@javax.annotation.Nullable UUID licenseId) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getLicenseId_JsonNullable() {
+    return licenseId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_ID)
+  public void setLicenseId_JsonNullable(JsonNullable<UUID> licenseId) {
     this.licenseId = licenseId;
   }
 
+  public void setLicenseId(@jakarta.annotation.Nullable UUID licenseId) {
+    this.licenseId = JsonNullable.<UUID>of(licenseId);
+  }
 
-  public ConsumptionBalanceDto limitationId(@javax.annotation.Nullable UUID limitationId) {
+
+  public ConsumptionBalanceDto limitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -219,18 +273,23 @@ public class ConsumptionBalanceDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nullable UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLimitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public ConsumptionBalanceDto limitation(@javax.annotation.Nullable LimitationDto limitation) {
-    this.limitation = limitation;
+  public ConsumptionBalanceDto limitation(@jakarta.annotation.Nullable LimitationDto limitation) {
+    this.limitation = JsonNullable.<LimitationDto>of(limitation);
     return this;
   }
 
@@ -238,17 +297,30 @@ public class ConsumptionBalanceDto {
    * Get limitation
    * @return limitation
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LimitationDto getLimitation() {
-    return limitation;
+        return limitation.orElse(null);
   }
 
-  public void setLimitation(@javax.annotation.Nullable LimitationDto limitation) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LimitationDto> getLimitation_JsonNullable() {
+    return limitation;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATION)
+  public void setLimitation_JsonNullable(JsonNullable<LimitationDto> limitation) {
     this.limitation = limitation;
   }
 
+  public void setLimitation(@jakarta.annotation.Nullable LimitationDto limitation) {
+    this.limitation = JsonNullable.<LimitationDto>of(limitation);
+  }
 
-  public ConsumptionBalanceDto resetMode(@javax.annotation.Nullable ConsumptionResetPeriod resetMode) {
+
+  public ConsumptionBalanceDto resetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod resetMode) {
     this.resetMode = resetMode;
     return this;
   }
@@ -257,18 +329,23 @@ public class ConsumptionBalanceDto {
    * Get resetMode
    * @return resetMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ConsumptionResetPeriod getResetMode() {
     return resetMode;
   }
 
-  public void setResetMode(@javax.annotation.Nullable ConsumptionResetPeriod resetMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod resetMode) {
     this.resetMode = resetMode;
   }
 
 
-  public ConsumptionBalanceDto resetPeriodDays(@javax.annotation.Nullable Integer resetPeriodDays) {
-    this.resetPeriodDays = resetPeriodDays;
+  public ConsumptionBalanceDto resetPeriodDays(@jakarta.annotation.Nullable Integer resetPeriodDays) {
+    this.resetPeriodDays = JsonNullable.<Integer>of(resetPeriodDays);
     return this;
   }
 
@@ -276,17 +353,30 @@ public class ConsumptionBalanceDto {
    * Get resetPeriodDays
    * @return resetPeriodDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getResetPeriodDays() {
-    return resetPeriodDays;
+        return resetPeriodDays.orElse(null);
   }
 
-  public void setResetPeriodDays(@javax.annotation.Nullable Integer resetPeriodDays) {
+  @JsonProperty(value = JSON_PROPERTY_RESET_PERIOD_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getResetPeriodDays_JsonNullable() {
+    return resetPeriodDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESET_PERIOD_DAYS)
+  public void setResetPeriodDays_JsonNullable(JsonNullable<Integer> resetPeriodDays) {
     this.resetPeriodDays = resetPeriodDays;
   }
 
+  public void setResetPeriodDays(@jakarta.annotation.Nullable Integer resetPeriodDays) {
+    this.resetPeriodDays = JsonNullable.<Integer>of(resetPeriodDays);
+  }
 
-  public ConsumptionBalanceDto consumptionBalanceMode(@javax.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
+
+  public ConsumptionBalanceDto consumptionBalanceMode(@jakarta.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
     this.consumptionBalanceMode = consumptionBalanceMode;
     return this;
   }
@@ -295,18 +385,23 @@ public class ConsumptionBalanceDto {
    * Get consumptionBalanceMode
    * @return consumptionBalanceMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_BALANCE_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ConsumptionBalanceMode getConsumptionBalanceMode() {
     return consumptionBalanceMode;
   }
 
-  public void setConsumptionBalanceMode(@javax.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_BALANCE_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConsumptionBalanceMode(@jakarta.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
     this.consumptionBalanceMode = consumptionBalanceMode;
   }
 
 
-  public ConsumptionBalanceDto nextResetDateUtc(@javax.annotation.Nullable OffsetDateTime nextResetDateUtc) {
-    this.nextResetDateUtc = nextResetDateUtc;
+  public ConsumptionBalanceDto nextResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+    this.nextResetDateUtc = JsonNullable.<OffsetDateTime>of(nextResetDateUtc);
     return this;
   }
 
@@ -314,17 +409,32 @@ public class ConsumptionBalanceDto {
    * Get nextResetDateUtc
    * @return nextResetDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getNextResetDateUtc() {
-    return nextResetDateUtc;
+        return nextResetDateUtc.orElse(null);
   }
 
-  public void setNextResetDateUtc(@javax.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_NEXT_RESET_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getNextResetDateUtc_JsonNullable() {
+    return nextResetDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NEXT_RESET_DATE_UTC)
+  public void setNextResetDateUtc_JsonNullable(JsonNullable<OffsetDateTime> nextResetDateUtc) {
     this.nextResetDateUtc = nextResetDateUtc;
   }
 
+  public void setNextResetDateUtc(@jakarta.annotation.Nullable OffsetDateTime nextResetDateUtc) {
+    this.nextResetDateUtc = JsonNullable.<OffsetDateTime>of(nextResetDateUtc);
+  }
 
 
+  /**
+   * Return true if this ConsumptionBalanceDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -336,15 +446,16 @@ public class ConsumptionBalanceDto {
     ConsumptionBalanceDto consumptionBalanceDto = (ConsumptionBalanceDto) o;
     return Objects.equals(this.limit, consumptionBalanceDto.limit) &&
         Objects.equals(this.remaining, consumptionBalanceDto.remaining) &&
+        Objects.equals(this.balance, consumptionBalanceDto.balance) &&
         Objects.equals(this.lastResetDateUtc, consumptionBalanceDto.lastResetDateUtc) &&
-        Objects.equals(this.assignmentId, consumptionBalanceDto.assignmentId) &&
-        Objects.equals(this.licenseId, consumptionBalanceDto.licenseId) &&
+        equalsNullable(this.assignmentId, consumptionBalanceDto.assignmentId) &&
+        equalsNullable(this.licenseId, consumptionBalanceDto.licenseId) &&
         Objects.equals(this.limitationId, consumptionBalanceDto.limitationId) &&
-        Objects.equals(this.limitation, consumptionBalanceDto.limitation) &&
+        equalsNullable(this.limitation, consumptionBalanceDto.limitation) &&
         Objects.equals(this.resetMode, consumptionBalanceDto.resetMode) &&
-        Objects.equals(this.resetPeriodDays, consumptionBalanceDto.resetPeriodDays) &&
+        equalsNullable(this.resetPeriodDays, consumptionBalanceDto.resetPeriodDays) &&
         Objects.equals(this.consumptionBalanceMode, consumptionBalanceDto.consumptionBalanceMode) &&
-        Objects.equals(this.nextResetDateUtc, consumptionBalanceDto.nextResetDateUtc);
+        equalsNullable(this.nextResetDateUtc, consumptionBalanceDto.nextResetDateUtc);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -353,7 +464,7 @@ public class ConsumptionBalanceDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(limit, remaining, lastResetDateUtc, assignmentId, licenseId, limitationId, limitation, resetMode, resetPeriodDays, consumptionBalanceMode, nextResetDateUtc);
+    return Objects.hash(limit, remaining, balance, lastResetDateUtc, hashCodeNullable(assignmentId), hashCodeNullable(licenseId), limitationId, hashCodeNullable(limitation), resetMode, hashCodeNullable(resetPeriodDays), consumptionBalanceMode, hashCodeNullable(nextResetDateUtc));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -369,6 +480,7 @@ public class ConsumptionBalanceDto {
     sb.append("class ConsumptionBalanceDto {\n");
     sb.append("    limit: ").append(toIndentedString(limit)).append("\n");
     sb.append("    remaining: ").append(toIndentedString(remaining)).append("\n");
+    sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    lastResetDateUtc: ").append(toIndentedString(lastResetDateUtc)).append("\n");
     sb.append("    assignmentId: ").append(toIndentedString(assignmentId)).append("\n");
     sb.append("    licenseId: ").append(toIndentedString(licenseId)).append("\n");
@@ -393,109 +505,99 @@ public class ConsumptionBalanceDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("limit", "remaining", "last_reset_date_utc", "assignment_id", "license_id", "limitation_id", "limitation", "reset_mode", "reset_period_days", "consumption_balance_mode", "next_reset_date_utc"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ConsumptionBalanceDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ConsumptionBalanceDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionBalanceDto is not found in the empty JSON string", ConsumptionBalanceDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ConsumptionBalanceDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionBalanceDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("assignment_id") != null && !jsonObj.get("assignment_id").isJsonNull()) && !jsonObj.get("assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("assignment_id").toString()));
-      }
-      if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("limitation_id") != null && !jsonObj.get("limitation_id").isJsonNull()) && !jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-      // validate the optional field `limitation`
-      if (jsonObj.get("limitation") != null && !jsonObj.get("limitation").isJsonNull()) {
-        LimitationDto.validateJsonElement(jsonObj.get("limitation"));
-      }
-      // validate the optional field `reset_mode`
-      if (jsonObj.get("reset_mode") != null && !jsonObj.get("reset_mode").isJsonNull()) {
-        ConsumptionResetPeriod.validateJsonElement(jsonObj.get("reset_mode"));
-      }
-      // validate the optional field `consumption_balance_mode`
-      if (jsonObj.get("consumption_balance_mode") != null && !jsonObj.get("consumption_balance_mode").isJsonNull()) {
-        ConsumptionBalanceMode.validateJsonElement(jsonObj.get("consumption_balance_mode"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ConsumptionBalanceDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ConsumptionBalanceDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ConsumptionBalanceDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ConsumptionBalanceDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ConsumptionBalanceDto>() {
-           @Override
-           public void write(JsonWriter out, ConsumptionBalanceDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ConsumptionBalanceDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ConsumptionBalanceDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ConsumptionBalanceDto
-   * @throws IOException if the JSON string is invalid with respect to ConsumptionBalanceDto
-   */
-  public static ConsumptionBalanceDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ConsumptionBalanceDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ConsumptionBalanceDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `limit` to the URL query string
+    if (getLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimit()))));
+    }
+
+    // add `remaining` to the URL query string
+    if (getRemaining() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sremaining%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRemaining()))));
+    }
+
+    // add `balance` to the URL query string
+    if (getBalance() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalance%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalance()))));
+    }
+
+    // add `last_reset_date_utc` to the URL query string
+    if (getLastResetDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_reset_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastResetDateUtc()))));
+    }
+
+    // add `assignment_id` to the URL query string
+    if (getAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sassignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAssignmentId()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `limitation` to the URL query string
+    if (getLimitation() != null) {
+      joiner.add(getLimitation().toUrlQueryString(prefix + "limitation" + suffix));
+    }
+
+    // add `reset_mode` to the URL query string
+    if (getResetMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sreset_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResetMode()))));
+    }
+
+    // add `reset_period_days` to the URL query string
+    if (getResetPeriodDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sreset_period_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResetPeriodDays()))));
+    }
+
+    // add `consumption_balance_mode` to the URL query string
+    if (getConsumptionBalanceMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_balance_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionBalanceMode()))));
+    }
+
+    // add `next_reset_date_utc` to the URL query string
+    if (getNextResetDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%snext_reset_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getNextResetDateUtc()))));
+    }
+
+    return joiner.toString();
   }
 }
 

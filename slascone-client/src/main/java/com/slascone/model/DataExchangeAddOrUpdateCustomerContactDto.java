@@ -13,88 +13,74 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * DataExchangeAddOrUpdateCustomerContactDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_CUSTOMER_NUMBER,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_CONTACT_NAME,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_CONTACT_SURNAME,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_EMAIL,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_PHONE,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_MOBIL,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_LANGUAGE,
+  DataExchangeAddOrUpdateCustomerContactDto.JSON_PROPERTY_IS_CUSTOMER_PORTAL_USER
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class DataExchangeAddOrUpdateCustomerContactDto {
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER = "customer_number";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER = "customer_number";
+  @jakarta.annotation.Nonnull
   private String customerNumber;
 
-  public static final String SERIALIZED_NAME_CONTACT_NAME = "contact_name";
-  @SerializedName(SERIALIZED_NAME_CONTACT_NAME)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CONTACT_NAME = "contact_name";
+  @jakarta.annotation.Nonnull
   private String contactName;
 
-  public static final String SERIALIZED_NAME_CONTACT_SURNAME = "contact_surname";
-  @SerializedName(SERIALIZED_NAME_CONTACT_SURNAME)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CONTACT_SURNAME = "contact_surname";
+  @jakarta.annotation.Nonnull
   private String contactSurname;
 
-  public static final String SERIALIZED_NAME_EMAIL = "email";
-  @SerializedName(SERIALIZED_NAME_EMAIL)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_EMAIL = "email";
+  @jakarta.annotation.Nonnull
   private String email;
 
-  public static final String SERIALIZED_NAME_PHONE = "phone";
-  @SerializedName(SERIALIZED_NAME_PHONE)
-  @javax.annotation.Nullable
-  private String phone;
+  public static final String JSON_PROPERTY_PHONE = "phone";
+  private JsonNullable<String> phone = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_MOBIL = "mobil";
-  @SerializedName(SERIALIZED_NAME_MOBIL)
-  @javax.annotation.Nullable
-  private String mobil;
+  public static final String JSON_PROPERTY_MOBIL = "mobil";
+  private JsonNullable<String> mobil = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LANGUAGE = "language";
-  @SerializedName(SERIALIZED_NAME_LANGUAGE)
-  @javax.annotation.Nullable
-  private String language;
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  private JsonNullable<String> language = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_USER = "is_customer_portal_user";
-  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_USER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_CUSTOMER_PORTAL_USER = "is_customer_portal_user";
+  @jakarta.annotation.Nullable
   private Boolean isCustomerPortalUser;
 
-  public DataExchangeAddOrUpdateCustomerContactDto() {
+  public DataExchangeAddOrUpdateCustomerContactDto() { 
   }
 
-  public DataExchangeAddOrUpdateCustomerContactDto customerNumber(@javax.annotation.Nonnull String customerNumber) {
+  public DataExchangeAddOrUpdateCustomerContactDto customerNumber(@jakarta.annotation.Nonnull String customerNumber) {
     this.customerNumber = customerNumber;
     return this;
   }
@@ -103,17 +89,22 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get customerNumber
    * @return customerNumber
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getCustomerNumber() {
     return customerNumber;
   }
 
-  public void setCustomerNumber(@javax.annotation.Nonnull String customerNumber) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setCustomerNumber(@jakarta.annotation.Nonnull String customerNumber) {
     this.customerNumber = customerNumber;
   }
 
 
-  public DataExchangeAddOrUpdateCustomerContactDto contactName(@javax.annotation.Nonnull String contactName) {
+  public DataExchangeAddOrUpdateCustomerContactDto contactName(@jakarta.annotation.Nonnull String contactName) {
     this.contactName = contactName;
     return this;
   }
@@ -122,17 +113,22 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get contactName
    * @return contactName
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CONTACT_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getContactName() {
     return contactName;
   }
 
-  public void setContactName(@javax.annotation.Nonnull String contactName) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONTACT_NAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setContactName(@jakarta.annotation.Nonnull String contactName) {
     this.contactName = contactName;
   }
 
 
-  public DataExchangeAddOrUpdateCustomerContactDto contactSurname(@javax.annotation.Nonnull String contactSurname) {
+  public DataExchangeAddOrUpdateCustomerContactDto contactSurname(@jakarta.annotation.Nonnull String contactSurname) {
     this.contactSurname = contactSurname;
     return this;
   }
@@ -141,17 +137,22 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get contactSurname
    * @return contactSurname
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CONTACT_SURNAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getContactSurname() {
     return contactSurname;
   }
 
-  public void setContactSurname(@javax.annotation.Nonnull String contactSurname) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONTACT_SURNAME, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setContactSurname(@jakarta.annotation.Nonnull String contactSurname) {
     this.contactSurname = contactSurname;
   }
 
 
-  public DataExchangeAddOrUpdateCustomerContactDto email(@javax.annotation.Nonnull String email) {
+  public DataExchangeAddOrUpdateCustomerContactDto email(@jakarta.annotation.Nonnull String email) {
     this.email = email;
     return this;
   }
@@ -160,18 +161,23 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get email
    * @return email
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getEmail() {
     return email;
   }
 
-  public void setEmail(@javax.annotation.Nonnull String email) {
+
+  @JsonProperty(value = JSON_PROPERTY_EMAIL, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setEmail(@jakarta.annotation.Nonnull String email) {
     this.email = email;
   }
 
 
-  public DataExchangeAddOrUpdateCustomerContactDto phone(@javax.annotation.Nullable String phone) {
-    this.phone = phone;
+  public DataExchangeAddOrUpdateCustomerContactDto phone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
     return this;
   }
 
@@ -179,18 +185,31 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get phone
    * @return phone
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getPhone() {
-    return phone;
+        return phone.orElse(null);
   }
 
-  public void setPhone(@javax.annotation.Nullable String phone) {
+  @JsonProperty(value = JSON_PROPERTY_PHONE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getPhone_JsonNullable() {
+    return phone;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PHONE)
+  public void setPhone_JsonNullable(JsonNullable<String> phone) {
     this.phone = phone;
   }
 
+  public void setPhone(@jakarta.annotation.Nullable String phone) {
+    this.phone = JsonNullable.<String>of(phone);
+  }
 
-  public DataExchangeAddOrUpdateCustomerContactDto mobil(@javax.annotation.Nullable String mobil) {
-    this.mobil = mobil;
+
+  public DataExchangeAddOrUpdateCustomerContactDto mobil(@jakarta.annotation.Nullable String mobil) {
+    this.mobil = JsonNullable.<String>of(mobil);
     return this;
   }
 
@@ -198,18 +217,31 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get mobil
    * @return mobil
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getMobil() {
-    return mobil;
+        return mobil.orElse(null);
   }
 
-  public void setMobil(@javax.annotation.Nullable String mobil) {
+  @JsonProperty(value = JSON_PROPERTY_MOBIL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getMobil_JsonNullable() {
+    return mobil;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MOBIL)
+  public void setMobil_JsonNullable(JsonNullable<String> mobil) {
     this.mobil = mobil;
   }
 
+  public void setMobil(@jakarta.annotation.Nullable String mobil) {
+    this.mobil = JsonNullable.<String>of(mobil);
+  }
 
-  public DataExchangeAddOrUpdateCustomerContactDto language(@javax.annotation.Nullable String language) {
-    this.language = language;
+
+  public DataExchangeAddOrUpdateCustomerContactDto language(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
     return this;
   }
 
@@ -217,17 +249,30 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get language
    * @return language
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLanguage() {
-    return language;
+        return language.orElse(null);
   }
 
-  public void setLanguage(@javax.annotation.Nullable String language) {
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLanguage_JsonNullable() {
+    return language;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  public void setLanguage_JsonNullable(JsonNullable<String> language) {
     this.language = language;
   }
 
+  public void setLanguage(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
+  }
 
-  public DataExchangeAddOrUpdateCustomerContactDto isCustomerPortalUser(@javax.annotation.Nullable Boolean isCustomerPortalUser) {
+
+  public DataExchangeAddOrUpdateCustomerContactDto isCustomerPortalUser(@jakarta.annotation.Nullable Boolean isCustomerPortalUser) {
     this.isCustomerPortalUser = isCustomerPortalUser;
     return this;
   }
@@ -236,17 +281,24 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
    * Get isCustomerPortalUser
    * @return isCustomerPortalUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsCustomerPortalUser() {
     return isCustomerPortalUser;
   }
 
-  public void setIsCustomerPortalUser(@javax.annotation.Nullable Boolean isCustomerPortalUser) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsCustomerPortalUser(@jakarta.annotation.Nullable Boolean isCustomerPortalUser) {
     this.isCustomerPortalUser = isCustomerPortalUser;
   }
 
 
-
+  /**
+   * Return true if this DataExchangeAddOrUpdateCustomerContactDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -260,9 +312,9 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
         Objects.equals(this.contactName, dataExchangeAddOrUpdateCustomerContactDto.contactName) &&
         Objects.equals(this.contactSurname, dataExchangeAddOrUpdateCustomerContactDto.contactSurname) &&
         Objects.equals(this.email, dataExchangeAddOrUpdateCustomerContactDto.email) &&
-        Objects.equals(this.phone, dataExchangeAddOrUpdateCustomerContactDto.phone) &&
-        Objects.equals(this.mobil, dataExchangeAddOrUpdateCustomerContactDto.mobil) &&
-        Objects.equals(this.language, dataExchangeAddOrUpdateCustomerContactDto.language) &&
+        equalsNullable(this.phone, dataExchangeAddOrUpdateCustomerContactDto.phone) &&
+        equalsNullable(this.mobil, dataExchangeAddOrUpdateCustomerContactDto.mobil) &&
+        equalsNullable(this.language, dataExchangeAddOrUpdateCustomerContactDto.language) &&
         Objects.equals(this.isCustomerPortalUser, dataExchangeAddOrUpdateCustomerContactDto.isCustomerPortalUser);
   }
 
@@ -272,7 +324,7 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(customerNumber, contactName, contactSurname, email, phone, mobil, language, isCustomerPortalUser);
+    return Objects.hash(customerNumber, contactName, contactSurname, email, hashCodeNullable(phone), hashCodeNullable(mobil), hashCodeNullable(language), isCustomerPortalUser);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -309,116 +361,79 @@ public class DataExchangeAddOrUpdateCustomerContactDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("customer_number", "contact_name", "contact_surname", "email", "phone", "mobil", "language", "is_customer_portal_user"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("customer_number", "contact_name", "contact_surname", "email"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to DataExchangeAddOrUpdateCustomerContactDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!DataExchangeAddOrUpdateCustomerContactDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in DataExchangeAddOrUpdateCustomerContactDto is not found in the empty JSON string", DataExchangeAddOrUpdateCustomerContactDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!DataExchangeAddOrUpdateCustomerContactDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DataExchangeAddOrUpdateCustomerContactDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : DataExchangeAddOrUpdateCustomerContactDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("customer_number").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_number").toString()));
-      }
-      if (!jsonObj.get("contact_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `contact_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("contact_name").toString()));
-      }
-      if (!jsonObj.get("contact_surname").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `contact_surname` to be a primitive type in the JSON string but got `%s`", jsonObj.get("contact_surname").toString()));
-      }
-      if (!jsonObj.get("email").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `email` to be a primitive type in the JSON string but got `%s`", jsonObj.get("email").toString()));
-      }
-      if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
-      }
-      if ((jsonObj.get("mobil") != null && !jsonObj.get("mobil").isJsonNull()) && !jsonObj.get("mobil").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `mobil` to be a primitive type in the JSON string but got `%s`", jsonObj.get("mobil").toString()));
-      }
-      if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!DataExchangeAddOrUpdateCustomerContactDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'DataExchangeAddOrUpdateCustomerContactDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<DataExchangeAddOrUpdateCustomerContactDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(DataExchangeAddOrUpdateCustomerContactDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<DataExchangeAddOrUpdateCustomerContactDto>() {
-           @Override
-           public void write(JsonWriter out, DataExchangeAddOrUpdateCustomerContactDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public DataExchangeAddOrUpdateCustomerContactDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of DataExchangeAddOrUpdateCustomerContactDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of DataExchangeAddOrUpdateCustomerContactDto
-   * @throws IOException if the JSON string is invalid with respect to DataExchangeAddOrUpdateCustomerContactDto
-   */
-  public static DataExchangeAddOrUpdateCustomerContactDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, DataExchangeAddOrUpdateCustomerContactDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of DataExchangeAddOrUpdateCustomerContactDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `customer_number` to the URL query string
+    if (getCustomerNumber() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumber()))));
+    }
+
+    // add `contact_name` to the URL query string
+    if (getContactName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scontact_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getContactName()))));
+    }
+
+    // add `contact_surname` to the URL query string
+    if (getContactSurname() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scontact_surname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getContactSurname()))));
+    }
+
+    // add `email` to the URL query string
+    if (getEmail() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%semail%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEmail()))));
+    }
+
+    // add `phone` to the URL query string
+    if (getPhone() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sphone%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPhone()))));
+    }
+
+    // add `mobil` to the URL query string
+    if (getMobil() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smobil%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMobil()))));
+    }
+
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
+    }
+
+    // add `is_customer_portal_user` to the URL query string
+    if (getIsCustomerPortalUser() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_customer_portal_user%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsCustomerPortalUser()))));
+    }
+
+    return joiner.toString();
   }
 }
 

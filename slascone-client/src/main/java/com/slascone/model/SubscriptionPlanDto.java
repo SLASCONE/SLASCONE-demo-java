@@ -13,71 +13,58 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ExpirationMode;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * SubscriptionPlanDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  SubscriptionPlanDto.JSON_PROPERTY_EXPIRATION_DATE_UTC,
+  SubscriptionPlanDto.JSON_PROPERTY_EXPIRATION_MODE,
+  SubscriptionPlanDto.JSON_PROPERTY_VALID_DAYS_COUNT,
+  SubscriptionPlanDto.JSON_PROPERTY_TRIAL_DAYS_COUNT
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class SubscriptionPlanDto {
-  public static final String SERIALIZED_NAME_EXPIRATION_DATE_UTC = "expiration_date_utc";
-  @SerializedName(SERIALIZED_NAME_EXPIRATION_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime expirationDateUtc;
+  public static final String JSON_PROPERTY_EXPIRATION_DATE_UTC = "expiration_date_utc";
+  private JsonNullable<OffsetDateTime> expirationDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_EXPIRATION_MODE = "expiration_mode";
-  @SerializedName(SERIALIZED_NAME_EXPIRATION_MODE)
-  @javax.annotation.Nullable
-  private ExpirationMode expirationMode;
+  public static final String JSON_PROPERTY_EXPIRATION_MODE = "expiration_mode";
+  private JsonNullable<ExpirationMode> expirationMode = JsonNullable.<ExpirationMode>undefined();
 
-  public static final String SERIALIZED_NAME_VALID_DAYS_COUNT = "valid_days_count";
-  @SerializedName(SERIALIZED_NAME_VALID_DAYS_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALID_DAYS_COUNT = "valid_days_count";
+  @jakarta.annotation.Nullable
   private Integer validDaysCount;
 
-  public static final String SERIALIZED_NAME_TRIAL_DAYS_COUNT = "trial_days_count";
-  @SerializedName(SERIALIZED_NAME_TRIAL_DAYS_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TRIAL_DAYS_COUNT = "trial_days_count";
+  @jakarta.annotation.Nullable
   private Integer trialDaysCount;
 
-  public SubscriptionPlanDto() {
+  public SubscriptionPlanDto() { 
   }
 
-  public SubscriptionPlanDto expirationDateUtc(@javax.annotation.Nullable OffsetDateTime expirationDateUtc) {
-    this.expirationDateUtc = expirationDateUtc;
+  public SubscriptionPlanDto expirationDateUtc(@jakarta.annotation.Nullable OffsetDateTime expirationDateUtc) {
+    this.expirationDateUtc = JsonNullable.<OffsetDateTime>of(expirationDateUtc);
     return this;
   }
 
@@ -85,18 +72,31 @@ public class SubscriptionPlanDto {
    * Get expirationDateUtc
    * @return expirationDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getExpirationDateUtc() {
-    return expirationDateUtc;
+        return expirationDateUtc.orElse(null);
   }
 
-  public void setExpirationDateUtc(@javax.annotation.Nullable OffsetDateTime expirationDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getExpirationDateUtc_JsonNullable() {
+    return expirationDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXPIRATION_DATE_UTC)
+  public void setExpirationDateUtc_JsonNullable(JsonNullable<OffsetDateTime> expirationDateUtc) {
     this.expirationDateUtc = expirationDateUtc;
   }
 
+  public void setExpirationDateUtc(@jakarta.annotation.Nullable OffsetDateTime expirationDateUtc) {
+    this.expirationDateUtc = JsonNullable.<OffsetDateTime>of(expirationDateUtc);
+  }
 
-  public SubscriptionPlanDto expirationMode(@javax.annotation.Nullable ExpirationMode expirationMode) {
-    this.expirationMode = expirationMode;
+
+  public SubscriptionPlanDto expirationMode(@jakarta.annotation.Nullable ExpirationMode expirationMode) {
+    this.expirationMode = JsonNullable.<ExpirationMode>of(expirationMode);
     return this;
   }
 
@@ -104,17 +104,30 @@ public class SubscriptionPlanDto {
    * Get expirationMode
    * @return expirationMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public ExpirationMode getExpirationMode() {
-    return expirationMode;
+        return expirationMode.orElse(null);
   }
 
-  public void setExpirationMode(@javax.annotation.Nullable ExpirationMode expirationMode) {
+  @JsonProperty(value = JSON_PROPERTY_EXPIRATION_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<ExpirationMode> getExpirationMode_JsonNullable() {
+    return expirationMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXPIRATION_MODE)
+  public void setExpirationMode_JsonNullable(JsonNullable<ExpirationMode> expirationMode) {
     this.expirationMode = expirationMode;
   }
 
+  public void setExpirationMode(@jakarta.annotation.Nullable ExpirationMode expirationMode) {
+    this.expirationMode = JsonNullable.<ExpirationMode>of(expirationMode);
+  }
 
-  public SubscriptionPlanDto validDaysCount(@javax.annotation.Nullable Integer validDaysCount) {
+
+  public SubscriptionPlanDto validDaysCount(@jakarta.annotation.Nullable Integer validDaysCount) {
     this.validDaysCount = validDaysCount;
     return this;
   }
@@ -123,17 +136,22 @@ public class SubscriptionPlanDto {
    * Get validDaysCount
    * @return validDaysCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALID_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getValidDaysCount() {
     return validDaysCount;
   }
 
-  public void setValidDaysCount(@javax.annotation.Nullable Integer validDaysCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALID_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValidDaysCount(@jakarta.annotation.Nullable Integer validDaysCount) {
     this.validDaysCount = validDaysCount;
   }
 
 
-  public SubscriptionPlanDto trialDaysCount(@javax.annotation.Nullable Integer trialDaysCount) {
+  public SubscriptionPlanDto trialDaysCount(@jakarta.annotation.Nullable Integer trialDaysCount) {
     this.trialDaysCount = trialDaysCount;
     return this;
   }
@@ -142,17 +160,24 @@ public class SubscriptionPlanDto {
    * Get trialDaysCount
    * @return trialDaysCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TRIAL_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getTrialDaysCount() {
     return trialDaysCount;
   }
 
-  public void setTrialDaysCount(@javax.annotation.Nullable Integer trialDaysCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_TRIAL_DAYS_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTrialDaysCount(@jakarta.annotation.Nullable Integer trialDaysCount) {
     this.trialDaysCount = trialDaysCount;
   }
 
 
-
+  /**
+   * Return true if this SubscriptionPlanDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -162,8 +187,8 @@ public class SubscriptionPlanDto {
       return false;
     }
     SubscriptionPlanDto subscriptionPlanDto = (SubscriptionPlanDto) o;
-    return Objects.equals(this.expirationDateUtc, subscriptionPlanDto.expirationDateUtc) &&
-        Objects.equals(this.expirationMode, subscriptionPlanDto.expirationMode) &&
+    return equalsNullable(this.expirationDateUtc, subscriptionPlanDto.expirationDateUtc) &&
+        equalsNullable(this.expirationMode, subscriptionPlanDto.expirationMode) &&
         Objects.equals(this.validDaysCount, subscriptionPlanDto.validDaysCount) &&
         Objects.equals(this.trialDaysCount, subscriptionPlanDto.trialDaysCount);
   }
@@ -174,7 +199,7 @@ public class SubscriptionPlanDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDateUtc, expirationMode, validDaysCount, trialDaysCount);
+    return Objects.hash(hashCodeNullable(expirationDateUtc), hashCodeNullable(expirationMode), validDaysCount, trialDaysCount);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -207,92 +232,59 @@ public class SubscriptionPlanDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("expiration_date_utc", "expiration_mode", "valid_days_count", "trial_days_count"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to SubscriptionPlanDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!SubscriptionPlanDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in SubscriptionPlanDto is not found in the empty JSON string", SubscriptionPlanDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!SubscriptionPlanDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `SubscriptionPlanDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      // validate the optional field `expiration_mode`
-      if (jsonObj.get("expiration_mode") != null && !jsonObj.get("expiration_mode").isJsonNull()) {
-        ExpirationMode.validateJsonElement(jsonObj.get("expiration_mode"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!SubscriptionPlanDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'SubscriptionPlanDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<SubscriptionPlanDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(SubscriptionPlanDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<SubscriptionPlanDto>() {
-           @Override
-           public void write(JsonWriter out, SubscriptionPlanDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public SubscriptionPlanDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of SubscriptionPlanDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of SubscriptionPlanDto
-   * @throws IOException if the JSON string is invalid with respect to SubscriptionPlanDto
-   */
-  public static SubscriptionPlanDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, SubscriptionPlanDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of SubscriptionPlanDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `expiration_date_utc` to the URL query string
+    if (getExpirationDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexpiration_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpirationDateUtc()))));
+    }
+
+    // add `expiration_mode` to the URL query string
+    if (getExpirationMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexpiration_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExpirationMode()))));
+    }
+
+    // add `valid_days_count` to the URL query string
+    if (getValidDaysCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalid_days_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValidDaysCount()))));
+    }
+
+    // add `trial_days_count` to the URL query string
+    if (getTrialDaysCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%strial_days_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTrialDaysCount()))));
+    }
+
+    return joiner.toString();
   }
 }
 

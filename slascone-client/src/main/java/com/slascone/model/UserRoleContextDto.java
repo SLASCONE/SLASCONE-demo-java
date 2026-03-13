@@ -13,64 +13,51 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * UserRoleContextDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  UserRoleContextDto.JSON_PROPERTY_ISV_ID,
+  UserRoleContextDto.JSON_PROPERTY_RESELLER_ID,
+  UserRoleContextDto.JSON_PROPERTY_CUSTOMER_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class UserRoleContextDto {
-  public static final String SERIALIZED_NAME_ISV_ID = "isvId";
-  @SerializedName(SERIALIZED_NAME_ISV_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ISV_ID = "isvId";
+  @jakarta.annotation.Nullable
   private UUID isvId;
 
-  public static final String SERIALIZED_NAME_RESELLER_ID = "resellerId";
-  @SerializedName(SERIALIZED_NAME_RESELLER_ID)
-  @javax.annotation.Nullable
-  private UUID resellerId;
+  public static final String JSON_PROPERTY_RESELLER_ID = "resellerId";
+  private JsonNullable<UUID> resellerId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_ID = "customerId";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_ID)
-  @javax.annotation.Nullable
-  private UUID customerId;
+  public static final String JSON_PROPERTY_CUSTOMER_ID = "customerId";
+  private JsonNullable<UUID> customerId = JsonNullable.<UUID>undefined();
 
-  public UserRoleContextDto() {
+  public UserRoleContextDto() { 
   }
 
-  public UserRoleContextDto isvId(@javax.annotation.Nullable UUID isvId) {
+  public UserRoleContextDto isvId(@jakarta.annotation.Nullable UUID isvId) {
     this.isvId = isvId;
     return this;
   }
@@ -79,18 +66,23 @@ public class UserRoleContextDto {
    * Get isvId
    * @return isvId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ISV_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getIsvId() {
     return isvId;
   }
 
-  public void setIsvId(@javax.annotation.Nullable UUID isvId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ISV_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsvId(@jakarta.annotation.Nullable UUID isvId) {
     this.isvId = isvId;
   }
 
 
-  public UserRoleContextDto resellerId(@javax.annotation.Nullable UUID resellerId) {
-    this.resellerId = resellerId;
+  public UserRoleContextDto resellerId(@jakarta.annotation.Nullable UUID resellerId) {
+    this.resellerId = JsonNullable.<UUID>of(resellerId);
     return this;
   }
 
@@ -98,18 +90,31 @@ public class UserRoleContextDto {
    * Get resellerId
    * @return resellerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getResellerId() {
-    return resellerId;
+        return resellerId.orElse(null);
   }
 
-  public void setResellerId(@javax.annotation.Nullable UUID resellerId) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getResellerId_JsonNullable() {
+    return resellerId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_ID)
+  public void setResellerId_JsonNullable(JsonNullable<UUID> resellerId) {
     this.resellerId = resellerId;
   }
 
+  public void setResellerId(@jakarta.annotation.Nullable UUID resellerId) {
+    this.resellerId = JsonNullable.<UUID>of(resellerId);
+  }
 
-  public UserRoleContextDto customerId(@javax.annotation.Nullable UUID customerId) {
-    this.customerId = customerId;
+
+  public UserRoleContextDto customerId(@jakarta.annotation.Nullable UUID customerId) {
+    this.customerId = JsonNullable.<UUID>of(customerId);
     return this;
   }
 
@@ -117,17 +122,32 @@ public class UserRoleContextDto {
    * Get customerId
    * @return customerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getCustomerId() {
-    return customerId;
+        return customerId.orElse(null);
   }
 
-  public void setCustomerId(@javax.annotation.Nullable UUID customerId) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getCustomerId_JsonNullable() {
+    return customerId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_ID)
+  public void setCustomerId_JsonNullable(JsonNullable<UUID> customerId) {
     this.customerId = customerId;
   }
 
+  public void setCustomerId(@jakarta.annotation.Nullable UUID customerId) {
+    this.customerId = JsonNullable.<UUID>of(customerId);
+  }
 
 
+  /**
+   * Return true if this UserRoleContextDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -138,8 +158,8 @@ public class UserRoleContextDto {
     }
     UserRoleContextDto userRoleContextDto = (UserRoleContextDto) o;
     return Objects.equals(this.isvId, userRoleContextDto.isvId) &&
-        Objects.equals(this.resellerId, userRoleContextDto.resellerId) &&
-        Objects.equals(this.customerId, userRoleContextDto.customerId);
+        equalsNullable(this.resellerId, userRoleContextDto.resellerId) &&
+        equalsNullable(this.customerId, userRoleContextDto.customerId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -148,7 +168,7 @@ public class UserRoleContextDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(isvId, resellerId, customerId);
+    return Objects.hash(isvId, hashCodeNullable(resellerId), hashCodeNullable(customerId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -180,97 +200,54 @@ public class UserRoleContextDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("isvId", "resellerId", "customerId"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to UserRoleContextDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!UserRoleContextDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in UserRoleContextDto is not found in the empty JSON string", UserRoleContextDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!UserRoleContextDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UserRoleContextDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("isvId") != null && !jsonObj.get("isvId").isJsonNull()) && !jsonObj.get("isvId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `isvId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("isvId").toString()));
-      }
-      if ((jsonObj.get("resellerId") != null && !jsonObj.get("resellerId").isJsonNull()) && !jsonObj.get("resellerId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `resellerId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("resellerId").toString()));
-      }
-      if ((jsonObj.get("customerId") != null && !jsonObj.get("customerId").isJsonNull()) && !jsonObj.get("customerId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customerId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customerId").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!UserRoleContextDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'UserRoleContextDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<UserRoleContextDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(UserRoleContextDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<UserRoleContextDto>() {
-           @Override
-           public void write(JsonWriter out, UserRoleContextDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public UserRoleContextDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of UserRoleContextDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of UserRoleContextDto
-   * @throws IOException if the JSON string is invalid with respect to UserRoleContextDto
-   */
-  public static UserRoleContextDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, UserRoleContextDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of UserRoleContextDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `isvId` to the URL query string
+    if (getIsvId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sisvId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsvId()))));
+    }
+
+    // add `resellerId` to the URL query string
+    if (getResellerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sresellerId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getResellerId()))));
+    }
+
+    // add `customerId` to the URL query string
+    if (getCustomerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomerId%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

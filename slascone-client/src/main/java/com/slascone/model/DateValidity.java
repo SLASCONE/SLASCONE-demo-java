@@ -13,20 +13,21 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.annotations.SerializedName;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.io.IOException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.JsonElement;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * 
  */
-@JsonAdapter(DateValidity.Adapter.class)
 public enum DateValidity {
   
   NUMBER_0(0),
@@ -41,6 +42,7 @@ public enum DateValidity {
     this.value = value;
   }
 
+  @JsonValue
   public Integer getValue() {
     return value;
   }
@@ -50,6 +52,7 @@ public enum DateValidity {
     return String.valueOf(value);
   }
 
+  @JsonCreator
   public static DateValidity fromValue(Integer value) {
     for (DateValidity b : DateValidity.values()) {
       if (b.value.equals(value)) {
@@ -59,22 +62,19 @@ public enum DateValidity {
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 
-  public static class Adapter extends TypeAdapter<DateValidity> {
-    @Override
-    public void write(final JsonWriter jsonWriter, final DateValidity enumeration) throws IOException {
-      jsonWriter.value(enumeration.getValue());
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @param prefix prefix of the query string
+   * @return URL query string
+   */
+  public String toUrlQueryString(String prefix) {
+    if (prefix == null) {
+      prefix = "";
     }
 
-    @Override
-    public DateValidity read(final JsonReader jsonReader) throws IOException {
-      Integer value = jsonReader.nextInt();
-      return DateValidity.fromValue(value);
-    }
+    return String.format(java.util.Locale.ROOT, "%s=%s", prefix, this.toString());
   }
 
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-    Integer value = jsonElement.getAsInt();
-    DateValidity.fromValue(value);
-  }
 }
 

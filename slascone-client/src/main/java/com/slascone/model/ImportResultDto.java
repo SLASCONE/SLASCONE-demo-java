@@ -13,71 +13,59 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.OmittedDataSet;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ImportResultDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ImportResultDto.JSON_PROPERTY_IMPORTED_ROWS,
+  ImportResultDto.JSON_PROPERTY_OMITTED_ROWS,
+  ImportResultDto.JSON_PROPERTY_SKIPPED_ROWS,
+  ImportResultDto.JSON_PROPERTY_TOTAL_ROWS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ImportResultDto {
-  public static final String SERIALIZED_NAME_IMPORTED_ROWS = "imported_rows";
-  @SerializedName(SERIALIZED_NAME_IMPORTED_ROWS)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IMPORTED_ROWS = "imported_rows";
+  @jakarta.annotation.Nullable
   private Integer importedRows;
 
-  public static final String SERIALIZED_NAME_OMITTED_ROWS = "omitted_rows";
-  @SerializedName(SERIALIZED_NAME_OMITTED_ROWS)
-  @javax.annotation.Nullable
-  private List<OmittedDataSet> omittedRows;
+  public static final String JSON_PROPERTY_OMITTED_ROWS = "omitted_rows";
+  private JsonNullable<List<OmittedDataSet>> omittedRows = JsonNullable.<List<OmittedDataSet>>undefined();
 
-  public static final String SERIALIZED_NAME_SKIPPED_ROWS = "skipped_rows";
-  @SerializedName(SERIALIZED_NAME_SKIPPED_ROWS)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_SKIPPED_ROWS = "skipped_rows";
+  @jakarta.annotation.Nullable
   private Integer skippedRows;
 
-  public static final String SERIALIZED_NAME_TOTAL_ROWS = "total_rows";
-  @SerializedName(SERIALIZED_NAME_TOTAL_ROWS)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TOTAL_ROWS = "total_rows";
+  @jakarta.annotation.Nullable
   private Integer totalRows;
 
-  public ImportResultDto() {
+  public ImportResultDto() { 
   }
 
-  public ImportResultDto importedRows(@javax.annotation.Nullable Integer importedRows) {
+  public ImportResultDto importedRows(@jakarta.annotation.Nullable Integer importedRows) {
     this.importedRows = importedRows;
     return this;
   }
@@ -86,26 +74,35 @@ public class ImportResultDto {
    * Get importedRows
    * @return importedRows
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IMPORTED_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getImportedRows() {
     return importedRows;
   }
 
-  public void setImportedRows(@javax.annotation.Nullable Integer importedRows) {
+
+  @JsonProperty(value = JSON_PROPERTY_IMPORTED_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setImportedRows(@jakarta.annotation.Nullable Integer importedRows) {
     this.importedRows = importedRows;
   }
 
 
-  public ImportResultDto omittedRows(@javax.annotation.Nullable List<OmittedDataSet> omittedRows) {
-    this.omittedRows = omittedRows;
+  public ImportResultDto omittedRows(@jakarta.annotation.Nullable List<OmittedDataSet> omittedRows) {
+    this.omittedRows = JsonNullable.<List<OmittedDataSet>>of(omittedRows);
     return this;
   }
 
   public ImportResultDto addOmittedRowsItem(OmittedDataSet omittedRowsItem) {
-    if (this.omittedRows == null) {
-      this.omittedRows = new ArrayList<>();
+    if (this.omittedRows == null || !this.omittedRows.isPresent()) {
+      this.omittedRows = JsonNullable.<List<OmittedDataSet>>of(new ArrayList<>());
     }
-    this.omittedRows.add(omittedRowsItem);
+    try {
+      this.omittedRows.get().add(omittedRowsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -113,17 +110,30 @@ public class ImportResultDto {
    * Get omittedRows
    * @return omittedRows
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<OmittedDataSet> getOmittedRows() {
-    return omittedRows;
+        return omittedRows.orElse(null);
   }
 
-  public void setOmittedRows(@javax.annotation.Nullable List<OmittedDataSet> omittedRows) {
+  @JsonProperty(value = JSON_PROPERTY_OMITTED_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<OmittedDataSet>> getOmittedRows_JsonNullable() {
+    return omittedRows;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_OMITTED_ROWS)
+  public void setOmittedRows_JsonNullable(JsonNullable<List<OmittedDataSet>> omittedRows) {
     this.omittedRows = omittedRows;
   }
 
+  public void setOmittedRows(@jakarta.annotation.Nullable List<OmittedDataSet> omittedRows) {
+    this.omittedRows = JsonNullable.<List<OmittedDataSet>>of(omittedRows);
+  }
 
-  public ImportResultDto skippedRows(@javax.annotation.Nullable Integer skippedRows) {
+
+  public ImportResultDto skippedRows(@jakarta.annotation.Nullable Integer skippedRows) {
     this.skippedRows = skippedRows;
     return this;
   }
@@ -132,17 +142,22 @@ public class ImportResultDto {
    * Get skippedRows
    * @return skippedRows
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SKIPPED_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getSkippedRows() {
     return skippedRows;
   }
 
-  public void setSkippedRows(@javax.annotation.Nullable Integer skippedRows) {
+
+  @JsonProperty(value = JSON_PROPERTY_SKIPPED_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSkippedRows(@jakarta.annotation.Nullable Integer skippedRows) {
     this.skippedRows = skippedRows;
   }
 
 
-  public ImportResultDto totalRows(@javax.annotation.Nullable Integer totalRows) {
+  public ImportResultDto totalRows(@jakarta.annotation.Nullable Integer totalRows) {
     this.totalRows = totalRows;
     return this;
   }
@@ -151,17 +166,24 @@ public class ImportResultDto {
    * Get totalRows
    * @return totalRows
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getTotalRows() {
     return totalRows;
   }
 
-  public void setTotalRows(@javax.annotation.Nullable Integer totalRows) {
+
+  @JsonProperty(value = JSON_PROPERTY_TOTAL_ROWS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTotalRows(@jakarta.annotation.Nullable Integer totalRows) {
     this.totalRows = totalRows;
   }
 
 
-
+  /**
+   * Return true if this ImportResultDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -172,7 +194,7 @@ public class ImportResultDto {
     }
     ImportResultDto importResultDto = (ImportResultDto) o;
     return Objects.equals(this.importedRows, importResultDto.importedRows) &&
-        Objects.equals(this.omittedRows, importResultDto.omittedRows) &&
+        equalsNullable(this.omittedRows, importResultDto.omittedRows) &&
         Objects.equals(this.skippedRows, importResultDto.skippedRows) &&
         Objects.equals(this.totalRows, importResultDto.totalRows);
   }
@@ -183,7 +205,7 @@ public class ImportResultDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(importedRows, omittedRows, skippedRows, totalRows);
+    return Objects.hash(importedRows, hashCodeNullable(omittedRows), skippedRows, totalRows);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -216,102 +238,64 @@ public class ImportResultDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("imported_rows", "omitted_rows", "skipped_rows", "total_rows"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ImportResultDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ImportResultDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ImportResultDto is not found in the empty JSON string", ImportResultDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ImportResultDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ImportResultDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (jsonObj.get("omitted_rows") != null && !jsonObj.get("omitted_rows").isJsonNull()) {
-        JsonArray jsonArrayomittedRows = jsonObj.getAsJsonArray("omitted_rows");
-        if (jsonArrayomittedRows != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("omitted_rows").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `omitted_rows` to be an array in the JSON string but got `%s`", jsonObj.get("omitted_rows").toString()));
-          }
-
-          // validate the optional field `omitted_rows` (array)
-          for (int i = 0; i < jsonArrayomittedRows.size(); i++) {
-            OmittedDataSet.validateJsonElement(jsonArrayomittedRows.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ImportResultDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ImportResultDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ImportResultDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ImportResultDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ImportResultDto>() {
-           @Override
-           public void write(JsonWriter out, ImportResultDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ImportResultDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ImportResultDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ImportResultDto
-   * @throws IOException if the JSON string is invalid with respect to ImportResultDto
-   */
-  public static ImportResultDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ImportResultDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ImportResultDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `imported_rows` to the URL query string
+    if (getImportedRows() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%simported_rows%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getImportedRows()))));
+    }
+
+    // add `omitted_rows` to the URL query string
+    if (getOmittedRows() != null) {
+      for (int i = 0; i < getOmittedRows().size(); i++) {
+        if (getOmittedRows().get(i) != null) {
+          joiner.add(getOmittedRows().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%somitted_rows%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `skipped_rows` to the URL query string
+    if (getSkippedRows() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sskipped_rows%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSkippedRows()))));
+    }
+
+    // add `total_rows` to the URL query string
+    if (getTotalRows() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stotal_rows%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTotalRows()))));
+    }
+
+    return joiner.toString();
   }
 }
 

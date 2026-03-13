@@ -13,125 +13,109 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionBalanceMode;
 import com.slascone.model.ConsumptionResetPeriod;
 import com.slascone.model.TemplateLimitationAlertDto;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * TemplateLimitationDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  TemplateLimitationDto.JSON_PROPERTY_TEMPLATE_ID,
+  TemplateLimitationDto.JSON_PROPERTY_LIMITATION_ID,
+  TemplateLimitationDto.JSON_PROPERTY_LIMITATION_NAME,
+  TemplateLimitationDto.JSON_PROPERTY_IS_ADJUSTABLE,
+  TemplateLimitationDto.JSON_PROPERTY_LIMIT,
+  TemplateLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_MODE,
+  TemplateLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS,
+  TemplateLimitationDto.JSON_PROPERTY_GOODWILL,
+  TemplateLimitationDto.JSON_PROPERTY_ENFORCE_LIMIT,
+  TemplateLimitationDto.JSON_PROPERTY_USER_PROVISIONING,
+  TemplateLimitationDto.JSON_PROPERTY_CONSUMPTION_BALANCE_MODE,
+  TemplateLimitationDto.JSON_PROPERTY_IS_HIDDEN,
+  TemplateLimitationDto.JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN,
+  TemplateLimitationDto.JSON_PROPERTY_ALERTS
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class TemplateLimitationDto {
-  public static final String SERIALIZED_NAME_TEMPLATE_ID = "template_id";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TEMPLATE_ID = "template_id";
+  @jakarta.annotation.Nullable
   private UUID templateId;
 
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nonnull
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_LIMITATION_NAME = "limitation_name";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_NAME)
-  @javax.annotation.Nullable
-  private String limitationName;
+  public static final String JSON_PROPERTY_LIMITATION_NAME = "limitation_name";
+  private JsonNullable<String> limitationName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ADJUSTABLE = "is_adjustable";
-  @SerializedName(SERIALIZED_NAME_IS_ADJUSTABLE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_ADJUSTABLE = "is_adjustable";
+  @jakarta.annotation.Nullable
   private Boolean isAdjustable;
 
-  public static final String SERIALIZED_NAME_LIMIT = "limit";
-  @SerializedName(SERIALIZED_NAME_LIMIT)
-  @javax.annotation.Nullable
-  private Integer limit;
+  public static final String JSON_PROPERTY_LIMIT = "limit";
+  private JsonNullable<Integer> limit = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
+  @jakarta.annotation.Nullable
   private ConsumptionResetPeriod consumptionResetMode;
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_RESET_PERIOD_DAYS)
-  @javax.annotation.Nullable
-  private Integer consumptionResetPeriodDays;
+  public static final String JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS = "consumption_reset_period_days";
+  private JsonNullable<Integer> consumptionResetPeriodDays = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_GOODWILL = "goodwill";
-  @SerializedName(SERIALIZED_NAME_GOODWILL)
-  @javax.annotation.Nullable
-  private BigDecimal goodwill;
+  public static final String JSON_PROPERTY_GOODWILL = "goodwill";
+  private JsonNullable<BigDecimal> goodwill = JsonNullable.<BigDecimal>undefined();
 
-  public static final String SERIALIZED_NAME_ENFORCE_LIMIT = "enforce_limit";
-  @SerializedName(SERIALIZED_NAME_ENFORCE_LIMIT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ENFORCE_LIMIT = "enforce_limit";
+  @jakarta.annotation.Nullable
   private Boolean enforceLimit;
 
-  public static final String SERIALIZED_NAME_USER_PROVISIONING = "user_provisioning";
-  @SerializedName(SERIALIZED_NAME_USER_PROVISIONING)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_USER_PROVISIONING = "user_provisioning";
+  @jakarta.annotation.Nullable
   private Boolean userProvisioning;
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_BALANCE_MODE = "consumption_balance_mode";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_BALANCE_MODE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CONSUMPTION_BALANCE_MODE = "consumption_balance_mode";
+  @jakarta.annotation.Nullable
   private ConsumptionBalanceMode consumptionBalanceMode;
 
-  public static final String SERIALIZED_NAME_IS_HIDDEN = "is_hidden";
-  @SerializedName(SERIALIZED_NAME_IS_HIDDEN)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_HIDDEN = "is_hidden";
+  @jakarta.annotation.Nullable
   private Boolean isHidden;
 
-  public static final String SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
-  @SerializedName(SERIALIZED_NAME_IS_CUSTOMER_PORTAL_HIDDEN)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN = "is_customer_portal_hidden";
+  @jakarta.annotation.Nullable
   private Boolean isCustomerPortalHidden;
 
-  public static final String SERIALIZED_NAME_ALERTS = "alerts";
-  @SerializedName(SERIALIZED_NAME_ALERTS)
-  @javax.annotation.Nullable
-  private List<TemplateLimitationAlertDto> alerts;
+  public static final String JSON_PROPERTY_ALERTS = "alerts";
+  private JsonNullable<List<TemplateLimitationAlertDto>> alerts = JsonNullable.<List<TemplateLimitationAlertDto>>undefined();
 
-  public TemplateLimitationDto() {
+  public TemplateLimitationDto() { 
   }
 
-  public TemplateLimitationDto templateId(@javax.annotation.Nullable UUID templateId) {
+  public TemplateLimitationDto templateId(@jakarta.annotation.Nullable UUID templateId) {
     this.templateId = templateId;
     return this;
   }
@@ -140,17 +124,22 @@ public class TemplateLimitationDto {
    * Get templateId
    * @return templateId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getTemplateId() {
     return templateId;
   }
 
-  public void setTemplateId(@javax.annotation.Nullable UUID templateId) {
+
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTemplateId(@jakarta.annotation.Nullable UUID templateId) {
     this.templateId = templateId;
   }
 
 
-  public TemplateLimitationDto limitationId(@javax.annotation.Nonnull UUID limitationId) {
+  public TemplateLimitationDto limitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -159,18 +148,23 @@ public class TemplateLimitationDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nonnull UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setLimitationId(@jakarta.annotation.Nonnull UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public TemplateLimitationDto limitationName(@javax.annotation.Nullable String limitationName) {
-    this.limitationName = limitationName;
+  public TemplateLimitationDto limitationName(@jakarta.annotation.Nullable String limitationName) {
+    this.limitationName = JsonNullable.<String>of(limitationName);
     return this;
   }
 
@@ -178,17 +172,30 @@ public class TemplateLimitationDto {
    * Get limitationName
    * @return limitationName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLimitationName() {
-    return limitationName;
+        return limitationName.orElse(null);
   }
 
-  public void setLimitationName(@javax.annotation.Nullable String limitationName) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLimitationName_JsonNullable() {
+    return limitationName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATION_NAME)
+  public void setLimitationName_JsonNullable(JsonNullable<String> limitationName) {
     this.limitationName = limitationName;
   }
 
+  public void setLimitationName(@jakarta.annotation.Nullable String limitationName) {
+    this.limitationName = JsonNullable.<String>of(limitationName);
+  }
 
-  public TemplateLimitationDto isAdjustable(@javax.annotation.Nullable Boolean isAdjustable) {
+
+  public TemplateLimitationDto isAdjustable(@jakarta.annotation.Nullable Boolean isAdjustable) {
     this.isAdjustable = isAdjustable;
     return this;
   }
@@ -197,18 +204,23 @@ public class TemplateLimitationDto {
    * Get isAdjustable
    * @return isAdjustable
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_ADJUSTABLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsAdjustable() {
     return isAdjustable;
   }
 
-  public void setIsAdjustable(@javax.annotation.Nullable Boolean isAdjustable) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_ADJUSTABLE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsAdjustable(@jakarta.annotation.Nullable Boolean isAdjustable) {
     this.isAdjustable = isAdjustable;
   }
 
 
-  public TemplateLimitationDto limit(@javax.annotation.Nullable Integer limit) {
-    this.limit = limit;
+  public TemplateLimitationDto limit(@jakarta.annotation.Nullable Integer limit) {
+    this.limit = JsonNullable.<Integer>of(limit);
     return this;
   }
 
@@ -216,17 +228,30 @@ public class TemplateLimitationDto {
    * Get limit
    * @return limit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getLimit() {
-    return limit;
+        return limit.orElse(null);
   }
 
-  public void setLimit(@javax.annotation.Nullable Integer limit) {
+  @JsonProperty(value = JSON_PROPERTY_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getLimit_JsonNullable() {
+    return limit;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMIT)
+  public void setLimit_JsonNullable(JsonNullable<Integer> limit) {
     this.limit = limit;
   }
 
+  public void setLimit(@jakarta.annotation.Nullable Integer limit) {
+    this.limit = JsonNullable.<Integer>of(limit);
+  }
 
-  public TemplateLimitationDto consumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+
+  public TemplateLimitationDto consumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
     this.consumptionResetMode = consumptionResetMode;
     return this;
   }
@@ -235,18 +260,23 @@ public class TemplateLimitationDto {
    * Get consumptionResetMode
    * @return consumptionResetMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ConsumptionResetPeriod getConsumptionResetMode() {
     return consumptionResetMode;
   }
 
-  public void setConsumptionResetMode(@javax.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConsumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
     this.consumptionResetMode = consumptionResetMode;
   }
 
 
-  public TemplateLimitationDto consumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
-    this.consumptionResetPeriodDays = consumptionResetPeriodDays;
+  public TemplateLimitationDto consumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
     return this;
   }
 
@@ -254,18 +284,31 @@ public class TemplateLimitationDto {
    * Get consumptionResetPeriodDays
    * @return consumptionResetPeriodDays
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getConsumptionResetPeriodDays() {
-    return consumptionResetPeriodDays;
+        return consumptionResetPeriodDays.orElse(null);
   }
 
-  public void setConsumptionResetPeriodDays(@javax.annotation.Nullable Integer consumptionResetPeriodDays) {
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getConsumptionResetPeriodDays_JsonNullable() {
+    return consumptionResetPeriodDays;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS)
+  public void setConsumptionResetPeriodDays_JsonNullable(JsonNullable<Integer> consumptionResetPeriodDays) {
     this.consumptionResetPeriodDays = consumptionResetPeriodDays;
   }
 
+  public void setConsumptionResetPeriodDays(@jakarta.annotation.Nullable Integer consumptionResetPeriodDays) {
+    this.consumptionResetPeriodDays = JsonNullable.<Integer>of(consumptionResetPeriodDays);
+  }
 
-  public TemplateLimitationDto goodwill(@javax.annotation.Nullable BigDecimal goodwill) {
-    this.goodwill = goodwill;
+
+  public TemplateLimitationDto goodwill(@jakarta.annotation.Nullable BigDecimal goodwill) {
+    this.goodwill = JsonNullable.<BigDecimal>of(goodwill);
     return this;
   }
 
@@ -273,17 +316,30 @@ public class TemplateLimitationDto {
    * Get goodwill
    * @return goodwill
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public BigDecimal getGoodwill() {
-    return goodwill;
+        return goodwill.orElse(null);
   }
 
-  public void setGoodwill(@javax.annotation.Nullable BigDecimal goodwill) {
+  @JsonProperty(value = JSON_PROPERTY_GOODWILL, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getGoodwill_JsonNullable() {
+    return goodwill;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GOODWILL)
+  public void setGoodwill_JsonNullable(JsonNullable<BigDecimal> goodwill) {
     this.goodwill = goodwill;
   }
 
+  public void setGoodwill(@jakarta.annotation.Nullable BigDecimal goodwill) {
+    this.goodwill = JsonNullable.<BigDecimal>of(goodwill);
+  }
 
-  public TemplateLimitationDto enforceLimit(@javax.annotation.Nullable Boolean enforceLimit) {
+
+  public TemplateLimitationDto enforceLimit(@jakarta.annotation.Nullable Boolean enforceLimit) {
     this.enforceLimit = enforceLimit;
     return this;
   }
@@ -292,17 +348,22 @@ public class TemplateLimitationDto {
    * Get enforceLimit
    * @return enforceLimit
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ENFORCE_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getEnforceLimit() {
     return enforceLimit;
   }
 
-  public void setEnforceLimit(@javax.annotation.Nullable Boolean enforceLimit) {
+
+  @JsonProperty(value = JSON_PROPERTY_ENFORCE_LIMIT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnforceLimit(@jakarta.annotation.Nullable Boolean enforceLimit) {
     this.enforceLimit = enforceLimit;
   }
 
 
-  public TemplateLimitationDto userProvisioning(@javax.annotation.Nullable Boolean userProvisioning) {
+  public TemplateLimitationDto userProvisioning(@jakarta.annotation.Nullable Boolean userProvisioning) {
     this.userProvisioning = userProvisioning;
     return this;
   }
@@ -311,17 +372,22 @@ public class TemplateLimitationDto {
    * Get userProvisioning
    * @return userProvisioning
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_USER_PROVISIONING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getUserProvisioning() {
     return userProvisioning;
   }
 
-  public void setUserProvisioning(@javax.annotation.Nullable Boolean userProvisioning) {
+
+  @JsonProperty(value = JSON_PROPERTY_USER_PROVISIONING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setUserProvisioning(@jakarta.annotation.Nullable Boolean userProvisioning) {
     this.userProvisioning = userProvisioning;
   }
 
 
-  public TemplateLimitationDto consumptionBalanceMode(@javax.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
+  public TemplateLimitationDto consumptionBalanceMode(@jakarta.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
     this.consumptionBalanceMode = consumptionBalanceMode;
     return this;
   }
@@ -330,17 +396,22 @@ public class TemplateLimitationDto {
    * Get consumptionBalanceMode
    * @return consumptionBalanceMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_BALANCE_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public ConsumptionBalanceMode getConsumptionBalanceMode() {
     return consumptionBalanceMode;
   }
 
-  public void setConsumptionBalanceMode(@javax.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_BALANCE_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setConsumptionBalanceMode(@jakarta.annotation.Nullable ConsumptionBalanceMode consumptionBalanceMode) {
     this.consumptionBalanceMode = consumptionBalanceMode;
   }
 
 
-  public TemplateLimitationDto isHidden(@javax.annotation.Nullable Boolean isHidden) {
+  public TemplateLimitationDto isHidden(@jakarta.annotation.Nullable Boolean isHidden) {
     this.isHidden = isHidden;
     return this;
   }
@@ -349,17 +420,22 @@ public class TemplateLimitationDto {
    * Get isHidden
    * @return isHidden
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsHidden() {
     return isHidden;
   }
 
-  public void setIsHidden(@javax.annotation.Nullable Boolean isHidden) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsHidden(@jakarta.annotation.Nullable Boolean isHidden) {
     this.isHidden = isHidden;
   }
 
 
-  public TemplateLimitationDto isCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+  public TemplateLimitationDto isCustomerPortalHidden(@jakarta.annotation.Nullable Boolean isCustomerPortalHidden) {
     this.isCustomerPortalHidden = isCustomerPortalHidden;
     return this;
   }
@@ -368,26 +444,35 @@ public class TemplateLimitationDto {
    * Get isCustomerPortalHidden
    * @return isCustomerPortalHidden
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getIsCustomerPortalHidden() {
     return isCustomerPortalHidden;
   }
 
-  public void setIsCustomerPortalHidden(@javax.annotation.Nullable Boolean isCustomerPortalHidden) {
+
+  @JsonProperty(value = JSON_PROPERTY_IS_CUSTOMER_PORTAL_HIDDEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setIsCustomerPortalHidden(@jakarta.annotation.Nullable Boolean isCustomerPortalHidden) {
     this.isCustomerPortalHidden = isCustomerPortalHidden;
   }
 
 
-  public TemplateLimitationDto alerts(@javax.annotation.Nullable List<TemplateLimitationAlertDto> alerts) {
-    this.alerts = alerts;
+  public TemplateLimitationDto alerts(@jakarta.annotation.Nullable List<TemplateLimitationAlertDto> alerts) {
+    this.alerts = JsonNullable.<List<TemplateLimitationAlertDto>>of(alerts);
     return this;
   }
 
   public TemplateLimitationDto addAlertsItem(TemplateLimitationAlertDto alertsItem) {
-    if (this.alerts == null) {
-      this.alerts = new ArrayList<>();
+    if (this.alerts == null || !this.alerts.isPresent()) {
+      this.alerts = JsonNullable.<List<TemplateLimitationAlertDto>>of(new ArrayList<>());
     }
-    this.alerts.add(alertsItem);
+    try {
+      this.alerts.get().add(alertsItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -395,17 +480,32 @@ public class TemplateLimitationDto {
    * Get alerts
    * @return alerts
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<TemplateLimitationAlertDto> getAlerts() {
-    return alerts;
+        return alerts.orElse(null);
   }
 
-  public void setAlerts(@javax.annotation.Nullable List<TemplateLimitationAlertDto> alerts) {
+  @JsonProperty(value = JSON_PROPERTY_ALERTS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<TemplateLimitationAlertDto>> getAlerts_JsonNullable() {
+    return alerts;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ALERTS)
+  public void setAlerts_JsonNullable(JsonNullable<List<TemplateLimitationAlertDto>> alerts) {
     this.alerts = alerts;
   }
 
+  public void setAlerts(@jakarta.annotation.Nullable List<TemplateLimitationAlertDto> alerts) {
+    this.alerts = JsonNullable.<List<TemplateLimitationAlertDto>>of(alerts);
+  }
 
 
+  /**
+   * Return true if this TemplateLimitationDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -417,18 +517,18 @@ public class TemplateLimitationDto {
     TemplateLimitationDto templateLimitationDto = (TemplateLimitationDto) o;
     return Objects.equals(this.templateId, templateLimitationDto.templateId) &&
         Objects.equals(this.limitationId, templateLimitationDto.limitationId) &&
-        Objects.equals(this.limitationName, templateLimitationDto.limitationName) &&
+        equalsNullable(this.limitationName, templateLimitationDto.limitationName) &&
         Objects.equals(this.isAdjustable, templateLimitationDto.isAdjustable) &&
-        Objects.equals(this.limit, templateLimitationDto.limit) &&
+        equalsNullable(this.limit, templateLimitationDto.limit) &&
         Objects.equals(this.consumptionResetMode, templateLimitationDto.consumptionResetMode) &&
-        Objects.equals(this.consumptionResetPeriodDays, templateLimitationDto.consumptionResetPeriodDays) &&
-        Objects.equals(this.goodwill, templateLimitationDto.goodwill) &&
+        equalsNullable(this.consumptionResetPeriodDays, templateLimitationDto.consumptionResetPeriodDays) &&
+        equalsNullable(this.goodwill, templateLimitationDto.goodwill) &&
         Objects.equals(this.enforceLimit, templateLimitationDto.enforceLimit) &&
         Objects.equals(this.userProvisioning, templateLimitationDto.userProvisioning) &&
         Objects.equals(this.consumptionBalanceMode, templateLimitationDto.consumptionBalanceMode) &&
         Objects.equals(this.isHidden, templateLimitationDto.isHidden) &&
         Objects.equals(this.isCustomerPortalHidden, templateLimitationDto.isCustomerPortalHidden) &&
-        Objects.equals(this.alerts, templateLimitationDto.alerts);
+        equalsNullable(this.alerts, templateLimitationDto.alerts);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -437,7 +537,7 @@ public class TemplateLimitationDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateId, limitationId, limitationName, isAdjustable, limit, consumptionResetMode, consumptionResetPeriodDays, goodwill, enforceLimit, userProvisioning, consumptionBalanceMode, isHidden, isCustomerPortalHidden, alerts);
+    return Objects.hash(templateId, limitationId, hashCodeNullable(limitationName), isAdjustable, hashCodeNullable(limit), consumptionResetMode, hashCodeNullable(consumptionResetPeriodDays), hashCodeNullable(goodwill), enforceLimit, userProvisioning, consumptionBalanceMode, isHidden, isCustomerPortalHidden, hashCodeNullable(alerts));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -480,126 +580,114 @@ public class TemplateLimitationDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("template_id", "limitation_id", "limitation_name", "is_adjustable", "limit", "consumption_reset_mode", "consumption_reset_period_days", "goodwill", "enforce_limit", "user_provisioning", "consumption_balance_mode", "is_hidden", "is_customer_portal_hidden", "alerts"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("limitation_id"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to TemplateLimitationDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!TemplateLimitationDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TemplateLimitationDto is not found in the empty JSON string", TemplateLimitationDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!TemplateLimitationDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TemplateLimitationDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : TemplateLimitationDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("template_id") != null && !jsonObj.get("template_id").isJsonNull()) && !jsonObj.get("template_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("template_id").toString()));
-      }
-      if (!jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-      if ((jsonObj.get("limitation_name") != null && !jsonObj.get("limitation_name").isJsonNull()) && !jsonObj.get("limitation_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_name").toString()));
-      }
-      // validate the optional field `consumption_reset_mode`
-      if (jsonObj.get("consumption_reset_mode") != null && !jsonObj.get("consumption_reset_mode").isJsonNull()) {
-        ConsumptionResetPeriod.validateJsonElement(jsonObj.get("consumption_reset_mode"));
-      }
-      // validate the optional field `consumption_balance_mode`
-      if (jsonObj.get("consumption_balance_mode") != null && !jsonObj.get("consumption_balance_mode").isJsonNull()) {
-        ConsumptionBalanceMode.validateJsonElement(jsonObj.get("consumption_balance_mode"));
-      }
-      if (jsonObj.get("alerts") != null && !jsonObj.get("alerts").isJsonNull()) {
-        JsonArray jsonArrayalerts = jsonObj.getAsJsonArray("alerts");
-        if (jsonArrayalerts != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("alerts").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `alerts` to be an array in the JSON string but got `%s`", jsonObj.get("alerts").toString()));
-          }
-
-          // validate the optional field `alerts` (array)
-          for (int i = 0; i < jsonArrayalerts.size(); i++) {
-            TemplateLimitationAlertDto.validateJsonElement(jsonArrayalerts.get(i));
-          };
-        }
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!TemplateLimitationDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'TemplateLimitationDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<TemplateLimitationDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(TemplateLimitationDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<TemplateLimitationDto>() {
-           @Override
-           public void write(JsonWriter out, TemplateLimitationDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public TemplateLimitationDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of TemplateLimitationDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of TemplateLimitationDto
-   * @throws IOException if the JSON string is invalid with respect to TemplateLimitationDto
-   */
-  public static TemplateLimitationDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, TemplateLimitationDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of TemplateLimitationDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `template_id` to the URL query string
+    if (getTemplateId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stemplate_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTemplateId()))));
+    }
+
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `limitation_name` to the URL query string
+    if (getLimitationName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationName()))));
+    }
+
+    // add `is_adjustable` to the URL query string
+    if (getIsAdjustable() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_adjustable%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsAdjustable()))));
+    }
+
+    // add `limit` to the URL query string
+    if (getLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimit()))));
+    }
+
+    // add `consumption_reset_mode` to the URL query string
+    if (getConsumptionResetMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetMode()))));
+    }
+
+    // add `consumption_reset_period_days` to the URL query string
+    if (getConsumptionResetPeriodDays() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_reset_period_days%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionResetPeriodDays()))));
+    }
+
+    // add `goodwill` to the URL query string
+    if (getGoodwill() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgoodwill%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGoodwill()))));
+    }
+
+    // add `enforce_limit` to the URL query string
+    if (getEnforceLimit() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%senforce_limit%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getEnforceLimit()))));
+    }
+
+    // add `user_provisioning` to the URL query string
+    if (getUserProvisioning() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_provisioning%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserProvisioning()))));
+    }
+
+    // add `consumption_balance_mode` to the URL query string
+    if (getConsumptionBalanceMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sconsumption_balance_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getConsumptionBalanceMode()))));
+    }
+
+    // add `is_hidden` to the URL query string
+    if (getIsHidden() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_hidden%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsHidden()))));
+    }
+
+    // add `is_customer_portal_hidden` to the URL query string
+    if (getIsCustomerPortalHidden() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_customer_portal_hidden%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsCustomerPortalHidden()))));
+    }
+
+    // add `alerts` to the URL query string
+    if (getAlerts() != null) {
+      for (int i = 0; i < getAlerts().size(); i++) {
+        if (getAlerts().get(i) != null) {
+          joiner.add(getAlerts().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%salerts%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

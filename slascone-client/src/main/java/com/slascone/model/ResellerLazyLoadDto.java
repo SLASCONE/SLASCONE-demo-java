@@ -13,75 +13,66 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ResellerDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ResellerLazyLoadDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ResellerLazyLoadDto.JSON_PROPERTY_RESELLERS,
+  ResellerLazyLoadDto.JSON_PROPERTY_MAX_COUNT,
+  ResellerLazyLoadDto.JSON_PROPERTY_RESELLER_CHARACTER
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ResellerLazyLoadDto {
-  public static final String SERIALIZED_NAME_RESELLERS = "resellers";
-  @SerializedName(SERIALIZED_NAME_RESELLERS)
-  @javax.annotation.Nullable
-  private List<ResellerDto> resellers;
+  public static final String JSON_PROPERTY_RESELLERS = "resellers";
+  private JsonNullable<List<ResellerDto>> resellers = JsonNullable.<List<ResellerDto>>undefined();
 
-  public static final String SERIALIZED_NAME_MAX_COUNT = "max_count";
-  @SerializedName(SERIALIZED_NAME_MAX_COUNT)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_MAX_COUNT = "max_count";
+  @jakarta.annotation.Nullable
   private Integer maxCount;
 
-  public static final String SERIALIZED_NAME_RESELLER_CHARACTER = "reseller_character";
-  @SerializedName(SERIALIZED_NAME_RESELLER_CHARACTER)
-  @javax.annotation.Nullable
-  private List<String> resellerCharacter;
+  public static final String JSON_PROPERTY_RESELLER_CHARACTER = "reseller_character";
+  private JsonNullable<List<String>> resellerCharacter = JsonNullable.<List<String>>undefined();
 
-  public ResellerLazyLoadDto() {
+  public ResellerLazyLoadDto() { 
   }
 
-  public ResellerLazyLoadDto resellers(@javax.annotation.Nullable List<ResellerDto> resellers) {
-    this.resellers = resellers;
+  public ResellerLazyLoadDto resellers(@jakarta.annotation.Nullable List<ResellerDto> resellers) {
+    this.resellers = JsonNullable.<List<ResellerDto>>of(resellers);
     return this;
   }
 
   public ResellerLazyLoadDto addResellersItem(ResellerDto resellersItem) {
-    if (this.resellers == null) {
-      this.resellers = new ArrayList<>();
+    if (this.resellers == null || !this.resellers.isPresent()) {
+      this.resellers = JsonNullable.<List<ResellerDto>>of(new ArrayList<>());
     }
-    this.resellers.add(resellersItem);
+    try {
+      this.resellers.get().add(resellersItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -89,17 +80,30 @@ public class ResellerLazyLoadDto {
    * Get resellers
    * @return resellers
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<ResellerDto> getResellers() {
-    return resellers;
+        return resellers.orElse(null);
   }
 
-  public void setResellers(@javax.annotation.Nullable List<ResellerDto> resellers) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLERS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<ResellerDto>> getResellers_JsonNullable() {
+    return resellers;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLERS)
+  public void setResellers_JsonNullable(JsonNullable<List<ResellerDto>> resellers) {
     this.resellers = resellers;
   }
 
+  public void setResellers(@jakarta.annotation.Nullable List<ResellerDto> resellers) {
+    this.resellers = JsonNullable.<List<ResellerDto>>of(resellers);
+  }
 
-  public ResellerLazyLoadDto maxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  public ResellerLazyLoadDto maxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
     return this;
   }
@@ -108,26 +112,35 @@ public class ResellerLazyLoadDto {
    * Get maxCount
    * @return maxCount
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getMaxCount() {
     return maxCount;
   }
 
-  public void setMaxCount(@javax.annotation.Nullable Integer maxCount) {
+
+  @JsonProperty(value = JSON_PROPERTY_MAX_COUNT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setMaxCount(@jakarta.annotation.Nullable Integer maxCount) {
     this.maxCount = maxCount;
   }
 
 
-  public ResellerLazyLoadDto resellerCharacter(@javax.annotation.Nullable List<String> resellerCharacter) {
-    this.resellerCharacter = resellerCharacter;
+  public ResellerLazyLoadDto resellerCharacter(@jakarta.annotation.Nullable List<String> resellerCharacter) {
+    this.resellerCharacter = JsonNullable.<List<String>>of(resellerCharacter);
     return this;
   }
 
   public ResellerLazyLoadDto addResellerCharacterItem(String resellerCharacterItem) {
-    if (this.resellerCharacter == null) {
-      this.resellerCharacter = new ArrayList<>();
+    if (this.resellerCharacter == null || !this.resellerCharacter.isPresent()) {
+      this.resellerCharacter = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.resellerCharacter.add(resellerCharacterItem);
+    try {
+      this.resellerCharacter.get().add(resellerCharacterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -135,17 +148,32 @@ public class ResellerLazyLoadDto {
    * Get resellerCharacter
    * @return resellerCharacter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getResellerCharacter() {
-    return resellerCharacter;
+        return resellerCharacter.orElse(null);
   }
 
-  public void setResellerCharacter(@javax.annotation.Nullable List<String> resellerCharacter) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_CHARACTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getResellerCharacter_JsonNullable() {
+    return resellerCharacter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_CHARACTER)
+  public void setResellerCharacter_JsonNullable(JsonNullable<List<String>> resellerCharacter) {
     this.resellerCharacter = resellerCharacter;
   }
 
+  public void setResellerCharacter(@jakarta.annotation.Nullable List<String> resellerCharacter) {
+    this.resellerCharacter = JsonNullable.<List<String>>of(resellerCharacter);
+  }
 
 
+  /**
+   * Return true if this ResellerLazyLoadDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -155,9 +183,9 @@ public class ResellerLazyLoadDto {
       return false;
     }
     ResellerLazyLoadDto resellerLazyLoadDto = (ResellerLazyLoadDto) o;
-    return Objects.equals(this.resellers, resellerLazyLoadDto.resellers) &&
+    return equalsNullable(this.resellers, resellerLazyLoadDto.resellers) &&
         Objects.equals(this.maxCount, resellerLazyLoadDto.maxCount) &&
-        Objects.equals(this.resellerCharacter, resellerLazyLoadDto.resellerCharacter);
+        equalsNullable(this.resellerCharacter, resellerLazyLoadDto.resellerCharacter);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -166,7 +194,7 @@ public class ResellerLazyLoadDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(resellers, maxCount, resellerCharacter);
+    return Objects.hash(hashCodeNullable(resellers), maxCount, hashCodeNullable(resellerCharacter));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -198,106 +226,63 @@ public class ResellerLazyLoadDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("resellers", "max_count", "reseller_character"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ResellerLazyLoadDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ResellerLazyLoadDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ResellerLazyLoadDto is not found in the empty JSON string", ResellerLazyLoadDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ResellerLazyLoadDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ResellerLazyLoadDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (jsonObj.get("resellers") != null && !jsonObj.get("resellers").isJsonNull()) {
-        JsonArray jsonArrayresellers = jsonObj.getAsJsonArray("resellers");
-        if (jsonArrayresellers != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("resellers").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `resellers` to be an array in the JSON string but got `%s`", jsonObj.get("resellers").toString()));
-          }
-
-          // validate the optional field `resellers` (array)
-          for (int i = 0; i < jsonArrayresellers.size(); i++) {
-            ResellerDto.validateJsonElement(jsonArrayresellers.get(i));
-          };
-        }
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("reseller_character") != null && !jsonObj.get("reseller_character").isJsonNull() && !jsonObj.get("reseller_character").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_character` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_character").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ResellerLazyLoadDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ResellerLazyLoadDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ResellerLazyLoadDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ResellerLazyLoadDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ResellerLazyLoadDto>() {
-           @Override
-           public void write(JsonWriter out, ResellerLazyLoadDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ResellerLazyLoadDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ResellerLazyLoadDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ResellerLazyLoadDto
-   * @throws IOException if the JSON string is invalid with respect to ResellerLazyLoadDto
-   */
-  public static ResellerLazyLoadDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ResellerLazyLoadDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ResellerLazyLoadDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `resellers` to the URL query string
+    if (getResellers() != null) {
+      for (int i = 0; i < getResellers().size(); i++) {
+        if (getResellers().get(i) != null) {
+          joiner.add(getResellers().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sresellers%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `max_count` to the URL query string
+    if (getMaxCount() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smax_count%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getMaxCount()))));
+    }
+
+    // add `reseller_character` to the URL query string
+    if (getResellerCharacter() != null) {
+      for (int i = 0; i < getResellerCharacter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_character%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getResellerCharacter().get(i)))));
+      }
+    }
+
+    return joiner.toString();
   }
 }
 

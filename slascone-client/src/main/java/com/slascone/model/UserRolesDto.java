@@ -13,71 +13,62 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.IsvUserRolesDto;
 import com.slascone.model.UserRoleContextDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * UserRolesDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  UserRolesDto.JSON_PROPERTY_USER_ROLES,
+  UserRolesDto.JSON_PROPERTY_USER_ROLE_CONTEXT
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class UserRolesDto {
-  public static final String SERIALIZED_NAME_USER_ROLES = "userRoles";
-  @SerializedName(SERIALIZED_NAME_USER_ROLES)
-  @javax.annotation.Nullable
-  private List<IsvUserRolesDto> userRoles;
+  public static final String JSON_PROPERTY_USER_ROLES = "userRoles";
+  private JsonNullable<List<IsvUserRolesDto>> userRoles = JsonNullable.<List<IsvUserRolesDto>>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ROLE_CONTEXT = "userRoleContext";
-  @SerializedName(SERIALIZED_NAME_USER_ROLE_CONTEXT)
-  @javax.annotation.Nullable
-  private UserRoleContextDto userRoleContext;
+  public static final String JSON_PROPERTY_USER_ROLE_CONTEXT = "userRoleContext";
+  private JsonNullable<UserRoleContextDto> userRoleContext = JsonNullable.<UserRoleContextDto>undefined();
 
-  public UserRolesDto() {
+  public UserRolesDto() { 
   }
 
-  public UserRolesDto userRoles(@javax.annotation.Nullable List<IsvUserRolesDto> userRoles) {
-    this.userRoles = userRoles;
+  public UserRolesDto userRoles(@jakarta.annotation.Nullable List<IsvUserRolesDto> userRoles) {
+    this.userRoles = JsonNullable.<List<IsvUserRolesDto>>of(userRoles);
     return this;
   }
 
   public UserRolesDto addUserRolesItem(IsvUserRolesDto userRolesItem) {
-    if (this.userRoles == null) {
-      this.userRoles = new ArrayList<>();
+    if (this.userRoles == null || !this.userRoles.isPresent()) {
+      this.userRoles = JsonNullable.<List<IsvUserRolesDto>>of(new ArrayList<>());
     }
-    this.userRoles.add(userRolesItem);
+    try {
+      this.userRoles.get().add(userRolesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -85,18 +76,31 @@ public class UserRolesDto {
    * Get userRoles
    * @return userRoles
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<IsvUserRolesDto> getUserRoles() {
-    return userRoles;
+        return userRoles.orElse(null);
   }
 
-  public void setUserRoles(@javax.annotation.Nullable List<IsvUserRolesDto> userRoles) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ROLES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<IsvUserRolesDto>> getUserRoles_JsonNullable() {
+    return userRoles;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ROLES)
+  public void setUserRoles_JsonNullable(JsonNullable<List<IsvUserRolesDto>> userRoles) {
     this.userRoles = userRoles;
   }
 
+  public void setUserRoles(@jakarta.annotation.Nullable List<IsvUserRolesDto> userRoles) {
+    this.userRoles = JsonNullable.<List<IsvUserRolesDto>>of(userRoles);
+  }
 
-  public UserRolesDto userRoleContext(@javax.annotation.Nullable UserRoleContextDto userRoleContext) {
-    this.userRoleContext = userRoleContext;
+
+  public UserRolesDto userRoleContext(@jakarta.annotation.Nullable UserRoleContextDto userRoleContext) {
+    this.userRoleContext = JsonNullable.<UserRoleContextDto>of(userRoleContext);
     return this;
   }
 
@@ -104,17 +108,32 @@ public class UserRolesDto {
    * Get userRoleContext
    * @return userRoleContext
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UserRoleContextDto getUserRoleContext() {
-    return userRoleContext;
+        return userRoleContext.orElse(null);
   }
 
-  public void setUserRoleContext(@javax.annotation.Nullable UserRoleContextDto userRoleContext) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ROLE_CONTEXT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UserRoleContextDto> getUserRoleContext_JsonNullable() {
+    return userRoleContext;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ROLE_CONTEXT)
+  public void setUserRoleContext_JsonNullable(JsonNullable<UserRoleContextDto> userRoleContext) {
     this.userRoleContext = userRoleContext;
   }
 
+  public void setUserRoleContext(@jakarta.annotation.Nullable UserRoleContextDto userRoleContext) {
+    this.userRoleContext = JsonNullable.<UserRoleContextDto>of(userRoleContext);
+  }
 
 
+  /**
+   * Return true if this UserRolesDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -124,8 +143,8 @@ public class UserRolesDto {
       return false;
     }
     UserRolesDto userRolesDto = (UserRolesDto) o;
-    return Objects.equals(this.userRoles, userRolesDto.userRoles) &&
-        Objects.equals(this.userRoleContext, userRolesDto.userRoleContext);
+    return equalsNullable(this.userRoles, userRolesDto.userRoles) &&
+        equalsNullable(this.userRoleContext, userRolesDto.userRoleContext);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -134,7 +153,7 @@ public class UserRolesDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(userRoles, userRoleContext);
+    return Objects.hash(hashCodeNullable(userRoles), hashCodeNullable(userRoleContext));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -165,106 +184,54 @@ public class UserRolesDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("userRoles", "userRoleContext"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to UserRolesDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!UserRolesDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in UserRolesDto is not found in the empty JSON string", UserRolesDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!UserRolesDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `UserRolesDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (jsonObj.get("userRoles") != null && !jsonObj.get("userRoles").isJsonNull()) {
-        JsonArray jsonArrayuserRoles = jsonObj.getAsJsonArray("userRoles");
-        if (jsonArrayuserRoles != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("userRoles").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `userRoles` to be an array in the JSON string but got `%s`", jsonObj.get("userRoles").toString()));
-          }
-
-          // validate the optional field `userRoles` (array)
-          for (int i = 0; i < jsonArrayuserRoles.size(); i++) {
-            IsvUserRolesDto.validateJsonElement(jsonArrayuserRoles.get(i));
-          };
-        }
-      }
-      // validate the optional field `userRoleContext`
-      if (jsonObj.get("userRoleContext") != null && !jsonObj.get("userRoleContext").isJsonNull()) {
-        UserRoleContextDto.validateJsonElement(jsonObj.get("userRoleContext"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!UserRolesDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'UserRolesDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<UserRolesDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(UserRolesDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<UserRolesDto>() {
-           @Override
-           public void write(JsonWriter out, UserRolesDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public UserRolesDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of UserRolesDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of UserRolesDto
-   * @throws IOException if the JSON string is invalid with respect to UserRolesDto
-   */
-  public static UserRolesDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, UserRolesDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of UserRolesDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `userRoles` to the URL query string
+    if (getUserRoles() != null) {
+      for (int i = 0; i < getUserRoles().size(); i++) {
+        if (getUserRoles().get(i) != null) {
+          joiner.add(getUserRoles().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%suserRoles%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `userRoleContext` to the URL query string
+    if (getUserRoleContext() != null) {
+      joiner.add(getUserRoleContext().toUrlQueryString(prefix + "userRoleContext" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

@@ -2,7 +2,8 @@
 
 SLASCONE API
 - API version: v2
-  - Generator version: 7.14.0
+
+- Generator version: 7.21.0-SNAPSHOT
 
 Please visit our official [Documentation](https://support.slascone.com/hc/en-us/sections/360004685737-API) and/or our [GitHub repository](https://github.com/slascone/) and/or our [NuGet package](https://www.nuget.org/packages/Slascone.Client/). Always use Version 2 of this API (Version 1.3 is deprecated).
 

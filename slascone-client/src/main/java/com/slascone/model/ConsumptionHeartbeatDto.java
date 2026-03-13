@@ -13,113 +13,100 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.LicenseUserDto;
 import com.slascone.model.LimitationDto;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * ConsumptionHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  ConsumptionHeartbeatDto.JSON_PROPERTY_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_VALUE,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_REMAINING,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_BALANCE,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_ASSIGNMENT_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_CLIENT_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_LICENSE_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_LIMITATION_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_LIMITATION,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_USER_ID,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_LICENSE_USER,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  ConsumptionHeartbeatDto.JSON_PROPERTY_EXTERNAL_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ConsumptionHeartbeatDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nullable
   private BigDecimal value;
 
-  public static final String SERIALIZED_NAME_REMAINING = "remaining";
-  @SerializedName(SERIALIZED_NAME_REMAINING)
-  @javax.annotation.Nullable
-  private BigDecimal remaining;
+  public static final String JSON_PROPERTY_REMAINING = "remaining";
+  private JsonNullable<BigDecimal> remaining = JsonNullable.<BigDecimal>undefined();
 
-  public static final String SERIALIZED_NAME_ASSIGNMENT_ID = "assignment_id";
-  @SerializedName(SERIALIZED_NAME_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_BALANCE = "balance";
+  private JsonNullable<BigDecimal> balance = JsonNullable.<BigDecimal>undefined();
+
+  public static final String JSON_PROPERTY_ASSIGNMENT_ID = "assignment_id";
+  @jakarta.annotation.Nullable
   private UUID assignmentId;
 
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nullable
-  private String clientId;
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  private JsonNullable<String> clientId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  @jakarta.annotation.Nullable
   private UUID licenseId;
 
-  public static final String SERIALIZED_NAME_LIMITATION_ID = "limitation_id";
-  @SerializedName(SERIALIZED_NAME_LIMITATION_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_LIMITATION_ID = "limitation_id";
+  @jakarta.annotation.Nullable
   private UUID limitationId;
 
-  public static final String SERIALIZED_NAME_LIMITATION = "limitation";
-  @SerializedName(SERIALIZED_NAME_LIMITATION)
-  @javax.annotation.Nullable
-  private LimitationDto limitation;
+  public static final String JSON_PROPERTY_LIMITATION = "limitation";
+  private JsonNullable<LimitationDto> limitation = JsonNullable.<LimitationDto>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_USER = "license_user";
-  @SerializedName(SERIALIZED_NAME_LICENSE_USER)
-  @javax.annotation.Nullable
-  private LicenseUserDto licenseUser;
+  public static final String JSON_PROPERTY_LICENSE_USER = "license_user";
+  private JsonNullable<LicenseUserDto> licenseUser = JsonNullable.<LicenseUserDto>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public static final String SERIALIZED_NAME_EXTERNAL_ID = "external_id";
-  @SerializedName(SERIALIZED_NAME_EXTERNAL_ID)
-  @javax.annotation.Nullable
-  private String externalId;
+  public static final String JSON_PROPERTY_EXTERNAL_ID = "external_id";
+  private JsonNullable<String> externalId = JsonNullable.<String>undefined();
 
-  public ConsumptionHeartbeatDto() {
+  public ConsumptionHeartbeatDto() { 
   }
 
-  public ConsumptionHeartbeatDto id(@javax.annotation.Nullable UUID id) {
+  public ConsumptionHeartbeatDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -128,17 +115,22 @@ public class ConsumptionHeartbeatDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public ConsumptionHeartbeatDto value(@javax.annotation.Nullable BigDecimal value) {
+  public ConsumptionHeartbeatDto value(@jakarta.annotation.Nullable BigDecimal value) {
     this.value = value;
     return this;
   }
@@ -147,18 +139,23 @@ public class ConsumptionHeartbeatDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public BigDecimal getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nullable BigDecimal value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValue(@jakarta.annotation.Nullable BigDecimal value) {
     this.value = value;
   }
 
 
-  public ConsumptionHeartbeatDto remaining(@javax.annotation.Nullable BigDecimal remaining) {
-    this.remaining = remaining;
+  public ConsumptionHeartbeatDto remaining(@jakarta.annotation.Nullable BigDecimal remaining) {
+    this.remaining = JsonNullable.<BigDecimal>of(remaining);
     return this;
   }
 
@@ -166,17 +163,62 @@ public class ConsumptionHeartbeatDto {
    * Get remaining
    * @return remaining
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public BigDecimal getRemaining() {
-    return remaining;
+        return remaining.orElse(null);
   }
 
-  public void setRemaining(@javax.annotation.Nullable BigDecimal remaining) {
+  @JsonProperty(value = JSON_PROPERTY_REMAINING, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getRemaining_JsonNullable() {
+    return remaining;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_REMAINING)
+  public void setRemaining_JsonNullable(JsonNullable<BigDecimal> remaining) {
     this.remaining = remaining;
   }
 
+  public void setRemaining(@jakarta.annotation.Nullable BigDecimal remaining) {
+    this.remaining = JsonNullable.<BigDecimal>of(remaining);
+  }
 
-  public ConsumptionHeartbeatDto assignmentId(@javax.annotation.Nullable UUID assignmentId) {
+
+  public ConsumptionHeartbeatDto balance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = JsonNullable.<BigDecimal>of(balance);
+    return this;
+  }
+
+  /**
+   * Get balance
+   * @return balance
+   */
+  @jakarta.annotation.Nullable
+  @JsonIgnore
+  public BigDecimal getBalance() {
+        return balance.orElse(null);
+  }
+
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<BigDecimal> getBalance_JsonNullable() {
+    return balance;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_BALANCE)
+  public void setBalance_JsonNullable(JsonNullable<BigDecimal> balance) {
+    this.balance = balance;
+  }
+
+  public void setBalance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = JsonNullable.<BigDecimal>of(balance);
+  }
+
+
+  public ConsumptionHeartbeatDto assignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
     this.assignmentId = assignmentId;
     return this;
   }
@@ -185,18 +227,23 @@ public class ConsumptionHeartbeatDto {
    * Get assignmentId
    * @return assignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getAssignmentId() {
     return assignmentId;
   }
 
-  public void setAssignmentId(@javax.annotation.Nullable UUID assignmentId) {
+
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAssignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
     this.assignmentId = assignmentId;
   }
 
 
-  public ConsumptionHeartbeatDto clientId(@javax.annotation.Nullable String clientId) {
-    this.clientId = clientId;
+  public ConsumptionHeartbeatDto clientId(@jakarta.annotation.Nullable String clientId) {
+    this.clientId = JsonNullable.<String>of(clientId);
     return this;
   }
 
@@ -204,17 +251,30 @@ public class ConsumptionHeartbeatDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getClientId() {
-    return clientId;
+        return clientId.orElse(null);
   }
 
-  public void setClientId(@javax.annotation.Nullable String clientId) {
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getClientId_JsonNullable() {
+    return clientId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CLIENT_ID)
+  public void setClientId_JsonNullable(JsonNullable<String> clientId) {
     this.clientId = clientId;
   }
 
+  public void setClientId(@jakarta.annotation.Nullable String clientId) {
+    this.clientId = JsonNullable.<String>of(clientId);
+  }
 
-  public ConsumptionHeartbeatDto licenseId(@javax.annotation.Nullable UUID licenseId) {
+
+  public ConsumptionHeartbeatDto licenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
     return this;
   }
@@ -223,17 +283,22 @@ public class ConsumptionHeartbeatDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLicenseId() {
     return licenseId;
   }
 
-  public void setLicenseId(@javax.annotation.Nullable UUID licenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLicenseId(@jakarta.annotation.Nullable UUID licenseId) {
     this.licenseId = licenseId;
   }
 
 
-  public ConsumptionHeartbeatDto limitationId(@javax.annotation.Nullable UUID limitationId) {
+  public ConsumptionHeartbeatDto limitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
     return this;
   }
@@ -242,18 +307,23 @@ public class ConsumptionHeartbeatDto {
    * Get limitationId
    * @return limitationId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getLimitationId() {
     return limitationId;
   }
 
-  public void setLimitationId(@javax.annotation.Nullable UUID limitationId) {
+
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setLimitationId(@jakarta.annotation.Nullable UUID limitationId) {
     this.limitationId = limitationId;
   }
 
 
-  public ConsumptionHeartbeatDto limitation(@javax.annotation.Nullable LimitationDto limitation) {
-    this.limitation = limitation;
+  public ConsumptionHeartbeatDto limitation(@jakarta.annotation.Nullable LimitationDto limitation) {
+    this.limitation = JsonNullable.<LimitationDto>of(limitation);
     return this;
   }
 
@@ -261,18 +331,31 @@ public class ConsumptionHeartbeatDto {
    * Get limitation
    * @return limitation
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LimitationDto getLimitation() {
-    return limitation;
+        return limitation.orElse(null);
   }
 
-  public void setLimitation(@javax.annotation.Nullable LimitationDto limitation) {
+  @JsonProperty(value = JSON_PROPERTY_LIMITATION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LimitationDto> getLimitation_JsonNullable() {
+    return limitation;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LIMITATION)
+  public void setLimitation_JsonNullable(JsonNullable<LimitationDto> limitation) {
     this.limitation = limitation;
   }
 
+  public void setLimitation(@jakarta.annotation.Nullable LimitationDto limitation) {
+    this.limitation = JsonNullable.<LimitationDto>of(limitation);
+  }
 
-  public ConsumptionHeartbeatDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+
+  public ConsumptionHeartbeatDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -280,18 +363,31 @@ public class ConsumptionHeartbeatDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public ConsumptionHeartbeatDto licenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
-    this.licenseUser = licenseUser;
+
+  public ConsumptionHeartbeatDto licenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
     return this;
   }
 
@@ -299,17 +395,30 @@ public class ConsumptionHeartbeatDto {
    * Get licenseUser
    * @return licenseUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LicenseUserDto getLicenseUser() {
-    return licenseUser;
+        return licenseUser.orElse(null);
   }
 
-  public void setLicenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LicenseUserDto> getLicenseUser_JsonNullable() {
+    return licenseUser;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_USER)
+  public void setLicenseUser_JsonNullable(JsonNullable<LicenseUserDto> licenseUser) {
     this.licenseUser = licenseUser;
   }
 
+  public void setLicenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
+  }
 
-  public ConsumptionHeartbeatDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public ConsumptionHeartbeatDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -318,18 +427,23 @@ public class ConsumptionHeartbeatDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-  public ConsumptionHeartbeatDto externalId(@javax.annotation.Nullable String externalId) {
-    this.externalId = externalId;
+  public ConsumptionHeartbeatDto externalId(@jakarta.annotation.Nullable String externalId) {
+    this.externalId = JsonNullable.<String>of(externalId);
     return this;
   }
 
@@ -337,17 +451,32 @@ public class ConsumptionHeartbeatDto {
    * Get externalId
    * @return externalId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getExternalId() {
-    return externalId;
+        return externalId.orElse(null);
   }
 
-  public void setExternalId(@javax.annotation.Nullable String externalId) {
+  @JsonProperty(value = JSON_PROPERTY_EXTERNAL_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getExternalId_JsonNullable() {
+    return externalId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_EXTERNAL_ID)
+  public void setExternalId_JsonNullable(JsonNullable<String> externalId) {
     this.externalId = externalId;
   }
 
+  public void setExternalId(@jakarta.annotation.Nullable String externalId) {
+    this.externalId = JsonNullable.<String>of(externalId);
+  }
 
 
+  /**
+   * Return true if this ConsumptionHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -359,16 +488,17 @@ public class ConsumptionHeartbeatDto {
     ConsumptionHeartbeatDto consumptionHeartbeatDto = (ConsumptionHeartbeatDto) o;
     return Objects.equals(this.id, consumptionHeartbeatDto.id) &&
         Objects.equals(this.value, consumptionHeartbeatDto.value) &&
-        Objects.equals(this.remaining, consumptionHeartbeatDto.remaining) &&
+        equalsNullable(this.remaining, consumptionHeartbeatDto.remaining) &&
+        equalsNullable(this.balance, consumptionHeartbeatDto.balance) &&
         Objects.equals(this.assignmentId, consumptionHeartbeatDto.assignmentId) &&
-        Objects.equals(this.clientId, consumptionHeartbeatDto.clientId) &&
+        equalsNullable(this.clientId, consumptionHeartbeatDto.clientId) &&
         Objects.equals(this.licenseId, consumptionHeartbeatDto.licenseId) &&
         Objects.equals(this.limitationId, consumptionHeartbeatDto.limitationId) &&
-        Objects.equals(this.limitation, consumptionHeartbeatDto.limitation) &&
-        Objects.equals(this.userId, consumptionHeartbeatDto.userId) &&
-        Objects.equals(this.licenseUser, consumptionHeartbeatDto.licenseUser) &&
+        equalsNullable(this.limitation, consumptionHeartbeatDto.limitation) &&
+        equalsNullable(this.userId, consumptionHeartbeatDto.userId) &&
+        equalsNullable(this.licenseUser, consumptionHeartbeatDto.licenseUser) &&
         Objects.equals(this.createdDateUtc, consumptionHeartbeatDto.createdDateUtc) &&
-        Objects.equals(this.externalId, consumptionHeartbeatDto.externalId);
+        equalsNullable(this.externalId, consumptionHeartbeatDto.externalId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -377,7 +507,7 @@ public class ConsumptionHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, value, remaining, assignmentId, clientId, licenseId, limitationId, limitation, userId, licenseUser, createdDateUtc, externalId);
+    return Objects.hash(id, value, hashCodeNullable(remaining), hashCodeNullable(balance), assignmentId, hashCodeNullable(clientId), licenseId, limitationId, hashCodeNullable(limitation), hashCodeNullable(userId), hashCodeNullable(licenseUser), createdDateUtc, hashCodeNullable(externalId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -394,6 +524,7 @@ public class ConsumptionHeartbeatDto {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    remaining: ").append(toIndentedString(remaining)).append("\n");
+    sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    assignmentId: ").append(toIndentedString(assignmentId)).append("\n");
     sb.append("    clientId: ").append(toIndentedString(clientId)).append("\n");
     sb.append("    licenseId: ").append(toIndentedString(licenseId)).append("\n");
@@ -418,117 +549,104 @@ public class ConsumptionHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "value", "remaining", "assignment_id", "client_id", "license_id", "limitation_id", "limitation", "user_id", "license_user", "created_date_utc", "external_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to ConsumptionHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!ConsumptionHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in ConsumptionHeartbeatDto is not found in the empty JSON string", ConsumptionHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!ConsumptionHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ConsumptionHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("assignment_id") != null && !jsonObj.get("assignment_id").isJsonNull()) && !jsonObj.get("assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("assignment_id").toString()));
-      }
-      if ((jsonObj.get("client_id") != null && !jsonObj.get("client_id").isJsonNull()) && !jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("limitation_id") != null && !jsonObj.get("limitation_id").isJsonNull()) && !jsonObj.get("limitation_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `limitation_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("limitation_id").toString()));
-      }
-      // validate the optional field `limitation`
-      if (jsonObj.get("limitation") != null && !jsonObj.get("limitation").isJsonNull()) {
-        LimitationDto.validateJsonElement(jsonObj.get("limitation"));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      // validate the optional field `license_user`
-      if (jsonObj.get("license_user") != null && !jsonObj.get("license_user").isJsonNull()) {
-        LicenseUserDto.validateJsonElement(jsonObj.get("license_user"));
-      }
-      if ((jsonObj.get("external_id") != null && !jsonObj.get("external_id").isJsonNull()) && !jsonObj.get("external_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `external_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("external_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!ConsumptionHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'ConsumptionHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<ConsumptionHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(ConsumptionHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<ConsumptionHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, ConsumptionHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public ConsumptionHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of ConsumptionHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of ConsumptionHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to ConsumptionHeartbeatDto
-   */
-  public static ConsumptionHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, ConsumptionHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of ConsumptionHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    // add `remaining` to the URL query string
+    if (getRemaining() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sremaining%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRemaining()))));
+    }
+
+    // add `balance` to the URL query string
+    if (getBalance() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalance%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalance()))));
+    }
+
+    // add `assignment_id` to the URL query string
+    if (getAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sassignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAssignmentId()))));
+    }
+
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `limitation_id` to the URL query string
+    if (getLimitationId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slimitation_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLimitationId()))));
+    }
+
+    // add `limitation` to the URL query string
+    if (getLimitation() != null) {
+      joiner.add(getLimitation().toUrlQueryString(prefix + "limitation" + suffix));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `license_user` to the URL query string
+    if (getLicenseUser() != null) {
+      joiner.add(getLicenseUser().toUrlQueryString(prefix + "license_user" + suffix));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `external_id` to the URL query string
+    if (getExternalId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sexternal_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getExternalId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

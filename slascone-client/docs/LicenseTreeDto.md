@@ -46,6 +46,11 @@
 |**provisioningMode** | **ProvisioningMode** |  |  [optional] |
 |**clientType** | **ClientType** |  |  [optional] |
 |**tagAssignments** | [**List&lt;TagAssignmentDto&gt;**](TagAssignmentDto.md) |  |  [optional] |
+|**resellerId** | **UUID** |  |  [optional] |
+|**resellerNumber** | **String** |  |  [optional] |
+|**resellerEmail** | **String** |  |  [optional] |
+|**resellerName** | **String** |  |  [optional] |
+|**resellerType** | **String** |  |  [optional] |
 
 
 

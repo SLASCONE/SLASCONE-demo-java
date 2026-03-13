@@ -13,67 +13,55 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.ConsumptionHeartbeatValueDto;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * FullConsumptionHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  FullConsumptionHeartbeatDto.JSON_PROPERTY_CLIENT_ID,
+  FullConsumptionHeartbeatDto.JSON_PROPERTY_CONSUMPTION_HEARTBEAT,
+  FullConsumptionHeartbeatDto.JSON_PROPERTY_TOKEN_KEY
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class FullConsumptionHeartbeatDto {
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  @jakarta.annotation.Nonnull
   private String clientId;
 
-  public static final String SERIALIZED_NAME_CONSUMPTION_HEARTBEAT = "consumption_heartbeat";
-  @SerializedName(SERIALIZED_NAME_CONSUMPTION_HEARTBEAT)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_CONSUMPTION_HEARTBEAT = "consumption_heartbeat";
+  @jakarta.annotation.Nonnull
   private List<ConsumptionHeartbeatValueDto> consumptionHeartbeat = new ArrayList<>();
 
-  public static final String SERIALIZED_NAME_TOKEN_KEY = "token_key";
-  @SerializedName(SERIALIZED_NAME_TOKEN_KEY)
-  @javax.annotation.Nullable
-  private UUID tokenKey;
+  public static final String JSON_PROPERTY_TOKEN_KEY = "token_key";
+  private JsonNullable<UUID> tokenKey = JsonNullable.<UUID>undefined();
 
-  public FullConsumptionHeartbeatDto() {
+  public FullConsumptionHeartbeatDto() { 
   }
 
-  public FullConsumptionHeartbeatDto clientId(@javax.annotation.Nonnull String clientId) {
+  public FullConsumptionHeartbeatDto clientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
     return this;
   }
@@ -82,17 +70,22 @@ public class FullConsumptionHeartbeatDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public String getClientId() {
     return clientId;
   }
 
-  public void setClientId(@javax.annotation.Nonnull String clientId) {
+
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setClientId(@jakarta.annotation.Nonnull String clientId) {
     this.clientId = clientId;
   }
 
 
-  public FullConsumptionHeartbeatDto consumptionHeartbeat(@javax.annotation.Nonnull List<ConsumptionHeartbeatValueDto> consumptionHeartbeat) {
+  public FullConsumptionHeartbeatDto consumptionHeartbeat(@jakarta.annotation.Nonnull List<ConsumptionHeartbeatValueDto> consumptionHeartbeat) {
     this.consumptionHeartbeat = consumptionHeartbeat;
     return this;
   }
@@ -109,18 +102,23 @@ public class FullConsumptionHeartbeatDto {
    * Get consumptionHeartbeat
    * @return consumptionHeartbeat
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_HEARTBEAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public List<ConsumptionHeartbeatValueDto> getConsumptionHeartbeat() {
     return consumptionHeartbeat;
   }
 
-  public void setConsumptionHeartbeat(@javax.annotation.Nonnull List<ConsumptionHeartbeatValueDto> consumptionHeartbeat) {
+
+  @JsonProperty(value = JSON_PROPERTY_CONSUMPTION_HEARTBEAT, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setConsumptionHeartbeat(@jakarta.annotation.Nonnull List<ConsumptionHeartbeatValueDto> consumptionHeartbeat) {
     this.consumptionHeartbeat = consumptionHeartbeat;
   }
 
 
-  public FullConsumptionHeartbeatDto tokenKey(@javax.annotation.Nullable UUID tokenKey) {
-    this.tokenKey = tokenKey;
+  public FullConsumptionHeartbeatDto tokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
     return this;
   }
 
@@ -128,17 +126,32 @@ public class FullConsumptionHeartbeatDto {
    * Get tokenKey
    * @return tokenKey
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getTokenKey() {
-    return tokenKey;
+        return tokenKey.orElse(null);
   }
 
-  public void setTokenKey(@javax.annotation.Nullable UUID tokenKey) {
+  @JsonProperty(value = JSON_PROPERTY_TOKEN_KEY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getTokenKey_JsonNullable() {
+    return tokenKey;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TOKEN_KEY)
+  public void setTokenKey_JsonNullable(JsonNullable<UUID> tokenKey) {
     this.tokenKey = tokenKey;
   }
 
+  public void setTokenKey(@jakarta.annotation.Nullable UUID tokenKey) {
+    this.tokenKey = JsonNullable.<UUID>of(tokenKey);
+  }
 
 
+  /**
+   * Return true if this FullConsumptionHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -150,7 +163,7 @@ public class FullConsumptionHeartbeatDto {
     FullConsumptionHeartbeatDto fullConsumptionHeartbeatDto = (FullConsumptionHeartbeatDto) o;
     return Objects.equals(this.clientId, fullConsumptionHeartbeatDto.clientId) &&
         Objects.equals(this.consumptionHeartbeat, fullConsumptionHeartbeatDto.consumptionHeartbeat) &&
-        Objects.equals(this.tokenKey, fullConsumptionHeartbeatDto.tokenKey);
+        equalsNullable(this.tokenKey, fullConsumptionHeartbeatDto.tokenKey);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -159,7 +172,7 @@ public class FullConsumptionHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(clientId, consumptionHeartbeat, tokenKey);
+    return Objects.hash(clientId, consumptionHeartbeat, hashCodeNullable(tokenKey));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -191,111 +204,59 @@ public class FullConsumptionHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("client_id", "consumption_heartbeat", "token_key"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("client_id", "consumption_heartbeat"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to FullConsumptionHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!FullConsumptionHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in FullConsumptionHeartbeatDto is not found in the empty JSON string", FullConsumptionHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!FullConsumptionHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `FullConsumptionHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : FullConsumptionHeartbeatDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if (!jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      // ensure the json data is an array
-      if (!jsonObj.get("consumption_heartbeat").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `consumption_heartbeat` to be an array in the JSON string but got `%s`", jsonObj.get("consumption_heartbeat").toString()));
-      }
-
-      JsonArray jsonArrayconsumptionHeartbeat = jsonObj.getAsJsonArray("consumption_heartbeat");
-      // validate the required field `consumption_heartbeat` (array)
-      for (int i = 0; i < jsonArrayconsumptionHeartbeat.size(); i++) {
-        ConsumptionHeartbeatValueDto.validateJsonElement(jsonArrayconsumptionHeartbeat.get(i));
-      };
-      if ((jsonObj.get("token_key") != null && !jsonObj.get("token_key").isJsonNull()) && !jsonObj.get("token_key").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_key` to be a primitive type in the JSON string but got `%s`", jsonObj.get("token_key").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!FullConsumptionHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'FullConsumptionHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<FullConsumptionHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(FullConsumptionHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<FullConsumptionHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, FullConsumptionHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public FullConsumptionHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of FullConsumptionHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of FullConsumptionHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to FullConsumptionHeartbeatDto
-   */
-  public static FullConsumptionHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, FullConsumptionHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of FullConsumptionHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `consumption_heartbeat` to the URL query string
+    if (getConsumptionHeartbeat() != null) {
+      for (int i = 0; i < getConsumptionHeartbeat().size(); i++) {
+        if (getConsumptionHeartbeat().get(i) != null) {
+          joiner.add(getConsumptionHeartbeat().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%sconsumption_heartbeat%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `token_key` to the URL query string
+    if (getTokenKey() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stoken_key%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTokenKey()))));
+    }
+
+    return joiner.toString();
   }
 }
 

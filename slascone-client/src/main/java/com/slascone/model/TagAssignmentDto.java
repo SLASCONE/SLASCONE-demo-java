@@ -13,74 +13,60 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * TagAssignmentDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  TagAssignmentDto.JSON_PROPERTY_ID,
+  TagAssignmentDto.JSON_PROPERTY_TAG_ID,
+  TagAssignmentDto.JSON_PROPERTY_CUSTOMER_ID,
+  TagAssignmentDto.JSON_PROPERTY_LICENSE_ID,
+  TagAssignmentDto.JSON_PROPERTY_ASSIGNMENT_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class TagAssignmentDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private Integer id;
 
-  public static final String SERIALIZED_NAME_TAG_ID = "tag_id";
-  @SerializedName(SERIALIZED_NAME_TAG_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_TAG_ID = "tag_id";
+  @jakarta.annotation.Nullable
   private Integer tagId;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_ID = "customer_id";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_ID)
-  @javax.annotation.Nullable
-  private UUID customerId;
+  public static final String JSON_PROPERTY_CUSTOMER_ID = "customer_id";
+  private JsonNullable<UUID> customerId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_ID = "license_id";
-  @SerializedName(SERIALIZED_NAME_LICENSE_ID)
-  @javax.annotation.Nullable
-  private UUID licenseId;
+  public static final String JSON_PROPERTY_LICENSE_ID = "license_id";
+  private JsonNullable<UUID> licenseId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_ASSIGNMENT_ID = "assignment_id";
-  @SerializedName(SERIALIZED_NAME_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
-  private UUID assignmentId;
+  public static final String JSON_PROPERTY_ASSIGNMENT_ID = "assignment_id";
+  private JsonNullable<UUID> assignmentId = JsonNullable.<UUID>undefined();
 
-  public TagAssignmentDto() {
+  public TagAssignmentDto() { 
   }
 
-  public TagAssignmentDto id(@javax.annotation.Nullable Integer id) {
+  public TagAssignmentDto id(@jakarta.annotation.Nullable Integer id) {
     this.id = id;
     return this;
   }
@@ -89,17 +75,22 @@ public class TagAssignmentDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable Integer id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable Integer id) {
     this.id = id;
   }
 
 
-  public TagAssignmentDto tagId(@javax.annotation.Nullable Integer tagId) {
+  public TagAssignmentDto tagId(@jakarta.annotation.Nullable Integer tagId) {
     this.tagId = tagId;
     return this;
   }
@@ -108,18 +99,23 @@ public class TagAssignmentDto {
    * Get tagId
    * @return tagId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_TAG_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getTagId() {
     return tagId;
   }
 
-  public void setTagId(@javax.annotation.Nullable Integer tagId) {
+
+  @JsonProperty(value = JSON_PROPERTY_TAG_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setTagId(@jakarta.annotation.Nullable Integer tagId) {
     this.tagId = tagId;
   }
 
 
-  public TagAssignmentDto customerId(@javax.annotation.Nullable UUID customerId) {
-    this.customerId = customerId;
+  public TagAssignmentDto customerId(@jakarta.annotation.Nullable UUID customerId) {
+    this.customerId = JsonNullable.<UUID>of(customerId);
     return this;
   }
 
@@ -127,18 +123,31 @@ public class TagAssignmentDto {
    * Get customerId
    * @return customerId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getCustomerId() {
-    return customerId;
+        return customerId.orElse(null);
   }
 
-  public void setCustomerId(@javax.annotation.Nullable UUID customerId) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getCustomerId_JsonNullable() {
+    return customerId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_ID)
+  public void setCustomerId_JsonNullable(JsonNullable<UUID> customerId) {
     this.customerId = customerId;
   }
 
+  public void setCustomerId(@jakarta.annotation.Nullable UUID customerId) {
+    this.customerId = JsonNullable.<UUID>of(customerId);
+  }
 
-  public TagAssignmentDto licenseId(@javax.annotation.Nullable UUID licenseId) {
-    this.licenseId = licenseId;
+
+  public TagAssignmentDto licenseId(@jakarta.annotation.Nullable UUID licenseId) {
+    this.licenseId = JsonNullable.<UUID>of(licenseId);
     return this;
   }
 
@@ -146,18 +155,31 @@ public class TagAssignmentDto {
    * Get licenseId
    * @return licenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getLicenseId() {
-    return licenseId;
+        return licenseId.orElse(null);
   }
 
-  public void setLicenseId(@javax.annotation.Nullable UUID licenseId) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getLicenseId_JsonNullable() {
+    return licenseId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_ID)
+  public void setLicenseId_JsonNullable(JsonNullable<UUID> licenseId) {
     this.licenseId = licenseId;
   }
 
+  public void setLicenseId(@jakarta.annotation.Nullable UUID licenseId) {
+    this.licenseId = JsonNullable.<UUID>of(licenseId);
+  }
 
-  public TagAssignmentDto assignmentId(@javax.annotation.Nullable UUID assignmentId) {
-    this.assignmentId = assignmentId;
+
+  public TagAssignmentDto assignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
+    this.assignmentId = JsonNullable.<UUID>of(assignmentId);
     return this;
   }
 
@@ -165,17 +187,32 @@ public class TagAssignmentDto {
    * Get assignmentId
    * @return assignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getAssignmentId() {
-    return assignmentId;
+        return assignmentId.orElse(null);
   }
 
-  public void setAssignmentId(@javax.annotation.Nullable UUID assignmentId) {
+  @JsonProperty(value = JSON_PROPERTY_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getAssignmentId_JsonNullable() {
+    return assignmentId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ASSIGNMENT_ID)
+  public void setAssignmentId_JsonNullable(JsonNullable<UUID> assignmentId) {
     this.assignmentId = assignmentId;
   }
 
+  public void setAssignmentId(@jakarta.annotation.Nullable UUID assignmentId) {
+    this.assignmentId = JsonNullable.<UUID>of(assignmentId);
+  }
 
 
+  /**
+   * Return true if this TagAssignmentDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -187,9 +224,9 @@ public class TagAssignmentDto {
     TagAssignmentDto tagAssignmentDto = (TagAssignmentDto) o;
     return Objects.equals(this.id, tagAssignmentDto.id) &&
         Objects.equals(this.tagId, tagAssignmentDto.tagId) &&
-        Objects.equals(this.customerId, tagAssignmentDto.customerId) &&
-        Objects.equals(this.licenseId, tagAssignmentDto.licenseId) &&
-        Objects.equals(this.assignmentId, tagAssignmentDto.assignmentId);
+        equalsNullable(this.customerId, tagAssignmentDto.customerId) &&
+        equalsNullable(this.licenseId, tagAssignmentDto.licenseId) &&
+        equalsNullable(this.assignmentId, tagAssignmentDto.assignmentId);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -198,7 +235,7 @@ public class TagAssignmentDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tagId, customerId, licenseId, assignmentId);
+    return Objects.hash(id, tagId, hashCodeNullable(customerId), hashCodeNullable(licenseId), hashCodeNullable(assignmentId));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -232,97 +269,64 @@ public class TagAssignmentDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "tag_id", "customer_id", "license_id", "assignment_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to TagAssignmentDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!TagAssignmentDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in TagAssignmentDto is not found in the empty JSON string", TagAssignmentDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!TagAssignmentDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `TagAssignmentDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("customer_id") != null && !jsonObj.get("customer_id").isJsonNull()) && !jsonObj.get("customer_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_id").toString()));
-      }
-      if ((jsonObj.get("license_id") != null && !jsonObj.get("license_id").isJsonNull()) && !jsonObj.get("license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("license_id").toString()));
-      }
-      if ((jsonObj.get("assignment_id") != null && !jsonObj.get("assignment_id").isJsonNull()) && !jsonObj.get("assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("assignment_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!TagAssignmentDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'TagAssignmentDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<TagAssignmentDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(TagAssignmentDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<TagAssignmentDto>() {
-           @Override
-           public void write(JsonWriter out, TagAssignmentDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public TagAssignmentDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of TagAssignmentDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of TagAssignmentDto
-   * @throws IOException if the JSON string is invalid with respect to TagAssignmentDto
-   */
-  public static TagAssignmentDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, TagAssignmentDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of TagAssignmentDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `tag_id` to the URL query string
+    if (getTagId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%stag_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getTagId()))));
+    }
+
+    // add `customer_id` to the URL query string
+    if (getCustomerId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerId()))));
+    }
+
+    // add `license_id` to the URL query string
+    if (getLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slicense_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLicenseId()))));
+    }
+
+    // add `assignment_id` to the URL query string
+    if (getAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sassignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getAssignmentId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

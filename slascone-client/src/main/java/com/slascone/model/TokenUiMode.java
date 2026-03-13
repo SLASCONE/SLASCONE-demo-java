@@ -13,20 +13,21 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.annotations.SerializedName;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.io.IOException;
-import com.google.gson.TypeAdapter;
-import com.google.gson.JsonElement;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * 
  */
-@JsonAdapter(TokenUiMode.Adapter.class)
 public enum TokenUiMode {
   
   NUMBER_0(0),
@@ -39,6 +40,7 @@ public enum TokenUiMode {
     this.value = value;
   }
 
+  @JsonValue
   public Integer getValue() {
     return value;
   }
@@ -48,6 +50,7 @@ public enum TokenUiMode {
     return String.valueOf(value);
   }
 
+  @JsonCreator
   public static TokenUiMode fromValue(Integer value) {
     for (TokenUiMode b : TokenUiMode.values()) {
       if (b.value.equals(value)) {
@@ -57,22 +60,19 @@ public enum TokenUiMode {
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 
-  public static class Adapter extends TypeAdapter<TokenUiMode> {
-    @Override
-    public void write(final JsonWriter jsonWriter, final TokenUiMode enumeration) throws IOException {
-      jsonWriter.value(enumeration.getValue());
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @param prefix prefix of the query string
+   * @return URL query string
+   */
+  public String toUrlQueryString(String prefix) {
+    if (prefix == null) {
+      prefix = "";
     }
 
-    @Override
-    public TokenUiMode read(final JsonReader jsonReader) throws IOException {
-      Integer value = jsonReader.nextInt();
-      return TokenUiMode.fromValue(value);
-    }
+    return String.format(java.util.Locale.ROOT, "%s=%s", prefix, this.toString());
   }
 
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-    Integer value = jsonElement.getAsInt();
-    TokenUiMode.fromValue(value);
-  }
 }
 

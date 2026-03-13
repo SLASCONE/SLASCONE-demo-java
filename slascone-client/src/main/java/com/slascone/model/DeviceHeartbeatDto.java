@@ -13,153 +13,126 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.HeartbeatTypeDto;
 import com.slascone.model.LicenseUserDto;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * DeviceHeartbeatDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  DeviceHeartbeatDto.JSON_PROPERTY_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_SOFTWARE_VERSION,
+  DeviceHeartbeatDto.JSON_PROPERTY_OPERATING_SYSTEM,
+  DeviceHeartbeatDto.JSON_PROPERTY_IP_ADDRESS,
+  DeviceHeartbeatDto.JSON_PROPERTY_CLIENT_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_COUNTRY,
+  DeviceHeartbeatDto.JSON_PROPERTY_CITY,
+  DeviceHeartbeatDto.JSON_PROPERTY_ZIP,
+  DeviceHeartbeatDto.JSON_PROPERTY_LATITUDE,
+  DeviceHeartbeatDto.JSON_PROPERTY_LONGITUDE,
+  DeviceHeartbeatDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  DeviceHeartbeatDto.JSON_PROPERTY_DEVICE_LICENSE_ASSIGNMENT_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_DEVICE_LICENSE_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_CUSTOMER_NAME,
+  DeviceHeartbeatDto.JSON_PROPERTY_HEARTBEAT_TYPE_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_HEARTBEAT_TYPE,
+  DeviceHeartbeatDto.JSON_PROPERTY_USER_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_LICENSE_USER,
+  DeviceHeartbeatDto.JSON_PROPERTY_GROUP_ID,
+  DeviceHeartbeatDto.JSON_PROPERTY_VALUE
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class DeviceHeartbeatDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
-  private UUID id;
+  public static final String JSON_PROPERTY_ID = "id";
+  private JsonNullable<UUID> id = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_VERSION = "software_version";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_VERSION)
-  @javax.annotation.Nullable
-  private String softwareVersion;
+  public static final String JSON_PROPERTY_SOFTWARE_VERSION = "software_version";
+  private JsonNullable<String> softwareVersion = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_OPERATING_SYSTEM = "operating_system";
-  @SerializedName(SERIALIZED_NAME_OPERATING_SYSTEM)
-  @javax.annotation.Nullable
-  private String operatingSystem;
+  public static final String JSON_PROPERTY_OPERATING_SYSTEM = "operating_system";
+  private JsonNullable<String> operatingSystem = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IP_ADDRESS = "ip_address";
-  @SerializedName(SERIALIZED_NAME_IP_ADDRESS)
-  @javax.annotation.Nullable
-  private String ipAddress;
+  public static final String JSON_PROPERTY_IP_ADDRESS = "ip_address";
+  private JsonNullable<String> ipAddress = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CLIENT_ID = "client_id";
-  @SerializedName(SERIALIZED_NAME_CLIENT_ID)
-  @javax.annotation.Nullable
-  private String clientId;
+  public static final String JSON_PROPERTY_CLIENT_ID = "client_id";
+  private JsonNullable<String> clientId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_COUNTRY = "country";
-  @SerializedName(SERIALIZED_NAME_COUNTRY)
-  @javax.annotation.Nullable
-  private String country;
+  public static final String JSON_PROPERTY_COUNTRY = "country";
+  private JsonNullable<String> country = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CITY = "city";
-  @SerializedName(SERIALIZED_NAME_CITY)
-  @javax.annotation.Nullable
-  private String city;
+  public static final String JSON_PROPERTY_CITY = "city";
+  private JsonNullable<String> city = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_ZIP = "zip";
-  @SerializedName(SERIALIZED_NAME_ZIP)
-  @javax.annotation.Nullable
-  private String zip;
+  public static final String JSON_PROPERTY_ZIP = "zip";
+  private JsonNullable<String> zip = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LATITUDE = "latitude";
-  @SerializedName(SERIALIZED_NAME_LATITUDE)
-  @javax.annotation.Nullable
-  private String latitude;
+  public static final String JSON_PROPERTY_LATITUDE = "latitude";
+  private JsonNullable<String> latitude = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LONGITUDE = "longitude";
-  @SerializedName(SERIALIZED_NAME_LONGITUDE)
-  @javax.annotation.Nullable
-  private String longitude;
+  public static final String JSON_PROPERTY_LONGITUDE = "longitude";
+  private JsonNullable<String> longitude = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  @jakarta.annotation.Nullable
   private OffsetDateTime createdDateUtc;
 
-  public static final String SERIALIZED_NAME_DEVICE_LICENSE_ASSIGNMENT_ID = "device_license_assignment_id";
-  @SerializedName(SERIALIZED_NAME_DEVICE_LICENSE_ASSIGNMENT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DEVICE_LICENSE_ASSIGNMENT_ID = "device_license_assignment_id";
+  @jakarta.annotation.Nullable
   private UUID deviceLicenseAssignmentId;
 
-  public static final String SERIALIZED_NAME_DEVICE_LICENSE_ID = "device_license_id";
-  @SerializedName(SERIALIZED_NAME_DEVICE_LICENSE_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_DEVICE_LICENSE_ID = "device_license_id";
+  @jakarta.annotation.Nullable
   private UUID deviceLicenseId;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NAME = "customer_name";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NAME)
-  @javax.annotation.Nullable
-  private String customerName;
+  public static final String JSON_PROPERTY_CUSTOMER_NAME = "customer_name";
+  private JsonNullable<String> customerName = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_HEARTBEAT_TYPE_ID = "heartbeat_type_id";
-  @SerializedName(SERIALIZED_NAME_HEARTBEAT_TYPE_ID)
-  @javax.annotation.Nullable
-  private UUID heartbeatTypeId;
+  public static final String JSON_PROPERTY_HEARTBEAT_TYPE_ID = "heartbeat_type_id";
+  private JsonNullable<UUID> heartbeatTypeId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_HEARTBEAT_TYPE = "heartbeat_type";
-  @SerializedName(SERIALIZED_NAME_HEARTBEAT_TYPE)
-  @javax.annotation.Nullable
-  private HeartbeatTypeDto heartbeatType;
+  public static final String JSON_PROPERTY_HEARTBEAT_TYPE = "heartbeat_type";
+  private JsonNullable<HeartbeatTypeDto> heartbeatType = JsonNullable.<HeartbeatTypeDto>undefined();
 
-  public static final String SERIALIZED_NAME_USER_ID = "user_id";
-  @SerializedName(SERIALIZED_NAME_USER_ID)
-  @javax.annotation.Nullable
-  private String userId;
+  public static final String JSON_PROPERTY_USER_ID = "user_id";
+  private JsonNullable<String> userId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_USER = "license_user";
-  @SerializedName(SERIALIZED_NAME_LICENSE_USER)
-  @javax.annotation.Nullable
-  private LicenseUserDto licenseUser;
+  public static final String JSON_PROPERTY_LICENSE_USER = "license_user";
+  private JsonNullable<LicenseUserDto> licenseUser = JsonNullable.<LicenseUserDto>undefined();
 
-  public static final String SERIALIZED_NAME_GROUP_ID = "group_id";
-  @SerializedName(SERIALIZED_NAME_GROUP_ID)
-  @javax.annotation.Nullable
-  private String groupId;
+  public static final String JSON_PROPERTY_GROUP_ID = "group_id";
+  private JsonNullable<String> groupId = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_VALUE = "value";
-  @SerializedName(SERIALIZED_NAME_VALUE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_VALUE = "value";
+  @jakarta.annotation.Nullable
   private Integer value;
 
-  public DeviceHeartbeatDto() {
+  public DeviceHeartbeatDto() { 
   }
 
-  public DeviceHeartbeatDto id(@javax.annotation.Nullable UUID id) {
-    this.id = id;
+  public DeviceHeartbeatDto id(@jakarta.annotation.Nullable UUID id) {
+    this.id = JsonNullable.<UUID>of(id);
     return this;
   }
 
@@ -167,18 +140,31 @@ public class DeviceHeartbeatDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getId() {
-    return id;
+        return id.orElse(null);
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getId_JsonNullable() {
+    return id;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ID)
+  public void setId_JsonNullable(JsonNullable<UUID> id) {
     this.id = id;
   }
 
+  public void setId(@jakarta.annotation.Nullable UUID id) {
+    this.id = JsonNullable.<UUID>of(id);
+  }
 
-  public DeviceHeartbeatDto softwareVersion(@javax.annotation.Nullable String softwareVersion) {
-    this.softwareVersion = softwareVersion;
+
+  public DeviceHeartbeatDto softwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
     return this;
   }
 
@@ -186,18 +172,31 @@ public class DeviceHeartbeatDto {
    * Get softwareVersion
    * @return softwareVersion
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSoftwareVersion() {
-    return softwareVersion;
+        return softwareVersion.orElse(null);
   }
 
-  public void setSoftwareVersion(@javax.annotation.Nullable String softwareVersion) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSoftwareVersion_JsonNullable() {
+    return softwareVersion;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_VERSION)
+  public void setSoftwareVersion_JsonNullable(JsonNullable<String> softwareVersion) {
     this.softwareVersion = softwareVersion;
   }
 
+  public void setSoftwareVersion(@jakarta.annotation.Nullable String softwareVersion) {
+    this.softwareVersion = JsonNullable.<String>of(softwareVersion);
+  }
 
-  public DeviceHeartbeatDto operatingSystem(@javax.annotation.Nullable String operatingSystem) {
-    this.operatingSystem = operatingSystem;
+
+  public DeviceHeartbeatDto operatingSystem(@jakarta.annotation.Nullable String operatingSystem) {
+    this.operatingSystem = JsonNullable.<String>of(operatingSystem);
     return this;
   }
 
@@ -205,18 +204,31 @@ public class DeviceHeartbeatDto {
    * Get operatingSystem
    * @return operatingSystem
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getOperatingSystem() {
-    return operatingSystem;
+        return operatingSystem.orElse(null);
   }
 
-  public void setOperatingSystem(@javax.annotation.Nullable String operatingSystem) {
+  @JsonProperty(value = JSON_PROPERTY_OPERATING_SYSTEM, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getOperatingSystem_JsonNullable() {
+    return operatingSystem;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_OPERATING_SYSTEM)
+  public void setOperatingSystem_JsonNullable(JsonNullable<String> operatingSystem) {
     this.operatingSystem = operatingSystem;
   }
 
+  public void setOperatingSystem(@jakarta.annotation.Nullable String operatingSystem) {
+    this.operatingSystem = JsonNullable.<String>of(operatingSystem);
+  }
 
-  public DeviceHeartbeatDto ipAddress(@javax.annotation.Nullable String ipAddress) {
-    this.ipAddress = ipAddress;
+
+  public DeviceHeartbeatDto ipAddress(@jakarta.annotation.Nullable String ipAddress) {
+    this.ipAddress = JsonNullable.<String>of(ipAddress);
     return this;
   }
 
@@ -224,18 +236,31 @@ public class DeviceHeartbeatDto {
    * Get ipAddress
    * @return ipAddress
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getIpAddress() {
-    return ipAddress;
+        return ipAddress.orElse(null);
   }
 
-  public void setIpAddress(@javax.annotation.Nullable String ipAddress) {
+  @JsonProperty(value = JSON_PROPERTY_IP_ADDRESS, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getIpAddress_JsonNullable() {
+    return ipAddress;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IP_ADDRESS)
+  public void setIpAddress_JsonNullable(JsonNullable<String> ipAddress) {
     this.ipAddress = ipAddress;
   }
 
+  public void setIpAddress(@jakarta.annotation.Nullable String ipAddress) {
+    this.ipAddress = JsonNullable.<String>of(ipAddress);
+  }
 
-  public DeviceHeartbeatDto clientId(@javax.annotation.Nullable String clientId) {
-    this.clientId = clientId;
+
+  public DeviceHeartbeatDto clientId(@jakarta.annotation.Nullable String clientId) {
+    this.clientId = JsonNullable.<String>of(clientId);
     return this;
   }
 
@@ -243,18 +268,31 @@ public class DeviceHeartbeatDto {
    * Get clientId
    * @return clientId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getClientId() {
-    return clientId;
+        return clientId.orElse(null);
   }
 
-  public void setClientId(@javax.annotation.Nullable String clientId) {
+  @JsonProperty(value = JSON_PROPERTY_CLIENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getClientId_JsonNullable() {
+    return clientId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CLIENT_ID)
+  public void setClientId_JsonNullable(JsonNullable<String> clientId) {
     this.clientId = clientId;
   }
 
+  public void setClientId(@jakarta.annotation.Nullable String clientId) {
+    this.clientId = JsonNullable.<String>of(clientId);
+  }
 
-  public DeviceHeartbeatDto country(@javax.annotation.Nullable String country) {
-    this.country = country;
+
+  public DeviceHeartbeatDto country(@jakarta.annotation.Nullable String country) {
+    this.country = JsonNullable.<String>of(country);
     return this;
   }
 
@@ -262,18 +300,31 @@ public class DeviceHeartbeatDto {
    * Get country
    * @return country
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCountry() {
-    return country;
+        return country.orElse(null);
   }
 
-  public void setCountry(@javax.annotation.Nullable String country) {
+  @JsonProperty(value = JSON_PROPERTY_COUNTRY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCountry_JsonNullable() {
+    return country;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_COUNTRY)
+  public void setCountry_JsonNullable(JsonNullable<String> country) {
     this.country = country;
   }
 
+  public void setCountry(@jakarta.annotation.Nullable String country) {
+    this.country = JsonNullable.<String>of(country);
+  }
 
-  public DeviceHeartbeatDto city(@javax.annotation.Nullable String city) {
-    this.city = city;
+
+  public DeviceHeartbeatDto city(@jakarta.annotation.Nullable String city) {
+    this.city = JsonNullable.<String>of(city);
     return this;
   }
 
@@ -281,18 +332,31 @@ public class DeviceHeartbeatDto {
    * Get city
    * @return city
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCity() {
-    return city;
+        return city.orElse(null);
   }
 
-  public void setCity(@javax.annotation.Nullable String city) {
+  @JsonProperty(value = JSON_PROPERTY_CITY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCity_JsonNullable() {
+    return city;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CITY)
+  public void setCity_JsonNullable(JsonNullable<String> city) {
     this.city = city;
   }
 
+  public void setCity(@jakarta.annotation.Nullable String city) {
+    this.city = JsonNullable.<String>of(city);
+  }
 
-  public DeviceHeartbeatDto zip(@javax.annotation.Nullable String zip) {
-    this.zip = zip;
+
+  public DeviceHeartbeatDto zip(@jakarta.annotation.Nullable String zip) {
+    this.zip = JsonNullable.<String>of(zip);
     return this;
   }
 
@@ -300,18 +364,31 @@ public class DeviceHeartbeatDto {
    * Get zip
    * @return zip
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getZip() {
-    return zip;
+        return zip.orElse(null);
   }
 
-  public void setZip(@javax.annotation.Nullable String zip) {
+  @JsonProperty(value = JSON_PROPERTY_ZIP, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getZip_JsonNullable() {
+    return zip;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ZIP)
+  public void setZip_JsonNullable(JsonNullable<String> zip) {
     this.zip = zip;
   }
 
+  public void setZip(@jakarta.annotation.Nullable String zip) {
+    this.zip = JsonNullable.<String>of(zip);
+  }
 
-  public DeviceHeartbeatDto latitude(@javax.annotation.Nullable String latitude) {
-    this.latitude = latitude;
+
+  public DeviceHeartbeatDto latitude(@jakarta.annotation.Nullable String latitude) {
+    this.latitude = JsonNullable.<String>of(latitude);
     return this;
   }
 
@@ -319,18 +396,31 @@ public class DeviceHeartbeatDto {
    * Get latitude
    * @return latitude
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLatitude() {
-    return latitude;
+        return latitude.orElse(null);
   }
 
-  public void setLatitude(@javax.annotation.Nullable String latitude) {
+  @JsonProperty(value = JSON_PROPERTY_LATITUDE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLatitude_JsonNullable() {
+    return latitude;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LATITUDE)
+  public void setLatitude_JsonNullable(JsonNullable<String> latitude) {
     this.latitude = latitude;
   }
 
+  public void setLatitude(@jakarta.annotation.Nullable String latitude) {
+    this.latitude = JsonNullable.<String>of(latitude);
+  }
 
-  public DeviceHeartbeatDto longitude(@javax.annotation.Nullable String longitude) {
-    this.longitude = longitude;
+
+  public DeviceHeartbeatDto longitude(@jakarta.annotation.Nullable String longitude) {
+    this.longitude = JsonNullable.<String>of(longitude);
     return this;
   }
 
@@ -338,17 +428,30 @@ public class DeviceHeartbeatDto {
    * Get longitude
    * @return longitude
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLongitude() {
-    return longitude;
+        return longitude.orElse(null);
   }
 
-  public void setLongitude(@javax.annotation.Nullable String longitude) {
+  @JsonProperty(value = JSON_PROPERTY_LONGITUDE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLongitude_JsonNullable() {
+    return longitude;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LONGITUDE)
+  public void setLongitude_JsonNullable(JsonNullable<String> longitude) {
     this.longitude = longitude;
   }
 
+  public void setLongitude(@jakarta.annotation.Nullable String longitude) {
+    this.longitude = JsonNullable.<String>of(longitude);
+  }
 
-  public DeviceHeartbeatDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  public DeviceHeartbeatDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
     return this;
   }
@@ -357,17 +460,22 @@ public class DeviceHeartbeatDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public OffsetDateTime getCreatedDateUtc() {
     return createdDateUtc;
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
 
-  public DeviceHeartbeatDto deviceLicenseAssignmentId(@javax.annotation.Nullable UUID deviceLicenseAssignmentId) {
+  public DeviceHeartbeatDto deviceLicenseAssignmentId(@jakarta.annotation.Nullable UUID deviceLicenseAssignmentId) {
     this.deviceLicenseAssignmentId = deviceLicenseAssignmentId;
     return this;
   }
@@ -376,17 +484,22 @@ public class DeviceHeartbeatDto {
    * Get deviceLicenseAssignmentId
    * @return deviceLicenseAssignmentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DEVICE_LICENSE_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getDeviceLicenseAssignmentId() {
     return deviceLicenseAssignmentId;
   }
 
-  public void setDeviceLicenseAssignmentId(@javax.annotation.Nullable UUID deviceLicenseAssignmentId) {
+
+  @JsonProperty(value = JSON_PROPERTY_DEVICE_LICENSE_ASSIGNMENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDeviceLicenseAssignmentId(@jakarta.annotation.Nullable UUID deviceLicenseAssignmentId) {
     this.deviceLicenseAssignmentId = deviceLicenseAssignmentId;
   }
 
 
-  public DeviceHeartbeatDto deviceLicenseId(@javax.annotation.Nullable UUID deviceLicenseId) {
+  public DeviceHeartbeatDto deviceLicenseId(@jakarta.annotation.Nullable UUID deviceLicenseId) {
     this.deviceLicenseId = deviceLicenseId;
     return this;
   }
@@ -395,18 +508,23 @@ public class DeviceHeartbeatDto {
    * Get deviceLicenseId
    * @return deviceLicenseId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_DEVICE_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getDeviceLicenseId() {
     return deviceLicenseId;
   }
 
-  public void setDeviceLicenseId(@javax.annotation.Nullable UUID deviceLicenseId) {
+
+  @JsonProperty(value = JSON_PROPERTY_DEVICE_LICENSE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setDeviceLicenseId(@jakarta.annotation.Nullable UUID deviceLicenseId) {
     this.deviceLicenseId = deviceLicenseId;
   }
 
 
-  public DeviceHeartbeatDto customerName(@javax.annotation.Nullable String customerName) {
-    this.customerName = customerName;
+  public DeviceHeartbeatDto customerName(@jakarta.annotation.Nullable String customerName) {
+    this.customerName = JsonNullable.<String>of(customerName);
     return this;
   }
 
@@ -414,18 +532,31 @@ public class DeviceHeartbeatDto {
    * Get customerName
    * @return customerName
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getCustomerName() {
-    return customerName;
+        return customerName.orElse(null);
   }
 
-  public void setCustomerName(@javax.annotation.Nullable String customerName) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getCustomerName_JsonNullable() {
+    return customerName;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_NAME)
+  public void setCustomerName_JsonNullable(JsonNullable<String> customerName) {
     this.customerName = customerName;
   }
 
+  public void setCustomerName(@jakarta.annotation.Nullable String customerName) {
+    this.customerName = JsonNullable.<String>of(customerName);
+  }
 
-  public DeviceHeartbeatDto heartbeatTypeId(@javax.annotation.Nullable UUID heartbeatTypeId) {
-    this.heartbeatTypeId = heartbeatTypeId;
+
+  public DeviceHeartbeatDto heartbeatTypeId(@jakarta.annotation.Nullable UUID heartbeatTypeId) {
+    this.heartbeatTypeId = JsonNullable.<UUID>of(heartbeatTypeId);
     return this;
   }
 
@@ -433,18 +564,31 @@ public class DeviceHeartbeatDto {
    * Get heartbeatTypeId
    * @return heartbeatTypeId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getHeartbeatTypeId() {
-    return heartbeatTypeId;
+        return heartbeatTypeId.orElse(null);
   }
 
-  public void setHeartbeatTypeId(@javax.annotation.Nullable UUID heartbeatTypeId) {
+  @JsonProperty(value = JSON_PROPERTY_HEARTBEAT_TYPE_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getHeartbeatTypeId_JsonNullable() {
+    return heartbeatTypeId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_HEARTBEAT_TYPE_ID)
+  public void setHeartbeatTypeId_JsonNullable(JsonNullable<UUID> heartbeatTypeId) {
     this.heartbeatTypeId = heartbeatTypeId;
   }
 
+  public void setHeartbeatTypeId(@jakarta.annotation.Nullable UUID heartbeatTypeId) {
+    this.heartbeatTypeId = JsonNullable.<UUID>of(heartbeatTypeId);
+  }
 
-  public DeviceHeartbeatDto heartbeatType(@javax.annotation.Nullable HeartbeatTypeDto heartbeatType) {
-    this.heartbeatType = heartbeatType;
+
+  public DeviceHeartbeatDto heartbeatType(@jakarta.annotation.Nullable HeartbeatTypeDto heartbeatType) {
+    this.heartbeatType = JsonNullable.<HeartbeatTypeDto>of(heartbeatType);
     return this;
   }
 
@@ -452,18 +596,31 @@ public class DeviceHeartbeatDto {
    * Get heartbeatType
    * @return heartbeatType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public HeartbeatTypeDto getHeartbeatType() {
-    return heartbeatType;
+        return heartbeatType.orElse(null);
   }
 
-  public void setHeartbeatType(@javax.annotation.Nullable HeartbeatTypeDto heartbeatType) {
+  @JsonProperty(value = JSON_PROPERTY_HEARTBEAT_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<HeartbeatTypeDto> getHeartbeatType_JsonNullable() {
+    return heartbeatType;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_HEARTBEAT_TYPE)
+  public void setHeartbeatType_JsonNullable(JsonNullable<HeartbeatTypeDto> heartbeatType) {
     this.heartbeatType = heartbeatType;
   }
 
+  public void setHeartbeatType(@jakarta.annotation.Nullable HeartbeatTypeDto heartbeatType) {
+    this.heartbeatType = JsonNullable.<HeartbeatTypeDto>of(heartbeatType);
+  }
 
-  public DeviceHeartbeatDto userId(@javax.annotation.Nullable String userId) {
-    this.userId = userId;
+
+  public DeviceHeartbeatDto userId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
     return this;
   }
 
@@ -471,18 +628,31 @@ public class DeviceHeartbeatDto {
    * Get userId
    * @return userId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getUserId() {
-    return userId;
+        return userId.orElse(null);
   }
 
-  public void setUserId(@javax.annotation.Nullable String userId) {
+  @JsonProperty(value = JSON_PROPERTY_USER_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getUserId_JsonNullable() {
+    return userId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  public void setUserId_JsonNullable(JsonNullable<String> userId) {
     this.userId = userId;
   }
 
+  public void setUserId(@jakarta.annotation.Nullable String userId) {
+    this.userId = JsonNullable.<String>of(userId);
+  }
 
-  public DeviceHeartbeatDto licenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
-    this.licenseUser = licenseUser;
+
+  public DeviceHeartbeatDto licenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
     return this;
   }
 
@@ -490,18 +660,31 @@ public class DeviceHeartbeatDto {
    * Get licenseUser
    * @return licenseUser
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public LicenseUserDto getLicenseUser() {
-    return licenseUser;
+        return licenseUser.orElse(null);
   }
 
-  public void setLicenseUser(@javax.annotation.Nullable LicenseUserDto licenseUser) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_USER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<LicenseUserDto> getLicenseUser_JsonNullable() {
+    return licenseUser;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_USER)
+  public void setLicenseUser_JsonNullable(JsonNullable<LicenseUserDto> licenseUser) {
     this.licenseUser = licenseUser;
   }
 
+  public void setLicenseUser(@jakarta.annotation.Nullable LicenseUserDto licenseUser) {
+    this.licenseUser = JsonNullable.<LicenseUserDto>of(licenseUser);
+  }
 
-  public DeviceHeartbeatDto groupId(@javax.annotation.Nullable String groupId) {
-    this.groupId = groupId;
+
+  public DeviceHeartbeatDto groupId(@jakarta.annotation.Nullable String groupId) {
+    this.groupId = JsonNullable.<String>of(groupId);
     return this;
   }
 
@@ -509,17 +692,30 @@ public class DeviceHeartbeatDto {
    * Get groupId
    * @return groupId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getGroupId() {
-    return groupId;
+        return groupId.orElse(null);
   }
 
-  public void setGroupId(@javax.annotation.Nullable String groupId) {
+  @JsonProperty(value = JSON_PROPERTY_GROUP_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getGroupId_JsonNullable() {
+    return groupId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GROUP_ID)
+  public void setGroupId_JsonNullable(JsonNullable<String> groupId) {
     this.groupId = groupId;
   }
 
+  public void setGroupId(@jakarta.annotation.Nullable String groupId) {
+    this.groupId = JsonNullable.<String>of(groupId);
+  }
 
-  public DeviceHeartbeatDto value(@javax.annotation.Nullable Integer value) {
+
+  public DeviceHeartbeatDto value(@jakarta.annotation.Nullable Integer value) {
     this.value = value;
     return this;
   }
@@ -528,17 +724,24 @@ public class DeviceHeartbeatDto {
    * Get value
    * @return value
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Integer getValue() {
     return value;
   }
 
-  public void setValue(@javax.annotation.Nullable Integer value) {
+
+  @JsonProperty(value = JSON_PROPERTY_VALUE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setValue(@jakarta.annotation.Nullable Integer value) {
     this.value = value;
   }
 
 
-
+  /**
+   * Return true if this DeviceHeartbeatDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -548,25 +751,25 @@ public class DeviceHeartbeatDto {
       return false;
     }
     DeviceHeartbeatDto deviceHeartbeatDto = (DeviceHeartbeatDto) o;
-    return Objects.equals(this.id, deviceHeartbeatDto.id) &&
-        Objects.equals(this.softwareVersion, deviceHeartbeatDto.softwareVersion) &&
-        Objects.equals(this.operatingSystem, deviceHeartbeatDto.operatingSystem) &&
-        Objects.equals(this.ipAddress, deviceHeartbeatDto.ipAddress) &&
-        Objects.equals(this.clientId, deviceHeartbeatDto.clientId) &&
-        Objects.equals(this.country, deviceHeartbeatDto.country) &&
-        Objects.equals(this.city, deviceHeartbeatDto.city) &&
-        Objects.equals(this.zip, deviceHeartbeatDto.zip) &&
-        Objects.equals(this.latitude, deviceHeartbeatDto.latitude) &&
-        Objects.equals(this.longitude, deviceHeartbeatDto.longitude) &&
+    return equalsNullable(this.id, deviceHeartbeatDto.id) &&
+        equalsNullable(this.softwareVersion, deviceHeartbeatDto.softwareVersion) &&
+        equalsNullable(this.operatingSystem, deviceHeartbeatDto.operatingSystem) &&
+        equalsNullable(this.ipAddress, deviceHeartbeatDto.ipAddress) &&
+        equalsNullable(this.clientId, deviceHeartbeatDto.clientId) &&
+        equalsNullable(this.country, deviceHeartbeatDto.country) &&
+        equalsNullable(this.city, deviceHeartbeatDto.city) &&
+        equalsNullable(this.zip, deviceHeartbeatDto.zip) &&
+        equalsNullable(this.latitude, deviceHeartbeatDto.latitude) &&
+        equalsNullable(this.longitude, deviceHeartbeatDto.longitude) &&
         Objects.equals(this.createdDateUtc, deviceHeartbeatDto.createdDateUtc) &&
         Objects.equals(this.deviceLicenseAssignmentId, deviceHeartbeatDto.deviceLicenseAssignmentId) &&
         Objects.equals(this.deviceLicenseId, deviceHeartbeatDto.deviceLicenseId) &&
-        Objects.equals(this.customerName, deviceHeartbeatDto.customerName) &&
-        Objects.equals(this.heartbeatTypeId, deviceHeartbeatDto.heartbeatTypeId) &&
-        Objects.equals(this.heartbeatType, deviceHeartbeatDto.heartbeatType) &&
-        Objects.equals(this.userId, deviceHeartbeatDto.userId) &&
-        Objects.equals(this.licenseUser, deviceHeartbeatDto.licenseUser) &&
-        Objects.equals(this.groupId, deviceHeartbeatDto.groupId) &&
+        equalsNullable(this.customerName, deviceHeartbeatDto.customerName) &&
+        equalsNullable(this.heartbeatTypeId, deviceHeartbeatDto.heartbeatTypeId) &&
+        equalsNullable(this.heartbeatType, deviceHeartbeatDto.heartbeatType) &&
+        equalsNullable(this.userId, deviceHeartbeatDto.userId) &&
+        equalsNullable(this.licenseUser, deviceHeartbeatDto.licenseUser) &&
+        equalsNullable(this.groupId, deviceHeartbeatDto.groupId) &&
         Objects.equals(this.value, deviceHeartbeatDto.value);
   }
 
@@ -576,7 +779,7 @@ public class DeviceHeartbeatDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, softwareVersion, operatingSystem, ipAddress, clientId, country, city, zip, latitude, longitude, createdDateUtc, deviceLicenseAssignmentId, deviceLicenseId, customerName, heartbeatTypeId, heartbeatType, userId, licenseUser, groupId, value);
+    return Objects.hash(hashCodeNullable(id), hashCodeNullable(softwareVersion), hashCodeNullable(operatingSystem), hashCodeNullable(ipAddress), hashCodeNullable(clientId), hashCodeNullable(country), hashCodeNullable(city), hashCodeNullable(zip), hashCodeNullable(latitude), hashCodeNullable(longitude), createdDateUtc, deviceLicenseAssignmentId, deviceLicenseId, hashCodeNullable(customerName), hashCodeNullable(heartbeatTypeId), hashCodeNullable(heartbeatType), hashCodeNullable(userId), hashCodeNullable(licenseUser), hashCodeNullable(groupId), value);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -625,144 +828,139 @@ public class DeviceHeartbeatDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "software_version", "operating_system", "ip_address", "client_id", "country", "city", "zip", "latitude", "longitude", "created_date_utc", "device_license_assignment_id", "device_license_id", "customer_name", "heartbeat_type_id", "heartbeat_type", "user_id", "license_user", "group_id", "value"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to DeviceHeartbeatDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!DeviceHeartbeatDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in DeviceHeartbeatDto is not found in the empty JSON string", DeviceHeartbeatDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!DeviceHeartbeatDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `DeviceHeartbeatDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("software_version") != null && !jsonObj.get("software_version").isJsonNull()) && !jsonObj.get("software_version").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version` to be a primitive type in the JSON string but got `%s`", jsonObj.get("software_version").toString()));
-      }
-      if ((jsonObj.get("operating_system") != null && !jsonObj.get("operating_system").isJsonNull()) && !jsonObj.get("operating_system").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `operating_system` to be a primitive type in the JSON string but got `%s`", jsonObj.get("operating_system").toString()));
-      }
-      if ((jsonObj.get("ip_address") != null && !jsonObj.get("ip_address").isJsonNull()) && !jsonObj.get("ip_address").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `ip_address` to be a primitive type in the JSON string but got `%s`", jsonObj.get("ip_address").toString()));
-      }
-      if ((jsonObj.get("client_id") != null && !jsonObj.get("client_id").isJsonNull()) && !jsonObj.get("client_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `client_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("client_id").toString()));
-      }
-      if ((jsonObj.get("country") != null && !jsonObj.get("country").isJsonNull()) && !jsonObj.get("country").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `country` to be a primitive type in the JSON string but got `%s`", jsonObj.get("country").toString()));
-      }
-      if ((jsonObj.get("city") != null && !jsonObj.get("city").isJsonNull()) && !jsonObj.get("city").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `city` to be a primitive type in the JSON string but got `%s`", jsonObj.get("city").toString()));
-      }
-      if ((jsonObj.get("zip") != null && !jsonObj.get("zip").isJsonNull()) && !jsonObj.get("zip").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `zip` to be a primitive type in the JSON string but got `%s`", jsonObj.get("zip").toString()));
-      }
-      if ((jsonObj.get("latitude") != null && !jsonObj.get("latitude").isJsonNull()) && !jsonObj.get("latitude").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `latitude` to be a primitive type in the JSON string but got `%s`", jsonObj.get("latitude").toString()));
-      }
-      if ((jsonObj.get("longitude") != null && !jsonObj.get("longitude").isJsonNull()) && !jsonObj.get("longitude").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `longitude` to be a primitive type in the JSON string but got `%s`", jsonObj.get("longitude").toString()));
-      }
-      if ((jsonObj.get("device_license_assignment_id") != null && !jsonObj.get("device_license_assignment_id").isJsonNull()) && !jsonObj.get("device_license_assignment_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `device_license_assignment_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_license_assignment_id").toString()));
-      }
-      if ((jsonObj.get("device_license_id") != null && !jsonObj.get("device_license_id").isJsonNull()) && !jsonObj.get("device_license_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `device_license_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("device_license_id").toString()));
-      }
-      if ((jsonObj.get("customer_name") != null && !jsonObj.get("customer_name").isJsonNull()) && !jsonObj.get("customer_name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_name").toString()));
-      }
-      if ((jsonObj.get("heartbeat_type_id") != null && !jsonObj.get("heartbeat_type_id").isJsonNull()) && !jsonObj.get("heartbeat_type_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `heartbeat_type_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("heartbeat_type_id").toString()));
-      }
-      // validate the optional field `heartbeat_type`
-      if (jsonObj.get("heartbeat_type") != null && !jsonObj.get("heartbeat_type").isJsonNull()) {
-        HeartbeatTypeDto.validateJsonElement(jsonObj.get("heartbeat_type"));
-      }
-      if ((jsonObj.get("user_id") != null && !jsonObj.get("user_id").isJsonNull()) && !jsonObj.get("user_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `user_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("user_id").toString()));
-      }
-      // validate the optional field `license_user`
-      if (jsonObj.get("license_user") != null && !jsonObj.get("license_user").isJsonNull()) {
-        LicenseUserDto.validateJsonElement(jsonObj.get("license_user"));
-      }
-      if ((jsonObj.get("group_id") != null && !jsonObj.get("group_id").isJsonNull()) && !jsonObj.get("group_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `group_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!DeviceHeartbeatDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'DeviceHeartbeatDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<DeviceHeartbeatDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(DeviceHeartbeatDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<DeviceHeartbeatDto>() {
-           @Override
-           public void write(JsonWriter out, DeviceHeartbeatDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public DeviceHeartbeatDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of DeviceHeartbeatDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of DeviceHeartbeatDto
-   * @throws IOException if the JSON string is invalid with respect to DeviceHeartbeatDto
-   */
-  public static DeviceHeartbeatDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, DeviceHeartbeatDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of DeviceHeartbeatDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `software_version` to the URL query string
+    if (getSoftwareVersion() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_version%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSoftwareVersion()))));
+    }
+
+    // add `operating_system` to the URL query string
+    if (getOperatingSystem() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%soperating_system%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getOperatingSystem()))));
+    }
+
+    // add `ip_address` to the URL query string
+    if (getIpAddress() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sip_address%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIpAddress()))));
+    }
+
+    // add `client_id` to the URL query string
+    if (getClientId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sclient_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getClientId()))));
+    }
+
+    // add `country` to the URL query string
+    if (getCountry() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scountry%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCountry()))));
+    }
+
+    // add `city` to the URL query string
+    if (getCity() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scity%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCity()))));
+    }
+
+    // add `zip` to the URL query string
+    if (getZip() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%szip%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getZip()))));
+    }
+
+    // add `latitude` to the URL query string
+    if (getLatitude() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slatitude%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLatitude()))));
+    }
+
+    // add `longitude` to the URL query string
+    if (getLongitude() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slongitude%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLongitude()))));
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `device_license_assignment_id` to the URL query string
+    if (getDeviceLicenseAssignmentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdevice_license_assignment_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeviceLicenseAssignmentId()))));
+    }
+
+    // add `device_license_id` to the URL query string
+    if (getDeviceLicenseId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdevice_license_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDeviceLicenseId()))));
+    }
+
+    // add `customer_name` to the URL query string
+    if (getCustomerName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_name%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerName()))));
+    }
+
+    // add `heartbeat_type_id` to the URL query string
+    if (getHeartbeatTypeId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sheartbeat_type_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getHeartbeatTypeId()))));
+    }
+
+    // add `heartbeat_type` to the URL query string
+    if (getHeartbeatType() != null) {
+      joiner.add(getHeartbeatType().toUrlQueryString(prefix + "heartbeat_type" + suffix));
+    }
+
+    // add `user_id` to the URL query string
+    if (getUserId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%suser_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getUserId()))));
+    }
+
+    // add `license_user` to the URL query string
+    if (getLicenseUser() != null) {
+      joiner.add(getLicenseUser().toUrlQueryString(prefix + "license_user" + suffix));
+    }
+
+    // add `group_id` to the URL query string
+    if (getGroupId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgroup_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGroupId()))));
+    }
+
+    // add `value` to the URL query string
+    if (getValue() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%svalue%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getValue()))));
+    }
+
+    return joiner.toString();
   }
 }
 

@@ -13,107 +13,91 @@
 
 package com.slascone.model;
 
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * EmailTemplateDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  EmailTemplateDto.JSON_PROPERTY_ID,
+  EmailTemplateDto.JSON_PROPERTY_NAME,
+  EmailTemplateDto.JSON_PROPERTY_LANGUAGE,
+  EmailTemplateDto.JSON_PROPERTY_SUBJECT,
+  EmailTemplateDto.JSON_PROPERTY_BODY,
+  EmailTemplateDto.JSON_PROPERTY_PARENT_ID,
+  EmailTemplateDto.JSON_PROPERTY_SUB_EMAIL_TEMPLATES,
+  EmailTemplateDto.JSON_PROPERTY_CREATED_DATE_UTC,
+  EmailTemplateDto.JSON_PROPERTY_MODIFIED_DATE_UTC,
+  EmailTemplateDto.JSON_PROPERTY_LAST_MODIFIED_BY,
+  EmailTemplateDto.JSON_PROPERTY_PRODUCT_ID
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class EmailTemplateDto {
-  public static final String SERIALIZED_NAME_ID = "id";
-  @SerializedName(SERIALIZED_NAME_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_ID = "id";
+  @jakarta.annotation.Nullable
   private UUID id;
 
-  public static final String SERIALIZED_NAME_NAME = "name";
-  @SerializedName(SERIALIZED_NAME_NAME)
-  @javax.annotation.Nullable
-  private String name;
+  public static final String JSON_PROPERTY_NAME = "name";
+  private JsonNullable<String> name = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_LANGUAGE = "language";
-  @SerializedName(SERIALIZED_NAME_LANGUAGE)
-  @javax.annotation.Nullable
-  private String language;
+  public static final String JSON_PROPERTY_LANGUAGE = "language";
+  private JsonNullable<String> language = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SUBJECT = "subject";
-  @SerializedName(SERIALIZED_NAME_SUBJECT)
-  @javax.annotation.Nullable
-  private String subject;
+  public static final String JSON_PROPERTY_SUBJECT = "subject";
+  private JsonNullable<String> subject = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_BODY = "body";
-  @SerializedName(SERIALIZED_NAME_BODY)
-  @javax.annotation.Nullable
-  private String body;
+  public static final String JSON_PROPERTY_BODY = "body";
+  private JsonNullable<String> body = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PARENT_ID = "parent_id";
-  @SerializedName(SERIALIZED_NAME_PARENT_ID)
-  @javax.annotation.Nullable
-  private UUID parentId;
+  public static final String JSON_PROPERTY_PARENT_ID = "parent_id";
+  private JsonNullable<UUID> parentId = JsonNullable.<UUID>undefined();
 
-  public static final String SERIALIZED_NAME_SUB_EMAIL_TEMPLATES = "sub_email_templates";
-  @SerializedName(SERIALIZED_NAME_SUB_EMAIL_TEMPLATES)
-  @javax.annotation.Nullable
-  private List<EmailTemplateDto> subEmailTemplates;
+  public static final String JSON_PROPERTY_SUB_EMAIL_TEMPLATES = "sub_email_templates";
+  private JsonNullable<List<EmailTemplateDto>> subEmailTemplates = JsonNullable.<List<EmailTemplateDto>>undefined();
 
-  public static final String SERIALIZED_NAME_CREATED_DATE_UTC = "created_date_utc";
-  @SerializedName(SERIALIZED_NAME_CREATED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime createdDateUtc;
+  public static final String JSON_PROPERTY_CREATED_DATE_UTC = "created_date_utc";
+  private JsonNullable<OffsetDateTime> createdDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_MODIFIED_DATE_UTC = "modified_date_utc";
-  @SerializedName(SERIALIZED_NAME_MODIFIED_DATE_UTC)
-  @javax.annotation.Nullable
-  private OffsetDateTime modifiedDateUtc;
+  public static final String JSON_PROPERTY_MODIFIED_DATE_UTC = "modified_date_utc";
+  private JsonNullable<OffsetDateTime> modifiedDateUtc = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_LAST_MODIFIED_BY = "last_modified_by";
-  @SerializedName(SERIALIZED_NAME_LAST_MODIFIED_BY)
-  @javax.annotation.Nullable
-  private String lastModifiedBy;
+  public static final String JSON_PROPERTY_LAST_MODIFIED_BY = "last_modified_by";
+  private JsonNullable<String> lastModifiedBy = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PRODUCT_ID = "product_id";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_ID)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_PRODUCT_ID = "product_id";
+  @jakarta.annotation.Nullable
   private UUID productId;
 
-  public EmailTemplateDto() {
+  public EmailTemplateDto() { 
   }
 
-  public EmailTemplateDto id(@javax.annotation.Nullable UUID id) {
+  public EmailTemplateDto id(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
     return this;
   }
@@ -122,18 +106,23 @@ public class EmailTemplateDto {
    * Get id
    * @return id
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getId() {
     return id;
   }
 
-  public void setId(@javax.annotation.Nullable UUID id) {
+
+  @JsonProperty(value = JSON_PROPERTY_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setId(@jakarta.annotation.Nullable UUID id) {
     this.id = id;
   }
 
 
-  public EmailTemplateDto name(@javax.annotation.Nullable String name) {
-    this.name = name;
+  public EmailTemplateDto name(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
     return this;
   }
 
@@ -141,18 +130,31 @@ public class EmailTemplateDto {
    * Get name
    * @return name
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getName() {
-    return name;
+        return name.orElse(null);
   }
 
-  public void setName(@javax.annotation.Nullable String name) {
+  @JsonProperty(value = JSON_PROPERTY_NAME, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getName_JsonNullable() {
+    return name;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_NAME)
+  public void setName_JsonNullable(JsonNullable<String> name) {
     this.name = name;
   }
 
+  public void setName(@jakarta.annotation.Nullable String name) {
+    this.name = JsonNullable.<String>of(name);
+  }
 
-  public EmailTemplateDto language(@javax.annotation.Nullable String language) {
-    this.language = language;
+
+  public EmailTemplateDto language(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
     return this;
   }
 
@@ -160,18 +162,31 @@ public class EmailTemplateDto {
    * Get language
    * @return language
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLanguage() {
-    return language;
+        return language.orElse(null);
   }
 
-  public void setLanguage(@javax.annotation.Nullable String language) {
+  @JsonProperty(value = JSON_PROPERTY_LANGUAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLanguage_JsonNullable() {
+    return language;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LANGUAGE)
+  public void setLanguage_JsonNullable(JsonNullable<String> language) {
     this.language = language;
   }
 
+  public void setLanguage(@jakarta.annotation.Nullable String language) {
+    this.language = JsonNullable.<String>of(language);
+  }
 
-  public EmailTemplateDto subject(@javax.annotation.Nullable String subject) {
-    this.subject = subject;
+
+  public EmailTemplateDto subject(@jakarta.annotation.Nullable String subject) {
+    this.subject = JsonNullable.<String>of(subject);
     return this;
   }
 
@@ -179,18 +194,31 @@ public class EmailTemplateDto {
    * Get subject
    * @return subject
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getSubject() {
-    return subject;
+        return subject.orElse(null);
   }
 
-  public void setSubject(@javax.annotation.Nullable String subject) {
+  @JsonProperty(value = JSON_PROPERTY_SUBJECT, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getSubject_JsonNullable() {
+    return subject;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SUBJECT)
+  public void setSubject_JsonNullable(JsonNullable<String> subject) {
     this.subject = subject;
   }
 
+  public void setSubject(@jakarta.annotation.Nullable String subject) {
+    this.subject = JsonNullable.<String>of(subject);
+  }
 
-  public EmailTemplateDto body(@javax.annotation.Nullable String body) {
-    this.body = body;
+
+  public EmailTemplateDto body(@jakarta.annotation.Nullable String body) {
+    this.body = JsonNullable.<String>of(body);
     return this;
   }
 
@@ -198,18 +226,31 @@ public class EmailTemplateDto {
    * Get body
    * @return body
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getBody() {
-    return body;
+        return body.orElse(null);
   }
 
-  public void setBody(@javax.annotation.Nullable String body) {
+  @JsonProperty(value = JSON_PROPERTY_BODY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getBody_JsonNullable() {
+    return body;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_BODY)
+  public void setBody_JsonNullable(JsonNullable<String> body) {
     this.body = body;
   }
 
+  public void setBody(@jakarta.annotation.Nullable String body) {
+    this.body = JsonNullable.<String>of(body);
+  }
 
-  public EmailTemplateDto parentId(@javax.annotation.Nullable UUID parentId) {
-    this.parentId = parentId;
+
+  public EmailTemplateDto parentId(@jakarta.annotation.Nullable UUID parentId) {
+    this.parentId = JsonNullable.<UUID>of(parentId);
     return this;
   }
 
@@ -217,26 +258,43 @@ public class EmailTemplateDto {
    * Get parentId
    * @return parentId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public UUID getParentId() {
-    return parentId;
+        return parentId.orElse(null);
   }
 
-  public void setParentId(@javax.annotation.Nullable UUID parentId) {
+  @JsonProperty(value = JSON_PROPERTY_PARENT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<UUID> getParentId_JsonNullable() {
+    return parentId;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PARENT_ID)
+  public void setParentId_JsonNullable(JsonNullable<UUID> parentId) {
     this.parentId = parentId;
   }
 
+  public void setParentId(@jakarta.annotation.Nullable UUID parentId) {
+    this.parentId = JsonNullable.<UUID>of(parentId);
+  }
 
-  public EmailTemplateDto subEmailTemplates(@javax.annotation.Nullable List<EmailTemplateDto> subEmailTemplates) {
-    this.subEmailTemplates = subEmailTemplates;
+
+  public EmailTemplateDto subEmailTemplates(@jakarta.annotation.Nullable List<EmailTemplateDto> subEmailTemplates) {
+    this.subEmailTemplates = JsonNullable.<List<EmailTemplateDto>>of(subEmailTemplates);
     return this;
   }
 
   public EmailTemplateDto addSubEmailTemplatesItem(EmailTemplateDto subEmailTemplatesItem) {
-    if (this.subEmailTemplates == null) {
-      this.subEmailTemplates = new ArrayList<>();
+    if (this.subEmailTemplates == null || !this.subEmailTemplates.isPresent()) {
+      this.subEmailTemplates = JsonNullable.<List<EmailTemplateDto>>of(new ArrayList<>());
     }
-    this.subEmailTemplates.add(subEmailTemplatesItem);
+    try {
+      this.subEmailTemplates.get().add(subEmailTemplatesItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -244,18 +302,31 @@ public class EmailTemplateDto {
    * Get subEmailTemplates
    * @return subEmailTemplates
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<EmailTemplateDto> getSubEmailTemplates() {
-    return subEmailTemplates;
+        return subEmailTemplates.orElse(null);
   }
 
-  public void setSubEmailTemplates(@javax.annotation.Nullable List<EmailTemplateDto> subEmailTemplates) {
+  @JsonProperty(value = JSON_PROPERTY_SUB_EMAIL_TEMPLATES, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<EmailTemplateDto>> getSubEmailTemplates_JsonNullable() {
+    return subEmailTemplates;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SUB_EMAIL_TEMPLATES)
+  public void setSubEmailTemplates_JsonNullable(JsonNullable<List<EmailTemplateDto>> subEmailTemplates) {
     this.subEmailTemplates = subEmailTemplates;
   }
 
+  public void setSubEmailTemplates(@jakarta.annotation.Nullable List<EmailTemplateDto> subEmailTemplates) {
+    this.subEmailTemplates = JsonNullable.<List<EmailTemplateDto>>of(subEmailTemplates);
+  }
 
-  public EmailTemplateDto createdDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
-    this.createdDateUtc = createdDateUtc;
+
+  public EmailTemplateDto createdDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
     return this;
   }
 
@@ -263,18 +334,31 @@ public class EmailTemplateDto {
    * Get createdDateUtc
    * @return createdDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getCreatedDateUtc() {
-    return createdDateUtc;
+        return createdDateUtc.orElse(null);
   }
 
-  public void setCreatedDateUtc(@javax.annotation.Nullable OffsetDateTime createdDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_CREATED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getCreatedDateUtc_JsonNullable() {
+    return createdDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CREATED_DATE_UTC)
+  public void setCreatedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> createdDateUtc) {
     this.createdDateUtc = createdDateUtc;
   }
 
+  public void setCreatedDateUtc(@jakarta.annotation.Nullable OffsetDateTime createdDateUtc) {
+    this.createdDateUtc = JsonNullable.<OffsetDateTime>of(createdDateUtc);
+  }
 
-  public EmailTemplateDto modifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
-    this.modifiedDateUtc = modifiedDateUtc;
+
+  public EmailTemplateDto modifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
     return this;
   }
 
@@ -282,18 +366,31 @@ public class EmailTemplateDto {
    * Get modifiedDateUtc
    * @return modifiedDateUtc
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getModifiedDateUtc() {
-    return modifiedDateUtc;
+        return modifiedDateUtc.orElse(null);
   }
 
-  public void setModifiedDateUtc(@javax.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+  @JsonProperty(value = JSON_PROPERTY_MODIFIED_DATE_UTC, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getModifiedDateUtc_JsonNullable() {
+    return modifiedDateUtc;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_MODIFIED_DATE_UTC)
+  public void setModifiedDateUtc_JsonNullable(JsonNullable<OffsetDateTime> modifiedDateUtc) {
     this.modifiedDateUtc = modifiedDateUtc;
   }
 
+  public void setModifiedDateUtc(@jakarta.annotation.Nullable OffsetDateTime modifiedDateUtc) {
+    this.modifiedDateUtc = JsonNullable.<OffsetDateTime>of(modifiedDateUtc);
+  }
 
-  public EmailTemplateDto lastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
-    this.lastModifiedBy = lastModifiedBy;
+
+  public EmailTemplateDto lastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
     return this;
   }
 
@@ -301,17 +398,30 @@ public class EmailTemplateDto {
    * Get lastModifiedBy
    * @return lastModifiedBy
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getLastModifiedBy() {
-    return lastModifiedBy;
+        return lastModifiedBy.orElse(null);
   }
 
-  public void setLastModifiedBy(@javax.annotation.Nullable String lastModifiedBy) {
+  @JsonProperty(value = JSON_PROPERTY_LAST_MODIFIED_BY, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getLastModifiedBy_JsonNullable() {
+    return lastModifiedBy;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LAST_MODIFIED_BY)
+  public void setLastModifiedBy_JsonNullable(JsonNullable<String> lastModifiedBy) {
     this.lastModifiedBy = lastModifiedBy;
   }
 
+  public void setLastModifiedBy(@jakarta.annotation.Nullable String lastModifiedBy) {
+    this.lastModifiedBy = JsonNullable.<String>of(lastModifiedBy);
+  }
 
-  public EmailTemplateDto productId(@javax.annotation.Nullable UUID productId) {
+
+  public EmailTemplateDto productId(@jakarta.annotation.Nullable UUID productId) {
     this.productId = productId;
     return this;
   }
@@ -320,17 +430,67 @@ public class EmailTemplateDto {
    * Get productId
    * @return productId
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getProductId() {
     return productId;
   }
 
-  public void setProductId(@javax.annotation.Nullable UUID productId) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_ID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setProductId(@jakarta.annotation.Nullable UUID productId) {
     this.productId = productId;
   }
 
+  /**
+   * A container for additional, undeclared properties.
+   * This is a holder for any undeclared properties as specified with
+   * the 'additionalProperties' keyword in the OAS document.
+   */
+  private Map<String, Object> additionalProperties;
 
+  /**
+   * Set the additional (undeclared) property with the specified name and value.
+   * If the property does not already exist, create it otherwise replace it.
+   * @param key the name of the property
+   * @param value the value of the property
+   * @return self reference
+   */
+  @JsonAnySetter
+  public EmailTemplateDto putAdditionalProperty(String key, Object value) {
+    if (this.additionalProperties == null) {
+        this.additionalProperties = new HashMap<String, Object>();
+    }
+    this.additionalProperties.put(key, value);
+    return this;
+  }
 
+  /**
+   * Return the additional (undeclared) properties.
+   * @return the additional (undeclared) properties
+   */
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return additionalProperties;
+  }
+
+  /**
+   * Return the additional (undeclared) property with the specified name.
+   * @param key the name of the property
+   * @return the additional (undeclared) property with the specified name
+   */
+  public Object getAdditionalProperty(String key) {
+    if (this.additionalProperties == null) {
+        return null;
+    }
+    return this.additionalProperties.get(key);
+  }
+
+  /**
+   * Return true if this EmailTemplateDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -341,16 +501,17 @@ public class EmailTemplateDto {
     }
     EmailTemplateDto emailTemplateDto = (EmailTemplateDto) o;
     return Objects.equals(this.id, emailTemplateDto.id) &&
-        Objects.equals(this.name, emailTemplateDto.name) &&
-        Objects.equals(this.language, emailTemplateDto.language) &&
-        Objects.equals(this.subject, emailTemplateDto.subject) &&
-        Objects.equals(this.body, emailTemplateDto.body) &&
-        Objects.equals(this.parentId, emailTemplateDto.parentId) &&
-        Objects.equals(this.subEmailTemplates, emailTemplateDto.subEmailTemplates) &&
-        Objects.equals(this.createdDateUtc, emailTemplateDto.createdDateUtc) &&
-        Objects.equals(this.modifiedDateUtc, emailTemplateDto.modifiedDateUtc) &&
-        Objects.equals(this.lastModifiedBy, emailTemplateDto.lastModifiedBy) &&
-        Objects.equals(this.productId, emailTemplateDto.productId);
+        equalsNullable(this.name, emailTemplateDto.name) &&
+        equalsNullable(this.language, emailTemplateDto.language) &&
+        equalsNullable(this.subject, emailTemplateDto.subject) &&
+        equalsNullable(this.body, emailTemplateDto.body) &&
+        equalsNullable(this.parentId, emailTemplateDto.parentId) &&
+        equalsNullable(this.subEmailTemplates, emailTemplateDto.subEmailTemplates) &&
+        equalsNullable(this.createdDateUtc, emailTemplateDto.createdDateUtc) &&
+        equalsNullable(this.modifiedDateUtc, emailTemplateDto.modifiedDateUtc) &&
+        equalsNullable(this.lastModifiedBy, emailTemplateDto.lastModifiedBy) &&
+        Objects.equals(this.productId, emailTemplateDto.productId)&&
+        Objects.equals(this.additionalProperties, emailTemplateDto.additionalProperties);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -359,7 +520,7 @@ public class EmailTemplateDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, language, subject, body, parentId, subEmailTemplates, createdDateUtc, modifiedDateUtc, lastModifiedBy, productId);
+    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(language), hashCodeNullable(subject), hashCodeNullable(body), hashCodeNullable(parentId), hashCodeNullable(subEmailTemplates), hashCodeNullable(createdDateUtc), hashCodeNullable(modifiedDateUtc), hashCodeNullable(lastModifiedBy), productId, additionalProperties);
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -384,6 +545,7 @@ public class EmailTemplateDto {
     sb.append("    modifiedDateUtc: ").append(toIndentedString(modifiedDateUtc)).append("\n");
     sb.append("    lastModifiedBy: ").append(toIndentedString(lastModifiedBy)).append("\n");
     sb.append("    productId: ").append(toIndentedString(productId)).append("\n");
+    sb.append("    additionalProperties: ").append(toIndentedString(additionalProperties)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -399,126 +561,99 @@ public class EmailTemplateDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "name", "language", "subject", "body", "parent_id", "sub_email_templates", "created_date_utc", "modified_date_utc", "last_modified_by", "product_id"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(0);
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to EmailTemplateDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!EmailTemplateDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in EmailTemplateDto is not found in the empty JSON string", EmailTemplateDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!EmailTemplateDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `EmailTemplateDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("id") != null && !jsonObj.get("id").isJsonNull()) && !jsonObj.get("id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("id").toString()));
-      }
-      if ((jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) && !jsonObj.get("name").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `name` to be a primitive type in the JSON string but got `%s`", jsonObj.get("name").toString()));
-      }
-      if ((jsonObj.get("language") != null && !jsonObj.get("language").isJsonNull()) && !jsonObj.get("language").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `language` to be a primitive type in the JSON string but got `%s`", jsonObj.get("language").toString()));
-      }
-      if ((jsonObj.get("subject") != null && !jsonObj.get("subject").isJsonNull()) && !jsonObj.get("subject").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `subject` to be a primitive type in the JSON string but got `%s`", jsonObj.get("subject").toString()));
-      }
-      if ((jsonObj.get("body") != null && !jsonObj.get("body").isJsonNull()) && !jsonObj.get("body").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `body` to be a primitive type in the JSON string but got `%s`", jsonObj.get("body").toString()));
-      }
-      if ((jsonObj.get("parent_id") != null && !jsonObj.get("parent_id").isJsonNull()) && !jsonObj.get("parent_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `parent_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("parent_id").toString()));
-      }
-      if (jsonObj.get("sub_email_templates") != null && !jsonObj.get("sub_email_templates").isJsonNull()) {
-        JsonArray jsonArraysubEmailTemplates = jsonObj.getAsJsonArray("sub_email_templates");
-        if (jsonArraysubEmailTemplates != null) {
-          // ensure the json data is an array
-          if (!jsonObj.get("sub_email_templates").isJsonArray()) {
-            throw new IllegalArgumentException(String.format("Expected the field `sub_email_templates` to be an array in the JSON string but got `%s`", jsonObj.get("sub_email_templates").toString()));
-          }
-
-          // validate the optional field `sub_email_templates` (array)
-          for (int i = 0; i < jsonArraysubEmailTemplates.size(); i++) {
-            EmailTemplateDto.validateJsonElement(jsonArraysubEmailTemplates.get(i));
-          };
-        }
-      }
-      if ((jsonObj.get("last_modified_by") != null && !jsonObj.get("last_modified_by").isJsonNull()) && !jsonObj.get("last_modified_by").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `last_modified_by` to be a primitive type in the JSON string but got `%s`", jsonObj.get("last_modified_by").toString()));
-      }
-      if ((jsonObj.get("product_id") != null && !jsonObj.get("product_id").isJsonNull()) && !jsonObj.get("product_id").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_id` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_id").toString()));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!EmailTemplateDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'EmailTemplateDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<EmailTemplateDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(EmailTemplateDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<EmailTemplateDto>() {
-           @Override
-           public void write(JsonWriter out, EmailTemplateDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public EmailTemplateDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of EmailTemplateDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of EmailTemplateDto
-   * @throws IOException if the JSON string is invalid with respect to EmailTemplateDto
-   */
-  public static EmailTemplateDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, EmailTemplateDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of EmailTemplateDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `id` to the URL query string
+    if (getId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getId()))));
+    }
+
+    // add `name` to the URL query string
+    if (getName() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sname%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getName()))));
+    }
+
+    // add `language` to the URL query string
+    if (getLanguage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slanguage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLanguage()))));
+    }
+
+    // add `subject` to the URL query string
+    if (getSubject() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssubject%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSubject()))));
+    }
+
+    // add `body` to the URL query string
+    if (getBody() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbody%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBody()))));
+    }
+
+    // add `parent_id` to the URL query string
+    if (getParentId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sparent_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getParentId()))));
+    }
+
+    // add `sub_email_templates` to the URL query string
+    if (getSubEmailTemplates() != null) {
+      for (int i = 0; i < getSubEmailTemplates().size(); i++) {
+        if (getSubEmailTemplates().get(i) != null) {
+          joiner.add(getSubEmailTemplates().get(i).toUrlQueryString(String.format(java.util.Locale.ROOT, "%ssub_email_templates%s%s", prefix, suffix,
+          "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix))));
+        }
+      }
+    }
+
+    // add `created_date_utc` to the URL query string
+    if (getCreatedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%screated_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCreatedDateUtc()))));
+    }
+
+    // add `modified_date_utc` to the URL query string
+    if (getModifiedDateUtc() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%smodified_date_utc%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getModifiedDateUtc()))));
+    }
+
+    // add `last_modified_by` to the URL query string
+    if (getLastModifiedBy() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%slast_modified_by%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getLastModifiedBy()))));
+    }
+
+    // add `product_id` to the URL query string
+    if (getProductId() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_id%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductId()))));
+    }
+
+    return joiner.toString();
   }
 }
 

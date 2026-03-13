@@ -13,209 +13,172 @@
 
 package com.slascone.model;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.StringJoiner;
 import java.util.Objects;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
+import java.util.Map;
+import java.util.HashMap;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.slascone.model.AnalyticalFieldFilterDto;
 import com.slascone.model.LicenseFilterSortType;
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.openapitools.jackson.nullable.JsonNullable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.NoSuchElementException;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import java.io.IOException;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import com.slascone.JSON;
-
+import com.slascone.ApiClient;
 /**
  * LicenseFilterDto
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.14.0")
+@JsonPropertyOrder({
+  LicenseFilterDto.JSON_PROPERTY_PAGE_SIZE,
+  LicenseFilterDto.JSON_PROPERTY_PAGE,
+  LicenseFilterDto.JSON_PROPERTY_IS_ACTIVE,
+  LicenseFilterDto.JSON_PROPERTY_KEY_SEARCH,
+  LicenseFilterDto.JSON_PROPERTY_PRODUCT_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_CUSTOMER_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_CUSTOMER_NUMBER_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_CUSTOMER_TYPE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_RESELLER_TYPE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_TEMPLATE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_LICENSE_TYPE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_OPERATING_SYSTEM_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_SOFTWARE_VERSION_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_IS_SOFTWARE_VERSION_VALID,
+  LicenseFilterDto.JSON_PROPERTY_FEATURE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_IS_FEATURE_ACTIVE,
+  LicenseFilterDto.JSON_PROPERTY_DATE_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_DATE_FILTER_MODE,
+  LicenseFilterDto.JSON_PROPERTY_IS_NORMAL_TOKEN,
+  LicenseFilterDto.JSON_PROPERTY_IS_GOODWILL_TOKEN,
+  LicenseFilterDto.JSON_PROPERTY_IS_GROUP_VALID,
+  LicenseFilterDto.JSON_PROPERTY_IS_ASSIGNED_TOKEN,
+  LicenseFilterDto.JSON_PROPERTY_IS_SUSPENDED_TOKEN,
+  LicenseFilterDto.JSON_PROPERTY_GROUP_COUNT_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_GROUP_COUNT_MODE,
+  LicenseFilterDto.JSON_PROPERTY_SORT_TYPE,
+  LicenseFilterDto.JSON_PROPERTY_SORT_ORDER,
+  LicenseFilterDto.JSON_PROPERTY_LICENSE_TAG_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_TOKEN_TAG_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_CUSTOMER_TAG_FILTER,
+  LicenseFilterDto.JSON_PROPERTY_ANALYTICAL_FIELD_FILTER
+})
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class LicenseFilterDto {
-  public static final String SERIALIZED_NAME_PAGE_SIZE = "page_size";
-  @SerializedName(SERIALIZED_NAME_PAGE_SIZE)
-  @javax.annotation.Nonnull
+  public static final String JSON_PROPERTY_PAGE_SIZE = "page_size";
+  @jakarta.annotation.Nonnull
   private Integer pageSize;
 
-  public static final String SERIALIZED_NAME_PAGE = "page";
-  @SerializedName(SERIALIZED_NAME_PAGE)
-  @javax.annotation.Nullable
-  private Integer page;
+  public static final String JSON_PROPERTY_PAGE = "page";
+  private JsonNullable<Integer> page = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ACTIVE = "is_active";
-  @SerializedName(SERIALIZED_NAME_IS_ACTIVE)
-  @javax.annotation.Nullable
-  private Boolean isActive;
+  public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
+  private JsonNullable<Boolean> isActive = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_KEY_SEARCH = "key_search";
-  @SerializedName(SERIALIZED_NAME_KEY_SEARCH)
-  @javax.annotation.Nullable
-  private String keySearch;
+  public static final String JSON_PROPERTY_KEY_SEARCH = "key_search";
+  private JsonNullable<String> keySearch = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_PRODUCT_FILTER = "product_filter";
-  @SerializedName(SERIALIZED_NAME_PRODUCT_FILTER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_PRODUCT_FILTER = "product_filter";
+  @jakarta.annotation.Nullable
   private UUID productFilter;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_FILTER = "customer_filter";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_FILTER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_CUSTOMER_FILTER = "customer_filter";
+  @jakarta.annotation.Nullable
   private UUID customerFilter;
 
-  public static final String SERIALIZED_NAME_CUSTOMER_NUMBER_FILTER = "customer_number_filter";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_NUMBER_FILTER)
-  @javax.annotation.Nullable
-  private List<String> customerNumberFilter;
+  public static final String JSON_PROPERTY_CUSTOMER_NUMBER_FILTER = "customer_number_filter";
+  private JsonNullable<List<String>> customerNumberFilter = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_TYPE_FILTER = "customer_type_filter";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_TYPE_FILTER)
-  @javax.annotation.Nullable
-  private List<UUID> customerTypeFilter;
+  public static final String JSON_PROPERTY_CUSTOMER_TYPE_FILTER = "customer_type_filter";
+  private JsonNullable<List<UUID>> customerTypeFilter = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_RESELLER_TYPE_FILTER = "reseller_type_filter";
-  @SerializedName(SERIALIZED_NAME_RESELLER_TYPE_FILTER)
-  @javax.annotation.Nullable
-  private List<UUID> resellerTypeFilter;
+  public static final String JSON_PROPERTY_RESELLER_TYPE_FILTER = "reseller_type_filter";
+  private JsonNullable<List<UUID>> resellerTypeFilter = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_TEMPLATE_FILTER = "template_filter";
-  @SerializedName(SERIALIZED_NAME_TEMPLATE_FILTER)
-  @javax.annotation.Nullable
-  private List<UUID> templateFilter;
+  public static final String JSON_PROPERTY_TEMPLATE_FILTER = "template_filter";
+  private JsonNullable<List<UUID>> templateFilter = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_LICENSE_TYPE_FILTER = "license_type_filter";
-  @SerializedName(SERIALIZED_NAME_LICENSE_TYPE_FILTER)
-  @javax.annotation.Nullable
-  private List<UUID> licenseTypeFilter;
+  public static final String JSON_PROPERTY_LICENSE_TYPE_FILTER = "license_type_filter";
+  private JsonNullable<List<UUID>> licenseTypeFilter = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_OPERATING_SYSTEM_FILTER = "operating_system_filter";
-  @SerializedName(SERIALIZED_NAME_OPERATING_SYSTEM_FILTER)
-  @javax.annotation.Nullable
-  private List<String> operatingSystemFilter;
+  public static final String JSON_PROPERTY_OPERATING_SYSTEM_FILTER = "operating_system_filter";
+  private JsonNullable<List<String>> operatingSystemFilter = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_SOFTWARE_VERSION_FILTER = "software_version_filter";
-  @SerializedName(SERIALIZED_NAME_SOFTWARE_VERSION_FILTER)
-  @javax.annotation.Nullable
-  private List<String> softwareVersionFilter;
+  public static final String JSON_PROPERTY_SOFTWARE_VERSION_FILTER = "software_version_filter";
+  private JsonNullable<List<String>> softwareVersionFilter = JsonNullable.<List<String>>undefined();
 
-  public static final String SERIALIZED_NAME_IS_SOFTWARE_VERSION_VALID = "is_software_version_valid";
-  @SerializedName(SERIALIZED_NAME_IS_SOFTWARE_VERSION_VALID)
-  @javax.annotation.Nullable
-  private Boolean isSoftwareVersionValid;
+  public static final String JSON_PROPERTY_IS_SOFTWARE_VERSION_VALID = "is_software_version_valid";
+  private JsonNullable<Boolean> isSoftwareVersionValid = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_FEATURE_FILTER = "feature_filter";
-  @SerializedName(SERIALIZED_NAME_FEATURE_FILTER)
-  @javax.annotation.Nullable
-  private List<UUID> featureFilter;
+  public static final String JSON_PROPERTY_FEATURE_FILTER = "feature_filter";
+  private JsonNullable<List<UUID>> featureFilter = JsonNullable.<List<UUID>>undefined();
 
-  public static final String SERIALIZED_NAME_IS_FEATURE_ACTIVE = "is_feature_active";
-  @SerializedName(SERIALIZED_NAME_IS_FEATURE_ACTIVE)
-  @javax.annotation.Nullable
-  private Boolean isFeatureActive;
+  public static final String JSON_PROPERTY_IS_FEATURE_ACTIVE = "is_feature_active";
+  private JsonNullable<Boolean> isFeatureActive = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_DATE_FILTER = "date_filter";
-  @SerializedName(SERIALIZED_NAME_DATE_FILTER)
-  @javax.annotation.Nullable
-  private OffsetDateTime dateFilter;
+  public static final String JSON_PROPERTY_DATE_FILTER = "date_filter";
+  private JsonNullable<OffsetDateTime> dateFilter = JsonNullable.<OffsetDateTime>undefined();
 
-  public static final String SERIALIZED_NAME_DATE_FILTER_MODE = "date_filter_mode";
-  @SerializedName(SERIALIZED_NAME_DATE_FILTER_MODE)
-  @javax.annotation.Nullable
-  private String dateFilterMode;
+  public static final String JSON_PROPERTY_DATE_FILTER_MODE = "date_filter_mode";
+  private JsonNullable<String> dateFilterMode = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_IS_NORMAL_TOKEN = "is_normal_token";
-  @SerializedName(SERIALIZED_NAME_IS_NORMAL_TOKEN)
-  @javax.annotation.Nullable
-  private Boolean isNormalToken;
+  public static final String JSON_PROPERTY_IS_NORMAL_TOKEN = "is_normal_token";
+  private JsonNullable<Boolean> isNormalToken = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_IS_GOODWILL_TOKEN = "is_goodwill_token";
-  @SerializedName(SERIALIZED_NAME_IS_GOODWILL_TOKEN)
-  @javax.annotation.Nullable
-  private Boolean isGoodwillToken;
+  public static final String JSON_PROPERTY_IS_GOODWILL_TOKEN = "is_goodwill_token";
+  private JsonNullable<Boolean> isGoodwillToken = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_IS_GROUP_VALID = "is_group_valid";
-  @SerializedName(SERIALIZED_NAME_IS_GROUP_VALID)
-  @javax.annotation.Nullable
-  private Boolean isGroupValid;
+  public static final String JSON_PROPERTY_IS_GROUP_VALID = "is_group_valid";
+  private JsonNullable<Boolean> isGroupValid = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_IS_ASSIGNED_TOKEN = "is_assigned_token";
-  @SerializedName(SERIALIZED_NAME_IS_ASSIGNED_TOKEN)
-  @javax.annotation.Nullable
-  private Boolean isAssignedToken;
+  public static final String JSON_PROPERTY_IS_ASSIGNED_TOKEN = "is_assigned_token";
+  private JsonNullable<Boolean> isAssignedToken = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_IS_SUSPENDED_TOKEN = "is_suspended_token";
-  @SerializedName(SERIALIZED_NAME_IS_SUSPENDED_TOKEN)
-  @javax.annotation.Nullable
-  private Boolean isSuspendedToken;
+  public static final String JSON_PROPERTY_IS_SUSPENDED_TOKEN = "is_suspended_token";
+  private JsonNullable<Boolean> isSuspendedToken = JsonNullable.<Boolean>undefined();
 
-  public static final String SERIALIZED_NAME_GROUP_COUNT_FILTER = "group_count_filter";
-  @SerializedName(SERIALIZED_NAME_GROUP_COUNT_FILTER)
-  @javax.annotation.Nullable
-  private Integer groupCountFilter;
+  public static final String JSON_PROPERTY_GROUP_COUNT_FILTER = "group_count_filter";
+  private JsonNullable<Integer> groupCountFilter = JsonNullable.<Integer>undefined();
 
-  public static final String SERIALIZED_NAME_GROUP_COUNT_MODE = "group_count_mode";
-  @SerializedName(SERIALIZED_NAME_GROUP_COUNT_MODE)
-  @javax.annotation.Nullable
-  private String groupCountMode;
+  public static final String JSON_PROPERTY_GROUP_COUNT_MODE = "group_count_mode";
+  private JsonNullable<String> groupCountMode = JsonNullable.<String>undefined();
 
-  public static final String SERIALIZED_NAME_SORT_TYPE = "sort_type";
-  @SerializedName(SERIALIZED_NAME_SORT_TYPE)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_SORT_TYPE = "sort_type";
+  @jakarta.annotation.Nullable
   private LicenseFilterSortType sortType;
 
-  public static final String SERIALIZED_NAME_SORT_ORDER = "sort_order";
-  @SerializedName(SERIALIZED_NAME_SORT_ORDER)
-  @javax.annotation.Nullable
+  public static final String JSON_PROPERTY_SORT_ORDER = "sort_order";
+  @jakarta.annotation.Nullable
   private Boolean sortOrder;
 
-  public static final String SERIALIZED_NAME_LICENSE_TAG_FILTER = "license_tag_filter";
-  @SerializedName(SERIALIZED_NAME_LICENSE_TAG_FILTER)
-  @javax.annotation.Nullable
-  private List<Integer> licenseTagFilter;
+  public static final String JSON_PROPERTY_LICENSE_TAG_FILTER = "license_tag_filter";
+  private JsonNullable<List<Integer>> licenseTagFilter = JsonNullable.<List<Integer>>undefined();
 
-  public static final String SERIALIZED_NAME_TOKEN_TAG_FILTER = "token_tag_filter";
-  @SerializedName(SERIALIZED_NAME_TOKEN_TAG_FILTER)
-  @javax.annotation.Nullable
-  private List<Integer> tokenTagFilter;
+  public static final String JSON_PROPERTY_TOKEN_TAG_FILTER = "token_tag_filter";
+  private JsonNullable<List<Integer>> tokenTagFilter = JsonNullable.<List<Integer>>undefined();
 
-  public static final String SERIALIZED_NAME_CUSTOMER_TAG_FILTER = "customer_tag_filter";
-  @SerializedName(SERIALIZED_NAME_CUSTOMER_TAG_FILTER)
-  @javax.annotation.Nullable
-  private List<Integer> customerTagFilter;
+  public static final String JSON_PROPERTY_CUSTOMER_TAG_FILTER = "customer_tag_filter";
+  private JsonNullable<List<Integer>> customerTagFilter = JsonNullable.<List<Integer>>undefined();
 
-  public static final String SERIALIZED_NAME_ANALYTICAL_FIELD_FILTER = "analytical_field_filter";
-  @SerializedName(SERIALIZED_NAME_ANALYTICAL_FIELD_FILTER)
-  @javax.annotation.Nullable
-  private AnalyticalFieldFilterDto analyticalFieldFilter;
+  public static final String JSON_PROPERTY_ANALYTICAL_FIELD_FILTER = "analytical_field_filter";
+  private JsonNullable<AnalyticalFieldFilterDto> analyticalFieldFilter = JsonNullable.<AnalyticalFieldFilterDto>undefined();
 
-  public LicenseFilterDto() {
+  public LicenseFilterDto() { 
   }
 
-  public LicenseFilterDto pageSize(@javax.annotation.Nonnull Integer pageSize) {
+  public LicenseFilterDto pageSize(@jakarta.annotation.Nonnull Integer pageSize) {
     this.pageSize = pageSize;
     return this;
   }
@@ -224,18 +187,23 @@ public class LicenseFilterDto {
    * Get pageSize
    * @return pageSize
    */
-  @javax.annotation.Nonnull
+  @jakarta.annotation.Nonnull
+  @JsonProperty(value = JSON_PROPERTY_PAGE_SIZE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public Integer getPageSize() {
     return pageSize;
   }
 
-  public void setPageSize(@javax.annotation.Nonnull Integer pageSize) {
+
+  @JsonProperty(value = JSON_PROPERTY_PAGE_SIZE, required = true)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setPageSize(@jakarta.annotation.Nonnull Integer pageSize) {
     this.pageSize = pageSize;
   }
 
 
-  public LicenseFilterDto page(@javax.annotation.Nullable Integer page) {
-    this.page = page;
+  public LicenseFilterDto page(@jakarta.annotation.Nullable Integer page) {
+    this.page = JsonNullable.<Integer>of(page);
     return this;
   }
 
@@ -243,18 +211,31 @@ public class LicenseFilterDto {
    * Get page
    * @return page
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getPage() {
-    return page;
+        return page.orElse(null);
   }
 
-  public void setPage(@javax.annotation.Nullable Integer page) {
+  @JsonProperty(value = JSON_PROPERTY_PAGE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getPage_JsonNullable() {
+    return page;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_PAGE)
+  public void setPage_JsonNullable(JsonNullable<Integer> page) {
     this.page = page;
   }
 
+  public void setPage(@jakarta.annotation.Nullable Integer page) {
+    this.page = JsonNullable.<Integer>of(page);
+  }
 
-  public LicenseFilterDto isActive(@javax.annotation.Nullable Boolean isActive) {
-    this.isActive = isActive;
+
+  public LicenseFilterDto isActive(@jakarta.annotation.Nullable Boolean isActive) {
+    this.isActive = JsonNullable.<Boolean>of(isActive);
     return this;
   }
 
@@ -262,18 +243,31 @@ public class LicenseFilterDto {
    * Get isActive
    * @return isActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsActive() {
-    return isActive;
+        return isActive.orElse(null);
   }
 
-  public void setIsActive(@javax.annotation.Nullable Boolean isActive) {
+  @JsonProperty(value = JSON_PROPERTY_IS_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsActive_JsonNullable() {
+    return isActive;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
+  public void setIsActive_JsonNullable(JsonNullable<Boolean> isActive) {
     this.isActive = isActive;
   }
 
+  public void setIsActive(@jakarta.annotation.Nullable Boolean isActive) {
+    this.isActive = JsonNullable.<Boolean>of(isActive);
+  }
 
-  public LicenseFilterDto keySearch(@javax.annotation.Nullable String keySearch) {
-    this.keySearch = keySearch;
+
+  public LicenseFilterDto keySearch(@jakarta.annotation.Nullable String keySearch) {
+    this.keySearch = JsonNullable.<String>of(keySearch);
     return this;
   }
 
@@ -281,17 +275,30 @@ public class LicenseFilterDto {
    * Get keySearch
    * @return keySearch
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getKeySearch() {
-    return keySearch;
+        return keySearch.orElse(null);
   }
 
-  public void setKeySearch(@javax.annotation.Nullable String keySearch) {
+  @JsonProperty(value = JSON_PROPERTY_KEY_SEARCH, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getKeySearch_JsonNullable() {
+    return keySearch;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_KEY_SEARCH)
+  public void setKeySearch_JsonNullable(JsonNullable<String> keySearch) {
     this.keySearch = keySearch;
   }
 
+  public void setKeySearch(@jakarta.annotation.Nullable String keySearch) {
+    this.keySearch = JsonNullable.<String>of(keySearch);
+  }
 
-  public LicenseFilterDto productFilter(@javax.annotation.Nullable UUID productFilter) {
+
+  public LicenseFilterDto productFilter(@jakarta.annotation.Nullable UUID productFilter) {
     this.productFilter = productFilter;
     return this;
   }
@@ -300,17 +307,22 @@ public class LicenseFilterDto {
    * Get productFilter
    * @return productFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getProductFilter() {
     return productFilter;
   }
 
-  public void setProductFilter(@javax.annotation.Nullable UUID productFilter) {
+
+  @JsonProperty(value = JSON_PROPERTY_PRODUCT_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setProductFilter(@jakarta.annotation.Nullable UUID productFilter) {
     this.productFilter = productFilter;
   }
 
 
-  public LicenseFilterDto customerFilter(@javax.annotation.Nullable UUID customerFilter) {
+  public LicenseFilterDto customerFilter(@jakarta.annotation.Nullable UUID customerFilter) {
     this.customerFilter = customerFilter;
     return this;
   }
@@ -319,26 +331,35 @@ public class LicenseFilterDto {
    * Get customerFilter
    * @return customerFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public UUID getCustomerFilter() {
     return customerFilter;
   }
 
-  public void setCustomerFilter(@javax.annotation.Nullable UUID customerFilter) {
+
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setCustomerFilter(@jakarta.annotation.Nullable UUID customerFilter) {
     this.customerFilter = customerFilter;
   }
 
 
-  public LicenseFilterDto customerNumberFilter(@javax.annotation.Nullable List<String> customerNumberFilter) {
-    this.customerNumberFilter = customerNumberFilter;
+  public LicenseFilterDto customerNumberFilter(@jakarta.annotation.Nullable List<String> customerNumberFilter) {
+    this.customerNumberFilter = JsonNullable.<List<String>>of(customerNumberFilter);
     return this;
   }
 
   public LicenseFilterDto addCustomerNumberFilterItem(String customerNumberFilterItem) {
-    if (this.customerNumberFilter == null) {
-      this.customerNumberFilter = new ArrayList<>();
+    if (this.customerNumberFilter == null || !this.customerNumberFilter.isPresent()) {
+      this.customerNumberFilter = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.customerNumberFilter.add(customerNumberFilterItem);
+    try {
+      this.customerNumberFilter.get().add(customerNumberFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -346,26 +367,43 @@ public class LicenseFilterDto {
    * Get customerNumberFilter
    * @return customerNumberFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getCustomerNumberFilter() {
-    return customerNumberFilter;
+        return customerNumberFilter.orElse(null);
   }
 
-  public void setCustomerNumberFilter(@javax.annotation.Nullable List<String> customerNumberFilter) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_NUMBER_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getCustomerNumberFilter_JsonNullable() {
+    return customerNumberFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_NUMBER_FILTER)
+  public void setCustomerNumberFilter_JsonNullable(JsonNullable<List<String>> customerNumberFilter) {
     this.customerNumberFilter = customerNumberFilter;
   }
 
+  public void setCustomerNumberFilter(@jakarta.annotation.Nullable List<String> customerNumberFilter) {
+    this.customerNumberFilter = JsonNullable.<List<String>>of(customerNumberFilter);
+  }
 
-  public LicenseFilterDto customerTypeFilter(@javax.annotation.Nullable List<UUID> customerTypeFilter) {
-    this.customerTypeFilter = customerTypeFilter;
+
+  public LicenseFilterDto customerTypeFilter(@jakarta.annotation.Nullable List<UUID> customerTypeFilter) {
+    this.customerTypeFilter = JsonNullable.<List<UUID>>of(customerTypeFilter);
     return this;
   }
 
   public LicenseFilterDto addCustomerTypeFilterItem(UUID customerTypeFilterItem) {
-    if (this.customerTypeFilter == null) {
-      this.customerTypeFilter = new ArrayList<>();
+    if (this.customerTypeFilter == null || !this.customerTypeFilter.isPresent()) {
+      this.customerTypeFilter = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.customerTypeFilter.add(customerTypeFilterItem);
+    try {
+      this.customerTypeFilter.get().add(customerTypeFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -373,26 +411,43 @@ public class LicenseFilterDto {
    * Get customerTypeFilter
    * @return customerTypeFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getCustomerTypeFilter() {
-    return customerTypeFilter;
+        return customerTypeFilter.orElse(null);
   }
 
-  public void setCustomerTypeFilter(@javax.annotation.Nullable List<UUID> customerTypeFilter) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_TYPE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getCustomerTypeFilter_JsonNullable() {
+    return customerTypeFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_TYPE_FILTER)
+  public void setCustomerTypeFilter_JsonNullable(JsonNullable<List<UUID>> customerTypeFilter) {
     this.customerTypeFilter = customerTypeFilter;
   }
 
+  public void setCustomerTypeFilter(@jakarta.annotation.Nullable List<UUID> customerTypeFilter) {
+    this.customerTypeFilter = JsonNullable.<List<UUID>>of(customerTypeFilter);
+  }
 
-  public LicenseFilterDto resellerTypeFilter(@javax.annotation.Nullable List<UUID> resellerTypeFilter) {
-    this.resellerTypeFilter = resellerTypeFilter;
+
+  public LicenseFilterDto resellerTypeFilter(@jakarta.annotation.Nullable List<UUID> resellerTypeFilter) {
+    this.resellerTypeFilter = JsonNullable.<List<UUID>>of(resellerTypeFilter);
     return this;
   }
 
   public LicenseFilterDto addResellerTypeFilterItem(UUID resellerTypeFilterItem) {
-    if (this.resellerTypeFilter == null) {
-      this.resellerTypeFilter = new ArrayList<>();
+    if (this.resellerTypeFilter == null || !this.resellerTypeFilter.isPresent()) {
+      this.resellerTypeFilter = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.resellerTypeFilter.add(resellerTypeFilterItem);
+    try {
+      this.resellerTypeFilter.get().add(resellerTypeFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -400,26 +455,43 @@ public class LicenseFilterDto {
    * Get resellerTypeFilter
    * @return resellerTypeFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getResellerTypeFilter() {
-    return resellerTypeFilter;
+        return resellerTypeFilter.orElse(null);
   }
 
-  public void setResellerTypeFilter(@javax.annotation.Nullable List<UUID> resellerTypeFilter) {
+  @JsonProperty(value = JSON_PROPERTY_RESELLER_TYPE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getResellerTypeFilter_JsonNullable() {
+    return resellerTypeFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_RESELLER_TYPE_FILTER)
+  public void setResellerTypeFilter_JsonNullable(JsonNullable<List<UUID>> resellerTypeFilter) {
     this.resellerTypeFilter = resellerTypeFilter;
   }
 
+  public void setResellerTypeFilter(@jakarta.annotation.Nullable List<UUID> resellerTypeFilter) {
+    this.resellerTypeFilter = JsonNullable.<List<UUID>>of(resellerTypeFilter);
+  }
 
-  public LicenseFilterDto templateFilter(@javax.annotation.Nullable List<UUID> templateFilter) {
-    this.templateFilter = templateFilter;
+
+  public LicenseFilterDto templateFilter(@jakarta.annotation.Nullable List<UUID> templateFilter) {
+    this.templateFilter = JsonNullable.<List<UUID>>of(templateFilter);
     return this;
   }
 
   public LicenseFilterDto addTemplateFilterItem(UUID templateFilterItem) {
-    if (this.templateFilter == null) {
-      this.templateFilter = new ArrayList<>();
+    if (this.templateFilter == null || !this.templateFilter.isPresent()) {
+      this.templateFilter = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.templateFilter.add(templateFilterItem);
+    try {
+      this.templateFilter.get().add(templateFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -427,26 +499,43 @@ public class LicenseFilterDto {
    * Get templateFilter
    * @return templateFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getTemplateFilter() {
-    return templateFilter;
+        return templateFilter.orElse(null);
   }
 
-  public void setTemplateFilter(@javax.annotation.Nullable List<UUID> templateFilter) {
+  @JsonProperty(value = JSON_PROPERTY_TEMPLATE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getTemplateFilter_JsonNullable() {
+    return templateFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TEMPLATE_FILTER)
+  public void setTemplateFilter_JsonNullable(JsonNullable<List<UUID>> templateFilter) {
     this.templateFilter = templateFilter;
   }
 
+  public void setTemplateFilter(@jakarta.annotation.Nullable List<UUID> templateFilter) {
+    this.templateFilter = JsonNullable.<List<UUID>>of(templateFilter);
+  }
 
-  public LicenseFilterDto licenseTypeFilter(@javax.annotation.Nullable List<UUID> licenseTypeFilter) {
-    this.licenseTypeFilter = licenseTypeFilter;
+
+  public LicenseFilterDto licenseTypeFilter(@jakarta.annotation.Nullable List<UUID> licenseTypeFilter) {
+    this.licenseTypeFilter = JsonNullable.<List<UUID>>of(licenseTypeFilter);
     return this;
   }
 
   public LicenseFilterDto addLicenseTypeFilterItem(UUID licenseTypeFilterItem) {
-    if (this.licenseTypeFilter == null) {
-      this.licenseTypeFilter = new ArrayList<>();
+    if (this.licenseTypeFilter == null || !this.licenseTypeFilter.isPresent()) {
+      this.licenseTypeFilter = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.licenseTypeFilter.add(licenseTypeFilterItem);
+    try {
+      this.licenseTypeFilter.get().add(licenseTypeFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -454,26 +543,43 @@ public class LicenseFilterDto {
    * Get licenseTypeFilter
    * @return licenseTypeFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getLicenseTypeFilter() {
-    return licenseTypeFilter;
+        return licenseTypeFilter.orElse(null);
   }
 
-  public void setLicenseTypeFilter(@javax.annotation.Nullable List<UUID> licenseTypeFilter) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_TYPE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getLicenseTypeFilter_JsonNullable() {
+    return licenseTypeFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_TYPE_FILTER)
+  public void setLicenseTypeFilter_JsonNullable(JsonNullable<List<UUID>> licenseTypeFilter) {
     this.licenseTypeFilter = licenseTypeFilter;
   }
 
+  public void setLicenseTypeFilter(@jakarta.annotation.Nullable List<UUID> licenseTypeFilter) {
+    this.licenseTypeFilter = JsonNullable.<List<UUID>>of(licenseTypeFilter);
+  }
 
-  public LicenseFilterDto operatingSystemFilter(@javax.annotation.Nullable List<String> operatingSystemFilter) {
-    this.operatingSystemFilter = operatingSystemFilter;
+
+  public LicenseFilterDto operatingSystemFilter(@jakarta.annotation.Nullable List<String> operatingSystemFilter) {
+    this.operatingSystemFilter = JsonNullable.<List<String>>of(operatingSystemFilter);
     return this;
   }
 
   public LicenseFilterDto addOperatingSystemFilterItem(String operatingSystemFilterItem) {
-    if (this.operatingSystemFilter == null) {
-      this.operatingSystemFilter = new ArrayList<>();
+    if (this.operatingSystemFilter == null || !this.operatingSystemFilter.isPresent()) {
+      this.operatingSystemFilter = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.operatingSystemFilter.add(operatingSystemFilterItem);
+    try {
+      this.operatingSystemFilter.get().add(operatingSystemFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -481,26 +587,43 @@ public class LicenseFilterDto {
    * Get operatingSystemFilter
    * @return operatingSystemFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getOperatingSystemFilter() {
-    return operatingSystemFilter;
+        return operatingSystemFilter.orElse(null);
   }
 
-  public void setOperatingSystemFilter(@javax.annotation.Nullable List<String> operatingSystemFilter) {
+  @JsonProperty(value = JSON_PROPERTY_OPERATING_SYSTEM_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getOperatingSystemFilter_JsonNullable() {
+    return operatingSystemFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_OPERATING_SYSTEM_FILTER)
+  public void setOperatingSystemFilter_JsonNullable(JsonNullable<List<String>> operatingSystemFilter) {
     this.operatingSystemFilter = operatingSystemFilter;
   }
 
+  public void setOperatingSystemFilter(@jakarta.annotation.Nullable List<String> operatingSystemFilter) {
+    this.operatingSystemFilter = JsonNullable.<List<String>>of(operatingSystemFilter);
+  }
 
-  public LicenseFilterDto softwareVersionFilter(@javax.annotation.Nullable List<String> softwareVersionFilter) {
-    this.softwareVersionFilter = softwareVersionFilter;
+
+  public LicenseFilterDto softwareVersionFilter(@jakarta.annotation.Nullable List<String> softwareVersionFilter) {
+    this.softwareVersionFilter = JsonNullable.<List<String>>of(softwareVersionFilter);
     return this;
   }
 
   public LicenseFilterDto addSoftwareVersionFilterItem(String softwareVersionFilterItem) {
-    if (this.softwareVersionFilter == null) {
-      this.softwareVersionFilter = new ArrayList<>();
+    if (this.softwareVersionFilter == null || !this.softwareVersionFilter.isPresent()) {
+      this.softwareVersionFilter = JsonNullable.<List<String>>of(new ArrayList<>());
     }
-    this.softwareVersionFilter.add(softwareVersionFilterItem);
+    try {
+      this.softwareVersionFilter.get().add(softwareVersionFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -508,18 +631,31 @@ public class LicenseFilterDto {
    * Get softwareVersionFilter
    * @return softwareVersionFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<String> getSoftwareVersionFilter() {
-    return softwareVersionFilter;
+        return softwareVersionFilter.orElse(null);
   }
 
-  public void setSoftwareVersionFilter(@javax.annotation.Nullable List<String> softwareVersionFilter) {
+  @JsonProperty(value = JSON_PROPERTY_SOFTWARE_VERSION_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<String>> getSoftwareVersionFilter_JsonNullable() {
+    return softwareVersionFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_SOFTWARE_VERSION_FILTER)
+  public void setSoftwareVersionFilter_JsonNullable(JsonNullable<List<String>> softwareVersionFilter) {
     this.softwareVersionFilter = softwareVersionFilter;
   }
 
+  public void setSoftwareVersionFilter(@jakarta.annotation.Nullable List<String> softwareVersionFilter) {
+    this.softwareVersionFilter = JsonNullable.<List<String>>of(softwareVersionFilter);
+  }
 
-  public LicenseFilterDto isSoftwareVersionValid(@javax.annotation.Nullable Boolean isSoftwareVersionValid) {
-    this.isSoftwareVersionValid = isSoftwareVersionValid;
+
+  public LicenseFilterDto isSoftwareVersionValid(@jakarta.annotation.Nullable Boolean isSoftwareVersionValid) {
+    this.isSoftwareVersionValid = JsonNullable.<Boolean>of(isSoftwareVersionValid);
     return this;
   }
 
@@ -527,26 +663,43 @@ public class LicenseFilterDto {
    * Get isSoftwareVersionValid
    * @return isSoftwareVersionValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsSoftwareVersionValid() {
-    return isSoftwareVersionValid;
+        return isSoftwareVersionValid.orElse(null);
   }
 
-  public void setIsSoftwareVersionValid(@javax.annotation.Nullable Boolean isSoftwareVersionValid) {
+  @JsonProperty(value = JSON_PROPERTY_IS_SOFTWARE_VERSION_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsSoftwareVersionValid_JsonNullable() {
+    return isSoftwareVersionValid;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_SOFTWARE_VERSION_VALID)
+  public void setIsSoftwareVersionValid_JsonNullable(JsonNullable<Boolean> isSoftwareVersionValid) {
     this.isSoftwareVersionValid = isSoftwareVersionValid;
   }
 
+  public void setIsSoftwareVersionValid(@jakarta.annotation.Nullable Boolean isSoftwareVersionValid) {
+    this.isSoftwareVersionValid = JsonNullable.<Boolean>of(isSoftwareVersionValid);
+  }
 
-  public LicenseFilterDto featureFilter(@javax.annotation.Nullable List<UUID> featureFilter) {
-    this.featureFilter = featureFilter;
+
+  public LicenseFilterDto featureFilter(@jakarta.annotation.Nullable List<UUID> featureFilter) {
+    this.featureFilter = JsonNullable.<List<UUID>>of(featureFilter);
     return this;
   }
 
   public LicenseFilterDto addFeatureFilterItem(UUID featureFilterItem) {
-    if (this.featureFilter == null) {
-      this.featureFilter = new ArrayList<>();
+    if (this.featureFilter == null || !this.featureFilter.isPresent()) {
+      this.featureFilter = JsonNullable.<List<UUID>>of(new ArrayList<>());
     }
-    this.featureFilter.add(featureFilterItem);
+    try {
+      this.featureFilter.get().add(featureFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -554,18 +707,31 @@ public class LicenseFilterDto {
    * Get featureFilter
    * @return featureFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<UUID> getFeatureFilter() {
-    return featureFilter;
+        return featureFilter.orElse(null);
   }
 
-  public void setFeatureFilter(@javax.annotation.Nullable List<UUID> featureFilter) {
+  @JsonProperty(value = JSON_PROPERTY_FEATURE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<UUID>> getFeatureFilter_JsonNullable() {
+    return featureFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_FEATURE_FILTER)
+  public void setFeatureFilter_JsonNullable(JsonNullable<List<UUID>> featureFilter) {
     this.featureFilter = featureFilter;
   }
 
+  public void setFeatureFilter(@jakarta.annotation.Nullable List<UUID> featureFilter) {
+    this.featureFilter = JsonNullable.<List<UUID>>of(featureFilter);
+  }
 
-  public LicenseFilterDto isFeatureActive(@javax.annotation.Nullable Boolean isFeatureActive) {
-    this.isFeatureActive = isFeatureActive;
+
+  public LicenseFilterDto isFeatureActive(@jakarta.annotation.Nullable Boolean isFeatureActive) {
+    this.isFeatureActive = JsonNullable.<Boolean>of(isFeatureActive);
     return this;
   }
 
@@ -573,18 +739,31 @@ public class LicenseFilterDto {
    * Get isFeatureActive
    * @return isFeatureActive
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsFeatureActive() {
-    return isFeatureActive;
+        return isFeatureActive.orElse(null);
   }
 
-  public void setIsFeatureActive(@javax.annotation.Nullable Boolean isFeatureActive) {
+  @JsonProperty(value = JSON_PROPERTY_IS_FEATURE_ACTIVE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsFeatureActive_JsonNullable() {
+    return isFeatureActive;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_FEATURE_ACTIVE)
+  public void setIsFeatureActive_JsonNullable(JsonNullable<Boolean> isFeatureActive) {
     this.isFeatureActive = isFeatureActive;
   }
 
+  public void setIsFeatureActive(@jakarta.annotation.Nullable Boolean isFeatureActive) {
+    this.isFeatureActive = JsonNullable.<Boolean>of(isFeatureActive);
+  }
 
-  public LicenseFilterDto dateFilter(@javax.annotation.Nullable OffsetDateTime dateFilter) {
-    this.dateFilter = dateFilter;
+
+  public LicenseFilterDto dateFilter(@jakarta.annotation.Nullable OffsetDateTime dateFilter) {
+    this.dateFilter = JsonNullable.<OffsetDateTime>of(dateFilter);
     return this;
   }
 
@@ -592,18 +771,31 @@ public class LicenseFilterDto {
    * Get dateFilter
    * @return dateFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public OffsetDateTime getDateFilter() {
-    return dateFilter;
+        return dateFilter.orElse(null);
   }
 
-  public void setDateFilter(@javax.annotation.Nullable OffsetDateTime dateFilter) {
+  @JsonProperty(value = JSON_PROPERTY_DATE_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<OffsetDateTime> getDateFilter_JsonNullable() {
+    return dateFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DATE_FILTER)
+  public void setDateFilter_JsonNullable(JsonNullable<OffsetDateTime> dateFilter) {
     this.dateFilter = dateFilter;
   }
 
+  public void setDateFilter(@jakarta.annotation.Nullable OffsetDateTime dateFilter) {
+    this.dateFilter = JsonNullable.<OffsetDateTime>of(dateFilter);
+  }
 
-  public LicenseFilterDto dateFilterMode(@javax.annotation.Nullable String dateFilterMode) {
-    this.dateFilterMode = dateFilterMode;
+
+  public LicenseFilterDto dateFilterMode(@jakarta.annotation.Nullable String dateFilterMode) {
+    this.dateFilterMode = JsonNullable.<String>of(dateFilterMode);
     return this;
   }
 
@@ -611,18 +803,31 @@ public class LicenseFilterDto {
    * Get dateFilterMode
    * @return dateFilterMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getDateFilterMode() {
-    return dateFilterMode;
+        return dateFilterMode.orElse(null);
   }
 
-  public void setDateFilterMode(@javax.annotation.Nullable String dateFilterMode) {
+  @JsonProperty(value = JSON_PROPERTY_DATE_FILTER_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getDateFilterMode_JsonNullable() {
+    return dateFilterMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_DATE_FILTER_MODE)
+  public void setDateFilterMode_JsonNullable(JsonNullable<String> dateFilterMode) {
     this.dateFilterMode = dateFilterMode;
   }
 
+  public void setDateFilterMode(@jakarta.annotation.Nullable String dateFilterMode) {
+    this.dateFilterMode = JsonNullable.<String>of(dateFilterMode);
+  }
 
-  public LicenseFilterDto isNormalToken(@javax.annotation.Nullable Boolean isNormalToken) {
-    this.isNormalToken = isNormalToken;
+
+  public LicenseFilterDto isNormalToken(@jakarta.annotation.Nullable Boolean isNormalToken) {
+    this.isNormalToken = JsonNullable.<Boolean>of(isNormalToken);
     return this;
   }
 
@@ -630,18 +835,31 @@ public class LicenseFilterDto {
    * Get isNormalToken
    * @return isNormalToken
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsNormalToken() {
-    return isNormalToken;
+        return isNormalToken.orElse(null);
   }
 
-  public void setIsNormalToken(@javax.annotation.Nullable Boolean isNormalToken) {
+  @JsonProperty(value = JSON_PROPERTY_IS_NORMAL_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsNormalToken_JsonNullable() {
+    return isNormalToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_NORMAL_TOKEN)
+  public void setIsNormalToken_JsonNullable(JsonNullable<Boolean> isNormalToken) {
     this.isNormalToken = isNormalToken;
   }
 
+  public void setIsNormalToken(@jakarta.annotation.Nullable Boolean isNormalToken) {
+    this.isNormalToken = JsonNullable.<Boolean>of(isNormalToken);
+  }
 
-  public LicenseFilterDto isGoodwillToken(@javax.annotation.Nullable Boolean isGoodwillToken) {
-    this.isGoodwillToken = isGoodwillToken;
+
+  public LicenseFilterDto isGoodwillToken(@jakarta.annotation.Nullable Boolean isGoodwillToken) {
+    this.isGoodwillToken = JsonNullable.<Boolean>of(isGoodwillToken);
     return this;
   }
 
@@ -649,18 +867,31 @@ public class LicenseFilterDto {
    * Get isGoodwillToken
    * @return isGoodwillToken
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsGoodwillToken() {
-    return isGoodwillToken;
+        return isGoodwillToken.orElse(null);
   }
 
-  public void setIsGoodwillToken(@javax.annotation.Nullable Boolean isGoodwillToken) {
+  @JsonProperty(value = JSON_PROPERTY_IS_GOODWILL_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsGoodwillToken_JsonNullable() {
+    return isGoodwillToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_GOODWILL_TOKEN)
+  public void setIsGoodwillToken_JsonNullable(JsonNullable<Boolean> isGoodwillToken) {
     this.isGoodwillToken = isGoodwillToken;
   }
 
+  public void setIsGoodwillToken(@jakarta.annotation.Nullable Boolean isGoodwillToken) {
+    this.isGoodwillToken = JsonNullable.<Boolean>of(isGoodwillToken);
+  }
 
-  public LicenseFilterDto isGroupValid(@javax.annotation.Nullable Boolean isGroupValid) {
-    this.isGroupValid = isGroupValid;
+
+  public LicenseFilterDto isGroupValid(@jakarta.annotation.Nullable Boolean isGroupValid) {
+    this.isGroupValid = JsonNullable.<Boolean>of(isGroupValid);
     return this;
   }
 
@@ -668,18 +899,31 @@ public class LicenseFilterDto {
    * Get isGroupValid
    * @return isGroupValid
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsGroupValid() {
-    return isGroupValid;
+        return isGroupValid.orElse(null);
   }
 
-  public void setIsGroupValid(@javax.annotation.Nullable Boolean isGroupValid) {
+  @JsonProperty(value = JSON_PROPERTY_IS_GROUP_VALID, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsGroupValid_JsonNullable() {
+    return isGroupValid;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_GROUP_VALID)
+  public void setIsGroupValid_JsonNullable(JsonNullable<Boolean> isGroupValid) {
     this.isGroupValid = isGroupValid;
   }
 
+  public void setIsGroupValid(@jakarta.annotation.Nullable Boolean isGroupValid) {
+    this.isGroupValid = JsonNullable.<Boolean>of(isGroupValid);
+  }
 
-  public LicenseFilterDto isAssignedToken(@javax.annotation.Nullable Boolean isAssignedToken) {
-    this.isAssignedToken = isAssignedToken;
+
+  public LicenseFilterDto isAssignedToken(@jakarta.annotation.Nullable Boolean isAssignedToken) {
+    this.isAssignedToken = JsonNullable.<Boolean>of(isAssignedToken);
     return this;
   }
 
@@ -687,18 +931,31 @@ public class LicenseFilterDto {
    * Get isAssignedToken
    * @return isAssignedToken
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsAssignedToken() {
-    return isAssignedToken;
+        return isAssignedToken.orElse(null);
   }
 
-  public void setIsAssignedToken(@javax.annotation.Nullable Boolean isAssignedToken) {
+  @JsonProperty(value = JSON_PROPERTY_IS_ASSIGNED_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsAssignedToken_JsonNullable() {
+    return isAssignedToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_ASSIGNED_TOKEN)
+  public void setIsAssignedToken_JsonNullable(JsonNullable<Boolean> isAssignedToken) {
     this.isAssignedToken = isAssignedToken;
   }
 
+  public void setIsAssignedToken(@jakarta.annotation.Nullable Boolean isAssignedToken) {
+    this.isAssignedToken = JsonNullable.<Boolean>of(isAssignedToken);
+  }
 
-  public LicenseFilterDto isSuspendedToken(@javax.annotation.Nullable Boolean isSuspendedToken) {
-    this.isSuspendedToken = isSuspendedToken;
+
+  public LicenseFilterDto isSuspendedToken(@jakarta.annotation.Nullable Boolean isSuspendedToken) {
+    this.isSuspendedToken = JsonNullable.<Boolean>of(isSuspendedToken);
     return this;
   }
 
@@ -706,18 +963,31 @@ public class LicenseFilterDto {
    * Get isSuspendedToken
    * @return isSuspendedToken
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Boolean getIsSuspendedToken() {
-    return isSuspendedToken;
+        return isSuspendedToken.orElse(null);
   }
 
-  public void setIsSuspendedToken(@javax.annotation.Nullable Boolean isSuspendedToken) {
+  @JsonProperty(value = JSON_PROPERTY_IS_SUSPENDED_TOKEN, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Boolean> getIsSuspendedToken_JsonNullable() {
+    return isSuspendedToken;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_IS_SUSPENDED_TOKEN)
+  public void setIsSuspendedToken_JsonNullable(JsonNullable<Boolean> isSuspendedToken) {
     this.isSuspendedToken = isSuspendedToken;
   }
 
+  public void setIsSuspendedToken(@jakarta.annotation.Nullable Boolean isSuspendedToken) {
+    this.isSuspendedToken = JsonNullable.<Boolean>of(isSuspendedToken);
+  }
 
-  public LicenseFilterDto groupCountFilter(@javax.annotation.Nullable Integer groupCountFilter) {
-    this.groupCountFilter = groupCountFilter;
+
+  public LicenseFilterDto groupCountFilter(@jakarta.annotation.Nullable Integer groupCountFilter) {
+    this.groupCountFilter = JsonNullable.<Integer>of(groupCountFilter);
     return this;
   }
 
@@ -725,18 +995,31 @@ public class LicenseFilterDto {
    * Get groupCountFilter
    * @return groupCountFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public Integer getGroupCountFilter() {
-    return groupCountFilter;
+        return groupCountFilter.orElse(null);
   }
 
-  public void setGroupCountFilter(@javax.annotation.Nullable Integer groupCountFilter) {
+  @JsonProperty(value = JSON_PROPERTY_GROUP_COUNT_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<Integer> getGroupCountFilter_JsonNullable() {
+    return groupCountFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GROUP_COUNT_FILTER)
+  public void setGroupCountFilter_JsonNullable(JsonNullable<Integer> groupCountFilter) {
     this.groupCountFilter = groupCountFilter;
   }
 
+  public void setGroupCountFilter(@jakarta.annotation.Nullable Integer groupCountFilter) {
+    this.groupCountFilter = JsonNullable.<Integer>of(groupCountFilter);
+  }
 
-  public LicenseFilterDto groupCountMode(@javax.annotation.Nullable String groupCountMode) {
-    this.groupCountMode = groupCountMode;
+
+  public LicenseFilterDto groupCountMode(@jakarta.annotation.Nullable String groupCountMode) {
+    this.groupCountMode = JsonNullable.<String>of(groupCountMode);
     return this;
   }
 
@@ -744,17 +1027,30 @@ public class LicenseFilterDto {
    * Get groupCountMode
    * @return groupCountMode
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public String getGroupCountMode() {
-    return groupCountMode;
+        return groupCountMode.orElse(null);
   }
 
-  public void setGroupCountMode(@javax.annotation.Nullable String groupCountMode) {
+  @JsonProperty(value = JSON_PROPERTY_GROUP_COUNT_MODE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<String> getGroupCountMode_JsonNullable() {
+    return groupCountMode;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_GROUP_COUNT_MODE)
+  public void setGroupCountMode_JsonNullable(JsonNullable<String> groupCountMode) {
     this.groupCountMode = groupCountMode;
   }
 
+  public void setGroupCountMode(@jakarta.annotation.Nullable String groupCountMode) {
+    this.groupCountMode = JsonNullable.<String>of(groupCountMode);
+  }
 
-  public LicenseFilterDto sortType(@javax.annotation.Nullable LicenseFilterSortType sortType) {
+
+  public LicenseFilterDto sortType(@jakarta.annotation.Nullable LicenseFilterSortType sortType) {
     this.sortType = sortType;
     return this;
   }
@@ -763,17 +1059,22 @@ public class LicenseFilterDto {
    * Get sortType
    * @return sortType
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SORT_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public LicenseFilterSortType getSortType() {
     return sortType;
   }
 
-  public void setSortType(@javax.annotation.Nullable LicenseFilterSortType sortType) {
+
+  @JsonProperty(value = JSON_PROPERTY_SORT_TYPE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSortType(@jakarta.annotation.Nullable LicenseFilterSortType sortType) {
     this.sortType = sortType;
   }
 
 
-  public LicenseFilterDto sortOrder(@javax.annotation.Nullable Boolean sortOrder) {
+  public LicenseFilterDto sortOrder(@jakarta.annotation.Nullable Boolean sortOrder) {
     this.sortOrder = sortOrder;
     return this;
   }
@@ -782,26 +1083,35 @@ public class LicenseFilterDto {
    * Get sortOrder
    * @return sortOrder
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_SORT_ORDER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public Boolean getSortOrder() {
     return sortOrder;
   }
 
-  public void setSortOrder(@javax.annotation.Nullable Boolean sortOrder) {
+
+  @JsonProperty(value = JSON_PROPERTY_SORT_ORDER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setSortOrder(@jakarta.annotation.Nullable Boolean sortOrder) {
     this.sortOrder = sortOrder;
   }
 
 
-  public LicenseFilterDto licenseTagFilter(@javax.annotation.Nullable List<Integer> licenseTagFilter) {
-    this.licenseTagFilter = licenseTagFilter;
+  public LicenseFilterDto licenseTagFilter(@jakarta.annotation.Nullable List<Integer> licenseTagFilter) {
+    this.licenseTagFilter = JsonNullable.<List<Integer>>of(licenseTagFilter);
     return this;
   }
 
   public LicenseFilterDto addLicenseTagFilterItem(Integer licenseTagFilterItem) {
-    if (this.licenseTagFilter == null) {
-      this.licenseTagFilter = new ArrayList<>();
+    if (this.licenseTagFilter == null || !this.licenseTagFilter.isPresent()) {
+      this.licenseTagFilter = JsonNullable.<List<Integer>>of(new ArrayList<>());
     }
-    this.licenseTagFilter.add(licenseTagFilterItem);
+    try {
+      this.licenseTagFilter.get().add(licenseTagFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -809,26 +1119,43 @@ public class LicenseFilterDto {
    * Get licenseTagFilter
    * @return licenseTagFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<Integer> getLicenseTagFilter() {
-    return licenseTagFilter;
+        return licenseTagFilter.orElse(null);
   }
 
-  public void setLicenseTagFilter(@javax.annotation.Nullable List<Integer> licenseTagFilter) {
+  @JsonProperty(value = JSON_PROPERTY_LICENSE_TAG_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<Integer>> getLicenseTagFilter_JsonNullable() {
+    return licenseTagFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_LICENSE_TAG_FILTER)
+  public void setLicenseTagFilter_JsonNullable(JsonNullable<List<Integer>> licenseTagFilter) {
     this.licenseTagFilter = licenseTagFilter;
   }
 
+  public void setLicenseTagFilter(@jakarta.annotation.Nullable List<Integer> licenseTagFilter) {
+    this.licenseTagFilter = JsonNullable.<List<Integer>>of(licenseTagFilter);
+  }
 
-  public LicenseFilterDto tokenTagFilter(@javax.annotation.Nullable List<Integer> tokenTagFilter) {
-    this.tokenTagFilter = tokenTagFilter;
+
+  public LicenseFilterDto tokenTagFilter(@jakarta.annotation.Nullable List<Integer> tokenTagFilter) {
+    this.tokenTagFilter = JsonNullable.<List<Integer>>of(tokenTagFilter);
     return this;
   }
 
   public LicenseFilterDto addTokenTagFilterItem(Integer tokenTagFilterItem) {
-    if (this.tokenTagFilter == null) {
-      this.tokenTagFilter = new ArrayList<>();
+    if (this.tokenTagFilter == null || !this.tokenTagFilter.isPresent()) {
+      this.tokenTagFilter = JsonNullable.<List<Integer>>of(new ArrayList<>());
     }
-    this.tokenTagFilter.add(tokenTagFilterItem);
+    try {
+      this.tokenTagFilter.get().add(tokenTagFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -836,26 +1163,43 @@ public class LicenseFilterDto {
    * Get tokenTagFilter
    * @return tokenTagFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<Integer> getTokenTagFilter() {
-    return tokenTagFilter;
+        return tokenTagFilter.orElse(null);
   }
 
-  public void setTokenTagFilter(@javax.annotation.Nullable List<Integer> tokenTagFilter) {
+  @JsonProperty(value = JSON_PROPERTY_TOKEN_TAG_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<Integer>> getTokenTagFilter_JsonNullable() {
+    return tokenTagFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_TOKEN_TAG_FILTER)
+  public void setTokenTagFilter_JsonNullable(JsonNullable<List<Integer>> tokenTagFilter) {
     this.tokenTagFilter = tokenTagFilter;
   }
 
+  public void setTokenTagFilter(@jakarta.annotation.Nullable List<Integer> tokenTagFilter) {
+    this.tokenTagFilter = JsonNullable.<List<Integer>>of(tokenTagFilter);
+  }
 
-  public LicenseFilterDto customerTagFilter(@javax.annotation.Nullable List<Integer> customerTagFilter) {
-    this.customerTagFilter = customerTagFilter;
+
+  public LicenseFilterDto customerTagFilter(@jakarta.annotation.Nullable List<Integer> customerTagFilter) {
+    this.customerTagFilter = JsonNullable.<List<Integer>>of(customerTagFilter);
     return this;
   }
 
   public LicenseFilterDto addCustomerTagFilterItem(Integer customerTagFilterItem) {
-    if (this.customerTagFilter == null) {
-      this.customerTagFilter = new ArrayList<>();
+    if (this.customerTagFilter == null || !this.customerTagFilter.isPresent()) {
+      this.customerTagFilter = JsonNullable.<List<Integer>>of(new ArrayList<>());
     }
-    this.customerTagFilter.add(customerTagFilterItem);
+    try {
+      this.customerTagFilter.get().add(customerTagFilterItem);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
     return this;
   }
 
@@ -863,18 +1207,31 @@ public class LicenseFilterDto {
    * Get customerTagFilter
    * @return customerTagFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public List<Integer> getCustomerTagFilter() {
-    return customerTagFilter;
+        return customerTagFilter.orElse(null);
   }
 
-  public void setCustomerTagFilter(@javax.annotation.Nullable List<Integer> customerTagFilter) {
+  @JsonProperty(value = JSON_PROPERTY_CUSTOMER_TAG_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<List<Integer>> getCustomerTagFilter_JsonNullable() {
+    return customerTagFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_CUSTOMER_TAG_FILTER)
+  public void setCustomerTagFilter_JsonNullable(JsonNullable<List<Integer>> customerTagFilter) {
     this.customerTagFilter = customerTagFilter;
   }
 
+  public void setCustomerTagFilter(@jakarta.annotation.Nullable List<Integer> customerTagFilter) {
+    this.customerTagFilter = JsonNullable.<List<Integer>>of(customerTagFilter);
+  }
 
-  public LicenseFilterDto analyticalFieldFilter(@javax.annotation.Nullable AnalyticalFieldFilterDto analyticalFieldFilter) {
-    this.analyticalFieldFilter = analyticalFieldFilter;
+
+  public LicenseFilterDto analyticalFieldFilter(@jakarta.annotation.Nullable AnalyticalFieldFilterDto analyticalFieldFilter) {
+    this.analyticalFieldFilter = JsonNullable.<AnalyticalFieldFilterDto>of(analyticalFieldFilter);
     return this;
   }
 
@@ -882,17 +1239,32 @@ public class LicenseFilterDto {
    * Get analyticalFieldFilter
    * @return analyticalFieldFilter
    */
-  @javax.annotation.Nullable
+  @jakarta.annotation.Nullable
+  @JsonIgnore
   public AnalyticalFieldFilterDto getAnalyticalFieldFilter() {
-    return analyticalFieldFilter;
+        return analyticalFieldFilter.orElse(null);
   }
 
-  public void setAnalyticalFieldFilter(@javax.annotation.Nullable AnalyticalFieldFilterDto analyticalFieldFilter) {
+  @JsonProperty(value = JSON_PROPERTY_ANALYTICAL_FIELD_FILTER, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public JsonNullable<AnalyticalFieldFilterDto> getAnalyticalFieldFilter_JsonNullable() {
+    return analyticalFieldFilter;
+  }
+  
+  @JsonProperty(JSON_PROPERTY_ANALYTICAL_FIELD_FILTER)
+  public void setAnalyticalFieldFilter_JsonNullable(JsonNullable<AnalyticalFieldFilterDto> analyticalFieldFilter) {
     this.analyticalFieldFilter = analyticalFieldFilter;
   }
 
+  public void setAnalyticalFieldFilter(@jakarta.annotation.Nullable AnalyticalFieldFilterDto analyticalFieldFilter) {
+    this.analyticalFieldFilter = JsonNullable.<AnalyticalFieldFilterDto>of(analyticalFieldFilter);
+  }
 
 
+  /**
+   * Return true if this LicenseFilterDto object is equal to o.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -903,36 +1275,36 @@ public class LicenseFilterDto {
     }
     LicenseFilterDto licenseFilterDto = (LicenseFilterDto) o;
     return Objects.equals(this.pageSize, licenseFilterDto.pageSize) &&
-        Objects.equals(this.page, licenseFilterDto.page) &&
-        Objects.equals(this.isActive, licenseFilterDto.isActive) &&
-        Objects.equals(this.keySearch, licenseFilterDto.keySearch) &&
+        equalsNullable(this.page, licenseFilterDto.page) &&
+        equalsNullable(this.isActive, licenseFilterDto.isActive) &&
+        equalsNullable(this.keySearch, licenseFilterDto.keySearch) &&
         Objects.equals(this.productFilter, licenseFilterDto.productFilter) &&
         Objects.equals(this.customerFilter, licenseFilterDto.customerFilter) &&
-        Objects.equals(this.customerNumberFilter, licenseFilterDto.customerNumberFilter) &&
-        Objects.equals(this.customerTypeFilter, licenseFilterDto.customerTypeFilter) &&
-        Objects.equals(this.resellerTypeFilter, licenseFilterDto.resellerTypeFilter) &&
-        Objects.equals(this.templateFilter, licenseFilterDto.templateFilter) &&
-        Objects.equals(this.licenseTypeFilter, licenseFilterDto.licenseTypeFilter) &&
-        Objects.equals(this.operatingSystemFilter, licenseFilterDto.operatingSystemFilter) &&
-        Objects.equals(this.softwareVersionFilter, licenseFilterDto.softwareVersionFilter) &&
-        Objects.equals(this.isSoftwareVersionValid, licenseFilterDto.isSoftwareVersionValid) &&
-        Objects.equals(this.featureFilter, licenseFilterDto.featureFilter) &&
-        Objects.equals(this.isFeatureActive, licenseFilterDto.isFeatureActive) &&
-        Objects.equals(this.dateFilter, licenseFilterDto.dateFilter) &&
-        Objects.equals(this.dateFilterMode, licenseFilterDto.dateFilterMode) &&
-        Objects.equals(this.isNormalToken, licenseFilterDto.isNormalToken) &&
-        Objects.equals(this.isGoodwillToken, licenseFilterDto.isGoodwillToken) &&
-        Objects.equals(this.isGroupValid, licenseFilterDto.isGroupValid) &&
-        Objects.equals(this.isAssignedToken, licenseFilterDto.isAssignedToken) &&
-        Objects.equals(this.isSuspendedToken, licenseFilterDto.isSuspendedToken) &&
-        Objects.equals(this.groupCountFilter, licenseFilterDto.groupCountFilter) &&
-        Objects.equals(this.groupCountMode, licenseFilterDto.groupCountMode) &&
+        equalsNullable(this.customerNumberFilter, licenseFilterDto.customerNumberFilter) &&
+        equalsNullable(this.customerTypeFilter, licenseFilterDto.customerTypeFilter) &&
+        equalsNullable(this.resellerTypeFilter, licenseFilterDto.resellerTypeFilter) &&
+        equalsNullable(this.templateFilter, licenseFilterDto.templateFilter) &&
+        equalsNullable(this.licenseTypeFilter, licenseFilterDto.licenseTypeFilter) &&
+        equalsNullable(this.operatingSystemFilter, licenseFilterDto.operatingSystemFilter) &&
+        equalsNullable(this.softwareVersionFilter, licenseFilterDto.softwareVersionFilter) &&
+        equalsNullable(this.isSoftwareVersionValid, licenseFilterDto.isSoftwareVersionValid) &&
+        equalsNullable(this.featureFilter, licenseFilterDto.featureFilter) &&
+        equalsNullable(this.isFeatureActive, licenseFilterDto.isFeatureActive) &&
+        equalsNullable(this.dateFilter, licenseFilterDto.dateFilter) &&
+        equalsNullable(this.dateFilterMode, licenseFilterDto.dateFilterMode) &&
+        equalsNullable(this.isNormalToken, licenseFilterDto.isNormalToken) &&
+        equalsNullable(this.isGoodwillToken, licenseFilterDto.isGoodwillToken) &&
+        equalsNullable(this.isGroupValid, licenseFilterDto.isGroupValid) &&
+        equalsNullable(this.isAssignedToken, licenseFilterDto.isAssignedToken) &&
+        equalsNullable(this.isSuspendedToken, licenseFilterDto.isSuspendedToken) &&
+        equalsNullable(this.groupCountFilter, licenseFilterDto.groupCountFilter) &&
+        equalsNullable(this.groupCountMode, licenseFilterDto.groupCountMode) &&
         Objects.equals(this.sortType, licenseFilterDto.sortType) &&
         Objects.equals(this.sortOrder, licenseFilterDto.sortOrder) &&
-        Objects.equals(this.licenseTagFilter, licenseFilterDto.licenseTagFilter) &&
-        Objects.equals(this.tokenTagFilter, licenseFilterDto.tokenTagFilter) &&
-        Objects.equals(this.customerTagFilter, licenseFilterDto.customerTagFilter) &&
-        Objects.equals(this.analyticalFieldFilter, licenseFilterDto.analyticalFieldFilter);
+        equalsNullable(this.licenseTagFilter, licenseFilterDto.licenseTagFilter) &&
+        equalsNullable(this.tokenTagFilter, licenseFilterDto.tokenTagFilter) &&
+        equalsNullable(this.customerTagFilter, licenseFilterDto.customerTagFilter) &&
+        equalsNullable(this.analyticalFieldFilter, licenseFilterDto.analyticalFieldFilter);
   }
 
   private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
@@ -941,7 +1313,7 @@ public class LicenseFilterDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(pageSize, page, isActive, keySearch, productFilter, customerFilter, customerNumberFilter, customerTypeFilter, resellerTypeFilter, templateFilter, licenseTypeFilter, operatingSystemFilter, softwareVersionFilter, isSoftwareVersionValid, featureFilter, isFeatureActive, dateFilter, dateFilterMode, isNormalToken, isGoodwillToken, isGroupValid, isAssignedToken, isSuspendedToken, groupCountFilter, groupCountMode, sortType, sortOrder, licenseTagFilter, tokenTagFilter, customerTagFilter, analyticalFieldFilter);
+    return Objects.hash(pageSize, hashCodeNullable(page), hashCodeNullable(isActive), hashCodeNullable(keySearch), productFilter, customerFilter, hashCodeNullable(customerNumberFilter), hashCodeNullable(customerTypeFilter), hashCodeNullable(resellerTypeFilter), hashCodeNullable(templateFilter), hashCodeNullable(licenseTypeFilter), hashCodeNullable(operatingSystemFilter), hashCodeNullable(softwareVersionFilter), hashCodeNullable(isSoftwareVersionValid), hashCodeNullable(featureFilter), hashCodeNullable(isFeatureActive), hashCodeNullable(dateFilter), hashCodeNullable(dateFilterMode), hashCodeNullable(isNormalToken), hashCodeNullable(isGoodwillToken), hashCodeNullable(isGroupValid), hashCodeNullable(isAssignedToken), hashCodeNullable(isSuspendedToken), hashCodeNullable(groupCountFilter), hashCodeNullable(groupCountMode), sortType, sortOrder, hashCodeNullable(licenseTagFilter), hashCodeNullable(tokenTagFilter), hashCodeNullable(customerTagFilter), hashCodeNullable(analyticalFieldFilter));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -1001,162 +1373,248 @@ public class LicenseFilterDto {
     return o.toString().replace("\n", "\n    ");
   }
 
-
-  public static HashSet<String> openapiFields;
-  public static HashSet<String> openapiRequiredFields;
-
-  static {
-    // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("page_size", "page", "is_active", "key_search", "product_filter", "customer_filter", "customer_number_filter", "customer_type_filter", "reseller_type_filter", "template_filter", "license_type_filter", "operating_system_filter", "software_version_filter", "is_software_version_valid", "feature_filter", "is_feature_active", "date_filter", "date_filter_mode", "is_normal_token", "is_goodwill_token", "is_group_valid", "is_assigned_token", "is_suspended_token", "group_count_filter", "group_count_mode", "sort_type", "sort_order", "license_tag_filter", "token_tag_filter", "customer_tag_filter", "analytical_field_filter"));
-
-    // a set of required properties/fields (JSON key names)
-    openapiRequiredFields = new HashSet<String>(Arrays.asList("page_size"));
+  /**
+   * Convert the instance into URL query string.
+   *
+   * @return URL query string
+   */
+  public String toUrlQueryString() {
+    return toUrlQueryString(null);
   }
 
   /**
-   * Validates the JSON Element and throws an exception if issues found
+   * Convert the instance into URL query string.
    *
-   * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to LicenseFilterDto
+   * @param prefix prefix of the query string
+   * @return URL query string
    */
-  public static void validateJsonElement(JsonElement jsonElement) throws IOException {
-      if (jsonElement == null) {
-        if (!LicenseFilterDto.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in LicenseFilterDto is not found in the empty JSON string", LicenseFilterDto.openapiRequiredFields.toString()));
-        }
-      }
-
-      Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
-      // check to see if the JSON string contains additional fields
-      for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!LicenseFilterDto.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `LicenseFilterDto` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : LicenseFilterDto.openapiRequiredFields) {
-        if (jsonElement.getAsJsonObject().get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonElement.toString()));
-        }
-      }
-        JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("key_search") != null && !jsonObj.get("key_search").isJsonNull()) && !jsonObj.get("key_search").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `key_search` to be a primitive type in the JSON string but got `%s`", jsonObj.get("key_search").toString()));
-      }
-      if ((jsonObj.get("product_filter") != null && !jsonObj.get("product_filter").isJsonNull()) && !jsonObj.get("product_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `product_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("product_filter").toString()));
-      }
-      if ((jsonObj.get("customer_filter") != null && !jsonObj.get("customer_filter").isJsonNull()) && !jsonObj.get("customer_filter").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_filter` to be a primitive type in the JSON string but got `%s`", jsonObj.get("customer_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("customer_number_filter") != null && !jsonObj.get("customer_number_filter").isJsonNull() && !jsonObj.get("customer_number_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_number_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_number_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("customer_type_filter") != null && !jsonObj.get("customer_type_filter").isJsonNull() && !jsonObj.get("customer_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_type_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("reseller_type_filter") != null && !jsonObj.get("reseller_type_filter").isJsonNull() && !jsonObj.get("reseller_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `reseller_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("reseller_type_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("template_filter") != null && !jsonObj.get("template_filter").isJsonNull() && !jsonObj.get("template_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `template_filter` to be an array in the JSON string but got `%s`", jsonObj.get("template_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("license_type_filter") != null && !jsonObj.get("license_type_filter").isJsonNull() && !jsonObj.get("license_type_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_type_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_type_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("operating_system_filter") != null && !jsonObj.get("operating_system_filter").isJsonNull() && !jsonObj.get("operating_system_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `operating_system_filter` to be an array in the JSON string but got `%s`", jsonObj.get("operating_system_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("software_version_filter") != null && !jsonObj.get("software_version_filter").isJsonNull() && !jsonObj.get("software_version_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `software_version_filter` to be an array in the JSON string but got `%s`", jsonObj.get("software_version_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("feature_filter") != null && !jsonObj.get("feature_filter").isJsonNull() && !jsonObj.get("feature_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `feature_filter` to be an array in the JSON string but got `%s`", jsonObj.get("feature_filter").toString()));
-      }
-      if ((jsonObj.get("date_filter_mode") != null && !jsonObj.get("date_filter_mode").isJsonNull()) && !jsonObj.get("date_filter_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `date_filter_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("date_filter_mode").toString()));
-      }
-      if ((jsonObj.get("group_count_mode") != null && !jsonObj.get("group_count_mode").isJsonNull()) && !jsonObj.get("group_count_mode").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `group_count_mode` to be a primitive type in the JSON string but got `%s`", jsonObj.get("group_count_mode").toString()));
-      }
-      // validate the optional field `sort_type`
-      if (jsonObj.get("sort_type") != null && !jsonObj.get("sort_type").isJsonNull()) {
-        LicenseFilterSortType.validateJsonElement(jsonObj.get("sort_type"));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("license_tag_filter") != null && !jsonObj.get("license_tag_filter").isJsonNull() && !jsonObj.get("license_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `license_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("license_tag_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("token_tag_filter") != null && !jsonObj.get("token_tag_filter").isJsonNull() && !jsonObj.get("token_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `token_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("token_tag_filter").toString()));
-      }
-      // ensure the optional json data is an array if present
-      if (jsonObj.get("customer_tag_filter") != null && !jsonObj.get("customer_tag_filter").isJsonNull() && !jsonObj.get("customer_tag_filter").isJsonArray()) {
-        throw new IllegalArgumentException(String.format("Expected the field `customer_tag_filter` to be an array in the JSON string but got `%s`", jsonObj.get("customer_tag_filter").toString()));
-      }
-      // validate the optional field `analytical_field_filter`
-      if (jsonObj.get("analytical_field_filter") != null && !jsonObj.get("analytical_field_filter").isJsonNull()) {
-        AnalyticalFieldFilterDto.validateJsonElement(jsonObj.get("analytical_field_filter"));
-      }
-  }
-
-  public static class CustomTypeAdapterFactory implements TypeAdapterFactory {
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!LicenseFilterDto.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'LicenseFilterDto' and its subtypes
-       }
-       final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<LicenseFilterDto> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(LicenseFilterDto.class));
-
-       return (TypeAdapter<T>) new TypeAdapter<LicenseFilterDto>() {
-           @Override
-           public void write(JsonWriter out, LicenseFilterDto value) throws IOException {
-             JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
-             elementAdapter.write(out, obj);
-           }
-
-           @Override
-           public LicenseFilterDto read(JsonReader in) throws IOException {
-             JsonElement jsonElement = elementAdapter.read(in);
-             validateJsonElement(jsonElement);
-             return thisAdapter.fromJsonTree(jsonElement);
-           }
-
-       }.nullSafe();
+  public String toUrlQueryString(String prefix) {
+    String suffix = "";
+    String containerSuffix = "";
+    String containerPrefix = "";
+    if (prefix == null) {
+      // style=form, explode=true, e.g. /pet?name=cat&type=manx
+      prefix = "";
+    } else {
+      // deepObject style e.g. /pet?id[name]=cat&id[type]=manx
+      prefix = prefix + "[";
+      suffix = "]";
+      containerSuffix = "]";
+      containerPrefix = "[";
     }
-  }
 
-  /**
-   * Create an instance of LicenseFilterDto given an JSON string
-   *
-   * @param jsonString JSON string
-   * @return An instance of LicenseFilterDto
-   * @throws IOException if the JSON string is invalid with respect to LicenseFilterDto
-   */
-  public static LicenseFilterDto fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, LicenseFilterDto.class);
-  }
+    StringJoiner joiner = new StringJoiner("&");
 
-  /**
-   * Convert an instance of LicenseFilterDto to an JSON string
-   *
-   * @return JSON string
-   */
-  public String toJson() {
-    return JSON.getGson().toJson(this);
+    // add `page_size` to the URL query string
+    if (getPageSize() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spage_size%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPageSize()))));
+    }
+
+    // add `page` to the URL query string
+    if (getPage() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%spage%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getPage()))));
+    }
+
+    // add `is_active` to the URL query string
+    if (getIsActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsActive()))));
+    }
+
+    // add `key_search` to the URL query string
+    if (getKeySearch() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%skey_search%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getKeySearch()))));
+    }
+
+    // add `product_filter` to the URL query string
+    if (getProductFilter() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sproduct_filter%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getProductFilter()))));
+    }
+
+    // add `customer_filter` to the URL query string
+    if (getCustomerFilter() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_filter%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getCustomerFilter()))));
+    }
+
+    // add `customer_number_filter` to the URL query string
+    if (getCustomerNumberFilter() != null) {
+      for (int i = 0; i < getCustomerNumberFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_number_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getCustomerNumberFilter().get(i)))));
+      }
+    }
+
+    // add `customer_type_filter` to the URL query string
+    if (getCustomerTypeFilter() != null) {
+      for (int i = 0; i < getCustomerTypeFilter().size(); i++) {
+        if (getCustomerTypeFilter().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_type_filter%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getCustomerTypeFilter().get(i)))));
+        }
+      }
+    }
+
+    // add `reseller_type_filter` to the URL query string
+    if (getResellerTypeFilter() != null) {
+      for (int i = 0; i < getResellerTypeFilter().size(); i++) {
+        if (getResellerTypeFilter().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%sreseller_type_filter%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getResellerTypeFilter().get(i)))));
+        }
+      }
+    }
+
+    // add `template_filter` to the URL query string
+    if (getTemplateFilter() != null) {
+      for (int i = 0; i < getTemplateFilter().size(); i++) {
+        if (getTemplateFilter().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%stemplate_filter%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getTemplateFilter().get(i)))));
+        }
+      }
+    }
+
+    // add `license_type_filter` to the URL query string
+    if (getLicenseTypeFilter() != null) {
+      for (int i = 0; i < getLicenseTypeFilter().size(); i++) {
+        if (getLicenseTypeFilter().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%slicense_type_filter%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getLicenseTypeFilter().get(i)))));
+        }
+      }
+    }
+
+    // add `operating_system_filter` to the URL query string
+    if (getOperatingSystemFilter() != null) {
+      for (int i = 0; i < getOperatingSystemFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%soperating_system_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getOperatingSystemFilter().get(i)))));
+      }
+    }
+
+    // add `software_version_filter` to the URL query string
+    if (getSoftwareVersionFilter() != null) {
+      for (int i = 0; i < getSoftwareVersionFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%ssoftware_version_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getSoftwareVersionFilter().get(i)))));
+      }
+    }
+
+    // add `is_software_version_valid` to the URL query string
+    if (getIsSoftwareVersionValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_software_version_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsSoftwareVersionValid()))));
+    }
+
+    // add `feature_filter` to the URL query string
+    if (getFeatureFilter() != null) {
+      for (int i = 0; i < getFeatureFilter().size(); i++) {
+        if (getFeatureFilter().get(i) != null) {
+          joiner.add(String.format(java.util.Locale.ROOT, "%sfeature_filter%s%s=%s", prefix, suffix,
+              "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+              ApiClient.urlEncode(ApiClient.valueToString(getFeatureFilter().get(i)))));
+        }
+      }
+    }
+
+    // add `is_feature_active` to the URL query string
+    if (getIsFeatureActive() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_feature_active%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsFeatureActive()))));
+    }
+
+    // add `date_filter` to the URL query string
+    if (getDateFilter() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdate_filter%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDateFilter()))));
+    }
+
+    // add `date_filter_mode` to the URL query string
+    if (getDateFilterMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sdate_filter_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getDateFilterMode()))));
+    }
+
+    // add `is_normal_token` to the URL query string
+    if (getIsNormalToken() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_normal_token%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsNormalToken()))));
+    }
+
+    // add `is_goodwill_token` to the URL query string
+    if (getIsGoodwillToken() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_goodwill_token%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsGoodwillToken()))));
+    }
+
+    // add `is_group_valid` to the URL query string
+    if (getIsGroupValid() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_group_valid%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsGroupValid()))));
+    }
+
+    // add `is_assigned_token` to the URL query string
+    if (getIsAssignedToken() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_assigned_token%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsAssignedToken()))));
+    }
+
+    // add `is_suspended_token` to the URL query string
+    if (getIsSuspendedToken() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sis_suspended_token%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getIsSuspendedToken()))));
+    }
+
+    // add `group_count_filter` to the URL query string
+    if (getGroupCountFilter() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgroup_count_filter%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGroupCountFilter()))));
+    }
+
+    // add `group_count_mode` to the URL query string
+    if (getGroupCountMode() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sgroup_count_mode%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getGroupCountMode()))));
+    }
+
+    // add `sort_type` to the URL query string
+    if (getSortType() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssort_type%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSortType()))));
+    }
+
+    // add `sort_order` to the URL query string
+    if (getSortOrder() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%ssort_order%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getSortOrder()))));
+    }
+
+    // add `license_tag_filter` to the URL query string
+    if (getLicenseTagFilter() != null) {
+      for (int i = 0; i < getLicenseTagFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%slicense_tag_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getLicenseTagFilter().get(i)))));
+      }
+    }
+
+    // add `token_tag_filter` to the URL query string
+    if (getTokenTagFilter() != null) {
+      for (int i = 0; i < getTokenTagFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%stoken_tag_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getTokenTagFilter().get(i)))));
+      }
+    }
+
+    // add `customer_tag_filter` to the URL query string
+    if (getCustomerTagFilter() != null) {
+      for (int i = 0; i < getCustomerTagFilter().size(); i++) {
+        joiner.add(String.format(java.util.Locale.ROOT, "%scustomer_tag_filter%s%s=%s", prefix, suffix,
+            "".equals(suffix) ? "" : String.format(java.util.Locale.ROOT, "%s%d%s", containerPrefix, i, containerSuffix),
+            ApiClient.urlEncode(ApiClient.valueToString(getCustomerTagFilter().get(i)))));
+      }
+    }
+
+    // add `analytical_field_filter` to the URL query string
+    if (getAnalyticalFieldFilter() != null) {
+      joiner.add(getAnalyticalFieldFilter().toUrlQueryString(prefix + "analytical_field_filter" + suffix));
+    }
+
+    return joiner.toString();
   }
 }
 

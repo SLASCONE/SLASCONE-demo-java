@@ -10,22 +10,13 @@
  * Do not edit the class manually.
  */
 
-
 package com.slascone.api;
 
-import com.slascone.ApiCallback;
 import com.slascone.ApiClient;
 import com.slascone.ApiException;
 import com.slascone.ApiResponse;
 import com.slascone.Configuration;
 import com.slascone.Pair;
-import com.slascone.ProgressRequestBody;
-import com.slascone.ProgressResponseBody;
-
-import com.google.gson.reflect.TypeToken;
-
-import java.io.IOException;
-
 
 import com.slascone.model.ActivateClientDto;
 import com.slascone.model.ActivateLicenseResponseErrors;
@@ -57,2139 +48,1896 @@ import com.slascone.model.UnassignDto;
 import com.slascone.model.ValidateConsumptionStatusDto;
 import com.slascone.model.ValidateLicenseDto;
 
-import java.lang.reflect.Type;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.http.HttpRequest;
+import java.nio.channels.Channels;
+import java.nio.channels.Pipe;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.StringJoiner;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
 
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", comments = "Generator version: 7.21.0-SNAPSHOT")
 public class ProvisioningApi {
-    private ApiClient localVarApiClient;
-    private int localHostIndex;
-    private String localCustomBaseUrl;
-
-    public ProvisioningApi() {
-        this(Configuration.getDefaultApiClient());
-    }
-
-    public ProvisioningApi(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public ApiClient getApiClient() {
-        return localVarApiClient;
-    }
-
-    public void setApiClient(ApiClient apiClient) {
-        this.localVarApiClient = apiClient;
-    }
-
-    public int getHostIndex() {
-        return localHostIndex;
-    }
-
-    public void setHostIndex(int hostIndex) {
-        this.localHostIndex = hostIndex;
-    }
-
-    public String getCustomBaseUrl() {
-        return localCustomBaseUrl;
-    }
-
-    public void setCustomBaseUrl(String customBaseUrl) {
-        this.localCustomBaseUrl = customBaseUrl;
-    }
-
+  /**
+   * Utility class for extending HttpRequest.Builder functionality.
+   */
+  private static class HttpRequestBuilderExtensions {
     /**
-     * Build call for activateLicense
-     * @param isvId  (required)
-     * @param activateClientDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
+     * Adds additional headers to the provided HttpRequest.Builder. Useful for adding method/endpoint specific headers.
+     *
+     * @param builder the HttpRequest.Builder to which headers will be added
+     * @param headers a map of header names and values to add; may be null
+     * @return the same HttpRequest.Builder instance with the additional headers set
      */
-    public okhttp3.Call activateLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ActivateClientDto activateClientDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = activateClientDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/activations"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call activateLicenseValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ActivateClientDto activateClientDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling activateLicense(Async)");
-        }
-
-        // verify the required parameter 'activateClientDto' is set
-        if (activateClientDto == null) {
-            throw new ApiException("Missing the required parameter 'activateClientDto' when calling activateLicense(Async)");
-        }
-
-        return activateLicenseCall(isvId, activateClientDto, _callback);
-
-    }
-
-    /**
-     * Activates a client (assigns a token to a client)
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param activateClientDto  (required)
-     * @return LicenseInfoDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseInfoDto activateLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ActivateClientDto activateClientDto) throws ApiException {
-        ApiResponse<LicenseInfoDto> localVarResp = activateLicenseWithHttpInfo(isvId, activateClientDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Activates a client (assigns a token to a client)
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param activateClientDto  (required)
-     * @return ApiResponse&lt;LicenseInfoDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseInfoDto> activateLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ActivateClientDto activateClientDto) throws ApiException {
-        okhttp3.Call localVarCall = activateLicenseValidateBeforeCall(isvId, activateClientDto, null);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Activates a client (assigns a token to a client) (asynchronously)
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param activateClientDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call activateLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ActivateClientDto activateClientDto, final ApiCallback<LicenseInfoDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = activateLicenseValidateBeforeCall(isvId, activateClientDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for activateOfflineLicense
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param licenseKey  (optional)
-     * @param clientId  (optional)
-     * @param clientName  (optional)
-     * @param clientDescription  (optional)
-     * @param softwareVersion  (optional)
-     * @param tags  (optional)
-     * @param fileName  (optional)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call activateOfflineLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String licenseKey, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable String clientName, @javax.annotation.Nullable String clientDescription, @javax.annotation.Nullable String softwareVersion, @javax.annotation.Nullable List<String> tags, @javax.annotation.Nullable String fileName, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/activations/offline"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        if (productId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("product_id", productId));
-        }
-
-        if (licenseKey != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("license_key", licenseKey));
-        }
-
-        if (clientId != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("client_id", clientId));
-        }
-
-        if (clientName != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("client_name", clientName));
-        }
-
-        if (clientDescription != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("client_description", clientDescription));
-        }
-
-        if (softwareVersion != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("software_version", softwareVersion));
-        }
-
-        if (tags != null) {
-            localVarCollectionQueryParams.addAll(localVarApiClient.parameterToPairs("multi", "tags", tags));
-        }
-
-        if (fileName != null) {
-            localVarQueryParams.addAll(localVarApiClient.parameterToPair("file_name", fileName));
-        }
-
-        final String[] localVarAccepts = {
-            "application/xml",
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer", "CustomerPortalKey", "DaemonKey" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call activateOfflineLicenseValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String licenseKey, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable String clientName, @javax.annotation.Nullable String clientDescription, @javax.annotation.Nullable String softwareVersion, @javax.annotation.Nullable List<String> tags, @javax.annotation.Nullable String fileName, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling activateOfflineLicense(Async)");
-        }
-
-        return activateOfflineLicenseCall(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, _callback);
-
-    }
-
-    /**
-     * Activates an offline client (assigns a token to a offline client)
-     * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param licenseKey  (optional)
-     * @param clientId  (optional)
-     * @param clientName  (optional)
-     * @param clientDescription  (optional)
-     * @param softwareVersion  (optional)
-     * @param tags  (optional)
-     * @param fileName  (optional)
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public void activateOfflineLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String licenseKey, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable String clientName, @javax.annotation.Nullable String clientDescription, @javax.annotation.Nullable String softwareVersion, @javax.annotation.Nullable List<String> tags, @javax.annotation.Nullable String fileName) throws ApiException {
-        activateOfflineLicenseWithHttpInfo(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName);
-    }
-
-    /**
-     * Activates an offline client (assigns a token to a offline client)
-     * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param licenseKey  (optional)
-     * @param clientId  (optional)
-     * @param clientName  (optional)
-     * @param clientDescription  (optional)
-     * @param softwareVersion  (optional)
-     * @param tags  (optional)
-     * @param fileName  (optional)
-     * @return ApiResponse&lt;Void&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Void> activateOfflineLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String licenseKey, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable String clientName, @javax.annotation.Nullable String clientDescription, @javax.annotation.Nullable String softwareVersion, @javax.annotation.Nullable List<String> tags, @javax.annotation.Nullable String fileName) throws ApiException {
-        okhttp3.Call localVarCall = activateOfflineLicenseValidateBeforeCall(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, null);
-        return localVarApiClient.execute(localVarCall);
-    }
-
-    /**
-     * Activates an offline client (assigns a token to a offline client) (asynchronously)
-     * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param productId  (optional)
-     * @param licenseKey  (optional)
-     * @param clientId  (optional)
-     * @param clientName  (optional)
-     * @param clientDescription  (optional)
-     * @param softwareVersion  (optional)
-     * @param tags  (optional)
-     * @param fileName  (optional)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Xml Document </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call activateOfflineLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nullable UUID productId, @javax.annotation.Nullable String licenseKey, @javax.annotation.Nullable String clientId, @javax.annotation.Nullable String clientName, @javax.annotation.Nullable String clientDescription, @javax.annotation.Nullable String softwareVersion, @javax.annotation.Nullable List<String> tags, @javax.annotation.Nullable String fileName, final ApiCallback<Void> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = activateOfflineLicenseValidateBeforeCall(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, _callback);
-        localVarApiClient.executeAsync(localVarCall, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for addHeartbeat
-     * @param isvId  (required)
-     * @param addHeartbeatDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addHeartbeatCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = addHeartbeatDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/heartbeats"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call addHeartbeatValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling addHeartbeat(Async)");
-        }
-
-        // verify the required parameter 'addHeartbeatDto' is set
-        if (addHeartbeatDto == null) {
-            throw new ApiException("Missing the required parameter 'addHeartbeatDto' when calling addHeartbeat(Async)");
-        }
-
-        return addHeartbeatCall(isvId, addHeartbeatDto, _callback);
-
-    }
-
-    /**
-     * Creates a license heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param addHeartbeatDto  (required)
-     * @return LicenseInfoDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseInfoDto addHeartbeat(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AddHeartbeatDto addHeartbeatDto) throws ApiException {
-        ApiResponse<LicenseInfoDto> localVarResp = addHeartbeatWithHttpInfo(isvId, addHeartbeatDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Creates a license heartbeat
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param addHeartbeatDto  (required)
-     * @return ApiResponse&lt;LicenseInfoDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseInfoDto> addHeartbeatWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AddHeartbeatDto addHeartbeatDto) throws ApiException {
-        okhttp3.Call localVarCall = addHeartbeatValidateBeforeCall(isvId, addHeartbeatDto, null);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Creates a license heartbeat (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param addHeartbeatDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call addHeartbeatAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, final ApiCallback<LicenseInfoDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = addHeartbeatValidateBeforeCall(isvId, addHeartbeatDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for closeSession
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call closeSessionCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = sessionRequestDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/session/close"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call closeSessionValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling closeSession(Async)");
-        }
-
-        // verify the required parameter 'sessionRequestDto' is set
-        if (sessionRequestDto == null) {
-            throw new ApiException("Missing the required parameter 'sessionRequestDto' when calling closeSession(Async)");
-        }
-
-        return closeSessionCall(isvId, sessionRequestDto, _callback);
-
-    }
-
-    /**
-     * Closes a (floating) session
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String closeSession(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
-        ApiResponse<String> localVarResp = closeSessionWithHttpInfo(isvId, sessionRequestDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Closes a (floating) session
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> closeSessionWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
-        okhttp3.Call localVarCall = closeSessionValidateBeforeCall(isvId, sessionRequestDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Closes a (floating) session (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call closeSessionAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = closeSessionValidateBeforeCall(isvId, sessionRequestDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getActiveFloatingTokensCount
-     * @param isvId  (required)
-     * @param licenseId  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getActiveFloatingTokensCountCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = null;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/{license_id}/tokens/floating/active/count"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()))
-            .replace("{" + "license_id" + "}", localVarApiClient.escapeString(licenseId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "GET", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getActiveFloatingTokensCountValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getActiveFloatingTokensCount(Async)");
-        }
-
-        // verify the required parameter 'licenseId' is set
-        if (licenseId == null) {
-            throw new ApiException("Missing the required parameter 'licenseId' when calling getActiveFloatingTokensCount(Async)");
-        }
-
-        return getActiveFloatingTokensCountCall(isvId, licenseId, _callback);
-
-    }
-
-    /**
-     * Returns the number of actively used floating tokens.
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param licenseId  (required)
-     * @return Integer
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public Integer getActiveFloatingTokensCount(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
-        ApiResponse<Integer> localVarResp = getActiveFloatingTokensCountWithHttpInfo(isvId, licenseId);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns the number of actively used floating tokens.
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param licenseId  (required)
-     * @return ApiResponse&lt;Integer&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<Integer> getActiveFloatingTokensCountWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId) throws ApiException {
-        okhttp3.Call localVarCall = getActiveFloatingTokensCountValidateBeforeCall(isvId, licenseId, null);
-        Type localVarReturnType = new TypeToken<Integer>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns the number of actively used floating tokens. (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param licenseId  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getActiveFloatingTokensCountAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UUID licenseId, final ApiCallback<Integer> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getActiveFloatingTokensCountValidateBeforeCall(isvId, licenseId, _callback);
-        Type localVarReturnType = new TypeToken<Integer>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getConsumptionStatus
-     * @param isvId  (required)
-     * @param validateConsumptionStatusDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getConsumptionStatusCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = validateConsumptionStatusDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/validate/consumption"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getConsumptionStatusValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getConsumptionStatus(Async)");
-        }
+    static HttpRequest.Builder withAdditionalHeaders(HttpRequest.Builder builder, Map<String, String> headers) {
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                builder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return builder;
+    }
+  }
+  private final HttpClient memberVarHttpClient;
+  private final ObjectMapper memberVarObjectMapper;
+  private final String memberVarBaseUri;
+  private final Consumer<HttpRequest.Builder> memberVarInterceptor;
+  private final Duration memberVarReadTimeout;
+  private final Consumer<HttpResponse<InputStream>> memberVarResponseInterceptor;
+  private final Consumer<HttpResponse<InputStream>> memberVarAsyncResponseInterceptor;
+
+  public ProvisioningApi() {
+    this(Configuration.getDefaultApiClient());
+  }
+
+  public ProvisioningApi(ApiClient apiClient) {
+    memberVarHttpClient = apiClient.getHttpClient();
+    memberVarObjectMapper = apiClient.getObjectMapper();
+    memberVarBaseUri = apiClient.getBaseUri();
+    memberVarInterceptor = apiClient.getRequestInterceptor();
+    memberVarReadTimeout = apiClient.getReadTimeout();
+    memberVarResponseInterceptor = apiClient.getResponseInterceptor();
+    memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+
+  protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
+    InputStream responseBody = ApiClient.getResponseBody(response);
+    String body = null;
+    try {
+      body = responseBody == null ? null : new String(responseBody.readAllBytes());
+    } finally {
+      if (responseBody != null) {
+        responseBody.close();
+      }
+    }
+    String message = formatExceptionMessage(operationId, response.statusCode(), body);
+    return new ApiException(response.statusCode(), message, response.headers(), body);
+  }
+
+  private String formatExceptionMessage(String operationId, int statusCode, String body) {
+    if (body == null || body.isEmpty()) {
+      body = "[no body]";
+    }
+    return operationId + " call failed with: " + statusCode + " - " + body;
+  }
+
+  /**
+   * Download file from the given response.
+   *
+   * @param response Response
+   * @return File
+   * @throws ApiException If fail to read file content from response and write to disk
+   */
+  public File downloadFileFromResponse(HttpResponse<InputStream> response, InputStream responseBody) throws ApiException {
+    if (responseBody == null) {
+      throw new ApiException(new IOException("Response body is empty"));
+    }
+    try {
+      File file = prepareDownloadFile(response);
+      java.nio.file.Files.copy(responseBody, file.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+      return file;
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+  }
+
+  /**
+   * <p>Prepare the file for download from the response.</p>
+   *
+   * @param response a {@link java.net.http.HttpResponse} object.
+   * @return a {@link java.io.File} object.
+   * @throws java.io.IOException if any.
+   */
+  private File prepareDownloadFile(HttpResponse<InputStream> response) throws IOException {
+    String filename = null;
+    java.util.Optional<String> contentDisposition = response.headers().firstValue("Content-Disposition");
+    if (contentDisposition.isPresent() && !"".equals(contentDisposition.get())) {
+      // Get filename from the Content-Disposition header.
+      java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("filename=['\"]?([^'\"\\s]+)['\"]?");
+      java.util.regex.Matcher matcher = pattern.matcher(contentDisposition.get());
+      if (matcher.find())
+        filename = matcher.group(1);
+    }
+    File file = null;
+    if (filename != null) {
+      java.nio.file.Path tempDir = java.nio.file.Files.createTempDirectory("swagger-gen-native");
+      java.nio.file.Path filePath = java.nio.file.Files.createFile(tempDir.resolve(filename));
+      file = filePath.toFile();
+      tempDir.toFile().deleteOnExit();   // best effort cleanup
+      file.deleteOnExit(); // best effort cleanup
+    } else {
+      file = java.nio.file.Files.createTempFile("download-", "").toFile();
+      file.deleteOnExit(); // best effort cleanup
+    }
+    return file;
+  }
+
+  /**
+   * Activates a client (assigns a token to a client)
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param activateClientDto  (required)
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto activateLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ActivateClientDto activateClientDto) throws ApiException {
+    return activateLicense(isvId, activateClientDto, null);
+  }
+
+  /**
+   * Activates a client (assigns a token to a client)
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param activateClientDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto activateLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ActivateClientDto activateClientDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseInfoDto> localVarResponse = activateLicenseWithHttpInfo(isvId, activateClientDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Activates a client (assigns a token to a client)
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param activateClientDto  (required)
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> activateLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ActivateClientDto activateClientDto) throws ApiException {
+    return activateLicenseWithHttpInfo(isvId, activateClientDto, null);
+  }
+
+  /**
+   * Activates a client (assigns a token to a client)
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param activateClientDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> activateLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ActivateClientDto activateClientDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = activateLicenseRequestBuilder(isvId, activateClientDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("activateLicense", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseInfoDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseInfoDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseInfoDto>() {});
+        
+
+        return new ApiResponse<LicenseInfoDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder activateLicenseRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ActivateClientDto activateClientDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling activateLicense");
+    }
+    // verify the required parameter 'activateClientDto' is set
+    if (activateClientDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'activateClientDto' when calling activateLicense");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/activations"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(activateClientDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Activates an offline client (assigns a token to a offline client)
+   * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param licenseKey  (optional)
+   * @param clientId  (optional)
+   * @param clientName  (optional)
+   * @param clientDescription  (optional)
+   * @param softwareVersion  (optional)
+   * @param tags  (optional)
+   * @param fileName  (optional)
+   * @throws ApiException if fails to make API call
+   */
+  public void activateOfflineLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String licenseKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String clientName, @jakarta.annotation.Nullable String clientDescription, @jakarta.annotation.Nullable String softwareVersion, @jakarta.annotation.Nullable List<String> tags, @jakarta.annotation.Nullable String fileName) throws ApiException {
+    activateOfflineLicense(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, null);
+  }
+
+  /**
+   * Activates an offline client (assigns a token to a offline client)
+   * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param licenseKey  (optional)
+   * @param clientId  (optional)
+   * @param clientName  (optional)
+   * @param clientDescription  (optional)
+   * @param softwareVersion  (optional)
+   * @param tags  (optional)
+   * @param fileName  (optional)
+   * @param headers Optional headers to include in the request
+   * @throws ApiException if fails to make API call
+   */
+  public void activateOfflineLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String licenseKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String clientName, @jakarta.annotation.Nullable String clientDescription, @jakarta.annotation.Nullable String softwareVersion, @jakarta.annotation.Nullable List<String> tags, @jakarta.annotation.Nullable String fileName, Map<String, String> headers) throws ApiException {
+    activateOfflineLicenseWithHttpInfo(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, headers);
+  }
+
+  /**
+   * Activates an offline client (assigns a token to a offline client)
+   * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param licenseKey  (optional)
+   * @param clientId  (optional)
+   * @param clientName  (optional)
+   * @param clientDescription  (optional)
+   * @param softwareVersion  (optional)
+   * @param tags  (optional)
+   * @param fileName  (optional)
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> activateOfflineLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String licenseKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String clientName, @jakarta.annotation.Nullable String clientDescription, @jakarta.annotation.Nullable String softwareVersion, @jakarta.annotation.Nullable List<String> tags, @jakarta.annotation.Nullable String fileName) throws ApiException {
+    return activateOfflineLicenseWithHttpInfo(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, null);
+  }
+
+  /**
+   * Activates an offline client (assigns a token to a offline client)
+   * Typically used in offline device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param productId  (optional)
+   * @param licenseKey  (optional)
+   * @param clientId  (optional)
+   * @param clientName  (optional)
+   * @param clientDescription  (optional)
+   * @param softwareVersion  (optional)
+   * @param tags  (optional)
+   * @param fileName  (optional)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Void&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Void> activateOfflineLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String licenseKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String clientName, @jakarta.annotation.Nullable String clientDescription, @jakarta.annotation.Nullable String softwareVersion, @jakarta.annotation.Nullable List<String> tags, @jakarta.annotation.Nullable String fileName, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = activateOfflineLicenseRequestBuilder(isvId, productId, licenseKey, clientId, clientName, clientDescription, softwareVersion, tags, fileName, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("activateOfflineLicense", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody != null) {
+          localVarResponseBody.readAllBytes();
+        }
+        return new ApiResponse<>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            null
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder activateOfflineLicenseRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nullable UUID productId, @jakarta.annotation.Nullable String licenseKey, @jakarta.annotation.Nullable String clientId, @jakarta.annotation.Nullable String clientName, @jakarta.annotation.Nullable String clientDescription, @jakarta.annotation.Nullable String softwareVersion, @jakarta.annotation.Nullable List<String> tags, @jakarta.annotation.Nullable String fileName, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling activateOfflineLicense");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/activations/offline"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    List<Pair> localVarQueryParams = new ArrayList<>();
+    StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    localVarQueryParameterBaseName = "product_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("product_id", productId));
+    localVarQueryParameterBaseName = "license_key";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("license_key", licenseKey));
+    localVarQueryParameterBaseName = "client_id";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("client_id", clientId));
+    localVarQueryParameterBaseName = "client_name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("client_name", clientName));
+    localVarQueryParameterBaseName = "client_description";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("client_description", clientDescription));
+    localVarQueryParameterBaseName = "software_version";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("software_version", softwareVersion));
+    localVarQueryParameterBaseName = "tags";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("multi", "tags", tags));
+    localVarQueryParameterBaseName = "file_name";
+    localVarQueryParams.addAll(ApiClient.parameterToPairs("file_name", fileName));
+
+    if (!localVarQueryParams.isEmpty() || localVarQueryStringJoiner.length() != 0) {
+      StringJoiner queryJoiner = new StringJoiner("&");
+      localVarQueryParams.forEach(p -> queryJoiner.add(p.getName() + '=' + p.getValue()));
+      if (localVarQueryStringJoiner.length() != 0) {
+        queryJoiner.add(localVarQueryStringJoiner.toString());
+      }
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath + '?' + queryJoiner.toString()));
+    } else {
+      localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+    }
+
+    localVarRequestBuilder.header("Accept", "application/json, application/xml");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Creates a license heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param addHeartbeatDto  (required)
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto addHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AddHeartbeatDto addHeartbeatDto) throws ApiException {
+    return addHeartbeat(isvId, addHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a license heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param addHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto addHeartbeat(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseInfoDto> localVarResponse = addHeartbeatWithHttpInfo(isvId, addHeartbeatDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Creates a license heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param addHeartbeatDto  (required)
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> addHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AddHeartbeatDto addHeartbeatDto) throws ApiException {
+    return addHeartbeatWithHttpInfo(isvId, addHeartbeatDto, null);
+  }
+
+  /**
+   * Creates a license heartbeat
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param addHeartbeatDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> addHeartbeatWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = addHeartbeatRequestBuilder(isvId, addHeartbeatDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("addHeartbeat", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseInfoDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseInfoDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseInfoDto>() {});
+        
+
+        return new ApiResponse<LicenseInfoDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder addHeartbeatRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull AddHeartbeatDto addHeartbeatDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling addHeartbeat");
+    }
+    // verify the required parameter 'addHeartbeatDto' is set
+    if (addHeartbeatDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'addHeartbeatDto' when calling addHeartbeat");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/heartbeats"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(addHeartbeatDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Closes a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String closeSession(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
+    return closeSession(isvId, sessionRequestDto, null);
+  }
+
+  /**
+   * Closes a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String closeSession(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = closeSessionWithHttpInfo(isvId, sessionRequestDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Closes a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> closeSessionWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
+    return closeSessionWithHttpInfo(isvId, sessionRequestDto, null);
+  }
+
+  /**
+   * Closes a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> closeSessionWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = closeSessionRequestBuilder(isvId, sessionRequestDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("closeSession", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder closeSessionRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling closeSession");
+    }
+    // verify the required parameter 'sessionRequestDto' is set
+    if (sessionRequestDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'sessionRequestDto' when calling closeSession");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/session/close"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(sessionRequestDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns the number of actively used floating tokens.
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param licenseId  (required)
+   * @return Integer
+   * @throws ApiException if fails to make API call
+   */
+  public Integer getActiveFloatingTokensCount(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseId) throws ApiException {
+    return getActiveFloatingTokensCount(isvId, licenseId, null);
+  }
+
+  /**
+   * Returns the number of actively used floating tokens.
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param licenseId  (required)
+   * @param headers Optional headers to include in the request
+   * @return Integer
+   * @throws ApiException if fails to make API call
+   */
+  public Integer getActiveFloatingTokensCount(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseId, Map<String, String> headers) throws ApiException {
+    ApiResponse<Integer> localVarResponse = getActiveFloatingTokensCountWithHttpInfo(isvId, licenseId, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns the number of actively used floating tokens.
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param licenseId  (required)
+   * @return ApiResponse&lt;Integer&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Integer> getActiveFloatingTokensCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseId) throws ApiException {
+    return getActiveFloatingTokensCountWithHttpInfo(isvId, licenseId, null);
+  }
+
+  /**
+   * Returns the number of actively used floating tokens.
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-DEVICE-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param licenseId  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;Integer&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<Integer> getActiveFloatingTokensCountWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseId, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getActiveFloatingTokensCountRequestBuilder(isvId, licenseId, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getActiveFloatingTokensCount", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<Integer>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        Integer responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<Integer>() {});
+        
+
+        return new ApiResponse<Integer>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getActiveFloatingTokensCountRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UUID licenseId, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getActiveFloatingTokensCount");
+    }
+    // verify the required parameter 'licenseId' is set
+    if (licenseId == null) {
+      throw new ApiException(400, "Missing the required parameter 'licenseId' when calling getActiveFloatingTokensCount");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/{license_id}/tokens/floating/active/count"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()))
+        .replace("{license_id}", ApiClient.urlEncode(licenseId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    localVarRequestBuilder.method("GET", HttpRequest.BodyPublishers.noBody());
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Checks the consumption status of a limitation
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param validateConsumptionStatusDto  (required)
+   * @return ConsumptionDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConsumptionDto getConsumptionStatus(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto) throws ApiException {
+    return getConsumptionStatus(isvId, validateConsumptionStatusDto, null);
+  }
+
+  /**
+   * Checks the consumption status of a limitation
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param validateConsumptionStatusDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ConsumptionDto
+   * @throws ApiException if fails to make API call
+   */
+  public ConsumptionDto getConsumptionStatus(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<ConsumptionDto> localVarResponse = getConsumptionStatusWithHttpInfo(isvId, validateConsumptionStatusDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Checks the consumption status of a limitation
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param validateConsumptionStatusDto  (required)
+   * @return ApiResponse&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConsumptionDto> getConsumptionStatusWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto) throws ApiException {
+    return getConsumptionStatusWithHttpInfo(isvId, validateConsumptionStatusDto, null);
+  }
+
+  /**
+   * Checks the consumption status of a limitation
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param validateConsumptionStatusDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;ConsumptionDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<ConsumptionDto> getConsumptionStatusWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getConsumptionStatusRequestBuilder(isvId, validateConsumptionStatusDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getConsumptionStatus", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<ConsumptionDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        ConsumptionDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<ConsumptionDto>() {});
+        
+
+        return new ApiResponse<ConsumptionDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getConsumptionStatusRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getConsumptionStatus");
+    }
+    // verify the required parameter 'validateConsumptionStatusDto' is set
+    if (validateConsumptionStatusDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'validateConsumptionStatusDto' when calling getConsumptionStatus");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/validate/consumption"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(validateConsumptionStatusDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Checks the validity of a license
+   * Checks the validity of a license.
+   * @param isvId  (required)
+   * @param validateLicenseDto  (required)
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto getDeviceInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateLicenseDto validateLicenseDto) throws ApiException {
+    return getDeviceInfo(isvId, validateLicenseDto, null);
+  }
+
+  /**
+   * Checks the validity of a license
+   * Checks the validity of a license.
+   * @param isvId  (required)
+   * @param validateLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseInfoDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseInfoDto getDeviceInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateLicenseDto validateLicenseDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseInfoDto> localVarResponse = getDeviceInfoWithHttpInfo(isvId, validateLicenseDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Checks the validity of a license
+   * Checks the validity of a license.
+   * @param isvId  (required)
+   * @param validateLicenseDto  (required)
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> getDeviceInfoWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateLicenseDto validateLicenseDto) throws ApiException {
+    return getDeviceInfoWithHttpInfo(isvId, validateLicenseDto, null);
+  }
+
+  /**
+   * Checks the validity of a license
+   * Checks the validity of a license.
+   * @param isvId  (required)
+   * @param validateLicenseDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseInfoDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseInfoDto> getDeviceInfoWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateLicenseDto validateLicenseDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getDeviceInfoRequestBuilder(isvId, validateLicenseDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getDeviceInfo", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseInfoDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseInfoDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseInfoDto>() {});
+        
+
+        return new ApiResponse<LicenseInfoDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getDeviceInfoRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ValidateLicenseDto validateLicenseDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getDeviceInfo");
+    }
+    // verify the required parameter 'validateLicenseDto' is set
+    if (validateLicenseDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'validateLicenseDto' when calling getDeviceInfo");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/validate"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(validateLicenseDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all licenses of a customer
+   * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByCustomerDto  (required)
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto) throws ApiException {
+    return getLicensesByCustomerAsync(isvId, getLicensesByCustomerDto, null);
+  }
+
+  /**
+   * Returns all licenses of a customer
+   * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByCustomerAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<LicenseDto>> localVarResponse = getLicensesByCustomerAsyncWithHttpInfo(isvId, getLicensesByCustomerDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all licenses of a customer
+   * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByCustomerDto  (required)
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto) throws ApiException {
+    return getLicensesByCustomerAsyncWithHttpInfo(isvId, getLicensesByCustomerDto, null);
+  }
+
+  /**
+   * Returns all licenses of a customer
+   * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByCustomerDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByCustomerAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicensesByCustomerAsyncRequestBuilder(isvId, getLicensesByCustomerDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicensesByCustomerAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<LicenseDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<LicenseDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<LicenseDto>>() {});
+        
+
+        return new ApiResponse<List<LicenseDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicensesByCustomerAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicensesByCustomerAsync");
+    }
+    // verify the required parameter 'getLicensesByCustomerDto' is set
+    if (getLicensesByCustomerDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'getLicensesByCustomerDto' when calling getLicensesByCustomerAsync");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_customer"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(getLicensesByCustomerDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all licenses of a (legacy) key
+   * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByLicenseKeyDto  (required)
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByLicenseKeyAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto) throws ApiException {
+    return getLicensesByLicenseKeyAsync(isvId, getLicensesByLicenseKeyDto, null);
+  }
+
+  /**
+   * Returns all licenses of a (legacy) key
+   * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByLicenseKeyDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByLicenseKeyAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<LicenseDto>> localVarResponse = getLicensesByLicenseKeyAsyncWithHttpInfo(isvId, getLicensesByLicenseKeyDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all licenses of a (legacy) key
+   * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByLicenseKeyDto  (required)
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByLicenseKeyAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto) throws ApiException {
+    return getLicensesByLicenseKeyAsyncWithHttpInfo(isvId, getLicensesByLicenseKeyDto, null);
+  }
+
+  /**
+   * Returns all licenses of a (legacy) key
+   * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByLicenseKeyDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByLicenseKeyAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicensesByLicenseKeyAsyncRequestBuilder(isvId, getLicensesByLicenseKeyDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicensesByLicenseKeyAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<LicenseDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<LicenseDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<LicenseDto>>() {});
+        
+
+        return new ApiResponse<List<LicenseDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicensesByLicenseKeyAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicensesByLicenseKeyAsync");
+    }
+    // verify the required parameter 'getLicensesByLicenseKeyDto' is set
+    if (getLicensesByLicenseKeyDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'getLicensesByLicenseKeyDto' when calling getLicensesByLicenseKeyAsync");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_license"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(getLicensesByLicenseKeyDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Returns all licenses of a named user
+   * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByUserDto  (required)
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByUserAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto) throws ApiException {
+    return getLicensesByUserAsync(isvId, getLicensesByUserDto, null);
+  }
+
+  /**
+   * Returns all licenses of a named user
+   * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByUserDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return List&lt;LicenseDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public List<LicenseDto> getLicensesByUserAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<List<LicenseDto>> localVarResponse = getLicensesByUserAsyncWithHttpInfo(isvId, getLicensesByUserDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Returns all licenses of a named user
+   * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByUserDto  (required)
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByUserAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto) throws ApiException {
+    return getLicensesByUserAsyncWithHttpInfo(isvId, getLicensesByUserDto, null);
+  }
+
+  /**
+   * Returns all licenses of a named user
+   * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param getLicensesByUserDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<List<LicenseDto>> getLicensesByUserAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = getLicensesByUserAsyncRequestBuilder(isvId, getLicensesByUserDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("getLicensesByUserAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<List<LicenseDto>>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        List<LicenseDto> responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<List<LicenseDto>>() {});
+        
+
+        return new ApiResponse<List<LicenseDto>>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder getLicensesByUserAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling getLicensesByUserAsync");
+    }
+    // verify the required parameter 'getLicensesByUserDto' is set
+    if (getLicensesByUserDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'getLicensesByUserDto' when calling getLicensesByUserAsync");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_user"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(getLicensesByUserDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Opens a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @return SessionStatusDto
+   * @throws ApiException if fails to make API call
+   */
+  public SessionStatusDto openSession(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
+    return openSession(isvId, sessionRequestDto, null);
+  }
+
+  /**
+   * Opens a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return SessionStatusDto
+   * @throws ApiException if fails to make API call
+   */
+  public SessionStatusDto openSession(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<SessionStatusDto> localVarResponse = openSessionWithHttpInfo(isvId, sessionRequestDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Opens a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @return ApiResponse&lt;SessionStatusDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<SessionStatusDto> openSessionWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
+    return openSessionWithHttpInfo(isvId, sessionRequestDto, null);
+  }
+
+  /**
+   * Opens a (floating) session
+   * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param sessionRequestDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;SessionStatusDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<SessionStatusDto> openSessionWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = openSessionRequestBuilder(isvId, sessionRequestDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("openSession", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<SessionStatusDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        SessionStatusDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<SessionStatusDto>() {});
+        
+
+        return new ApiResponse<SessionStatusDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder openSessionRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull SessionRequestDto sessionRequestDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling openSession");
+    }
+    // verify the required parameter 'sessionRequestDto' is set
+    if (sessionRequestDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'sessionRequestDto' when calling openSession");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/session/open"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(sessionRequestDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Toggles the license state (active/inactive)
+   * Toggles the license state (active/inactive).
+   * @param isvId  (required)
+   * @param toggleLicenseStateDto  (required)
+   * @return LicenseStateDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseStateDto toogleLicenseStateAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto) throws ApiException {
+    return toogleLicenseStateAsync(isvId, toggleLicenseStateDto, null);
+  }
+
+  /**
+   * Toggles the license state (active/inactive)
+   * Toggles the license state (active/inactive).
+   * @param isvId  (required)
+   * @param toggleLicenseStateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return LicenseStateDto
+   * @throws ApiException if fails to make API call
+   */
+  public LicenseStateDto toogleLicenseStateAsync(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<LicenseStateDto> localVarResponse = toogleLicenseStateAsyncWithHttpInfo(isvId, toggleLicenseStateDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Toggles the license state (active/inactive)
+   * Toggles the license state (active/inactive).
+   * @param isvId  (required)
+   * @param toggleLicenseStateDto  (required)
+   * @return ApiResponse&lt;LicenseStateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseStateDto> toogleLicenseStateAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto) throws ApiException {
+    return toogleLicenseStateAsyncWithHttpInfo(isvId, toggleLicenseStateDto, null);
+  }
+
+  /**
+   * Toggles the license state (active/inactive)
+   * Toggles the license state (active/inactive).
+   * @param isvId  (required)
+   * @param toggleLicenseStateDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;LicenseStateDto&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<LicenseStateDto> toogleLicenseStateAsyncWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = toogleLicenseStateAsyncRequestBuilder(isvId, toggleLicenseStateDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("toogleLicenseStateAsync", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<LicenseStateDto>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        LicenseStateDto responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<LicenseStateDto>() {});
+        
+
+        return new ApiResponse<LicenseStateDto>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder toogleLicenseStateAsyncRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling toogleLicenseStateAsync");
+    }
+    // verify the required parameter 'toggleLicenseStateDto' is set
+    if (toggleLicenseStateDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'toggleLicenseStateDto' when calling toogleLicenseStateAsync");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/state/toggle"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(toggleLicenseStateDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
+
+  /**
+   * Unassigns a token from a client
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param unassignDto  (required)
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String unassignLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UnassignDto unassignDto) throws ApiException {
+    return unassignLicense(isvId, unassignDto, null);
+  }
+
+  /**
+   * Unassigns a token from a client
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param unassignDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return String
+   * @throws ApiException if fails to make API call
+   */
+  public String unassignLicense(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UnassignDto unassignDto, Map<String, String> headers) throws ApiException {
+    ApiResponse<String> localVarResponse = unassignLicenseWithHttpInfo(isvId, unassignDto, headers);
+    return localVarResponse.getData();
+  }
+
+  /**
+   * Unassigns a token from a client
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param unassignDto  (required)
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> unassignLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UnassignDto unassignDto) throws ApiException {
+    return unassignLicenseWithHttpInfo(isvId, unassignDto, null);
+  }
+
+  /**
+   * Unassigns a token from a client
+   * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
+   * @param isvId  (required)
+   * @param unassignDto  (required)
+   * @param headers Optional headers to include in the request
+   * @return ApiResponse&lt;String&gt;
+   * @throws ApiException if fails to make API call
+   */
+  public ApiResponse<String> unassignLicenseWithHttpInfo(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UnassignDto unassignDto, Map<String, String> headers) throws ApiException {
+    HttpRequest.Builder localVarRequestBuilder = unassignLicenseRequestBuilder(isvId, unassignDto, headers);
+    try {
+      HttpResponse<InputStream> localVarResponse = memberVarHttpClient.send(
+          localVarRequestBuilder.build(),
+          HttpResponse.BodyHandlers.ofInputStream());
+      if (memberVarResponseInterceptor != null) {
+        memberVarResponseInterceptor.accept(localVarResponse);
+      }
+      InputStream localVarResponseBody = null;
+      try {
+        if (localVarResponse.statusCode()/ 100 != 2) {
+          throw getApiException("unassignLicense", localVarResponse);
+        }
+        localVarResponseBody = ApiClient.getResponseBody(localVarResponse);
+        if (localVarResponseBody == null) {
+          return new ApiResponse<String>(
+              localVarResponse.statusCode(),
+              localVarResponse.headers().map(),
+              null
+          );
+        }
+
+        
+        
+        String responseBody = new String(localVarResponseBody.readAllBytes());
+        String responseValue = responseBody.isBlank()? null: memberVarObjectMapper.readValue(responseBody, new TypeReference<String>() {});
+        
+
+        return new ApiResponse<String>(
+            localVarResponse.statusCode(),
+            localVarResponse.headers().map(),
+            responseValue
+        );
+      } finally {
+        if (localVarResponseBody != null) {
+          localVarResponseBody.close();
+        }
+      }
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    catch (InterruptedException e) {
+      Thread.currentThread().interrupt();
+      throw new ApiException(e);
+    }
+  }
+
+  private HttpRequest.Builder unassignLicenseRequestBuilder(@jakarta.annotation.Nonnull UUID isvId, @jakarta.annotation.Nonnull UnassignDto unassignDto, Map<String, String> headers) throws ApiException {
+    // verify the required parameter 'isvId' is set
+    if (isvId == null) {
+      throw new ApiException(400, "Missing the required parameter 'isvId' when calling unassignLicense");
+    }
+    // verify the required parameter 'unassignDto' is set
+    if (unassignDto == null) {
+      throw new ApiException(400, "Missing the required parameter 'unassignDto' when calling unassignLicense");
+    }
+
+    HttpRequest.Builder localVarRequestBuilder = HttpRequest.newBuilder();
+
+    String localVarPath = "/api/v2/isv/{isv_id}/provisioning/unassign"
+        .replace("{isv_id}", ApiClient.urlEncode(isvId.toString()));
+
+    localVarRequestBuilder.uri(URI.create(memberVarBaseUri + localVarPath));
+
+    localVarRequestBuilder.header("Content-Type", "application/json");
+    localVarRequestBuilder.header("Accept", "application/json");
+
+    try {
+      byte[] localVarPostBody = memberVarObjectMapper.writeValueAsBytes(unassignDto);
+      localVarRequestBuilder.method("POST", HttpRequest.BodyPublishers.ofByteArray(localVarPostBody));
+    } catch (IOException e) {
+      throw new ApiException(e);
+    }
+    if (memberVarReadTimeout != null) {
+      localVarRequestBuilder.timeout(memberVarReadTimeout);
+    }
+    // Add custom headers if provided
+    localVarRequestBuilder = HttpRequestBuilderExtensions.withAdditionalHeaders(localVarRequestBuilder, headers);
+    if (memberVarInterceptor != null) {
+      memberVarInterceptor.accept(localVarRequestBuilder);
+    }
+    return localVarRequestBuilder;
+  }
 
-        // verify the required parameter 'validateConsumptionStatusDto' is set
-        if (validateConsumptionStatusDto == null) {
-            throw new ApiException("Missing the required parameter 'validateConsumptionStatusDto' when calling getConsumptionStatus(Async)");
-        }
-
-        return getConsumptionStatusCall(isvId, validateConsumptionStatusDto, _callback);
-
-    }
-
-    /**
-     * Checks the consumption status of a limitation
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param validateConsumptionStatusDto  (required)
-     * @return ConsumptionDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ConsumptionDto getConsumptionStatus(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto) throws ApiException {
-        ApiResponse<ConsumptionDto> localVarResp = getConsumptionStatusWithHttpInfo(isvId, validateConsumptionStatusDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Checks the consumption status of a limitation
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param validateConsumptionStatusDto  (required)
-     * @return ApiResponse&lt;ConsumptionDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<ConsumptionDto> getConsumptionStatusWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto) throws ApiException {
-        okhttp3.Call localVarCall = getConsumptionStatusValidateBeforeCall(isvId, validateConsumptionStatusDto, null);
-        Type localVarReturnType = new TypeToken<ConsumptionDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Checks the consumption status of a limitation (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param validateConsumptionStatusDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getConsumptionStatusAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateConsumptionStatusDto validateConsumptionStatusDto, final ApiCallback<ConsumptionDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getConsumptionStatusValidateBeforeCall(isvId, validateConsumptionStatusDto, _callback);
-        Type localVarReturnType = new TypeToken<ConsumptionDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getDeviceInfo
-     * @param isvId  (required)
-     * @param validateLicenseDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getDeviceInfoCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateLicenseDto validateLicenseDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = validateLicenseDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/validate"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getDeviceInfoValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateLicenseDto validateLicenseDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getDeviceInfo(Async)");
-        }
-
-        // verify the required parameter 'validateLicenseDto' is set
-        if (validateLicenseDto == null) {
-            throw new ApiException("Missing the required parameter 'validateLicenseDto' when calling getDeviceInfo(Async)");
-        }
-
-        return getDeviceInfoCall(isvId, validateLicenseDto, _callback);
-
-    }
-
-    /**
-     * Checks the validity of a license
-     * Checks the validity of a license.
-     * @param isvId  (required)
-     * @param validateLicenseDto  (required)
-     * @return LicenseInfoDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseInfoDto getDeviceInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateLicenseDto validateLicenseDto) throws ApiException {
-        ApiResponse<LicenseInfoDto> localVarResp = getDeviceInfoWithHttpInfo(isvId, validateLicenseDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Checks the validity of a license
-     * Checks the validity of a license.
-     * @param isvId  (required)
-     * @param validateLicenseDto  (required)
-     * @return ApiResponse&lt;LicenseInfoDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseInfoDto> getDeviceInfoWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateLicenseDto validateLicenseDto) throws ApiException {
-        okhttp3.Call localVarCall = getDeviceInfoValidateBeforeCall(isvId, validateLicenseDto, null);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Checks the validity of a license (asynchronously)
-     * Checks the validity of a license.
-     * @param isvId  (required)
-     * @param validateLicenseDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getDeviceInfoAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ValidateLicenseDto validateLicenseDto, final ApiCallback<LicenseInfoDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getDeviceInfoValidateBeforeCall(isvId, validateLicenseDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseInfoDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicensesByCustomerAsync
-     * @param isvId  (required)
-     * @param getLicensesByCustomerDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByCustomerAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = getLicensesByCustomerDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_customer"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicensesByCustomerAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicensesByCustomerAsync(Async)");
-        }
-
-        // verify the required parameter 'getLicensesByCustomerDto' is set
-        if (getLicensesByCustomerDto == null) {
-            throw new ApiException("Missing the required parameter 'getLicensesByCustomerDto' when calling getLicensesByCustomerAsync(Async)");
-        }
-
-        return getLicensesByCustomerAsyncCall(isvId, getLicensesByCustomerDto, _callback);
-
-    }
-
-    /**
-     * Returns all licenses of a customer
-     * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByCustomerDto  (required)
-     * @return List&lt;LicenseDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<LicenseDto> getLicensesByCustomerAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto) throws ApiException {
-        ApiResponse<List<LicenseDto>> localVarResp = getLicensesByCustomerAsyncWithHttpInfo(isvId, getLicensesByCustomerDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all licenses of a customer
-     * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByCustomerDto  (required)
-     * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<LicenseDto>> getLicensesByCustomerAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto) throws ApiException {
-        okhttp3.Call localVarCall = getLicensesByCustomerAsyncValidateBeforeCall(isvId, getLicensesByCustomerDto, null);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all licenses of a customer (asynchronously)
-     * Typically used in SaaS scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByCustomerDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByCustomerAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByCustomerDto getLicensesByCustomerDto, final ApiCallback<List<LicenseDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicensesByCustomerAsyncValidateBeforeCall(isvId, getLicensesByCustomerDto, _callback);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicensesByLicenseKeyAsync
-     * @param isvId  (required)
-     * @param getLicensesByLicenseKeyDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByLicenseKeyAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = getLicensesByLicenseKeyDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_license"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicensesByLicenseKeyAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicensesByLicenseKeyAsync(Async)");
-        }
-
-        // verify the required parameter 'getLicensesByLicenseKeyDto' is set
-        if (getLicensesByLicenseKeyDto == null) {
-            throw new ApiException("Missing the required parameter 'getLicensesByLicenseKeyDto' when calling getLicensesByLicenseKeyAsync(Async)");
-        }
-
-        return getLicensesByLicenseKeyAsyncCall(isvId, getLicensesByLicenseKeyDto, _callback);
-
-    }
-
-    /**
-     * Returns all licenses of a (legacy) key
-     * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByLicenseKeyDto  (required)
-     * @return List&lt;LicenseDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<LicenseDto> getLicensesByLicenseKeyAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto) throws ApiException {
-        ApiResponse<List<LicenseDto>> localVarResp = getLicensesByLicenseKeyAsyncWithHttpInfo(isvId, getLicensesByLicenseKeyDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all licenses of a (legacy) key
-     * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByLicenseKeyDto  (required)
-     * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<LicenseDto>> getLicensesByLicenseKeyAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto) throws ApiException {
-        okhttp3.Call localVarCall = getLicensesByLicenseKeyAsyncValidateBeforeCall(isvId, getLicensesByLicenseKeyDto, null);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all licenses of a (legacy) key (asynchronously)
-     * Typically used in order to map a license/key/subscription of a backoffice system to the SLASCONE license. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByLicenseKeyDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByLicenseKeyAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto, final ApiCallback<List<LicenseDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicensesByLicenseKeyAsyncValidateBeforeCall(isvId, getLicensesByLicenseKeyDto, _callback);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for getLicensesByUserAsync
-     * @param isvId  (required)
-     * @param getLicensesByUserDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByUserAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = getLicensesByUserDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/by_user"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call getLicensesByUserAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling getLicensesByUserAsync(Async)");
-        }
-
-        // verify the required parameter 'getLicensesByUserDto' is set
-        if (getLicensesByUserDto == null) {
-            throw new ApiException("Missing the required parameter 'getLicensesByUserDto' when calling getLicensesByUserAsync(Async)");
-        }
-
-        return getLicensesByUserAsyncCall(isvId, getLicensesByUserDto, _callback);
-
-    }
-
-    /**
-     * Returns all licenses of a named user
-     * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByUserDto  (required)
-     * @return List&lt;LicenseDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public List<LicenseDto> getLicensesByUserAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto) throws ApiException {
-        ApiResponse<List<LicenseDto>> localVarResp = getLicensesByUserAsyncWithHttpInfo(isvId, getLicensesByUserDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Returns all licenses of a named user
-     * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByUserDto  (required)
-     * @return ApiResponse&lt;List&lt;LicenseDto&gt;&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<List<LicenseDto>> getLicensesByUserAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto) throws ApiException {
-        okhttp3.Call localVarCall = getLicensesByUserAsyncValidateBeforeCall(isvId, getLicensesByUserDto, null);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Returns all licenses of a named user (asynchronously)
-     * Typically used in SaaS/Web scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360017647817-NAMED-USER-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param getLicensesByUserDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call getLicensesByUserAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull GetLicensesByUserDto getLicensesByUserDto, final ApiCallback<List<LicenseDto>> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = getLicensesByUserAsyncValidateBeforeCall(isvId, getLicensesByUserDto, _callback);
-        Type localVarReturnType = new TypeToken<List<LicenseDto>>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for openSession
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call openSessionCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = sessionRequestDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/session/open"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call openSessionValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling openSession(Async)");
-        }
-
-        // verify the required parameter 'sessionRequestDto' is set
-        if (sessionRequestDto == null) {
-            throw new ApiException("Missing the required parameter 'sessionRequestDto' when calling openSession(Async)");
-        }
-
-        return openSessionCall(isvId, sessionRequestDto, _callback);
-
-    }
-
-    /**
-     * Opens a (floating) session
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @return SessionStatusDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public SessionStatusDto openSession(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
-        ApiResponse<SessionStatusDto> localVarResp = openSessionWithHttpInfo(isvId, sessionRequestDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Opens a (floating) session
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @return ApiResponse&lt;SessionStatusDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<SessionStatusDto> openSessionWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto) throws ApiException {
-        okhttp3.Call localVarCall = openSessionValidateBeforeCall(isvId, sessionRequestDto, null);
-        Type localVarReturnType = new TypeToken<SessionStatusDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Opens a (floating) session (asynchronously)
-     * &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016152858-FLOATING-LICENSES\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param sessionRequestDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call openSessionAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull SessionRequestDto sessionRequestDto, final ApiCallback<SessionStatusDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = openSessionValidateBeforeCall(isvId, sessionRequestDto, _callback);
-        Type localVarReturnType = new TypeToken<SessionStatusDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for toogleLicenseStateAsync
-     * @param isvId  (required)
-     * @param toggleLicenseStateDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toogleLicenseStateAsyncCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = toggleLicenseStateDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/licenses/state/toggle"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call toogleLicenseStateAsyncValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling toogleLicenseStateAsync(Async)");
-        }
-
-        // verify the required parameter 'toggleLicenseStateDto' is set
-        if (toggleLicenseStateDto == null) {
-            throw new ApiException("Missing the required parameter 'toggleLicenseStateDto' when calling toogleLicenseStateAsync(Async)");
-        }
-
-        return toogleLicenseStateAsyncCall(isvId, toggleLicenseStateDto, _callback);
-
-    }
-
-    /**
-     * Toggles the license state (active/inactive)
-     * Toggles the license state (active/inactive).
-     * @param isvId  (required)
-     * @param toggleLicenseStateDto  (required)
-     * @return LicenseStateDto
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public LicenseStateDto toogleLicenseStateAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto) throws ApiException {
-        ApiResponse<LicenseStateDto> localVarResp = toogleLicenseStateAsyncWithHttpInfo(isvId, toggleLicenseStateDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Toggles the license state (active/inactive)
-     * Toggles the license state (active/inactive).
-     * @param isvId  (required)
-     * @param toggleLicenseStateDto  (required)
-     * @return ApiResponse&lt;LicenseStateDto&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<LicenseStateDto> toogleLicenseStateAsyncWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto) throws ApiException {
-        okhttp3.Call localVarCall = toogleLicenseStateAsyncValidateBeforeCall(isvId, toggleLicenseStateDto, null);
-        Type localVarReturnType = new TypeToken<LicenseStateDto>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Toggles the license state (active/inactive) (asynchronously)
-     * Toggles the license state (active/inactive).
-     * @param isvId  (required)
-     * @param toggleLicenseStateDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call toogleLicenseStateAsyncAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull ToggleLicenseStateDto toggleLicenseStateDto, final ApiCallback<LicenseStateDto> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = toogleLicenseStateAsyncValidateBeforeCall(isvId, toggleLicenseStateDto, _callback);
-        Type localVarReturnType = new TypeToken<LicenseStateDto>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
-    /**
-     * Build call for unassignLicense
-     * @param isvId  (required)
-     * @param unassignDto  (required)
-     * @param _callback Callback for upload/download progress
-     * @return Call to execute
-     * @throws ApiException If fail to serialize the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call unassignLicenseCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UnassignDto unassignDto, final ApiCallback _callback) throws ApiException {
-        String basePath = null;
-        // Operation Servers
-        String[] localBasePaths = new String[] {  };
-
-        // Determine Base Path to Use
-        if (localCustomBaseUrl != null){
-            basePath = localCustomBaseUrl;
-        } else if ( localBasePaths.length > 0 ) {
-            basePath = localBasePaths[localHostIndex];
-        } else {
-            basePath = null;
-        }
-
-        Object localVarPostBody = unassignDto;
-
-        // create path and map variables
-        String localVarPath = "/api/v2/isv/{isv_id}/provisioning/unassign"
-            .replace("{" + "isv_id" + "}", localVarApiClient.escapeString(isvId.toString()));
-
-        List<Pair> localVarQueryParams = new ArrayList<Pair>();
-        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-        Map<String, String> localVarCookieParams = new HashMap<String, String>();
-        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-        final String[] localVarAccepts = {
-            "application/json"
-        };
-        final String localVarAccept = localVarApiClient.selectHeaderAccept(localVarAccepts);
-        if (localVarAccept != null) {
-            localVarHeaderParams.put("Accept", localVarAccept);
-        }
-
-        final String[] localVarContentTypes = {
-            "application/json"
-        };
-        final String localVarContentType = localVarApiClient.selectHeaderContentType(localVarContentTypes);
-        if (localVarContentType != null) {
-            localVarHeaderParams.put("Content-Type", localVarContentType);
-        }
-
-        String[] localVarAuthNames = new String[] { "AdminKey", "ProvisioningKey", "Bearer" };
-        return localVarApiClient.buildCall(basePath, localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAuthNames, _callback);
-    }
-
-    @SuppressWarnings("rawtypes")
-    private okhttp3.Call unassignLicenseValidateBeforeCall(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UnassignDto unassignDto, final ApiCallback _callback) throws ApiException {
-        // verify the required parameter 'isvId' is set
-        if (isvId == null) {
-            throw new ApiException("Missing the required parameter 'isvId' when calling unassignLicense(Async)");
-        }
-
-        // verify the required parameter 'unassignDto' is set
-        if (unassignDto == null) {
-            throw new ApiException("Missing the required parameter 'unassignDto' when calling unassignLicense(Async)");
-        }
-
-        return unassignLicenseCall(isvId, unassignDto, _callback);
-
-    }
-
-    /**
-     * Unassigns a token from a client
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param unassignDto  (required)
-     * @return String
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public String unassignLicense(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UnassignDto unassignDto) throws ApiException {
-        ApiResponse<String> localVarResp = unassignLicenseWithHttpInfo(isvId, unassignDto);
-        return localVarResp.getData();
-    }
-
-    /**
-     * Unassigns a token from a client
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param unassignDto  (required)
-     * @return ApiResponse&lt;String&gt;
-     * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public ApiResponse<String> unassignLicenseWithHttpInfo(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UnassignDto unassignDto) throws ApiException {
-        okhttp3.Call localVarCall = unassignLicenseValidateBeforeCall(isvId, unassignDto, null);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        return localVarApiClient.execute(localVarCall, localVarReturnType);
-    }
-
-    /**
-     * Unassigns a token from a client (asynchronously)
-     * Typically used in named device scenarios. &lt;a href&#x3D;\&quot;https://support.slascone.com/hc/en-us/articles/360016001677-CORE-API\&quot;&gt;More Information&lt;/a&gt;.
-     * @param isvId  (required)
-     * @param unassignDto  (required)
-     * @param _callback The callback to be executed when the API call finishes
-     * @return The request call
-     * @throws ApiException If fail to process the API call, e.g. serializing the request body object
-     * @http.response.details
-     <table border="1">
-       <caption>Response Details</caption>
-        <tr><td> Status Code </td><td> Description </td><td> Response Headers </td></tr>
-        <tr><td> 200 </td><td> Success </td><td>  -  </td></tr>
-        <tr><td> 401 </td><td> Unauthorized </td><td>  -  </td></tr>
-        <tr><td> 403 </td><td> Forbidden </td><td>  -  </td></tr>
-        <tr><td> 409 </td><td> Conflict </td><td>  -  </td></tr>
-        <tr><td> 500 </td><td> Internal server error </td><td>  -  </td></tr>
-        <tr><td> 503 </td><td> Service unavailable </td><td>  -  </td></tr>
-     </table>
-     */
-    public okhttp3.Call unassignLicenseAsync(@javax.annotation.Nonnull UUID isvId, @javax.annotation.Nonnull UnassignDto unassignDto, final ApiCallback<String> _callback) throws ApiException {
-
-        okhttp3.Call localVarCall = unassignLicenseValidateBeforeCall(isvId, unassignDto, _callback);
-        Type localVarReturnType = new TypeToken<String>(){}.getType();
-        localVarApiClient.executeAsync(localVarCall, localVarReturnType, _callback);
-        return localVarCall;
-    }
 }

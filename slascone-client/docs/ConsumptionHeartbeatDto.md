@@ -10,6 +10,7 @@
 |**id** | **UUID** |  |  [optional] |
 |**value** | **BigDecimal** |  |  [optional] |
 |**remaining** | **BigDecimal** |  |  [optional] |
+|**balance** | **BigDecimal** |  |  [optional] |
 |**assignmentId** | **UUID** |  |  [optional] |
 |**clientId** | **String** |  |  [optional] |
 |**licenseId** | **UUID** |  |  [optional] |
