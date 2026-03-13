@@ -3,6 +3,7 @@ package Program;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 
 import com.slascone.ApiResponse;
@@ -74,7 +75,7 @@ public class ErrorHandlingHelper {
                     lastErrorType = ErrorType.TECHNICAL;
                     retryCountdown--;
                     if (0 <= retryCountdown) {
-                        Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                        Thread.sleep(getRetryWaitTime(ex).toMillis());
                     }
                     continue;
                 } else if (isTransientNetworkException(ex.getCause())) {
@@ -84,7 +85,7 @@ public class ErrorHandlingHelper {
                     lastErrorType = ErrorType.NETWORK;
                     retryCountdown--;
                     if (0 <= retryCountdown) {
-                        Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                        Thread.sleep(getRetryWaitTime(ex).toMillis());
                     }
                     continue;
                 }
@@ -134,6 +135,25 @@ public class ErrorHandlingHelper {
         return new ResultWithError<>(errorMessage, lastErrorType);
     }
     
+    public static Duration getRetryWaitTime(ApiException ex) {
+
+        // Try to examine retry wait time from a "Retry-After" header in the response if available, otherwise return default wait time
+        List<String> retryAfterHeader = ex.getResponseHeaders() != null 
+            ? ex.getResponseHeaders().map().getOrDefault("Retry-After", null) 
+            : null;
+
+         if (retryAfterHeader != null && !retryAfterHeader.isEmpty()) {
+             try {
+                 int retryAfterSeconds = Integer.parseInt(retryAfterHeader.get(0));
+                 return Duration.ofSeconds(retryAfterSeconds);
+             } catch (NumberFormatException e) {
+                 // Ignore parsing errors and fall back to default wait time
+             }
+         }
+
+        return RETRY_WAIT_TIME;
+    }
+
     /**
      * Error type enum to differentiate between error categories
      */

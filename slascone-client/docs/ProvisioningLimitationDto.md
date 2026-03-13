@@ -12,6 +12,7 @@
 |**description** | **String** |  |  [optional] |
 |**value** | **Integer** |  |  [optional] |
 |**remaining** | **BigDecimal** |  |  [optional] |
+|**balance** | **BigDecimal** |  |  [optional] |
 |**consumptionResetMode** | **ConsumptionResetPeriod** |  |  [optional] |
 |**consumptionResetPeriodDays** | **Integer** |  |  [optional] |
 

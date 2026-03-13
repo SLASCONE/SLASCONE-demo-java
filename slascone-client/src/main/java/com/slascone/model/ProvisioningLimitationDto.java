@@ -45,6 +45,7 @@ import com.slascone.ApiClient;
   ProvisioningLimitationDto.JSON_PROPERTY_DESCRIPTION,
   ProvisioningLimitationDto.JSON_PROPERTY_VALUE,
   ProvisioningLimitationDto.JSON_PROPERTY_REMAINING,
+  ProvisioningLimitationDto.JSON_PROPERTY_BALANCE,
   ProvisioningLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_MODE,
   ProvisioningLimitationDto.JSON_PROPERTY_CONSUMPTION_RESET_PERIOD_DAYS
 })
@@ -67,6 +68,10 @@ public class ProvisioningLimitationDto {
   public static final String JSON_PROPERTY_REMAINING = "remaining";
   @jakarta.annotation.Nullable
   private BigDecimal remaining;
+
+  public static final String JSON_PROPERTY_BALANCE = "balance";
+  @jakarta.annotation.Nullable
+  private BigDecimal balance;
 
   public static final String JSON_PROPERTY_CONSUMPTION_RESET_MODE = "consumption_reset_mode";
   private JsonNullable<ConsumptionResetPeriod> consumptionResetMode = JsonNullable.<ConsumptionResetPeriod>undefined();
@@ -213,6 +218,30 @@ public class ProvisioningLimitationDto {
   }
 
 
+  public ProvisioningLimitationDto balance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = balance;
+    return this;
+  }
+
+  /**
+   * Get balance
+   * @return balance
+   */
+  @jakarta.annotation.Nullable
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public BigDecimal getBalance() {
+    return balance;
+  }
+
+
+  @JsonProperty(value = JSON_PROPERTY_BALANCE, required = false)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setBalance(@jakarta.annotation.Nullable BigDecimal balance) {
+    this.balance = balance;
+  }
+
+
   public ProvisioningLimitationDto consumptionResetMode(@jakarta.annotation.Nullable ConsumptionResetPeriod consumptionResetMode) {
     this.consumptionResetMode = JsonNullable.<ConsumptionResetPeriod>of(consumptionResetMode);
     return this;
@@ -294,6 +323,7 @@ public class ProvisioningLimitationDto {
         equalsNullable(this.description, provisioningLimitationDto.description) &&
         Objects.equals(this.value, provisioningLimitationDto.value) &&
         Objects.equals(this.remaining, provisioningLimitationDto.remaining) &&
+        Objects.equals(this.balance, provisioningLimitationDto.balance) &&
         equalsNullable(this.consumptionResetMode, provisioningLimitationDto.consumptionResetMode) &&
         equalsNullable(this.consumptionResetPeriodDays, provisioningLimitationDto.consumptionResetPeriodDays);
   }
@@ -304,7 +334,7 @@ public class ProvisioningLimitationDto {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(description), value, remaining, hashCodeNullable(consumptionResetMode), hashCodeNullable(consumptionResetPeriodDays));
+    return Objects.hash(id, hashCodeNullable(name), hashCodeNullable(description), value, remaining, balance, hashCodeNullable(consumptionResetMode), hashCodeNullable(consumptionResetPeriodDays));
   }
 
   private static <T> int hashCodeNullable(JsonNullable<T> a) {
@@ -323,6 +353,7 @@ public class ProvisioningLimitationDto {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    remaining: ").append(toIndentedString(remaining)).append("\n");
+    sb.append("    balance: ").append(toIndentedString(balance)).append("\n");
     sb.append("    consumptionResetMode: ").append(toIndentedString(consumptionResetMode)).append("\n");
     sb.append("    consumptionResetPeriodDays: ").append(toIndentedString(consumptionResetPeriodDays)).append("\n");
     sb.append("}");
@@ -395,6 +426,11 @@ public class ProvisioningLimitationDto {
     // add `remaining` to the URL query string
     if (getRemaining() != null) {
       joiner.add(String.format(java.util.Locale.ROOT, "%sremaining%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getRemaining()))));
+    }
+
+    // add `balance` to the URL query string
+    if (getBalance() != null) {
+      joiner.add(String.format(java.util.Locale.ROOT, "%sbalance%s=%s", prefix, suffix, ApiClient.urlEncode(ApiClient.valueToString(getBalance()))));
     }
 
     // add `consumption_reset_mode` to the URL query string

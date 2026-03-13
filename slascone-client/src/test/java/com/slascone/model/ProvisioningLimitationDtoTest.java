@@ -85,6 +85,14 @@ class ProvisioningLimitationDtoTest {
     }
 
     /**
+     * Test the property 'balance'
+     */
+    @Test
+    void balanceTest() {
+        // TODO: test balance
+    }
+
+    /**
      * Test the property 'consumptionResetMode'
      */
     @Test
