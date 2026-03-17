@@ -116,8 +116,11 @@ public class ErrorHandlingHelper {
                 // For transient exceptions, store and retry
                 lastException = ex;
                 lastErrorType = ErrorType.NETWORK;
+    
                 retryCountdown--;
-                Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                if (0 <= retryCountdown) {
+                    Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                }
             }
         }
 
