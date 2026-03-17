@@ -20,6 +20,8 @@ import com.slascone.model.SessionStatusDto;
 import com.slascone.model.UnassignDto;
 import com.slascone.model.UsageHeartbeatValueDto;
 
+import Program.ErrorHandlingHelper.ErrorType;
+
 import com.slascone.model.ConsumptionHeartbeatValueDto;
 import com.slascone.model.FullConsumptionHeartbeatDto;
 import com.slascone.model.ConsumptionDto;
@@ -115,7 +117,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
@@ -181,7 +183,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 //
                 // When successful heartbeats are received, the CombinedInterceptor class
                 // automatically stores a local copy of the license information and its digital
@@ -190,6 +192,17 @@ public class LicensingService {
                 // cannot connect to the SLASCONE server. This provides offline operation capability
                 // during temporary network outages while maintaining license validation security
                 // through digital signature verification.
+
+                if (ErrorType.FUNCTIONAL == result.getErrorType()
+                    && 2006 == result.getErrorResult().getId()) {
+                    System.out.println("Client is unknown. Please activate a license to register this device with the SLASCONE server.");
+                }
+
+                if (ErrorType.NETWORK == result.getErrorType()
+                    || (ErrorType.TECHNICAL == result.getErrorType())) {
+                    System.out.println("Network or technical error occurred. Use license information stored for temporary offline operation if available.");
+                }
+
                 return;
             }
 
@@ -254,7 +267,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
@@ -320,7 +333,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
@@ -402,7 +415,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
@@ -470,7 +483,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
@@ -541,7 +554,7 @@ public class LicensingService {
                 //   e.g. invalid request, etc.
                 //
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 //
                 // When a session is successfully opened, the CombinedInterceptor automatically
                 // stores the session information and its digital signature in the application
@@ -607,7 +620,7 @@ public class LicensingService {
                 // - Technical error, SLASCONE API responded with HTTP status code != 409:
                 //   e.g. invalid request, etc.
                 // - Network error, SLASCONE API did not respond at all:
-                //   e.g. no internet connection, SLASCONE API is down, etc.
+                //   e.g. no internet connection, etc.
                 return;
             }
 
