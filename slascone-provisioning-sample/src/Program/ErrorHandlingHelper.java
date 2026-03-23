@@ -68,26 +68,28 @@ public class ErrorHandlingHelper {
 
                     return new ResultWithError<>(errorResult);
 
-                } else if (isTransientHttpError(ex.getCode())) {
+                } else {
 
-                    // Transient error: Wait and try again
-                    lastException = ex;
-                    lastErrorType = ErrorType.TECHNICAL;
-                    retryCountdown--;
-                    if (0 <= retryCountdown) {
-                        Thread.sleep(getRetryWaitTime(ex).toMillis());
-                    }
-                    continue;
-                } else if (isTransientNetworkException(ex.getCause())) {
+                    boolean isTransientHttpError = isTransientHttpError(ex.getCode()) ;
+                    boolean isTransientNetworkException = isTransientNetworkException(ex.getCause());
 
-                    // Transient network error: Wait and try again
-                    lastException = ex;
-                    lastErrorType = ErrorType.NETWORK;
-                    retryCountdown--;
-                    if (0 <= retryCountdown) {
-                        Thread.sleep(getRetryWaitTime(ex).toMillis());
+                    if (isTransientHttpError || isTransientNetworkException) {
+
+                        // Transient error: Wait and try again
+                        lastException = ex;
+
+                        if (isTransientHttpError) {
+                            lastErrorType = ErrorType.TECHNICAL;
+                        } else if (isTransientNetworkException) {
+                            lastErrorType = ErrorType.NETWORK;
+                        }
+                        
+                        retryCountdown--;
+                        if (0 <= retryCountdown) {
+                            Thread.sleep(getRetryWaitTime(ex).toMillis());
+                        }
+                        continue;
                     }
-                    continue;
                 }
 
                 // Standard error handling: Return error
@@ -114,8 +116,11 @@ public class ErrorHandlingHelper {
                 // For transient exceptions, store and retry
                 lastException = ex;
                 lastErrorType = ErrorType.NETWORK;
+    
                 retryCountdown--;
-                Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                if (0 <= retryCountdown) {
+                    Thread.sleep(RETRY_WAIT_TIME.toMillis());
+                }
             }
         }
 
