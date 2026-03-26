@@ -6,6 +6,19 @@ For more information about this solution, visit
 https://slascone.com/ and/or
 https://support.slascone.com/
 
+## Table of Contents
+
+- [LICENSING & ANALYTICS FOR SOFTWARE AND IoT VENDORS](#licensing--analytics-for-software-and-iot-vendors)
+  - [SLASCONE FEATURES DEMONSTRATED IN THIS SAMPLE](#slascone-features-demonstrated-in-this-sample)
+  - [CONNECTING TO YOUR SLASCONE ENVIRONMENT](#connecting-to-your-slascone-environment)
+  - [DEPENDENCY MANAGEMENT](#dependency-management)
+  - [TECHNICAL DETAILS](#technical-details)
+  - [GETTING STARTED](#getting-started)
+  - [OFFLINE CAPABILITIES AND FREERIDE PERIOD](#offline-capabilities-and-freeride-period)
+  - [CONFIGURATION AND STORAGE](#configuration-and-storage)
+  - [ERROR HANDLING AND RETRY LOGIC](#error-handling-and-retry-logic)
+  - [API CLIENT](#api-client)
+
 ## SLASCONE FEATURES DEMONSTRATED IN THIS SAMPLE
 
 This sample application showcases the following key features of the SLASCONE licensing service:
@@ -281,7 +294,91 @@ The following files are managed in the application data folder:
 
 All files are automatically created, updated, and removed as needed during application operation.
 
-## API client
+## ERROR HANDLING AND RETRY LOGIC
+
+This sample application demonstrates how to handle SLASCONE API errors and implement retry logic using the `ErrorHandlingHelper` class. All API calls are routed through this helper, which provides consistent error classification, automatic retries for transient failures, and a unified response wrapper. For detailed information about SLASCONE API error codes, refer to the [SLASCONE error handling documentation](https://support.slascone.com/hc/en-us/articles/360016160398-ERROR-HANDLING).
+
+### Error Categories
+
+The `ErrorHandlingHelper` classifies API errors into three categories:
+
+1. **Functional Errors (HTTP 409)**
+   - Represent business logic conflicts returned by the SLASCONE API
+   - Examples include attempting to activate an already-activated license, unknown client IDs, or exceeded license limits
+   - The response body is automatically parsed into an `ErrorResultObjects` with a specific error code and message
+   - These errors are never retried, as they require the caller to address the underlying business logic issue
+
+2. **Technical Errors (HTTP 4xx/5xx)**
+   - Represent server-side or request issues such as internal server errors, bad gateways, or service unavailability
+   - Transient HTTP errors (408, 429, 500, 502, 503, 504, 507) are automatically retried
+   - Non-transient errors (e.g., 401, 403, 404) are returned immediately without retry
+
+3. **Network Errors**
+   - Represent connectivity issues such as socket timeouts, connection refused, DNS resolution failures, or SSL errors
+   - Transient network exceptions (e.g., `SocketTimeoutException`, `ConnectException`, `UnknownHostException`) are automatically retried
+   - Non-transient network exceptions are returned immediately
+
+### Retry Logic
+
+The `ErrorHandlingHelper` implements automatic retry logic for transient errors:
+
+1. **Retry Count**: By default, the helper performs a maximum of 1 automatic retry (`MAX_RETRY_COUNT`). This follows the SLASCONE recommendation of a moderate retry policy.
+
+2. **Wait Time**: The default wait time between retries is 30 seconds (`RETRY_WAIT_TIME`).
+
+3. **Retry-After Header**: For HTTP errors that include a `Retry-After` response header (commonly sent with 429 or 503 responses), the helper uses the server-specified wait time instead of the default. This ensures compliance with rate limiting and server availability signals.
+
+4. **Non-Transient Errors**: Errors that are not classified as transient (e.g., HTTP 404 or a functional 409 conflict) are returned immediately without any retry attempt.
+
+### Handling API Responses
+
+All API calls wrapped by `ErrorHandlingHelper.execute()` return a `ResultWithError<T>` object, which encapsulates either a successful result or error details:
+
+1. **Success Check**: Call `result.hasError()` to determine if the API call succeeded or failed.
+
+2. **Success Path**: Use `result.getResult()` to access the API response data (e.g., `LicenseInfoDto`, `SessionStatusDto`).
+
+3. **Error Inspection**: When an error occurs, use the following methods:
+   - `result.getErrorType()` — Returns the error category (`FUNCTIONAL`, `TECHNICAL`, or `NETWORK`)
+   - `result.getErrorMessage()` — Returns a formatted error description
+   - `result.getErrorResult()` — For functional errors (HTTP 409), returns the parsed `ErrorResultObjects` with the specific SLASCONE error code
+   - `result.getApiException()` — Provides access to the underlying `ApiException` for advanced handling
+
+4. **Usage Example**: The `LicensingService` class demonstrates the standard pattern for handling API responses:
+
+```java
+var result = ErrorHandlingHelper.execute(
+    provisioningApi::activateLicenseWithHttpInfo,
+    activateInfo,
+    "activateLicense");
+
+if (result.hasError()) {
+    System.out.println("Error Type: " + result.getErrorType().toString());
+    System.out.println("Message: " + result.getErrorMessage());
+
+    if (ErrorType.FUNCTIONAL == result.getErrorType() && result.getErrorResult() != null) {
+        // Handle specific business logic error codes
+        int errorId = result.getErrorResult().getId();
+    }
+    return;
+}
+
+LicenseInfoDto licenseInfo = result.getResult();
+```
+
+### Recommended Error Handling Strategy
+
+Based on the SLASCONE error handling guidelines, consider the following strategies when integrating SLASCONE licensing into your application:
+
+1. **Always Handle HTTP 409 Explicitly**: These are business logic responses, not unexpected errors. Check the specific error code from `getErrorResult().getId()` and handle each case according to your application's needs. Refer to the endpoint-specific documentation in the [SLASCONE API](https://api.slascone.com/swagger/index.html?urls.primaryName=V2) for possible conflict scenarios.
+
+2. **Fallback for Transient Failures**: The built-in retry logic handles the first retry automatically. If retries are exhausted, implement a fallback strategy such as using cached license data from the last successful heartbeat (see [Offline Capabilities and Freeride Period](#offline-capabilities-and-freeride-period)).
+
+3. **Heartbeat Failure Resilience**: When a license heartbeat fails after retries, fall back to the locally cached license data. The freeride period provides a grace period during which the application can continue operating. Do not apply freeride logic for server errors — reserve it for true offline scenarios.
+
+4. **Session Open Resilience**: For floating license session open failures caused by transient errors, consider treating the request as successful to avoid disrupting the user experience. This approach prioritizes usability while maintaining license compliance once connectivity is restored.
+
+## API CLIENT
 
 This application uses a client generated by the [OpenAPI Generator](https://openapi-generator.tech/) using the generator [java](https://openapi-generator.tech/docs/generators/java).
 
