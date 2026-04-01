@@ -141,7 +141,7 @@ To connect it to your own SLASCONE environment, adjust the values in `Settings.j
 * `PROVISIONING_KEY`: your provisioning key for authentication
 * `ISV_ID`: your ISV identifier
 
-Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories.
+Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets  see the [Secrets]([https://support.slascone.com/hc/en-us/sections/10214124833693](https://support.slascone.com/hc/en-us/articles/7702036319261#secrets)) section in the SLASCONE Help Center.
 
 ## Typical Licensing Flow
 
@@ -162,7 +162,7 @@ This sample demonstrates each of these steps in a compact console application so
 
 ### Temporary Offline Scenarios
 
-The SLASCONE licensing system provides robust support for temporary offline scenarios, which is especially important for desktop applications and intermittently connected systems.
+The SLASCONE licensing system provides robust support for temporary offline scenarios, which is especially important for desktop applications and intermittently connected systems. For more background on temporary and permanent offline scenarios, see the [Offline & Connectivity](https://support.slascone.com/hc/en-us/sections/10214124833693) section in the SLASCONE Help Center.
 
 This sample demonstrates how to implement this behavior.
 
@@ -214,6 +214,9 @@ The freeride period provides flexibility when heartbeats fail, allowing users to
 This approach ensures that temporary network issues or brief periods offline do not disrupt users' work while still maintaining proper license enforcement in the long term.
 
 ## Configuration and Storage
+
+For detailed guidance on what should be stored locally, why it matters, and how cached license state supports offline and freeride scenarios, see [What to Store Locally in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261).
+
 
 ### Application Data Folder
 
