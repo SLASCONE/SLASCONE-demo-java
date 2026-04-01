@@ -291,6 +291,7 @@ All files are automatically created, updated, and removed as needed during appli
 
 ## Error Handling and Retry Logic
 
+For detailed information about SLASCONE API error codes, refer to the [SLASCONE error handling documentation](https://support.slascone.com/hc/en-us/articles/360016160398).
 This sample application demonstrates how to handle SLASCONE API errors and implement retry logic using the `ErrorHandlingHelper` class.
 
 All API calls are routed through this helper, which provides:
@@ -298,8 +299,6 @@ All API calls are routed through this helper, which provides:
 * consistent error classification
 * automatic retries for transient failures
 * a unified response wrapper
-
-For detailed information about SLASCONE API error codes, refer to the [SLASCONE error handling documentation](https://support.slascone.com/hc/en-us/articles/360016160398).
 
 ### Error Categories
 
