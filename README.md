@@ -34,75 +34,71 @@ This sample application showcases the following key features of the SLASCONE lic
 
 ### License Management
 
-1. **License Activation**
-
+**License Activation (online)**
    * Activates a license for a specific device using its unique device ID
    * Demonstrates how to activate a license key for the first time on a specific machine
    * Handles activation responses and potential warnings or errors
-2. **License Heartbeat**
-
+     
+**License Heartbeat**
    * Sends periodic license verification requests to the SLASCONE server
    * Retrieves up-to-date license information including features, limitations, and expiration details
    * Caches license information for offline use
-3. **Offline License Support**
-
-   * Reads license information when temporarily disconnected from the internet
-   * Uses cached license data stored during the last successful heartbeat
-   * Ensures the software can continue to function during temporary network outages
-4. **License Unassignment**
-
-   * Demonstrates how to unassign a license from a device
-   * Allows a license to be transferred to a different machine
-5. **License File Handling**
-
+     
+**License Activation (offline)**
    * Validates the digital signature of license files to prevent tampering
    * Reads and displays comprehensive license information from XML files
    * Provides detailed analysis of license validity, features, and limitations
+     
+**Offline License Support**
+   * Reads license information when temporarily disconnected from the internet
+   * Uses cached license data stored during the last successful heartbeat
+   * Ensures the software can continue to function during temporary network outages
+     
+**License Unassignment**
+   * Demonstrates how to unassign a license from a device
+   * Allows a license to be transferred to a different machine
 
 ### Analytics Capabilities
 
-1. **Analytical Heartbeat**
-
+**Analytical Heartbeat**
    * Gathers general troubleshooting statistics
    * Supports custom fields for application-specific metrics
-2. **Feature Usage Tracking**
 
+**Feature Usage Tracking**
    * Records which specific features are being used within the application
    * Tracks usage frequency and patterns for specific functionality
    * Provides insights for product development and pricing decisions
-3. **Consumption Tracking**
 
+**Consumption Tracking**
    * Monitors consumption-based licensing metrics such as API calls or processed documents
    * Supports pay-per-use licensing models
    * Reports consumption against pre-defined limitations
 
 ### Floating License Management
 
-1. **Session Management**
-
+**Session Management**
    * Opens licensing sessions for floating license scenarios
    * Supports concurrent user licensing models
    * Allows software to be installed on multiple machines while limiting concurrent use
-2. **Offline Session Handling**
 
+**Offline Session Handling**
    * Reads and validates locally stored session data when temporarily disconnected
    * Ensures continuation of work during network interruptions
    * Maintains license compliance even in offline mode
-3. **Session Closure**
 
+**Session Closure**
    * Properly releases floating licenses back to the pool
    * Ensures efficient use of available licenses
    * Prevents license hoarding by inactive installations
 
 ### Security Features
 
-1. **Digital Signature Validation**
-
+**Digital Signature Validation**
    * Verifies the authenticity of license files and server responses
    * Prevents tampering with license data
    * Supports both symmetric and asymmetric cryptographic validation
-2. **Device Identification**
 
+**Device Identification**
    * Cross-platform device fingerprinting for Windows, Linux, and macOS
    * Secures licenses to specific hardware
    * Helps prevent unauthorized license transfers
