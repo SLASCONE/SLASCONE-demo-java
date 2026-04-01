@@ -158,9 +158,8 @@ This sample demonstrates each of these steps in a compact console application so
 
 ## Offline Behavior and Freeride Period
 
-### Temporary Offline Scenarios
 
-The SLASCONE licensing system provides robust support for temporary offline scenarios, which is especially important for desktop applications and intermittently connected systems. For more background on temporary and permanent offline scenarios, see the [Offline & Connectivity](https://support.slascone.com/hc/en-us/sections/10214124833693) section in the SLASCONE Help Center.
+The SLASCONE licensing system provides robust support for (temporary) offline scenarios, which is especially important for desktop applications and intermittently connected systems. For more background on temporary and permanent offline scenarios, see the [Offline & Connectivity](https://support.slascone.com/hc/en-us/sections/10214124833693) section in the SLASCONE Help Center.
 
 This sample demonstrates how to implement this behavior.
 
