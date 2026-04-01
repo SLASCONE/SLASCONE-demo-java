@@ -137,9 +137,10 @@ By default, the application is configured to connect to a SLASCONE demo environm
 
 To connect it to your own SLASCONE environment, adjust the values in `Settings.java`:
 
-* `API_BASE_URL`: your SLASCONE API endpoint
-* `PROVISIONING_KEY`: your provisioning key for authentication
+* `API_BASE_URL`: your API endpoint
+* `PROVISIONING_KEY`: your provisioning API key
 * `ISV_ID`: your ISV identifier
+* `PRODUCT_ID`: your product identifier
 
 You can find these values as explained [here](https://support.slascone.com/hc/en-us/articles/360016153358#common-parameters). For meaningful testing and evaluation, your SLASCONE environment should have at least one active license.
 
