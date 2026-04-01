@@ -294,7 +294,7 @@ All API calls are routed through this helper, which provides:
 * automatic retries for transient failures
 * a unified response wrapper
 
-For detailed information about SLASCONE API error codes, refer to the [SLASCONE error handling documentation](https://support.slascone.com/hc/en-us/articles/360016160398-ERROR-HANDLING).
+For detailed information about SLASCONE API error codes, refer to the [SLASCONE error handling documentation](https://support.slascone.com/hc/en-us/articles/360016160398).
 
 ### Error Categories
 
@@ -482,9 +482,9 @@ If you use the generated client in your own application, it is recommended to ke
 ## Further Reading
 
 * [SLASCONE API](https://api365.slascone.com/swagger)
-* [What and How to Save in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261-WHAT-AND-HOW-TO-SAVE-IN-YOUR-CLIENT)
-* [Digital Signature and Data Integrity](https://support.slascone.com/hc/en-us/articles/360016063637-DIGITAL-SIGNATURE-AND-DATA-INTEGRITY)
-* [Error Handling](https://support.slascone.com/hc/en-us/articles/360016160398-ERROR-HANDLING)
-* [Product Analytics](https://support.slascone.com/hc/en-us/articles/360016055537-PRODUCT-ANALYTICS)
-* [Consumption-Based Limitations](https://support.slascone.com/hc/en-us/articles/360016057197-CONSUMPTION-BASED-LIMITATIONS)
+* [What and How to Save in Your Client](https://support.slascone.com/hc/7702036319261)
+* [Digital Signature and Data Integrity](https://support.slascone.com/hc/360016063637)
+* [Error Handling](https://support.slascone.com/hc/360016160398)
+* [Product Analytics](https://support.slascone.com/hc/360016055537)
+* [Consumption-Based Limitations](https://support.slascone.com/hc/en-us/articles/360016057197)
 
