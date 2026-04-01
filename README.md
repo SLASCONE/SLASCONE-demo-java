@@ -93,15 +93,18 @@ This sample application showcases the following key features of the SLASCONE lic
 
 ### Security Features
 
-**Digital Signature Validation**
-   * Verifies the authenticity of license files and server responses
-   * Prevents tampering with license data
-   * Supports both symmetric and asymmetric cryptographic validation
-
 **Device Identification**
    * Cross-platform device fingerprinting for Windows, Linux, and macOS
    * Secures licenses to specific hardware
    * Helps prevent unauthorized license transfers
+
+**Digital Signature Validation**
+   * Verifies the authenticity of license files and server responses
+   * Prevents tampering with license data
+   * Supports both symmetric and asymmetric cryptographic validation
+     
+**Replay Protection**
+   * Uses a nonce-based challenge-response flow
 
 ## Getting Started
 
