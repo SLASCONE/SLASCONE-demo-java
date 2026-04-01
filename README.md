@@ -1,8 +1,8 @@
 # SLASCONE Java Licensing & Analytics Sample
 
-This Java console sample goes beyond simple API connectivity. It is designed as a production-oriented integration template that demonstrates how to handle real-world licensing scenarios reliably including resilient handling of offline or transient technical failures such as 5xx responses.
+This Java console sample goes beyond simple API connectivity. It is designed as a production-oriented integration template for real-world licensing scenarios, including temporary offline operation, local license caching, and resilient handling of transient technical failures such as 5xx responses.
 
-It includes examples for:
+It includes examples for the most important licensing, analytics, and resilience workflows:
 
 * license activation and heartbeat
 * floating session management
@@ -52,7 +52,7 @@ This sample application showcases the following key features of the SLASCONE lic
 4. **License Unassignment**
 
    * Demonstrates how to unassign a license from a device
-   * Allows licenses to be transferred to different machines
+   * Allows a license to be transferred to a different machine
 5. **License File Handling**
 
    * Validates the digital signature of license files to prevent tampering
@@ -85,7 +85,7 @@ This sample application showcases the following key features of the SLASCONE lic
    * Allows software to be installed on multiple machines while limiting concurrent use
 2. **Offline Session Handling**
 
-   * Finds and validates sessions when temporarily disconnected
+   * Reads and validates locally stored session data when temporarily disconnected
    * Ensures continuation of work during network interruptions
    * Maintains license compliance even in offline mode
 3. **Session Closure**
