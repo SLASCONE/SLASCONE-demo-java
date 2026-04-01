@@ -1,6 +1,6 @@
-# Licensing \& Analytics for Software and IoT Vendors
+# SLASCONE Java Licensing \& Analytics Sample
 
-This Java console sample demonstrates how to integrate the [SLASCONE API](https://api365.slascone.com/swagger/) for common licensing and analytics scenarios.
+This Java console sample demonstrates how to integrate the [SLASCONE API](https://api365.slascone.com/swagger/) for common licensing and analytics workflows.
 
 It includes examples for:
 
