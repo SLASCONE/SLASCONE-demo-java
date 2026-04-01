@@ -12,7 +12,8 @@ public class Settings {
 
     public static final int SIGNATURE_VALIDATION_MODE = 2; // Default to asymmetric key validation
 
-    public static final String SignatureKey = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D42bmxuQPK5gGEseNNpFRekd/Kf059rff/N4phalkP25zVqH3VZIOlmot4jEeNr0m";
+   //populate only if you use symmetrical encryption (SIGNATURE_VALIDATION_MODE 1, not recommended)
+    public static final String SignatureKey = "";
 
     // This is the public key as it can be downloaded from the slascone portal as PEM file
     public static final String SignaturePublicKey =
