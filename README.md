@@ -1,6 +1,7 @@
 # SLASCONE Java Licensing & Analytics Sample
 
-This Java console sample goes beyond simple API connectivity. It is designed as a production-oriented integration template for real-world licensing scenarios, including temporary offline operation, local license caching, and resilient handling of transient technical failures such as 5xx responses.
+This console sample shows how to integrate a software licensing platform via API, including license management, entitlement management, usage analytics, floating licenses, and offline licensing.
+Going beyond simple API connectivity, it is designed as a production-oriented integration template for real-world licensing scenarios, including temporary offline operation, local license caching, and resilient handling of transient technical failures such as 5xx responses.
 
 It includes examples for the most important licensing, analytics, and resilience workflows:
 
@@ -32,7 +33,7 @@ For more information, see the [SLASCONE website](https://slascone.com/), the [su
 
 This sample application showcases the following key features of the SLASCONE licensing service.
 
-### License Management
+### License Management & Entitlements
 
 **License Activation (online)**
    * Activates a license for a specific device using its unique device ID
@@ -159,7 +160,7 @@ A typical integration follows this sequence:
 
 This sample demonstrates each of these steps in a compact console application so you can adapt the relevant parts to your own product.
 
-## Offline Behavior and Freeride Period
+## Offline Licensing and Freeride Period
 
 
 The SLASCONE licensing system provides robust support for (temporary) offline scenarios, which is especially important for desktop applications and intermittently connected systems. For more background on temporary and permanent offline scenarios, see the [Offline & Connectivity](https://support.slascone.com/hc/en-us/sections/10214124833693) section in the SLASCONE Help Center.
