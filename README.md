@@ -6,7 +6,7 @@ It includes examples for the most important licensing, analytics, and resilience
 
 * license activation and heartbeat
 * floating session management
-* license file validation
+* license file validation (offline activation)
 * analytical, usage, and consumption heartbeats
 * offline fallback using cached license data
 * response and file integrity validation
