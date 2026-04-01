@@ -1,14 +1,14 @@
-# SLASCONE Java Licensing \& Analytics Sample
+# SLASCONE Java Licensing & Analytics Sample
 
-This Java console sample demonstrates how to integrate the [SLASCONE API](https://api365.slascone.com/swagger/) for common licensing and analytics workflows.
+This Java console sample goes beyond simple API connectivity. It is designed as a production-oriented integration template that demonstrates how to handle real-world licensing scenarios reliably including resilient handling of offline or transient technical failures such as 5xx responses.
 
 It includes examples for:
 
 * license activation and heartbeat
-* offline fallback using cached license data
 * floating session management
 * license file validation
 * analytical, usage, and consumption heartbeats
+* offline fallback using cached license data
 * response and file integrity validation
 * error handling and retry logic
 
