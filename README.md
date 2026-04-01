@@ -141,7 +141,7 @@ To connect it to your own SLASCONE environment, adjust the values in `Settings.j
 * `PROVISIONING_KEY`: your provisioning key for authentication
 * `ISV_ID`: your ISV identifier
 
-You can find these values as explained [here](https://support.slascone.com/hc/en-us/articles/360016153358#common-parameters).
+You can find these values as explained [here](https://support.slascone.com/hc/en-us/articles/360016153358#common-parameters). For meaningful testing and evaluation, your SLASCONE environment should have at least one active license.
 
 Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets, see the [Secrets](support.slascone.com/hc/en-us/articles/7702036319261#secrets) section in the SLASCONE Help Center.
 
