@@ -21,7 +21,7 @@ For more information, see the [SLASCONE website](https://slascone.com/), the [su
 * [Getting Started](#getting-started)
 * [Connecting to Your SLASCONE Environment](#connecting-to-your-slascone-environment)
 * [Typical Licensing Flow](#typical-licensing-flow)
-* [Offline Behavior and Freeride Period](#offline-behavior-and-freeride-period)
+* [Offline Licensing and Freeride Period](#offline-licensing-and-freeride-period)
 * [Configuration and Storage](#configuration-and-storage)
 * [Error Handling and Retry Logic](#error-handling-and-retry-logic)
 * [Technical Details](#technical-details)
@@ -144,7 +144,7 @@ To connect it to your own SLASCONE environment, adjust the values in `Settings.j
 
 You can find these values as explained [here](https://support.slascone.com/hc/en-us/articles/360016153358#common-parameters). For meaningful testing and evaluation, your SLASCONE environment should have at least one active license.
 
-Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets, see the [Secrets](support.slascone.com/hc/en-us/articles/7702036319261#secrets) section in the SLASCONE Help Center.
+Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets, see the [Secrets](https://support.slascone.com/hc/en-us/articles/7702036319261#secrets) section in the SLASCONE Help Center.
 
 ## Typical Licensing Flow
 
@@ -162,7 +162,6 @@ A typical integration follows this sequence:
 This sample demonstrates each of these steps in a compact console application so you can adapt the relevant parts to your own product.
 
 ## Offline Licensing and Freeride Period
-
 
 The SLASCONE licensing system provides robust support for (temporary) offline scenarios, which is especially important for desktop applications and intermittently connected systems. For more background on temporary and permanent offline scenarios, see the [Offline & Connectivity](https://support.slascone.com/hc/en-us/sections/10214124833693) section in the SLASCONE Help Center.
 
@@ -218,7 +217,6 @@ This approach ensures that temporary network issues or brief periods offline do 
 ## Configuration and Storage
 
 For detailed guidance on what should be stored locally, why it matters, and how cached license state supports offline and freeride scenarios, see [What to Store Locally in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261).
-
 
 ### Application Data Folder
 
@@ -486,9 +484,9 @@ If you use the generated client in your own application, it is recommended to ke
 ## Further Reading
 
 * [SLASCONE API](https://api365.slascone.com/swagger)
-* [What and How to Save in Your Client](https://support.slascone.com/hc/7702036319261)
-* [Digital Signature and Data Integrity](https://support.slascone.com/hc/360016063637)
-* [Error Handling](https://support.slascone.com/hc/360016160398)
-* [Product Analytics](https://support.slascone.com/hc/360016055537)
+* [What and How to Save in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261)
+* [Digital Signature and Data Integrity](https://support.slascone.com/hc/en-us/articles/360016063637)
+* [Error Handling](https://support.slascone.com/hc/en-us/articles/360016160398)
+* [Product Analytics](https://support.slascone.com/hc/en-us/articles/360016055537)
 * [Consumption-Based Limitations](https://support.slascone.com/hc/en-us/articles/360016057197)
 
