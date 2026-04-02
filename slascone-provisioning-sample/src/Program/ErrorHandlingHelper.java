@@ -265,7 +265,6 @@ public class ErrorHandlingHelper {
     private static boolean isTransientHttpError(int httpStatusCode) {
         return httpStatusCode == 408 || // Request Timeout
                httpStatusCode == 429 || // Too Many Requests
-               httpStatusCode == 500 || // Internal Server Error
                httpStatusCode == 502 || // Bad Gateway
                httpStatusCode == 503 || // Service Unavailable
                httpStatusCode == 504 || // Gateway Timeout
