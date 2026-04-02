@@ -358,7 +358,7 @@ The `ErrorHandlingHelper` classifies API errors into three categories.
 2. **Technical Errors (HTTP 4xx and 5xx)**
 
    * Represent server-side or request issues such as internal server errors, bad gateways, or service unavailability
-   * Transient HTTP errors such as `408`, `429`, `500`, `502`, `503`, `504`, and `507` are automatically retried
+   * Transient HTTP errors such as `408`, `429`, `502`, `503`, `504`, and `507` are automatically retried
    * Non-transient errors such as `401`, `403`, or `404` are returned immediately without retry
 3. **Network Errors**
 
