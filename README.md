@@ -13,7 +13,7 @@ It includes examples for the most important licensing, analytics, and resilience
 * response and file integrity validation
 * error handling and retry logic
 
-For more information, see the [SLASCONE website](https://slascone.com/), the [support center](https://support.slascone.com/), and the [SLASCONE API](https://api365.slascone.com/swagger).
+For more information, see the [SLASCONE website](https://slascone.com/), the [Help Center](https://support.slascone.com/), and the [SLASCONE API](https://api365.slascone.com/swagger).
 
 ## Quick Start
 
