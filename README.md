@@ -13,10 +13,24 @@ It includes examples for the most important licensing, analytics, and resilience
 * response and file integrity validation
 * error handling and retry logic
 
-For more information, see the [SLASCONE website](https://slascone.com/), the [support center](https://support.slascone.com/), and the [SLASCONE API](https://api365.slascone.com/swagger).
+For more information, see the [SLASCONE website](https://slascone.com/), the [Help Center](https://support.slascone.com/), and the [API Test Center](https://api365.slascone.com/swagger).
+
+## Quick Start
+
+```bash
+# Build the project
+mvn clean compile
+
+# Run the interactive sample
+cd slascone-provisioning-sample
+mvn exec:java
+```
+
+The application starts with an interactive menu. By default, it connects to a SLASCONE demo environment so you can explore the licensing and analytics scenarios immediately.
 
 ## Table of Contents
 
+* [Quick Start](#quick-start)
 * [What This Sample Demonstrates](#what-this-sample-demonstrates)
 * [Getting Started](#getting-started)
 * [Connecting to Your SLASCONE Environment](#connecting-to-your-slascone-environment)
@@ -44,6 +58,27 @@ This sample application showcases the following key features of the SLASCONE lic
    * Sends periodic license verification requests to the SLASCONE server
    * Retrieves up-to-date license information including features, limitations, and expiration details
    * Caches license information for offline use
+
+   ```java
+   // Build the heartbeat request with the current device and product info
+   AddHeartbeatDto heartbeat = new AddHeartbeatDto()
+       .clientId(DeviceInfoService.getUniqueDeviceId())
+       .productId(UUID.fromString(Settings.PRODUCT_ID))
+       .softwareVersion("25.2.0");
+
+   // Execute with automatic retry logic for transient failures
+   var result = ErrorHandlingHelper.execute(
+       provisioningApi::addHeartbeatWithHttpInfo, heartbeat, "addHeartbeat");
+
+   if (result.hasError()) {
+       // On network/technical errors, fall back to cached license data
+       // On functional errors (e.g., 2006 = unknown client), handle accordingly
+   }
+
+   // On success, the CombinedInterceptor automatically caches the license
+   // response (license.txt + license_signature.txt) for offline use
+   LicenseInfoDto licenseInfo = result.getResult();
+   ```
      
 **License Activation (offline)**
    * Validates the digital signature of license files to prevent tampering
@@ -54,6 +89,18 @@ This sample application showcases the following key features of the SLASCONE lic
    * Reads license information when temporarily disconnected from the internet
    * Uses cached license data stored during the last successful heartbeat
    * Ensures the software can continue to function during temporary network outages
+
+   ```java
+   // Read and validate the cached license when the server is unreachable
+   LicenseInfoDto licenseInfo = fileService.GetOfflineLicense();
+
+   if (licenseInfo != null) {
+       // The signature was verified — the cached data has not been tampered with
+       // Use licenseInfo to enforce features, limitations, and expiration as usual
+   } else {
+       // No valid cached license available (missing, expired, or tampered)
+   }
+   ```
      
 **License Unassignment**
    * Demonstrates how to unassign a license from a device
@@ -144,7 +191,7 @@ To connect it to your own SLASCONE environment, adjust the values in `Settings.j
 
 You can find these values as explained [here](https://support.slascone.com/hc/en-us/articles/360016153358#common-parameters). For meaningful testing and evaluation, your SLASCONE environment should have at least one active license.
 
-Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets, see the [Secrets](https://support.slascone.com/hc/en-us/articles/7702036319261#secrets) section in the SLASCONE Help Center.
+> ⚠️ **Security Warning**: Keep provisioning keys secure and do not embed production secrets in publicly accessible repositories. More about secrets, see the [Secrets](https://support.slascone.com/hc/en-us/articles/7702036319261#secrets) section in the SLASCONE Help Center.
 
 ## Typical Licensing Flow
 
@@ -311,7 +358,7 @@ The `ErrorHandlingHelper` classifies API errors into three categories.
 2. **Technical Errors (HTTP 4xx and 5xx)**
 
    * Represent server-side or request issues such as internal server errors, bad gateways, or service unavailability
-   * Transient HTTP errors such as `408`, `429`, `500`, `502`, `503`, `504`, and `507` are automatically retried
+   * Transient HTTP errors such as `408`, `429`, `502`, `503`, `504`, and `507` are automatically retried
    * Non-transient errors such as `401`, `403`, or `404` are returned immediately without retry
 3. **Network Errors**
 
@@ -452,14 +499,15 @@ slascone-demo-java/
 │   │   ├── Model/                  # Data models specific to the sample application
 │   │   └── Program/                # Main program and helper classes
 │   ├── assets/                     # License file examples
+│   ├── lib/                        # Additional library references
 │   └── pom.xml                     # Maven configuration for the sample
 ├── slascone-client/                # Generated API client module
 │   ├── src/main/java/              # Auto-generated API client code
 │   ├── docs/                       # API documentation
 │   └── pom.xml                     # Maven configuration for the client
+├── .devcontainer/                  # Development container configuration
 ├── pom.xml                         # Parent Maven configuration
-├── run.sh                          # Convenience script to run the application
-└── build-and-run.sh                # Script to build and run the application
+└── run.sh                          # Convenience script to run the application
 ```
 
 ## API Client
@@ -483,7 +531,7 @@ If you use the generated client in your own application, it is recommended to ke
 
 ## Further Reading
 
-* [SLASCONE API](https://api365.slascone.com/swagger)
+* [API Test Center](https://api365.slascone.com/swagger)
 * [What and How to Save in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261)
 * [Digital Signature and Data Integrity](https://support.slascone.com/hc/en-us/articles/360016063637)
 * [Error Handling](https://support.slascone.com/hc/en-us/articles/360016160398)
