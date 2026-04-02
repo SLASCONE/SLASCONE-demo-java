@@ -13,7 +13,7 @@ It includes examples for the most important licensing, analytics, and resilience
 * response and file integrity validation
 * error handling and retry logic
 
-For more information, see the [SLASCONE website](https://slascone.com/), the [Help Center](https://support.slascone.com/), and the [SLASCONE API](https://api365.slascone.com/swagger).
+For more information, see the [SLASCONE website](https://slascone.com/), the [Help Center](https://support.slascone.com/), and the [API Test Center](https://api365.slascone.com/swagger).
 
 ## Quick Start
 
@@ -531,7 +531,7 @@ If you use the generated client in your own application, it is recommended to ke
 
 ## Further Reading
 
-* [SLASCONE API](https://api365.slascone.com/swagger)
+* [API Test Center](https://api365.slascone.com/swagger)
 * [What and How to Save in Your Client](https://support.slascone.com/hc/en-us/articles/7702036319261)
 * [Digital Signature and Data Integrity](https://support.slascone.com/hc/en-us/articles/360016063637)
 * [Error Handling](https://support.slascone.com/hc/en-us/articles/360016160398)
