@@ -143,7 +143,8 @@ public class LicensePrettyPrinter {
             
             System.out.println("\nLimitations:");
             for (ProvisioningLimitationXml limitation : licenseXml.getLimitations()) {
-                System.out.println("- " + limitation.getName() + ": " + limitation.getValue()+ " (limit value: " + limitation.getLimitValue() + ")");
+                Integer limit = limitation.getLimitValue();
+                System.out.println("- " + limitation.getName() + ": " + (limit != null ? limit : "unlimited"));
             }
         } else {
             System.out.println("\nNo limitations available in this license.");
