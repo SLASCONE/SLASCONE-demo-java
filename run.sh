@@ -1,4 +1,3 @@
 #!/bin/bash
-# Script to run the SLASCONE demo application
-cd slascone-provisioning-sample
-mvn exec:java
+# Script to build and run the SLASCONE demo application
+mvn clean install -q && cd slascone-provisioning-sample && mvn exec:java
