@@ -13,7 +13,7 @@ public class ProvisioningLimitationXml {
     private String description;
     
     @JacksonXmlProperty(localName = "value")
-    private int value; // Use the exact field name from XML
+    private Integer value; // Use the exact field name from XML
     
     @JacksonXmlProperty(localName = "consumption_reset_mode")
     private int consumptionResetMode;
@@ -61,19 +61,19 @@ public class ProvisioningLimitationXml {
         this.description = description;
     }
     
-    public int getLimitValue() {
+    public Integer getLimitValue() {
         return value;
     }
     
-    public void setLimitValue(int limitValue) {
+    public void setLimitValue(Integer limitValue) {
         this.value = limitValue;
     }
     
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
     
-    public void setValue(int value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
     

@@ -143,7 +143,8 @@ public class LicensePrettyPrinter {
             
             System.out.println("\nLimitations:");
             for (ProvisioningLimitationXml limitation : licenseXml.getLimitations()) {
-                System.out.println("- " + limitation.getName() + ": " + limitation.getValue()+ " (limit value: " + limitation.getLimitValue() + ")");
+                Integer limit = limitation.getLimitValue();
+                System.out.println("- " + limitation.getName() + ": " + (limit != null ? limit : "unlimited"));
             }
         } else {
             System.out.println("\nNo limitations available in this license.");
@@ -326,7 +327,10 @@ public class LicensePrettyPrinter {
                 Integer limValue = limitation.getValue();
                 BigDecimal remaining = limitation.getRemaining();
                 BigDecimal balance = limitation.getBalance();
-                System.out.println("- " + (limName != null ? limName : "") + ": " + (limValue != null ? limValue : "") + " (Remaining: " + (remaining != null ? remaining : "N/A") + ", Balance: " + (balance != null ? balance : "N/A") + ")");
+                if (limValue != null)
+                    System.out.println("- " + (limName != null ? limName : "") + ": " + limValue + " (Remaining: " + (remaining != null ? remaining : "N/A") + ", Balance: " + (balance != null ? balance : "N/A") + ")");
+                else
+                    System.out.println("- " + (limName != null ? limName : "") + ": " + "unlimited" + " (Balance: " + (balance != null ? balance : "N/A") + ")");
             }
         } else {
             System.out.println("\nNo limitations available in this license.");

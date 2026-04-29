@@ -18,8 +18,8 @@ For more information, see the [SLASCONE website](https://slascone.com/), the [He
 ## Quick Start
 
 ```bash
-# Build the project
-mvn clean compile
+# Build the project (compiles and installs all modules to the local Maven repo)
+mvn clean install
 
 # Run the interactive sample
 cd slascone-provisioning-sample
@@ -164,7 +164,7 @@ This sample application showcases the following key features of the SLASCONE lic
 ### Build
 
 ```bash
-mvn clean compile
+mvn clean install
 ```
 
 ### Run
