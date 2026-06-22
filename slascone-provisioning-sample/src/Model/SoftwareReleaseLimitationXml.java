@@ -15,9 +15,6 @@ public class SoftwareReleaseLimitationXml {
     @JacksonXmlProperty(localName = "product_id")
     private String productId;
     
-    @JacksonXmlProperty(localName = "kind")
-    private int kind;  // 0 = min, 1 = exact, 2 = max
-    
     public String getId() {
         return id;
     }
@@ -48,13 +45,5 @@ public class SoftwareReleaseLimitationXml {
     
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-    
-    public int getKind() {
-        return kind;
-    }
-    
-    public void setKind(int kind) {
-        this.kind = kind;
-    }
+    }    
 }

@@ -82,8 +82,11 @@ public class Program {
             System.out.println("-- FLOATING");
             System.out.println("    8: Open session");
             System.out.println("    9: Find open session (temporary disconnection)");			
-            System.out.println("    10: Close session");			System.out.println("-- OFFLINE LICENSE");
+            System.out.println("    10: Close session");
+            System.out.println("-- OFFLINE LICENSE");
             System.out.println("    11: Check and read offline license file");
+            System.out.println("-- MISC");
+            System.out.println("    12: Lookup license");
 
             System.out.println("x: Exit program");
 
@@ -132,6 +135,10 @@ public class Program {
                     break; 
                 case "11":
                     program.checkAndReadOfflineLicenseExample();
+                    break;
+
+                case "12":
+                    program.lookupLicenseExample();
                     break;
 
                 case "x":
@@ -348,7 +355,8 @@ public class Program {
      * @throws Exception If license validation or reading fails
      */
     private void checkAndReadOfflineLicenseExample() throws Exception {
-        String licenseFilePath = "assets/OfflineLicenseFile.xml";
+        // String licenseFilePath = "assets/OfflineLicenseFile.xml";
+        String licenseFilePath = "assets/License_91fad880-90c4-46cb-8d8b-0a12445c6f0e-24.xml";
         
         System.out.println("Checking offline license file signature...");
         
@@ -394,6 +402,9 @@ public class Program {
                 
                 // Display the main properties of the license
                 LicensePrettyPrinter.PrintLicenseXmlDetails(licenseXml);
+
+                // Validate the license validity
+                ValidityCheck.CheckLicenseValidity(licenseXml);
             } catch (Exception e) {
                 System.out.println("Error reading offline license file: " + e.getMessage());
                 e.printStackTrace();
@@ -401,5 +412,11 @@ public class Program {
         } else {
             System.out.println("❌ Offline license signature is invalid! The license file may have been tampered with.");
         }
+    }
+
+    private void lookupLicenseExample() throws Exception {
+        // Use a demo license key for lookup - in a real application, this would typically come from user input or configuration
+        String licenseKey = "27180460-29df-4a5a-a0a1-78c85ab6cee0";
+        licensingService.lookupLicense(licenseKey);
     }
 }

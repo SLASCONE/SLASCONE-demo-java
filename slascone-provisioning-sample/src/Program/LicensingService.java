@@ -14,6 +14,8 @@ import com.slascone.model.AddHeartbeatDto;
 import com.slascone.model.AnalyticalFieldValueDto;
 import com.slascone.model.AnalyticalHeartbeatDto;
 import com.slascone.model.FullUsageHeartbeatDto;
+import com.slascone.model.GetLicensesByLicenseKeyDto;
+import com.slascone.model.LicenseDto;
 import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SessionRequestDto;
 import com.slascone.model.SessionStatusDto;
@@ -85,7 +87,8 @@ public class LicensingService {
                 .licenseKey(licenseKey)
                 .clientId(DeviceInfoService.getUniqueDeviceId())
                 .clientName(clientName)
-                .clientDescription(clientDescription);
+                .clientDescription(clientDescription)
+                .softwareVersion(Settings.SOFTWARE_VERSION);
 
         try {
 
@@ -220,6 +223,7 @@ public class LicensingService {
                 this.tokenKey = UUID.fromString(tokenKeyObj.toString()); 
             }
             limitationMap = LicensePrettyPrinter.PrintLicenseInfo(licenseInfoDto);
+            ValidityCheck.CheckLicenseValidity(licenseInfoDto);
 
         } catch (Exception e) {
             // Handle other exceptions
@@ -637,6 +641,56 @@ public class LicensingService {
             System.out.println("Unexpected error: " + e.getMessage());
         }
     }
+
+    public void lookupLicense(String licenseKey) throws IOException {
+        if (licenseKey == null || licenseKey.isEmpty()) {
+            System.out.println("No license key available. Please activate a license or perform a heartbeat first.");
+            return;
+        }
+
+        GetLicensesByLicenseKeyDto getLicensesByLicenseKeyDto = new GetLicensesByLicenseKeyDto()
+            .productId(UUID.fromString(Settings.PRODUCT_ID))
+            .licenseKey(licenseKey);
+
+        try {
+            var result = ErrorHandlingHelper.execute(
+                provisioningApi::getLicensesByLicenseKeyAsyncWithHttpInfo,
+                getLicensesByLicenseKeyDto,
+                "lookupLicense");
+
+            if (result.hasError()) {
+                System.out.println("Lookup license failed: " + result.getErrorMessage());
+                System.out.println("Error Type: " + result.getErrorType().toString());
+                System.out.println("Message: " + result.getErrorMessage());
+
+                // Handle different error types
+                // - Functional error, SLASCONE API responded with HTTP status code 409:
+                //   e.g. unknown license, etc.
+                //   Your software should handle those errors depending on the error code
+                //   provided in the response body.
+                //   You can find a list of possible error codes here:
+                //   https://api.slascone.com/swagger/index.html?urls.primaryName=V2#/Provisioning/LookupLicense
+                //
+                // - Technical error, SLASCONE API responded with HTTP status code != 409:
+                //   e.g. invalid request, etc.
+                //
+                // - Network error, SLASCONE API did not respond at all:
+                //   e.g. no internet connection, etc.
+                return;
+            }
+
+            List<LicenseDto> licenses = result.getResult();
+            System.out.println("Successfully looked up license. Found " + licenses.size() + " license(s).");
+            for (LicenseDto license : licenses) {
+                LicensePrettyPrinter.PrintLicenseInfo(license);
+                ValidityCheck.CheckLicenseValidity(license);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
     /**
      * Sets the license key
      * 
@@ -690,5 +744,4 @@ public class LicensingService {
     public Map<UUID, String> getLimitationMap() {
         return limitationMap;
     }
-    
 }

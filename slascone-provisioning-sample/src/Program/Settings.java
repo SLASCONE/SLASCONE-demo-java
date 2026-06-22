@@ -3,7 +3,6 @@ package Program;
 import java.util.UUID;
 
 public class Settings {
-
     // ToDo: Insert the parameter for the respective function
     public static final String API_BASE_URL = "https://api.slascone.com";
     public static final String PROVISIONING_KEY = "NfEpJ2DFfgczdYqOjvmlgP2O/4VlqmRHXNE9xDXbqZcOwXTbH3TFeBAKKbEzga7D7ashHxFtZOR142LYgKWdNocibDgN75/P58YNvUZafLdaie7eGwI/2gX/XuDPtqDW";
@@ -28,4 +27,5 @@ AHGtgLYGjbKcW4xYmpDGl0txfcipAr1zMj7X3oCO9lHcFRnXdzx+TTeJYxQX2XVb
 hQIDAQAB
 -----END PUBLIC KEY-----""";
 
+    public static final String SOFTWARE_VERSION = "26.3";
 }
