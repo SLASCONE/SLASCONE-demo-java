@@ -1,5 +1,6 @@
 package Program;
 
+import com.slascone.model.LicenseDto;
 import com.slascone.model.LicenseInfoDto;
 
 import Model.CustomerAccountXml;
@@ -8,14 +9,10 @@ import Model.ProvisioningFeatureXml;
 import Model.ProvisioningLimitationXml;
 import Model.ProvisioningVariableXml;
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
+import java.util.List;
 
 public class LicensePrettyPrinter {    
 
@@ -27,143 +24,412 @@ public class LicensePrettyPrinter {
      */
     public static void PrintLicenseXmlDetails(LicenseXml licenseXml) {
         if (licenseXml == null) {
-            System.out.println("No license information available.");
             return;
         }
 
         // Display the main properties of the license
         System.out.println("\nLicense Information:");
         System.out.println("-------------------");
-        System.out.println("License Name: " + licenseXml.getLicenseName());
-        System.out.println("License Key: " + licenseXml.getLicenseKey());
-        System.out.println("Legacy License Key: " + licenseXml.getLegacyLicenseKey());
+        String licenseName = licenseXml.getLicenseName();
+        System.out.println("License Name: " + (licenseName != null ? licenseName : ""));
+        String licenseKey = licenseXml.getLicenseKey();
+        System.out.println("License Key: " + (licenseKey != null ? licenseKey : ""));
+
+        String legacyLicenseKey = licenseXml.getLegacyLicenseKey();
+        if (legacyLicenseKey != null && !legacyLicenseKey.isEmpty()) {
+            System.out.println("Legacy License Key: " + legacyLicenseKey);
+        }
+
+        String clientId = licenseXml.getClientId();
+        if (clientId != null && !clientId.isEmpty()) {
+            System.out.println("Client ID: " + clientId);
+        }
         
         // Customer information
         CustomerAccountXml customer = licenseXml.getCustomer();
         if (customer != null) {
             System.out.println("\nCustomer Information:");
             System.out.println("---------------------");
-            System.out.println("Customer ID: " + customer.getCustomerId());
-            if (customer.getCompanyName() != null) {
-                System.out.println("Company Name: " + customer.getCompanyName());
+            String customerId = customer.getCustomerId();
+            if (customerId != null && !customerId.isEmpty()) {
+                System.out.println("Customer ID: " + customerId);
             }
-            if (customer.getCustomerName() != null) {
-                System.out.println("Customer Name: " + customer.getCustomerName());
-            }
-            if (customer.getCustomerNumber() != null) {
-                System.out.println("Customer Number: " + customer.getCustomerNumber());
-            }
-            if (customer.getEmail() != null) {
-                System.out.println("Email: " + customer.getEmail());
-            }
+            String companyName = customer.getCompanyName();
+            System.out.println("Company Name: " + (companyName != null ? companyName : ""));
+            String customerNumber = customer.getCustomerNumber();
+            System.out.println("Customer Number: " + (customerNumber != null ? customerNumber : ""));
         }
         
         // Product information
         System.out.println("\nProduct Information:");
         System.out.println("--------------------");
-        System.out.println("Product Name: " + licenseXml.getProductName());
-        System.out.println("Product ID: " + licenseXml.getProductId());
-        System.out.println("Template Name: " + licenseXml.getTemplateName());
-          // License details
+        String productId = licenseXml.getProductId();
+        System.out.println("Product ID: " + (productId != null ? productId : ""));
+        String productName = licenseXml.getProductName();
+        System.out.println("Product Name: " + (productName != null ? productName : ""));
+        String templateId = licenseXml.getTemplateId();
+        System.out.println("Template ID: " + (templateId != null ? templateId : ""));
+        String templateName = licenseXml.getTemplateName();
+        if (templateName != null) {
+            System.out.println("Template Name: " + templateName);
+        }
+
+        // License details
         System.out.println("\nLicense Details:");
         System.out.println("----------------");
-        System.out.println("Provisioning Mode: " + licenseXml.getProvisioningMode());
         System.out.println("Is Temporary: " + licenseXml.isTemporary());
-        
-        // Date information and license validity
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        System.out.println("\nLicense Validity:");
-        System.out.println("-------------------");
-        if (licenseXml.getModifiedDateUtc() != null) {
-            System.out.println("Modified Date: " + dateFormat.format(licenseXml.getModifiedDateUtc()));
-        }
-        
-        boolean isExpired = false;
-        long daysRemaining = 0;
-        
-        if (licenseXml.getExpirationDateUtc() != null
-            && licenseXml.getExpirationDateUtc().toInstant().atZone(java.time.ZoneId.systemDefault()).getYear() < 9999) {
 
-            System.out.println("Expiration Date: " + dateFormat.format(licenseXml.getExpirationDateUtc()));
-            
-            // Calculate remaining days
-            daysRemaining = Duration.between(
-                Instant.now(), 
-                licenseXml.getExpirationDateUtc().toInstant()
-            ).toDays();
-            
-            isExpired = daysRemaining < 0;
-            
-            if (isExpired) {
-                long expiredDays = Math.abs(daysRemaining);
-                System.out.println(MessageFormat.format("License is expired since {0} day(s).", expiredDays));
-                
-                // Check freeride
-                if (licenseXml.getFreeRide() != null) {
-                    int freeRideDays = licenseXml.getFreeRide();
-                    if (expiredDays < freeRideDays) {
-                        System.out.println(MessageFormat.format("Freeride granted for {0} day(s).", 
-                            freeRideDays - expiredDays));
-                        System.out.println(MessageFormat.format("License is still usable during freeride period (expires in {0} day(s)).", 
-                            freeRideDays - expiredDays));
-                    } else {
-                        System.out.println("Freeride period has expired. License is no longer valid.");
-                    }
-                }
-            } else {
-                System.out.println(MessageFormat.format("License is valid for another {0} day(s) until {1}.",
-                        daysRemaining, dateFormat.format(licenseXml.getExpirationDateUtc())));
-                
-                // Show freeride information
-                if (licenseXml.getFreeRide() != null) {
-                    System.out.println(MessageFormat.format("Freeride Period: {0} day(s) after last heartbeat.", 
-                        licenseXml.getFreeRide()));
-                }
-            }
-        } else {
-            System.out.println("License has no expiration date (perpetual license).");
+        String licenseTypeId = licenseXml.getLicenseTypeId();
+        String licenseTypeName = licenseXml.getLicenseTypeName();
+        if (licenseTypeId != null && !licenseTypeId.isEmpty() && licenseTypeName != null && !licenseTypeName.isEmpty()) {
+            System.out.println("License Type ID: " + licenseTypeId);
+            System.out.println("License Type: " + licenseTypeName);
         }
         
-        // License Status
-        System.out.println(MessageFormat.format("\nLicense Status: {0}", isExpired ? "Expired" : "Active"));
-        
-        // Features with formatted output
-        if (licenseXml.getFeatures() != null && !licenseXml.getFeatures().isEmpty()) {
+        // License dates
+        if (licenseXml.getModifiedDateUtc() != null) {
+            System.out.println("\nLicense Dates:");
+            System.out.println("--------------");
+            System.out.println("Modified Date: " + licenseXml.getModifiedDateUtc());
+        }
+
+        // Enumerate features
+        var features = licenseXml.getFeatures();
+        if (features != null && !features.isEmpty()) {
             
             System.out.println("\nFeatures:");
-            for (ProvisioningFeatureXml feature : licenseXml.getFeatures()) {
-                System.out.println("- " + feature.getName() + " (Active: " + feature.isActive() + ")");
+            for (ProvisioningFeatureXml feature : features) {
+                if (feature == null) {
+                    continue;
+                }
+
+                String featureName = feature.getFeatureName();
+                System.out.print("- " + (featureName != null ? featureName : ""));
+                if (!feature.isActive()) {
+                    System.out.println(" (not active)");
+                } else {
+                    System.out.println();
+                }
+
+                String featureDescription = feature.getFeatureDescription();
+                if (featureDescription != null && !featureDescription.isEmpty()) {
+                    System.out.println("   Description: " + featureDescription);
+                }
             }
         } else {
             System.out.println("\nNo features available in this license.");
         }
 
-        // Limitations
-        if (licenseXml.getLimitations() != null && !licenseXml.getLimitations().isEmpty()) {
+        // Enumerate limitations
+        var limitations = licenseXml.getLimitations();
+        if (limitations != null && !limitations.isEmpty()) {
             
             System.out.println("\nLimitations:");
-            for (ProvisioningLimitationXml limitation : licenseXml.getLimitations()) {
+            for (ProvisioningLimitationXml limitation : limitations) {
+                if (limitation == null) {
+                    continue;
+                }
+
+                String limitationName = limitation.getLimitationName();
                 Integer limit = limitation.getLimitValue();
-                System.out.println("- " + limitation.getName() + ": " + (limit != null ? limit : "unlimited"));
+                System.out.print(" - " + (limitationName != null ? limitationName : ""));
+                if (limit != null) {
+                    System.out.println(" (Limit: " + limit + ")");
+                } else {
+                    System.out.println(" (unlimited)");
+                }
+
+                String limitationDescription = limitation.getLimitationDescription();
+                System.out.println("   Description: " + (limitationDescription != null ? limitationDescription : ""));
             }
         } else {
             System.out.println("\nNo limitations available in this license.");
         }
+
+        // Enumerate constrained variables
+        var constrainedVariables = licenseXml.getConstrainedVariables();
+        if (constrainedVariables != null && !constrainedVariables.isEmpty()) {
+            System.out.println("\nConstrained Variables:");
+            for (var constrainedVariable : constrainedVariables) {
+                if (constrainedVariable == null) {
+                    continue;
+                }
+
+                String variableName = constrainedVariable.getName();
+                System.out.println(" - " + (variableName != null ? variableName : ""));
+
+                String variableDescription = constrainedVariable.getDescription();
+                if (variableDescription != null && !variableDescription.isEmpty()) {
+                    System.out.println("   Description: " + variableDescription);
+                }
+
+                List<String> values = constrainedVariable.getValues();
+                if (values != null && !values.isEmpty()) {
+                    System.out.println("   Values: " + String.join(", ", values));
+                } else {
+                    System.out.println("   Values: None");
+                }
+            }
+        } else {
+            System.out.println("\nNo constrained variables available in this license.");
+        }
             
-        // Variables
-        if (licenseXml.getVariables() != null && !licenseXml.getVariables().isEmpty()) {
+        // Enumerate variables
+        var variables = licenseXml.getVariables();
+        if (variables != null && !variables.isEmpty()) {
             
             System.out.println("\nVariables:");
-            for (ProvisioningVariableXml variable : licenseXml.getVariables()) {
-                System.out.println("- " + variable.getName() + ": " + variable.getValue());
+            for (ProvisioningVariableXml variable : variables) {
+                if (variable == null) {
+                    continue;
+                }
+
+                String variableName = variable.getName();
+                System.out.println(" - " + (variableName != null ? variableName : ""));
+                String description = variable.getDescription();
+                System.out.println("   Description: " + (description != null ? description : ""));
+                String value = variable.getValue();
+                System.out.println("   Value: " + (value != null ? value : ""));
             }
         } else {
             System.out.println("\nNo variables available in this license.");
         }
 
-        System.out.println("\nLicense file successfully read and validated!");
+        // User information if present
+        var licenseUsers = licenseXml.getLicenseUsers();
+        if (licenseUsers != null && !licenseUsers.isEmpty()) {
+            System.out.println("\nLicense Users:");
+            System.out.println("Number of users: " + licenseUsers.size());
+        }
     }
-    
+
+        
+    /**
+     * Prints the details of a LicenseInfo object to the console.
+     * Displays license status, features, limitations, and expiration information.
+     * 
+     * @param licenseInfo The LicenseInfo object to print
+     * @return A map of limitations for further use in the application
+     */    
+    public static Map<UUID, String> PrintLicenseInfo(LicenseDto licenseInfo) {
+        Map<UUID, String> limitationMap = new HashMap<>();
+        if (licenseInfo == null) {
+            return limitationMap;
+        }
+
+        // Display the main properties of the license
+        System.out.println("\nLicense Information:");
+        System.out.println("-------------------");
+        String licenseName = licenseInfo.getName();
+        System.out.println("License Name: " + (licenseName != null ? licenseName : ""));
+        UUID licenseId = licenseInfo.getId();
+        System.out.println("License Key: " + (licenseId != null ? licenseId.toString() : ""));
+
+        String legacyLicenseKey = licenseInfo.getLegacyLicenseKey();
+        if (legacyLicenseKey != null && !legacyLicenseKey.isEmpty()) {
+            System.out.println("Legacy License Key: " + legacyLicenseKey);
+        }
+
+        String clientId = licenseInfo.getClientId();
+        if (clientId != null && !clientId.isEmpty()) {
+            System.out.println("Client ID: " + clientId);
+        }
+
+        // Customer information
+        var customer = licenseInfo.getCustomer();
+        if (customer != null) {
+            System.out.println("\nCustomer Information:");
+            System.out.println("---------------------");
+            UUID customerId = licenseInfo.getCustomerId();
+            if (customerId != null) {
+                System.out.println("Customer ID: " + customerId);
+            }
+            String companyName = customer.getCompanyName();
+            System.out.println("Company Name: " + (companyName != null ? companyName : ""));
+            String customerNumber = customer.getCustomerNumber();
+            System.out.println("Customer Number: " + (customerNumber != null ? customerNumber : ""));
+        }
+
+        // Product information
+        System.out.println("\nProduct Information:");
+        System.out.println("--------------------");
+        UUID productId = licenseInfo.getProductId();
+        System.out.println("Product ID: " + (productId != null ? productId : ""));
+        var product = licenseInfo.getProduct();
+        if (product != null) {
+            String productName = product.getName();
+            System.out.println("Product Name: " + (productName != null ? productName : ""));
+        }
+        UUID templateId = licenseInfo.getTemplateId();
+        System.out.println("Template ID: " + (templateId != null ? templateId : ""));
+        var template = licenseInfo.getTemplate();
+        if (template != null) {
+            String templateName = template.getName();
+            System.out.println("Template Name: " + (templateName != null ? templateName : ""));
+            if (template.getProvisioningMode() != null && template.getClientType() != null) {
+                System.out.println("Provisioning mode / client type: "
+                    + template.getProvisioningMode() + " / " + template.getClientType());
+            }
+        }
+
+        // License details
+        System.out.println("\nLicense Details:");
+        System.out.println("----------------");
+        System.out.println("Is Temporary: " + Boolean.TRUE.equals(licenseInfo.getIsTemporary()));
+
+        UUID licenseTypeId = licenseInfo.getLicenseTypeId();
+        var licenseType = licenseInfo.getLicenseType();
+        if (licenseTypeId != null && licenseType != null) {
+            System.out.println("License Type ID: " + licenseTypeId);
+            String licenseTypeName = licenseType.getName();
+            System.out.println("License Type: " + (licenseTypeName != null ? licenseTypeName : ""));
+        }
+
+        var createdDateUtc = licenseInfo.getCreatedDateUtc();
+        var modifiedDateUtc = licenseInfo.getModifiedDateUtc();
+        String lastModifiedBy = licenseInfo.getLastModifiedBy();
+        if (createdDateUtc != null && modifiedDateUtc != null && lastModifiedBy != null) {
+            System.out.println("\nLicense Dates:");
+            System.out.println("--------------");
+            System.out.println("Created Date: " + createdDateUtc);
+            System.out.println("Modified Date: " + modifiedDateUtc);
+            System.out.println("Last Modified By: " + lastModifiedBy);
+        }
+
+        // Enumerate features
+        var features = licenseInfo.getLicenseFeatures();
+        if (features != null && !features.isEmpty()) {
+            System.out.println("\nFeatures:");
+            for (var feature : features) {
+                if (feature == null) {
+                    continue;
+                }
+
+                String featureName = feature.getFeatureName();
+                System.out.print("- " + (featureName != null ? featureName : ""));
+                if (Boolean.FALSE.equals(feature.getIsActive())) {
+                    System.out.println(" (not active)");
+                } else {
+                    System.out.println();
+                }
+
+                String featureDescription = feature.getFeatureDescription();
+                if (featureDescription != null && !featureDescription.isEmpty()) {
+                    System.out.println("   Description: " + featureDescription);
+                }
+
+                var featureExceptions = feature.getFeatureExceptions();
+                if (featureExceptions != null) {
+                    var exceptions = featureExceptions.getExceptions();
+                    if (exceptions != null && !exceptions.isEmpty()) {
+                        System.out.println("   Exceptions:");
+                        for (var exception : exceptions) {
+                            if (exception == null) {
+                                continue;
+                            }
+                            System.out.println("     - From " + exception.getStartDateUtc()
+                                + " to " + exception.getEndDateUtc()
+                                + (Boolean.TRUE.equals(exception.getTemporaryIsActive()) ? " (temporary active)" : ""));
+                        }
+                    }
+                }
+            }
+        } else {
+            System.out.println("\nNo features available in this license.");
+        }
+
+        // Enumerate limitations
+        var limitations = licenseInfo.getLicenseLimitations();
+        if (limitations != null && !limitations.isEmpty()) {
+            System.out.println("\nLimitations:");
+            for (var limitation : limitations) {
+                if (limitation == null) {
+                    continue;
+                }
+
+                String limitationName = limitation.getLimitationName();
+                Integer limit = limitation.getLimit();
+                System.out.print(" - " + (limitationName != null ? limitationName : ""));
+                if (limit != null) {
+                    System.out.println(" (Limit: " + limit + ")");
+                } else {
+                    System.out.println(" (unlimited)");
+                }
+
+                String limitationDescription = limitation.getLimitationDescription();
+                System.out.println("   Description: " + (limitationDescription != null ? limitationDescription : ""));
+
+                UUID limitationId = limitation.getLimitationId();
+                if (limitationName != null && limit != null && limitationId != null) {
+                    limitationMap.put(limitationId, limitationName + " (max: " + limit + ")");
+                }
+            }
+        } else {
+            System.out.println("\nNo limitations available in this license.");
+        }
+
+        // Enumerate constrained variables
+        var constrainedVariables = licenseInfo.getLicenseConstrainedVariables();
+        if (constrainedVariables != null && !constrainedVariables.isEmpty()) {
+            System.out.println("\nConstrained Variables:");
+            for (var constrainedVariable : constrainedVariables) {
+                if (constrainedVariable == null) {
+                    continue;
+                }
+
+                String variableName = constrainedVariable.getVariableName();
+                System.out.println(" - " + (variableName != null ? variableName : ""));
+
+                String variableDescription = constrainedVariable.getVariableDescription();
+                if (variableDescription != null && !variableDescription.isEmpty()) {
+                    System.out.println("   Description: " + variableDescription);
+                }
+
+                System.out.print("   Value: ");
+                List<String> values = constrainedVariable.getValues();
+                if (values != null) {
+                    for (String value : values) {
+                        if (value != null) {
+                            System.out.print(value);
+                        }
+                    }
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("\nNo constrained variables available in this license.");
+        }
+
+        // Enumerate variables
+        var variables = licenseInfo.getLicenseVariables();
+        if (variables != null && !variables.isEmpty()) {
+            System.out.println("\nVariables:");
+            for (var variable : variables) {
+                if (variable == null) {
+                    continue;
+                }
+
+                String variableName = variable.getVariableName();
+                System.out.println(" - " + (variableName != null ? variableName : ""));
+                String description = variable.getVariableDescription();
+                System.out.println("   Description: " + (description != null ? description : ""));
+                String value = variable.getValue();
+                System.out.println("   Value: " + (value != null ? value : ""));
+            }
+        } else {
+            System.out.println("\nNo variables available in this license.");
+        }
+
+        // User information if present
+        var licenseUsers = licenseInfo.getLicenseUsers();
+        if (licenseUsers != null && !licenseUsers.isEmpty()) {
+            System.out.println("\nLicense Users:");
+            System.out.println("Number of users: " + licenseUsers.size());
+        }
+
+        return limitationMap;
+    }
+
     /**
      * Prints the details of a LicenseInfo object to the console.
      * Displays license status, features, limitations, and expiration information.
@@ -172,7 +438,9 @@ public class LicensePrettyPrinter {
      * @return A map of limitations for further use in the application
      */    
     public static Map<UUID, String> PrintLicenseInfo(LicenseInfoDto licenseInfo) {
-        System.out.println(MessageFormat.format("License infos (Retrieved {0}):", licenseInfo.getCreatedDateUtc()));
+        if (licenseInfo == null) {
+            return new HashMap<>();
+        }
 
         // Display the main properties of the license
         System.out.println("\nLicense Information:");
@@ -211,94 +479,35 @@ public class LicensePrettyPrinter {
         System.out.println("--------------------");
         System.out.println("Product Name: " + (productName != null ? productName : ""));
         System.out.println("Template Name: " + (templateName != null ? templateName : ""));
+        var provisioningMode = licenseInfo.getProvisioningMode();
+        var clientType = licenseInfo.getClientType();
+        System.out.println("Provisioning mode / client type: "
+            + String.valueOf(provisioningMode) + " / " + String.valueOf(clientType));
 
         // License details
         System.out.println("\nLicense Details:");
         System.out.println("----------------");
-        var provisioningMode = licenseInfo.getProvisioningMode();
-        System.out.println("Provisioning Mode: " + (provisioningMode != null ? provisioningMode : "N/A"));
         Boolean isTemporary = licenseInfo.getIsTemporary();
-        System.out.println("Is Temporary: " + (isTemporary != null ? isTemporary : "N/A"));
+        System.out.println("Is Temporary: " + (isTemporary != null ? isTemporary : false));
         Integer heartbeatPeriod = licenseInfo.getHeartbeatPeriod();
-        System.out.println("Heartbeat Period: " + (heartbeatPeriod != null ? heartbeatPeriod : "N/A") + " days");
+        if (heartbeatPeriod != null) {
+            System.out.println("Heartbeat Period: " + heartbeatPeriod + " days");
+        }
+
+        // Date information and license validity
+        var createdDateUtc = licenseInfo.getCreatedDateUtc();
+        if (createdDateUtc != null) {
+            System.out.println("Created Date: " + createdDateUtc);
+        }
+
         Integer sessionPeriod = licenseInfo.getSessionPeriod();
         if (sessionPeriod != null && sessionPeriod > 0) {
             System.out.println("Session Period: " + sessionPeriod + " days");
         }
 
-        // License validity status
-        System.out.println("\nLicense Validity Status:");
-        System.out.println("-----------------------");
-        Boolean isLicenseValid = licenseInfo.getIsLicenseValid();
-        Boolean isLicenseActive = licenseInfo.getIsLicenseActive();
-        Boolean isLicenseExpired = licenseInfo.getIsLicenseExpired();
-        System.out.println(MessageFormat.format("License is {0} (IsActive: {1}; IsExpired: {2})",
-            (isLicenseValid != null && isLicenseValid) ? "valid" : "not valid",
-            isLicenseActive != null ? isLicenseActive : "N/A",
-            isLicenseExpired != null ? isLicenseExpired : "N/A"));
-
-        // Date information and license validity
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        var createdDateUtc = licenseInfo.getCreatedDateUtc();
-        if (createdDateUtc != null) {
-            System.out.println("Created Date: " + dateFormat.format(java.util.Date.from(createdDateUtc.toInstant())));
-        }
-
-        var expirationDateUtc = licenseInfo.getExpirationDateUtc();
-        if (expirationDateUtc != null) {
-            System.out.println("Expiration Date: " + dateFormat.format(java.util.Date.from(expirationDateUtc.toInstant())));
-
-            // Check if it's a "9999" perpetual license
-            if (expirationDateUtc.getYear() >= 9999) {
-                System.out.println("This is a perpetual license.");
-            } else if (isLicenseExpired != null && isLicenseExpired) {
-                long expiration = Duration.between(expirationDateUtc.toInstant(), Instant.now()).toDays();
-                System.out.println(MessageFormat.format("License is expired since {0} day(s).", expiration));
-
-                // Check freeride
-                Integer freeride = licenseInfo.getFreeride();
-                if (freeride != null && freeride > 0) {
-                    if (expiration < freeride) {
-                        System.out.println(MessageFormat.format("Freeride granted for {0} day(s).", freeride));
-                        System.out.println(MessageFormat.format("License is still usable during freeride period (expires in {0} day(s)).",
-                            freeride - expiration));
-                    } else {
-                        System.out.println("Freeride period has expired. License is no longer valid.");
-                    }
-                }
-            } else {
-                long valid = Duration.between(Instant.now(), expirationDateUtc.toInstant()).toDays();
-                System.out.println(MessageFormat.format("License is valid for another {0} day(s) until {1}.",
-                        valid, dateFormat.format(java.util.Date.from(expirationDateUtc.toInstant()))));
-
-                // Show freeride information
-                Integer freeride = licenseInfo.getFreeride();
-                if (freeride != null && freeride > 0) {
-                    System.out.println(MessageFormat.format("Freeride Period: {0} day(s) after expiration",
-                        freeride));
-                }
-            }
-        } else {
-            System.out.println("License has no expiration date.");
-        }
-
-        // Software version information
-        var swLimitation = licenseInfo.getSoftwareReleaseLimitation();
-        if (swLimitation != null) {
-            System.out.println("\nSoftware Version Information:");
-            System.out.println("----------------------------");
-            Boolean isSoftwareVersionValid = licenseInfo.getIsSoftwareVersionValid();
-            Boolean enforceSoftwareUpgrade = licenseInfo.getEnforceSoftwareVersionUpgrade();
-            System.out.println("Is Software Version Valid: " + (isSoftwareVersionValid != null ? isSoftwareVersionValid : "N/A"));
-            System.out.println("Enforce Software Upgrade: " + (enforceSoftwareUpgrade != null ? enforceSoftwareUpgrade : "N/A"));
-            String swRelease = swLimitation.getSoftwareRelease();
-            if (swRelease != null) {
-                System.out.println("Software Release: " + swRelease);
-            }
-            String swDescription = swLimitation.getDescription();
-            if (swDescription != null) {
-                System.out.println("Description: " + swDescription);
-            }
+        Integer freeride = licenseInfo.getFreeride();
+        if (freeride != null && freeride > 0) {
+            System.out.println("Freeride granted for " + freeride + " day(s).");
         }
 
         // Enumerate features
@@ -308,10 +517,19 @@ public class LicensePrettyPrinter {
             for (var feature : features) {
                 String featureName = feature.getName();
                 Boolean isActive = feature.getIsActive();
-                System.out.println("- " + (featureName != null ? featureName : "") + " (Active: " + (isActive != null ? isActive : "N/A") + ")");
+                System.out.print("- " + (featureName != null ? featureName : ""));
+                if (Boolean.FALSE.equals(isActive)) {
+                    System.out.println(" (not active)");
+                } else {
+                    System.out.println();
+                }
+                String description = feature.getDescription();
+                if (description != null && !description.isEmpty()) {
+                    System.out.println("   Description: " + description);
+                }
                 var featureExp = feature.getExpirationDateUtc();
                 if (featureExp != null) {
-                    System.out.println("  Expires: " + dateFormat.format(java.util.Date.from(featureExp.toInstant())));
+                    System.out.println("   Expires: " + featureExp);
                 }
             }
         } else {
@@ -325,15 +543,53 @@ public class LicensePrettyPrinter {
             for (var limitation : limitations) {
                 String limName = limitation.getName();
                 Integer limValue = limitation.getValue();
-                BigDecimal remaining = limitation.getRemaining();
-                BigDecimal balance = limitation.getBalance();
-                if (limValue != null)
-                    System.out.println("- " + (limName != null ? limName : "") + ": " + limValue + " (Remaining: " + (remaining != null ? remaining : "N/A") + ", Balance: " + (balance != null ? balance : "N/A") + ")");
-                else
-                    System.out.println("- " + (limName != null ? limName : "") + ": " + "unlimited" + " (Balance: " + (balance != null ? balance : "N/A") + ")");
+                System.out.print(" - " + (limName != null ? limName : ""));
+                if (limValue != null) {
+                    System.out.println(" (" + limValue + ")");
+                } else {
+                    System.out.println(" (Unlimited)");
+                }
+
+                String description = limitation.getDescription();
+                if (description != null && !description.isEmpty()) {
+                    System.out.println("   Description: " + description);
+                }
+
+                if (limitation.getRemaining() != null) {
+                    System.out.println("   remaining: " + limitation.getRemaining());
+                }
+
+                if (limitation.getBalance() != null) {
+                    System.out.println("   balance: " + limitation.getBalance());
+                }
             }
         } else {
             System.out.println("\nNo limitations available in this license.");
+        }
+
+        var constrainedVariables = licenseInfo.getConstrainedVariables();
+        if (constrainedVariables != null && !constrainedVariables.isEmpty()) {
+            System.out.println("\nConstrained Variables:");
+            for (var constrainedVariable : constrainedVariables) {
+                String varName = constrainedVariable.getName();
+                System.out.println(" - " + (varName != null ? varName : ""));
+                String description = constrainedVariable.getDescription();
+                if (description != null && !description.isEmpty()) {
+                    System.out.println("   Description: " + description);
+                }
+                System.out.print("   Value: ");
+                List<String> values = constrainedVariable.getValue();
+                if (values != null) {
+                    for (String value : values) {
+                        if (value != null) {
+                            System.out.print(value);
+                        }
+                    }
+                }
+                System.out.println();
+            }
+        } else {
+            System.out.println("\nNo constrained variables available in this license.");
         }
 
         // Enumerate variables if present
@@ -343,7 +599,12 @@ public class LicensePrettyPrinter {
             for (var variable : variables) {
                 String varName = variable.getName();
                 String varValue = variable.getValue();
-                System.out.println("- " + (varName != null ? varName : "") + ": " + (varValue != null ? varValue : ""));
+                System.out.println(" - " + (varName != null ? varName : ""));
+                String description = variable.getDescription();
+                if (description != null && !description.isEmpty()) {
+                    System.out.println("   Description: " + description);
+                }
+                System.out.println("   Value: " + (varValue != null ? varValue : ""));
             }
         } else {
             System.out.println("\nNo variables available in this license.");
@@ -355,8 +616,6 @@ public class LicensePrettyPrinter {
             System.out.println("\nLicense Users:");
             System.out.println("Number of users: " + licenseUsers.size());
         }
-
-        System.out.println("\nLicense information successfully validated!");
 
         Map<UUID, String> limitationMap = new HashMap<>();
         if (limitations != null) {

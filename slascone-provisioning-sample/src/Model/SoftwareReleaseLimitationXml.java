@@ -6,17 +6,14 @@ public class SoftwareReleaseLimitationXml {
     @JacksonXmlProperty(localName = "id")
     private String id;
     
-    @JacksonXmlProperty(localName = "software_release_id")
-    private String softwareReleaseId;
-    
-    @JacksonXmlProperty(localName = "software_release_name")
-    private String softwareReleaseName;
-    
     @JacksonXmlProperty(localName = "product_id")
     private String productId;
-    
-    @JacksonXmlProperty(localName = "kind")
-    private int kind;  // 0 = min, 1 = exact, 2 = max
+
+    @JacksonXmlProperty(localName = "software_release")
+    private String softwareRelease;
+
+    @JacksonXmlProperty(localName = "description")
+    private String description;
     
     public String getId() {
         return id;
@@ -26,22 +23,6 @@ public class SoftwareReleaseLimitationXml {
         this.id = id;
     }
     
-    public String getSoftwareReleaseId() {
-        return softwareReleaseId;
-    }
-    
-    public void setSoftwareReleaseId(String softwareReleaseId) {
-        this.softwareReleaseId = softwareReleaseId;
-    }
-    
-    public String getSoftwareReleaseName() {
-        return softwareReleaseName;
-    }
-    
-    public void setSoftwareReleaseName(String softwareReleaseName) {
-        this.softwareReleaseName = softwareReleaseName;
-    }
-    
     public String getProductId() {
         return productId;
     }
@@ -49,12 +30,20 @@ public class SoftwareReleaseLimitationXml {
     public void setProductId(String productId) {
         this.productId = productId;
     }
-    
-    public int getKind() {
-        return kind;
+
+    public String getSoftwareRelease() {
+        return softwareRelease;
     }
-    
-    public void setKind(int kind) {
-        this.kind = kind;
+
+    public void setSoftwareRelease(String softwareRelease) {
+        this.softwareRelease = softwareRelease;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
