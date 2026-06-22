@@ -1,31 +1,26 @@
 package Model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 
 public class ProvisioningConstrainedVariableXml {
     @JacksonXmlProperty(localName = "id")
     private String id;
     
-    @JacksonXmlProperty(localName = "variable_id")
-    private String variableId;
+    @JacksonXmlProperty(localName = "name")
+    private String name;
     
-    @JacksonXmlProperty(localName = "variable_name")
-    private String variableName;
+    @JacksonXmlProperty(localName = "description")
+    private String description;
     
-    @JacksonXmlProperty(localName = "variable_key")
-    private String variableKey;
+    @JacksonXmlProperty(localName = "custom_list_id")
+    private String customListId;
     
-    @JacksonXmlProperty(localName = "variable_description")
-    private String variableDescription;
-    
-    @JacksonXmlProperty(localName = "variable_value")
-    private String variableValue;
-    
-    @JacksonXmlProperty(localName = "min_value")
-    private String minValue;
-    
-    @JacksonXmlProperty(localName = "max_value")
-    private String maxValue;
+    @JacksonXmlProperty(localName = "values")
+    @JacksonXmlElementWrapper(useWrapping = false)
+    private List<String> values;
     
     public String getId() {
         return id;
@@ -35,59 +30,35 @@ public class ProvisioningConstrainedVariableXml {
         this.id = id;
     }
     
-    public String getVariableId() {
-        return variableId;
+    public String getName() {
+        return name;
     }
     
-    public void setVariableId(String variableId) {
-        this.variableId = variableId;
+    public void setName(String name) {
+        this.name = name;
     }
     
-    public String getVariableName() {
-        return variableName;
+    public String getDescription() {
+        return description;
     }
     
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
+    public void setDescription(String description) {
+        this.description = description;
     }
     
-    public String getVariableKey() {
-        return variableKey;
+    public String getCustomListId() {
+        return customListId;
     }
     
-    public void setVariableKey(String variableKey) {
-        this.variableKey = variableKey;
+    public void setCustomListId(String customListId) {
+        this.customListId = customListId;
     }
     
-    public String getVariableDescription() {
-        return variableDescription;
+    public List<String> getValues() {
+        return values;
     }
     
-    public void setVariableDescription(String variableDescription) {
-        this.variableDescription = variableDescription;
-    }
-    
-    public String getVariableValue() {
-        return variableValue;
-    }
-    
-    public void setVariableValue(String variableValue) {
-        this.variableValue = variableValue;
-    }
-    
-    public String getMinValue() {
-        return minValue;
-    }
-    
-    public void setMinValue(String minValue) {
-        this.minValue = minValue;
-    }
-    
-    public String getMaxValue() {
-        return maxValue;
-    }
-    
-    public void setMaxValue(String maxValue) {
-        this.maxValue = maxValue;
+    public void setValues(List<String> values) {
+        this.values = values;
     }
 }

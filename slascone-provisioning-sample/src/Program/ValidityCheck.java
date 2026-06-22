@@ -1,6 +1,7 @@
 package Program;
 
 import java.time.OffsetDateTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.slascone.model.DateValidity;
@@ -193,7 +194,9 @@ public class ValidityCheck {
 
         Date expiration = license.getExpirationDateUtc();
         boolean hasExpiration = expiration != null;
-        boolean isPerpetual = hasExpiration && expiration.getYear() >= 9999;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(license.getExpirationDateUtc());
+        boolean isPerpetual = hasExpiration && calendar.get(Calendar.YEAR) >= 9999;
         boolean isExpired = hasExpiration && !isPerpetual && expiration.before(new Date());
         boolean isDateValid = !isExpired;
 
@@ -221,7 +224,7 @@ public class ValidityCheck {
             return true;
         }
 
-        String limit = swLimitation.getSoftwareReleaseName();
+        String limit = swLimitation.getSoftwareRelease();
         if (limit == null || limit.isBlank()) {
             return true;
         }

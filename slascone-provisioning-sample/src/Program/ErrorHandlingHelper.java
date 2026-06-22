@@ -226,7 +226,9 @@ public class ErrorHandlingHelper {
             this.apiException = apiException;
             this.errorMessage = apiException.getCode() != 0
                 ? "Status: " + apiException.getCode() + ", Message: " + apiException.getMessage()
-                : apiException.getCause().getClass().getSimpleName() + " - " + apiException.getMessage();
+                : (apiException.getCause() != null 
+                    ? apiException.getCause().getClass().getSimpleName() + " - " + apiException.getMessage() 
+                    : apiException.getMessage());
             this.errorType = errorType != null ? errorType : ErrorType.TECHNICAL;
         }
         

@@ -37,7 +37,7 @@ public class CryptographyService {
 
         String hashString = Hex.encodeHexString(sha256_HMAC.doFinal(responseBytes));
 
-        return (signatureHeader == hashString);
+        return (signatureHeader.equals(hashString));
     }
 
     /**

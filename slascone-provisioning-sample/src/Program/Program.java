@@ -355,8 +355,7 @@ public class Program {
      * @throws Exception If license validation or reading fails
      */
     private void checkAndReadOfflineLicenseExample() throws Exception {
-        // String licenseFilePath = "assets/OfflineLicenseFile.xml";
-        String licenseFilePath = "assets/License_91fad880-90c4-46cb-8d8b-0a12445c6f0e-24.xml";
+        String licenseFilePath = "assets/OfflineLicenseFile.xml";
         
         System.out.println("Checking offline license file signature...");
         

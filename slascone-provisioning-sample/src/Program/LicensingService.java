@@ -157,7 +157,7 @@ public class LicensingService {
                 .clientId(DeviceInfoService.getUniqueDeviceId())
                 .operatingSystem(DeviceInfoService.getOperatingSystem())
                 .productId(UUID.fromString(Settings.PRODUCT_ID))
-                .softwareVersion("25.2.0");
+                .softwareVersion(Settings.SOFTWARE_VERSION);
 
         try {
 

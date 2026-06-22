@@ -7,40 +7,50 @@ final class ReleaseCheck {
     private ReleaseCheck() {
     }
 
-    static int compareRelease(String left, String right) {
-        List<Integer> leftParts = parseRelease(left);
-        List<Integer> rightParts = parseRelease(right);
+    static int compareRelease(String releaseLimitation, String softwareVersion) {
+        List<String> releaseLimitationParts = splitRelease(releaseLimitation);
+        List<String> softwareVersionParts = splitRelease(cleanSoftwareVersion(softwareVersion));
 
-        int max = Math.max(leftParts.size(), rightParts.size());
-        for (int i = 0; i < max; i++) {
-            int l = i < leftParts.size() ? leftParts.get(i) : 0;
-            int r = i < rightParts.size() ? rightParts.get(i) : 0;
-            if (l != r) {
-                return Integer.compare(l, r);
+        if (softwareVersionParts.size() < releaseLimitationParts.size()) {
+            throw new IllegalArgumentException("Release has too few parts.");
+        }
+
+        for (int i = 0; i < releaseLimitationParts.size(); i++) {
+            try {
+                int limitationPart = Integer.parseInt(releaseLimitationParts.get(i));
+                int versionPart = Integer.parseInt(softwareVersionParts.get(i));
+                if (limitationPart < versionPart) {
+                    return -1;
+                }
+                if (limitationPart > versionPart) {
+                    return 1;
+                }
+            } catch (RuntimeException ex) {
+                throw new IllegalArgumentException("Version format error.");
             }
         }
+
+        // Extra parts in softwareVersion are ignored.
         return 0;
     }
 
-    private static List<Integer> parseRelease(String release) {
-        List<Integer> parts = new ArrayList<>();
+    private static List<String> splitRelease(String release) {
+        List<String> parts = new ArrayList<>();
         if (release == null || release.isBlank()) {
             return parts;
         }
 
         String[] tokens = release.split("\\.");
         for (String token : tokens) {
-            String digits = token.replaceAll("[^0-9]", "");
-            if (digits.isEmpty()) {
-                parts.add(0);
-                continue;
-            }
-            try {
-                parts.add(Integer.parseInt(digits));
-            } catch (NumberFormatException ex) {
-                parts.add(0);
-            }
+            parts.add(token);
         }
         return parts;
+    }
+
+    private static String cleanSoftwareVersion(String softwareVersion) {
+        if (softwareVersion == null) {
+            return "";
+        }
+        return softwareVersion.replaceAll("[a-zA-Z]", "");
     }
 }

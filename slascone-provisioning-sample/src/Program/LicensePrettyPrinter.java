@@ -155,16 +155,20 @@ public class LicensePrettyPrinter {
                     continue;
                 }
 
-                String variableName = constrainedVariable.getVariableName();
+                String variableName = constrainedVariable.getName();
                 System.out.println(" - " + (variableName != null ? variableName : ""));
 
-                String variableDescription = constrainedVariable.getVariableDescription();
+                String variableDescription = constrainedVariable.getDescription();
                 if (variableDescription != null && !variableDescription.isEmpty()) {
                     System.out.println("   Description: " + variableDescription);
                 }
 
-                String value = constrainedVariable.getVariableValue();
-                System.out.println("   Value: " + (value != null ? value : ""));
+                List<String> values = constrainedVariable.getValues();
+                if (values != null && !values.isEmpty()) {
+                    System.out.println("   Values: " + String.join(", ", values));
+                } else {
+                    System.out.println("   Values: None");
+                }
             }
         } else {
             System.out.println("\nNo constrained variables available in this license.");
