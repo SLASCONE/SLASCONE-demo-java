@@ -36,6 +36,9 @@ public class LicenseXml {
     @JacksonXmlProperty(localName = "client_id")
     private String clientId;
     
+    @JacksonXmlProperty(localName = "revision_id")
+    private String revisionId;
+    
     @JacksonXmlProperty(localName = "product_name")
     private String productName;
     
@@ -164,6 +167,14 @@ public class LicenseXml {
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
+    }
+
+    public String getRevisionId() {
+        return revisionId;
+    }
+
+    public void setRevisionId(String revisionId) {
+        this.revisionId = revisionId;
     }
 
     public String getProductName() {

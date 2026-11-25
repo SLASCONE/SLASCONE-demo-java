@@ -10,6 +10,7 @@ import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SoftwareReleaseLimitationDto;
 
 import Model.LicenseXml;
+import Model.ActivationXml;
 import Model.SoftwareReleaseLimitationXml;
 
 public class ValidityCheck {
@@ -186,9 +187,54 @@ public class ValidityCheck {
         return Boolean.TRUE.equals(licenseInfoDto.getIsSoftwareVersionValid());
     }
 
-    static boolean CheckLicenseValidity(LicenseXml license) {
+    static boolean CheckLicenseValidity(LicenseXml license, ActivationXml activation) {
         if (license == null) {
             System.out.println("Error: No license information available.");
+            return false;
+        }
+
+        System.out.println();
+        System.out.println("License Activation Status:");
+        System.out.println("--------------------------");
+        System.out.println();
+
+        String licenseKey = license.getLicenseKey();
+        String activationLicenseKey = activation.getLicenseKey();
+
+        // License IDs in license file and activation file must match
+        if (licenseKey == null || !licenseKey.equals(activationLicenseKey)) {
+            System.out.println("Error: License key mismatch between license and activation.");
+            return false;
+        }
+
+        String revisionId = license.getRevisionId();
+        String activationRevisionId = activation.getRevisionId();
+
+        // Revision IDs in license file and activation file must match or both be null
+        if ((revisionId != null && !revisionId.equals(activationRevisionId)) || (revisionId == null && activationRevisionId != null)) {
+            System.out.println("Error: Revision ID mismatch between license and activation.");
+            return false;
+        }
+
+        String clientId = activation.getClientId();
+        String referenceClientId = "2376d4ab-5b28-37ac-81bf-ab909f92cec0";
+        
+        if (clientId == null || !clientId.equals(referenceClientId)) {
+            System.out.println("Error: Client ID mismatch.");
+            return false;
+        }
+
+        System.out.println("===> License Activation Check successful <===");
+
+        System.out.println();
+        System.out.println("License Validity Status:");
+        System.out.println("-----------------------");
+        System.out.println();
+
+        String productId = license.getProductId();
+
+        if (!Settings.PRODUCT_ID.equals(productId)) {
+            System.out.println("Error: Product ID is invalid.");
             return false;
         }
 
@@ -200,10 +246,6 @@ public class ValidityCheck {
         boolean isExpired = hasExpiration && !isPerpetual && expiration.before(new Date());
         boolean isDateValid = !isExpired;
 
-        System.out.println();
-        System.out.println("License Validity Status:");
-        System.out.println("-----------------------");
-        System.out.println();
         System.out.println("===> License is " + (isDateValid ? "valid" : "not valid") + " <===");
         System.out.println();
 

@@ -3,7 +3,6 @@ package Program;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,16 +14,8 @@ import com.slascone.ApiClient;
 import com.slascone.model.LicenseInfoDto;
 import com.slascone.model.SessionStatusDto;
 
-import javax.xml.crypto.dsig.XMLSignature;
-import javax.xml.crypto.dsig.XMLSignatureFactory;
-import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
 import Model.LicenseXml; // For offline license XML parsing
+import Model.ActivationXml; // For offline activation XML parsing
 
 /**
  * Main program class for the SLASCONE licensing demo application.
@@ -355,61 +346,58 @@ public class Program {
      * @throws Exception If license validation or reading fails
      */
     private void checkAndReadOfflineLicenseExample() throws Exception {
-        String licenseFilePath = "assets/OfflineLicenseFile.xml";
-        
+        String licenseFilePath = "assets/OfflineLicenseFile.xml";        
+        String activationFilePath = "assets/ActivationFile.xml";
+
         System.out.println("Checking offline license file signature...");
-        
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilderFactory.setNamespaceAware(true);
+        boolean isValid = CryptographyService.IsXmlSignatureValid(licenseFilePath);
 
-        DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
-        Document doc = builder.parse(licenseFilePath);
-        NodeList nl = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
-
-        if (nl.getLength() == 0) {
-            throw new Exception("No XML Digital Signature Found, document is discarded");
+        if (!isValid) {
+            System.out.println("❌ Offline license signature is invalid! The license file may have been tampered with.");
+            return; // Stop further processing if the signature is invalid
         }
 
-        PublicKey publicKey = CryptographyService.PublicKeyFromPemString(Settings.SignaturePublicKey);
-        DOMValidateContext validateContext = new DOMValidateContext(publicKey, nl.item(0));
+        System.out.println("✓ Offline license signature is valid!");
+        
+        System.out.println("Checking activation file signature...");
+        isValid = CryptographyService.IsXmlSignatureValid(activationFilePath);
 
-        // This is only necessary For IDL signature (SHA1)
-        validateContext.setProperty("org.jcp.xml.dsig.secureValidation", Boolean.FALSE);
+        if (!isValid) {
+            System.out.println("❌ Activation file signature is invalid! The file may have been tampered with.");
+            return; // Stop further processing if the signature is invalid
+        }
 
-        XMLSignatureFactory factory = XMLSignatureFactory.getInstance("DOM");
-        XMLSignature signature = factory.unmarshalXMLSignature(validateContext);
-
-        boolean isValid = signature.validate(validateContext);
-
-        if (isValid) {
-            System.out.println("✓ Offline license signature is valid!");
+        System.out.println("✓ Activation file signature is valid!");
+        
+        try {
+            System.out.println("\nReading license file content...");
             
-            try {
-                System.out.println("\nReading license file content...");
-                
-                // Create Jackson XmlMapper to deserialize XML to Java object
-                XmlMapper xmlMapper = new XmlMapper();
-                
-                // Configure mapper to ignore unknown properties
-                xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                
-                // Read the license file
-                File file = new File(licenseFilePath);
+            // Create Jackson XmlMapper to deserialize XML to Java object
+            XmlMapper xmlMapper = new XmlMapper();
+            
+            // Configure mapper to ignore unknown properties
+            xmlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            
+            // Read the license file
+            File file = new File(licenseFilePath);
 
-                // Parse the XML into our LicenseXml class
-                LicenseXml licenseXml = xmlMapper.readValue(file, LicenseXml.class);
-                
-                // Display the main properties of the license
-                LicensePrettyPrinter.PrintLicenseXmlDetails(licenseXml);
+            // Parse the XML into our LicenseXml class
+            LicenseXml licenseXml = xmlMapper.readValue(file, LicenseXml.class);
+            
+            // Display the main properties of the license
+            LicensePrettyPrinter.PrintLicenseXmlDetails(licenseXml);
 
-                // Validate the license validity
-                ValidityCheck.CheckLicenseValidity(licenseXml);
-            } catch (Exception e) {
-                System.out.println("Error reading offline license file: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("❌ Offline license signature is invalid! The license file may have been tampered with.");
+            // Read the activation file
+            file = new File(activationFilePath);
+
+            // Parse the XML into our LicenseXml class
+            ActivationXml activationXml = xmlMapper.readValue(file, ActivationXml.class);
+            
+            // Validate the license validity
+            ValidityCheck.CheckLicenseValidity(licenseXml, activationXml);
+        } catch (Exception e) {
+            System.out.println("Error reading offline license file: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

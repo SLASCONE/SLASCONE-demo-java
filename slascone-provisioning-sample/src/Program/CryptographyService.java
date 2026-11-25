@@ -12,9 +12,16 @@ import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.crypto.dsig.XMLSignature;
+import javax.xml.crypto.dsig.XMLSignatureFactory;
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 public class CryptographyService {
 
@@ -63,6 +70,35 @@ public class CryptographyService {
         boolean signtureValid = signature.verify(signatureHeaderBytes);
 
         return signtureValid;
+    }
+
+    /**
+     * Validates the XML Digital Signature in an offline license file.
+     *
+     * @param xmlFilePath The path to the signed XML file
+     * @return True if the signature is valid, false otherwise
+     * @throws Exception If the XML file cannot be parsed or its signature cannot be checked
+     */
+    public static boolean IsXmlSignatureValid(String xmlFilePath) throws Exception {
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilderFactory.setNamespaceAware(true);
+
+        DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+        Document doc = builder.parse(xmlFilePath);
+        NodeList signatures = doc.getElementsByTagNameNS(XMLSignature.XMLNS, "Signature");
+
+        if (signatures.getLength() == 0) {
+            throw new Exception("No XML Digital Signature Found, document is discarded");
+        }
+
+        PublicKey publicKey = PublicKeyFromPemString(Settings.SignaturePublicKey);
+        DOMValidateContext validateContext = new DOMValidateContext(publicKey, signatures.item(0));
+        validateContext.setProperty("org.jcp.xml.dsig.secureValidation", Boolean.FALSE);
+
+        XMLSignatureFactory factory = XMLSignatureFactory.getInstance("DOM");
+        XMLSignature signature = factory.unmarshalXMLSignature(validateContext);
+
+        return signature.validate(validateContext);
     }
 
     /**
